@@ -34,6 +34,7 @@
                 "injectors/clockInjector.js",
                 "injectors/filterInjector.js",
                 "injectors/networkInjector.js",
+                "injectors/codecForceInjector.js",
                 "util/forceReload.js",
                 "util/slimselect.min.js"
             ],
