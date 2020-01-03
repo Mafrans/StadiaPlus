@@ -4,7 +4,7 @@ console.log("[STADIA+] Injecting Network Listener");
 // @author       AquaRegia
 
 function createRTCOverride() {
-    const url = chrome.runtime.getURL('monitorScript.js');
+    const url = chrome.runtime.getURL('util/monitorScript.js');
 
     let element = document.createElement("script");
     element.innerHTML = httpGet(url);
