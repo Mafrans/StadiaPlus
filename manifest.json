@@ -1,0 +1,54 @@
+{
+    "name": "Stadia Extension",
+    "version": "1.0",
+    "description": "Extends Google's Stadia gaming platform with additional features, such as custom filters and in game network monitoring.",
+
+    "permissions": ["declarativeContent", "activeTab", "storage"],
+
+    "page_action": {
+        "default_popup": "resources/popup.html",
+        "default_icon": {
+          "16": "images/Stadia+16.png",
+          "32": "images/Stadia+32.png",
+          "48": "images/Stadia+48.png",
+          "128": "images/Stadia+128.png"
+        }
+    },
+
+    "icons": {
+      "16": "images/Stadia+16.png",
+      "32": "images/Stadia+32.png",
+      "48": "images/Stadia+48.png",
+      "128": "images/Stadia+128.png"
+    },
+
+    "content_scripts": [
+        {
+            "run_at": "document_start",
+            "matches": [
+                "https://stadia.google.com/*"
+            ],
+            "js": [
+                "injectors/clockInjector.js",
+                "injectors/filterInjector.js",
+                "injectors/networkInjector.js",
+                "util/forceReload.js",
+                "util/slimselect.min.js"
+            ],
+            "css": [
+                "resources/stadia+_stylesheet.css",
+                "resources/slimselect.min.css"
+            ]
+        }
+    ],
+
+    "web_accessible_resources": [
+        "images/icons/visibility.svg",
+        "images/icons/visibility_off.svg",
+        "images/icons/filter.svg",
+        "images/icons/sun.svg",
+        "util/monitorScript.js"
+    ],
+
+    "manifest_version": 2
+}

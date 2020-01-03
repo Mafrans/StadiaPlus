@@ -1,0 +1,116 @@
+.stadiaplus_clock {
+    font-size: 2.5rem;
+    padding: 1rem 1.5rem;
+    font-weight: 300;
+}
+
+.stadiaplus_icon_visibility {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    padding: 0.5rem 0.75rem;
+    height: 32px;
+    color: #FFFFFF;
+    opacity: 0.5;
+    z-index: 1;
+    transform: translate(-100%, -100%);
+}
+
+.stadiaplus_icon_visibility:hover {
+    cursor: pointer;
+    opacity: 1;
+}
+
+.stadiaplus_filterbar {
+    background-color: #303236;
+    padding: 0.5rem;
+    border-radius: 0.6rem;
+    display: flex;
+    align-items: center;
+    margin-top: 0.5rem;
+    box-shadow: 0 0.125rem 0.75rem rgba(0,0,0,0.32), 0 0.0625rem 0.375rem rgba(0,0,0,0.18);
+}
+
+.stadiaplus_filterbar .order-dropdown {
+    display: block;
+    padding: 0.5rem;
+}
+
+.stadiaplus_filterbar .ss-main .ss-single-selected {
+    background: transparent;
+    border: none;
+    border-bottom: #93959F 1px solid;
+    border-radius: 0;
+    width: 180px;
+}
+
+.stadiaplus_filterbar .ss-main .ss-single-selected .ss-arrow span {
+    border-color: #93959F;
+}
+
+.stadiaplus_icon_filter {
+    padding: 0 1rem;
+}
+
+.stadiaplus_icon_sun {
+    padding: 0 1rem;
+    margin-left: auto;
+    opacity: 0.3;
+}
+
+.stadiaplus_icon_sun.enabled {
+    opacity: 1;
+}
+
+.stadiaplus_icon_sun:hover {
+    cursor: pointer;
+    opacity: 0.6;
+}
+.stadiaplus_icon_sun.enabled:hover {
+    cursor: pointer;
+    opacity: 1;
+}
+
+html body .GqLi4d.QAAyWd {
+    box-shadow: 0 0.125rem 0.75rem rgba(0,0,0,0.32), 0 0.0625rem 0.375rem rgba(0,0,0,0.18), inset 0 0 5rem rgba(0,0,0,0.5);
+}
+
+html body .CVVXfc {
+    flex-direction: column;
+    align-items: initial;
+}
+
+.stadiaplus_overlay {
+    position: fixed;
+    opacity: 0.9;
+    z-index: 999;
+    width: 240px;
+    background-color: rgba(0,0,0,0.4);
+    padding: 1rem;
+}
+
+.stadiaplus_overlay.top {  
+    top: 0;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+}
+.stadiaplus_overlay.bottom {
+    bottom: 0;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+.stadiaplus_overlay.left {
+    left: 0;
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+}
+.stadiaplus_overlay.right {
+    right: 0;
+    border-top-left-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+}
+
+.stadiaplus_button {
+    margin-top: 1rem;
+    box-shadow: none !important;
+}
