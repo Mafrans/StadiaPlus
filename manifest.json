@@ -1,6 +1,6 @@
 {
     "name": "Stadia Extension",
-    "version": "1.0",
+    "version": "1.1",
     "description": "Extends Google's Stadia gaming platform with additional features, such as custom filters and in game network monitoring.",
 
     "permissions": ["declarativeContent", "activeTab", "storage"],
