@@ -5,6 +5,15 @@ let sunStorage = false;
 let sortStorage = "played";
 let recentlyPlayed = [];
 
+const iconVisible = chrome.runtime.getURL("images/icons/visibility.svg");
+const iconInvisible = chrome.runtime.getURL("images/icons/visibility_off.svg");
+
+const eyeTemplate = document.createElement("img");
+eyeTemplate.style["position"] = "absolute";
+eyeTemplate.classList.add("stadiaplus_icon_visibility");
+eyeTemplate.src = iconVisible;
+
+
 if(window.location.href.includes("/home")) {
     window.addEventListener("load", () => {
         //chrome.storage.local.clear();
@@ -12,16 +21,17 @@ if(window.location.href.includes("/home")) {
         for(let el of elements) {
             recentlyPlayed.push(el);
         }
-    
+
         injectImages();
         injectFilterBar();
         setInterval(createImages, 500);
         setInterval(injectFilterBar, 100)
-        updateStorage();
+		updateStorage();
     })
 }
 
 function updateStorage(callback) {
+	console.table(gameStorage)
     chrome.storage.local.get(['games', 'sun', 'order'], function(result) {
         let resStorage = result["games"];
         if(!resStorage) resStorage = {};
@@ -98,53 +108,36 @@ function getTile(name) {
 }
 
 function createImages() {
-    let gameTiles = document.querySelectorAll(".GqLi4d");
-
-    let eyes = document.querySelectorAll(".stadiaplus_icon_visibility");
-    for(let e of eyes) {
-        e.remove();
-    }
-    
+	let gameTiles = document.querySelectorAll(".GqLi4d");
 
     gameTiles.forEach(element => {
-        if(element.style["display"] == "none") return;
+		let name = element.getAttribute("aria-label");
+		element.classList.add("stadiaplus_game");
+		element.style["position"] = "relative";
 
-        let game = getFromStorage(element.getAttribute("aria-label"));
-        if(game == null) {
-            game = {
-                visible: true
-            };
-        }
+		if(element.style["display"] == "none") return;
 
+		let eye = element.parentElement.querySelector(`.stadiaplus_icon_visibility[data-game-name="${name}"]`);
 
-        let eye = document.createElement("img");
-        
-        if(game.visible) {
-            eye.src = chrome.runtime.getURL("images/icons/visibility.svg");
-        }
-        else {
-            eye.src = chrome.runtime.getURL("images/icons/visibility_off.svg");
-        }
+		if (!eye) {
+			eye = eyeTemplate.cloneNode();
+			eye.setAttribute('data-game-name', name);
+			eye.style["left"] = (element.offsetLeft+element.clientWidth) + "px";
+			eye.style["top"] = (element.offsetTop+element.clientHeight) + "px";
+			element.parentElement.insertBefore(eye, element);
 
-        eye.classList.add("stadiaplus_icon_visibility");
-        element.classList.add("stadiaplus_game");
+			const game = getFromStorage(name);
+			eye.src = game.visible ? iconVisible : iconInvisible;
 
-        element.parentElement.insertBefore(eye, element);
+			eye.addEventListener("click", (event) => {
+				let game = getFromStorage(name);
+				game.visible = !game.visible;
 
-        eye.style["left"] = (element.offsetLeft+element.clientWidth) + "px";
-        eye.style["top"] = (element.offsetTop+element.clientHeight) + "px";
-
-        eye.addEventListener("click", (event) => {
-            let tile = element;
-            //tile.style["display"] = tile.style["display"] == "none" ? "" : "none";
-
-            let name = element.getAttribute("aria-label")
-            let game = getFromStorage(name);
-            game.visible = !game.visible;
-
-            gameStorage[name] = game;
-            saveStorage(()=>{updateStorage(createImages)});
-        });
+				gameStorage[name] = game;
+				eye.src = game.visible ? iconVisible : iconInvisible;
+				saveStorage(()=>{updateStorage(createImages)});
+			});
+		}
     });
 }
 
@@ -165,7 +158,7 @@ function injectFilterBar() {
             <img class="stadiaplus_icon_sun" src="${chrome.runtime.getURL("images/icons/sun.svg")}">
         </div>
         `
-    
+
         let container = document.querySelector(".CVVXfc.YYy3Zb");
         let el = document.createElement("div");
         el.innerHTML = html;
@@ -189,7 +182,7 @@ function addFilterBarEvents() {
         sortGames();
     });
 
-    
+
     let sun = document.querySelector(".stadiaplus_filterbar>.stadiaplus_icon_sun");
     sun.addEventListener("click", (event) => {
         sun.classList.toggle("enabled");
@@ -205,13 +198,13 @@ function sortGames() {
         case "alphabetical":
             sortAlphabetical();
             break;
-        case "played": 
+        case "played":
             sortRecentlyPlayed();
             break;
         case "random":
             sortRandom();
             break;
-    } 
+    }
 }
 
 function sortAlphabetical() {
@@ -222,11 +215,11 @@ function sortAlphabetical() {
         arr.push(el);
         el.remove();
     }
-    
+
     arr.sort(function(a, b) {
         return a.getAttribute("aria-label") < b.getAttribute("aria-label") ? -1 : 1;
     });
-    
+
     for(let el of arr) {
         parent.appendChild(el);
     }
@@ -241,11 +234,11 @@ function sortRandom() {
         arr.push(el);
         el.remove();
     }
-    
+
     arr.sort(function(a, b) {
         return Math.sign(Math.random() - 0.5);
     });
-    
+
     for(let el of arr) {
         parent.appendChild(el);
     }
