@@ -1,20 +1,26 @@
-console.log("[STADIA+] Injecting Clock");
 
-window.addEventListener("load", () => {
+console.log('[STADIA+] Injecting Clock');
+
+window.addEventListener('load', () => {
+	const container = document.querySelector('.hxhAyf');
+    const el = document.createElement('span');
+
+    let time;
+
+    el.id = 'sidebar_clock';
+    el.classList.add('stadiaplus_clock');
+    container.prepend(el);
+
+    function updateClock() {
+        el.innerHTML = time;
+    }
+
     setInterval(() => {
-        let container = document.querySelector(".hxhAyf");
-        let clock = document.querySelector("#sidebar_clock");
-        if(clock) {
-            clock.innerHTML = new Date().toLocaleTimeString();
-            return;
+        if (!container) {
+          return;
         }
-        if(!container) {
-            return;
-        }
-        let el = document.createElement("span");
-        el.id = "sidebar_clock";
-        el.innerHTML = new Date().toLocaleTimeString();
-        el.classList.add("stadiaplus_clock");
-        container.prepend(el);  
+        time = new Date().toLocaleTimeString();
+
+        window.requestAnimationFrame(updateClock);
     }, 1000);
 });
