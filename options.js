@@ -8,11 +8,8 @@ function get_options() {
 }
 
 // provide default values for each option
-function default_options() {
-  var defaults = {
+const default_options = {
     forceVP9: false
-  }
-  return defaults;
 }
 
 // set options (called with chrome.storage.sync.get in save_options)
@@ -33,10 +30,9 @@ function save_options() {
   });
 }
 
-// Restores select box and checkbox state using the preferences
+// Restores option state using the preferences
 // stored in chrome.storage.
 function restore_options() {
-  // Use default value color = 'red' and likesColor = true.
   chrome.storage.sync.get(default_options, set_options);
 }
 document.addEventListener('DOMContentLoaded', restore_options);
