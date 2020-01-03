@@ -4,6 +4,7 @@
 // @author       AquaRegia
 // @match        https://stadia.google.com/*
 // @downloadURL  https://pastebin.com/raw/M29RNrLf
+// @homepageURL  https://www.reddit.com/r/Stadia/comments/eimw7m/tampermonkey_monitor_your_stream/
 // @grant        none
 // ==/UserScript==
 
