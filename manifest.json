@@ -35,6 +35,7 @@
                 "injectors/filterInjector.js",
                 "injectors/networkInjector.js",
                 "util/forceReload.js",
+                "util/forceVP9.js",
                 "util/slimselect.min.js"
             ],
             "css": [
