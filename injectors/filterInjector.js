@@ -153,7 +153,7 @@ function injectFilterBar() {
         let html = `
         <div class="stadiaplus_filterbar">
             <img class="stadiaplus_icon_filter" src="${chrome.runtime.getURL("images/icons/filter.svg")}">
-            <div class="order-dropdown">
+            <div class="stadiaplus_dropdown">
                 <select name="order" id="dropdown">
                     <p>order</p>
                     <option value="played">Recently Played</option>
@@ -172,7 +172,7 @@ function injectFilterBar() {
         container.appendChild(el);
 
         new SlimSelect({
-            select: '.order-dropdown>#dropdown',
+            select: '#dropdown',
             showSearch: false
         });
 
@@ -182,7 +182,7 @@ function injectFilterBar() {
 }
 
 function addFilterBarEvents() {
-    let orderDropdown = document.querySelector(".stadiaplus_filterbar>.order-dropdown>#dropdown");
+    let orderDropdown = document.querySelector(".stadiaplus_filterbar #dropdown");
     orderDropdown.addEventListener("change", (event) => {
         orderStorage = orderDropdown.value;
         saveStorage();
@@ -200,7 +200,7 @@ function addFilterBarEvents() {
 }
 
 function sortGames() {
-    let orderDropdown = document.querySelector(".stadiaplus_filterbar>.order-dropdown>#dropdown");
+    let orderDropdown = document.querySelector(".stadiaplus_filterbar #dropdown");
     switch(orderDropdown.value) {
         case "alphabetical":
             sortAlphabetical();
