@@ -1,7 +1,7 @@
 {
     "name": "Stadia+ Extension",
     "short_name": "Stadia+",
-    "version": "1.2",
+    "version": "1.2.1",
     "author": "Malte Klüft (Mafrans)",
     "description": "Extends Google's Stadia gaming platform with additional features, such as custom filters and in game network monitoring.",
 
