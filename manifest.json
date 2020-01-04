@@ -4,26 +4,26 @@
     "version": "1.2.1",
     "author": "Malte Klüft (Mafrans)",
     "description": "Extends Google's Stadia gaming platform with additional features, such as custom filters and in game network monitoring.",
-
-    "permissions": ["declarativeContent", "activeTab", "storage"],
-
+    "permissions": [
+        "declarativeContent",
+        "activeTab",
+        "storage"
+    ],
     "page_action": {
         "default_popup": "popup.html",
         "default_icon": {
-          "16": "images/Stadia+16.png",
-          "32": "images/Stadia+32.png",
-          "48": "images/Stadia+48.png",
-          "128": "images/Stadia+128.png"
+            "16": "images/Stadia+16.png",
+            "32": "images/Stadia+32.png",
+            "48": "images/Stadia+48.png",
+            "128": "images/Stadia+128.png"
         }
     },
-
     "icons": {
-      "16": "images/Stadia+16.png",
-      "32": "images/Stadia+32.png",
-      "48": "images/Stadia+48.png",
-      "128": "images/Stadia+128.png"
+        "16": "images/Stadia+16.png",
+        "32": "images/Stadia+32.png",
+        "48": "images/Stadia+48.png",
+        "128": "images/Stadia+128.png"
     },
-
     "content_scripts": [
         {
             "run_at": "document_start",
@@ -31,12 +31,12 @@
                 "https://stadia.google.com/*"
             ],
             "js": [
+                "util/slimselect.min.js",
                 "injectors/clockInjector.js",
                 "injectors/filterInjector.js",
                 "injectors/networkInjector.js",
                 "injectors/codecForceInjector.js",
-                "util/forceReload.js",
-                "util/slimselect.min.js"
+                "util/forceReload.js"
             ],
             "css": [
                 "resources/stadia+_stylesheet.css",
@@ -44,7 +44,6 @@
             ]
         }
     ],
-
     "web_accessible_resources": [
         "images/icons/visibility.svg",
         "images/icons/visibility_off.svg",
@@ -52,6 +51,5 @@
         "images/icons/sun.svg",
         "util/monitorScript.js"
     ],
-
     "manifest_version": 2
 }
