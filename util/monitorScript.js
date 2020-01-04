@@ -23,7 +23,6 @@
         element.classList.add("stadiaplus_button");
         element.classList.add("CTvDXd", "QAAyWd", "Fjy05d", "ivWUhc", "QSDHyc", "rpgZzc", "RkyH1e");
         container.appendChild(element);
-        console.log({ container, element });
 
         element.addEventListener("click", function (e) {
             let infoBox = document.getElementById("infoBox");

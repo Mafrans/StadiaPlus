@@ -2,7 +2,7 @@
 console.log('[STADIA+] Injecting Clock');
 
 window.addEventListener('load', () => {
-	const container = document.querySelector('.hxhAyf');
+    const container = document.querySelector('.hxhAyf');
     const el = document.createElement('span');
 
     let time;
@@ -17,7 +17,7 @@ window.addEventListener('load', () => {
 
     setInterval(() => {
         if (!container) {
-          return;
+            return;
         }
         time = new Date().toLocaleTimeString();
 
