@@ -2,7 +2,7 @@
 console.log('[STADIA+] Injecting Clock');
 
 window.addEventListener('load', () => {
-	const container = document.querySelector('.hxhAyf');
+    const container = document.querySelector('.hxhAyf');
     const el = document.createElement('span');
 
     let time;
@@ -12,15 +12,14 @@ window.addEventListener('load', () => {
     container.prepend(el);
 
     function updateClock() {
+	time = new Date().toLocaleTimeString();
         el.innerHTML = time;
     }
 
-    setInterval(() => {
-        if (!container) {
-          return;
-        }
-        time = new Date().toLocaleTimeString();
+    if (!container) {
+	return;
+    }
 
-        window.requestAnimationFrame(updateClock);
-    }, 1000);
+    window.requestAnimationFrame(updateClock);
+
 });
