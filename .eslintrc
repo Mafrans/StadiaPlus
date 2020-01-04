@@ -20,6 +20,9 @@
 		],
 		"no-use-before-define": [
 			"warn"
+		],
+		"linebreak-style": [
+			"off"
 		]
 	}
 }
