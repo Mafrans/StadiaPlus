@@ -1,3 +1,10 @@
 *.zip
+
 node_modules
 node_modules/**
+
+popup/node_modules
+popup/node_modules/**
+
+popup/dist
+popup/dist/**
