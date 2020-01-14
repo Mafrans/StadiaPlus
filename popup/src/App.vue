@@ -1,15 +1,14 @@
 <template>
-  <div>
-    <router-view></router-view>
-  </div>
+    <router-view />
 </template>
 
 <script>
+
 export default {
-    data () {
-        return {}
-    }
-}
+    name: "App",
+
+    data: () => ({
+        //
+    })
+};
 </script>
-
-
