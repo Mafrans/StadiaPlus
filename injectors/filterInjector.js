@@ -116,27 +116,40 @@ console.log('[STADIA+] Injecting Filters');
             // eslint-disable-next-line no-param-reassign
             element.style.position = 'relative';
 
-            if (element.style.display === 'none') return;
-
             let eye = element.parentElement.querySelector(`.stadiaplus_icon_visibility[data-game-name="${name}"]`);
+
+            if (element.style === 'none') return;
 
             if (!eye) {
                 eye = eyeTemplate.cloneNode();
                 eye.setAttribute('data-game-name', name);
-                eye.style.left = `${element.offsetLeft + element.clientWidth}px`;
-                eye.style.top = `${element.offsetTop + element.clientHeight}px`;
                 element.parentElement.insertBefore(eye, element);
+                const game = getFromStorage(name);
 
-                eye.src = getFromStorage(name).visible ? iconVisible : iconInvisible;
+                eye.src = game.visible ? iconVisible : iconInvisible;
 
                 eye.addEventListener('click', () => {
-                    const game = getFromStorage(name);
                     game.visible = !game.visible;
 
                     gameStorage[name] = game;
                     eye.src = game.visible ? iconVisible : iconInvisible;
                     saveStorage(() => { updateStorage(createImages); });
                 });
+            }
+
+            // It is important to always update the eyes' positions,
+            // otherwise they cause issues with the filtering.
+            eye.style.left = `${element.offsetLeft + element.clientWidth}px`;
+            eye.style.top = `${element.offsetTop + element.clientHeight}px`;
+
+            // eslint-disable-next-line
+            if (!(element.offsetLeft
+                + element.clientWidth
+                + element.offsetTop
+                + element.clientHeight)) {
+                eye.style.display = 'none';
+            } else {
+                eye.style.display = '';
             }
         });
     }
