@@ -1,0 +1,45 @@
+
+.page[data-v-014d34d4] {
+    padding: 0.5rem;
+}
+.material-icons[data-v-014d34d4] {
+    font-size: 36px;
+    vertical-align: text-bottom;
+}
+hr[data-v-014d34d4] {
+    margin: 0.5rem 0;
+}
+
+
+.btn {
+    padding: .3rem 1.5rem;
+    font-family: 'Google Sans',sans-serif;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    font-weight: 500;
+    border-radius: 0.25rem;
+    text-align: center;
+
+    background-color: #bbbbbb;
+    transition: background-color 0.2s ease-in-out;
+}
+.btn:hover {
+    background-color: #aaaaaa;
+    cursor: pointer;
+}
+.btn:active {
+    transition: background-color 0.0s linear;
+    background-color: #dddddd;
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+}
+body {
+    width: 250px;
+    font-size: 16px;
+    font-family: 'Roboto', sans-serif;
+}
+
