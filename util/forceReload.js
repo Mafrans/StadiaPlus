@@ -1,5 +1,5 @@
 
-(function () {
+(() => {
     const loc = window.location.href;
     const pages = [
         'home',
@@ -15,4 +15,4 @@
             }
         });
     }, 1000);
-}());
+})();

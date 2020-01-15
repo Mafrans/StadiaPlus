@@ -54,6 +54,31 @@
     align-items: flex-end;
 }
 
+.stadiaplus_store_game {
+    display: inline-flex;
+    flex-direction: column;
+    width: 250px;
+    margin: 0.5rem;
+    margin-bottom: 1rem;
+    position: relative;
+    box-shadow: inset 0 0 5 red;
+    height: 150px;
+}
+
+.stadiaplus_crumb {
+    border-radius: 1em;
+    border: #ffffff solid 2px;
+    padding: 0 0.3em;
+    margin: 0.1em;
+    color: #ffffff;
+    background-color: rgba(0, 0, 0, 0.1);
+    display: inline-block;
+}
+
+.stadiaplus_storefilter {
+    display: block;
+}
+
 
 
 
@@ -93,6 +118,68 @@
 .stadiaplus_filterbar .stadiaplus_dropdown {
     display: block;
     padding: 0.5rem;
+}
+
+.stadiaplus_storefilter .games {
+    text-align: left;
+}
+.stadiaplus_store_game.hidden {
+    display: none;
+}
+
+.stadiaplus_store_game .vignette {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 0.5rem;
+    width: 100%;
+    height: 100%;
+    box-shadow: rgba(0, 0, 0, 0.32) 0px 0.125rem 0.75rem, rgba(0, 0, 0, 0.18) 0px 0.0625rem 0.375rem, rgba(0, 0, 0, 0.5) 0px 0px 6rem inset;
+    transition: box-shadow 0.25s ease-in-out;
+}
+
+.stadiaplus_store_game:hover .vignette {
+    box-shadow: rgba(0, 0, 0, 0.32) 0px 0.5rem 0.75rem, rgba(0, 0, 0, 0.18) 0px 0.0625rem 0.375rem, rgba(0, 0, 0, 0.7) 0px 0px 10rem inset;
+}
+
+.stadiaplus_store_game h5 {
+    color: #ffffff;
+    margin-bottom: 0.1rem;
+}
+
+.stadiaplus_store_game .content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 0.5rem;
+}
+
+.stadiaplus_store_game img {
+    border-radius: 0.5rem;
+    height: 100%;
+    object-fit: cover;
+}
+
+.stadiaplus_store_game .crumbs {
+    overflow: hidden;
+    transition: max-height 0.25s ease-out;
+}
+
+.stadiaplus_storefilter .nav {
+    display: flex;
+    padding: 0.5rem;
+}
+
+.stadiaplus_storefilter .nav input {
+    padding: 0.5rem;
+    background-color: rgba(255, 255, 255, 0.06);
+    font-family: 'Google Sans',sans-serif;
+    font-size: 1.25rem;
+    outline: #ff773d 3px;
+    color: #ffffff;
+    font-weight: 500;
+    border: none;
+    border-radius: 0.25rem;
 }
 
 
@@ -137,6 +224,18 @@
 .stadiaplus_icon_sun:hover {
     cursor: pointer;
     opacity: 0.6;
+}
+
+.stadiaplus_icon_search {
+    margin: auto 0;
+    padding-right: 1rem;
+    padding-left: 0.4rem;
+    height: 24px;
+    opacity: 0.5;
+}
+
+.stadiaplus_icon_search.focus {
+    opacity: 1;
 }
 
 

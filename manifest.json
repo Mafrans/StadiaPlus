@@ -6,8 +6,9 @@
     "description": "Extends Google's Stadia gaming platform with additional features, such as custom filters and in game network monitoring.",
     "permissions": [
         "declarativeContent",
-        "activeTab",
-        "storage"
+        "storage",
+        "https://www.stadiagamedb.com/*",
+        "https://raw.githubusercontent.com/nilicule/StadiaGameDB/master/data/gamedb.json"
     ],
     "background": {
         "scripts": [
@@ -42,6 +43,7 @@
                 "injectors/filterInjector.js",
                 "injectors/networkInjector.js",
                 "injectors/codecForceInjector.js",
+                "injectors/storeFilterInjector.js",
                 "util/forceReload.js"
             ],
             "css": [
@@ -55,6 +57,7 @@
         "images/icons/visibility_off.svg",
         "images/icons/filter.svg",
         "images/icons/sun.svg",
+        "images/icons/search.svg",
         "util/monitorScript.js"
     ],
     "manifest_version": 2
