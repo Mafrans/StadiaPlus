@@ -130,14 +130,12 @@ const databaseUrl = 'https://raw.githubusercontent.com/nilicule/StadiaGameDB/mas
             // It is important to only hide the game tile AFTER the max height has been recorded.
             gameElement.classList.add('hidden');
 
-            console.log(maxHeight);
             gameElement.addEventListener('mouseover', () => {
                 cr.style['max-height'] = `${maxHeight}px`;
             });
 
             gameElement.addEventListener('mouseout', () => {
                 cr.style['max-height'] = 0;
-                console.log('out');
             });
 
             cr.style['max-height'] = 0;
@@ -160,7 +158,6 @@ const databaseUrl = 'https://raw.githubusercontent.com/nilicule/StadiaGameDB/mas
 
             let hidden = value !== '' && !name.toLowerCase().startsWith(value.toLowerCase());
 
-            console.log(selectedTags);
             if (selectedTags.length > 0) {
                 selectedTags.forEach((tag) => {
                     if (!crumbs.includes(tag)) {
