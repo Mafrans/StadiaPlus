@@ -169,6 +169,10 @@
     display: flex;
     padding: 0.5rem;
 }
+.stadiaplus_storefilter .search {
+    display: flex;
+    max-height: 40px;
+}
 
 .stadiaplus_storefilter .nav input {
     padding: 0.5rem;
@@ -250,6 +254,7 @@
     opacity: 1;
 }
 
+.stadiaplus_dropdown .ss-main .ss-multi-selected,
 .stadiaplus_dropdown .ss-main .ss-single-selected {
     background: transparent;
     border: none;
@@ -258,6 +263,7 @@
     width: 180px;
 }
 
+.stadiaplus_dropdown .ss-main .ss-multi-selected .ss-plus span,
 .stadiaplus_dropdown .ss-main .ss-single-selected .ss-arrow span {
     border-color: #93959F;
 }
@@ -271,6 +277,7 @@
     border-color: #3C3E43;
 }
 
+.stadiaplus_dropdown .ss-main .ss-multi-selected .placeholder,
 .stadiaplus_dropdown .ss-main .ss-single-selected .placeholder {
     color: rgba(255, 255, 255, 0.8)
 }
@@ -302,7 +309,49 @@ html body .CVVXfc {
     margin: 0 
 }
 
+#tag-dropdown .ss-values .ss-disabled {
+    font-family: "Google Sans", sans-serif;
+    font-size: 1.25rem;
+}
+
+#tag-dropdown {
+    padding: 0 0.5rem;
+    margin: 0 0.5rem;
+}
+
+#tag-dropdown .ss-main,
+#tag-dropdown .ss-multi-selected {
+    height: 100%;
+    min-width: 200px;
+}
+
+#tag-dropdown .ss-main {
+    height: 100%;
+}
+
+#tag-dropdown .ss-add {
+    margin: 15px 12px 0px 5px;
+}
+
+#tag-dropdown .ss-value {
+    font-size: 1rem;
+    height: 1em;
+    border-radius: 1em;
+    background: transparent;
+    border: #ffffff solid 1px;
+    padding-bottom: 4px;
+    align-self: center;
+}
+
 hr {
     border: none;
     border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+::-webkit-scrollbar {
+    background-color: rgb(70, 72, 77);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgb(80, 82, 87) !important;
 }

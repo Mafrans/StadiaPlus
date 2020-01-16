@@ -27,7 +27,6 @@ export default {
         }
     },
     mounted() {
-        console.log(JSON.stringify(this.color));
         this.hoverColor = {
             h: this.color.h,
             s: this.color.s,
