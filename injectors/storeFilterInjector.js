@@ -35,15 +35,24 @@ const databaseUrl = 'https://raw.githubusercontent.com/nilicule/StadiaGameDB/mas
         container.classList.add('stadiaplus_filterbar', 'stadiaplus_storefilter');
         container.innerHTML = `
             <div class='nav'>
-                <img class='stadiaplus_icon_search' src='${searchIcon}'>
-                <input type='text' placeholder='Search' name='query'>
+                <div class='search'>
+                    <img class='stadiaplus_icon_search' src='${searchIcon}'>
+                    <input type='text' placeholder='Search' name='query'>
+                </div>
+                <div class="stadiaplus_dropdown" id="tag-dropdown">
+                    <select name="tags" multiple>
+                        <p>tags</p>
+                    </select>
+                </div>
             </div>
             <div class='games'>
             </div>
         `;
 
         const input = container.querySelector('.nav input');
+        const dropdown = container.querySelector('#tag-dropdown select');
         input.addEventListener('input', query);
+        dropdown.addEventListener('change', query);
 
         const icon = container.querySelector('.nav .stadiaplus_icon_search');
         input.addEventListener('focusin', () => {
@@ -53,7 +62,36 @@ const databaseUrl = 'https://raw.githubusercontent.com/nilicule/StadiaGameDB/mas
             icon.classList.remove('focus');
         });
 
+        createTags(games);
         updateGames(games);
+    }
+
+    function createTags(games) {
+        const tags = [];
+        const dropdown = document.querySelector('#tag-dropdown select');
+
+        games.forEach((game) => {
+            const gtags = game[2].split(', ');
+            gtags.forEach((gtag) => {
+                if (tags.includes(gtag.toLowerCase())) {
+                    return;
+                }
+                tags.push(gtag.toLowerCase());
+
+                const option = document.createElement('option');
+                option.value = gtag;
+                option.innerHTML = gtag.toLowerCase();
+
+                dropdown.appendChild(option);
+            });
+        });
+
+        // eslint-disable-next-line no-new
+        new SlimSelect({
+            select: '#tag-dropdown>select',
+            showSearch: false,
+            placeholder: 'Select a tag',
+        });
     }
 
     function updateGames(games) {
@@ -91,7 +129,7 @@ const databaseUrl = 'https://raw.githubusercontent.com/nilicule/StadiaGameDB/mas
 
             // It is important to only hide the game tile AFTER the max height has been recorded.
             gameElement.classList.add('hidden');
-            
+
             console.log(maxHeight);
             gameElement.addEventListener('mouseover', () => {
                 cr.style['max-height'] = `${maxHeight}px`;
@@ -106,15 +144,32 @@ const databaseUrl = 'https://raw.githubusercontent.com/nilicule/StadiaGameDB/mas
         });
     }
 
-    function query(event) {
-        const { value } = event.target;
-
+    function query() {
         const gameContainer = document.querySelector('.stadiaplus_filterbar .games');
         const games = gameContainer.querySelectorAll('.stadiaplus_store_game');
 
+        const tagSelect = document.querySelector('#tag-dropdown select');
+        const input = document.querySelector('.stadiaplus_storefilter .nav input');
+        const { value } = input;
+        const tagSelectOptions = tagSelect.querySelectorAll('option:checked');
+        const selectedTags = Array.from(tagSelectOptions).map((el) => el.value.toLowerCase());
+
         games.forEach((game) => {
             const name = game.querySelector('h5').innerText;
-            game.classList.toggle('hidden', value === '' || !name.toLowerCase().startsWith(value.toLowerCase()));
+            const crumbs = Array.prototype.slice.call(game.querySelectorAll('.stadiaplus_crumb')).map((el) => el.innerText.toLowerCase());
+
+            let hidden = value !== '' && !name.toLowerCase().startsWith(value.toLowerCase());
+
+            console.log(selectedTags);
+            if (selectedTags.length > 0) {
+                selectedTags.forEach((tag) => {
+                    if (!crumbs.includes(tag)) {
+                        hidden = true;
+                    }
+                });
+            } else if (value === '') hidden = true;
+
+            game.classList.toggle('hidden', hidden);
         });
     }
 })();
