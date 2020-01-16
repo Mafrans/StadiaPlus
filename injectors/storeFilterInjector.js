@@ -8,7 +8,7 @@ console.log('[Stadia+] Injecting Store Filter');
 const databaseUrl = 'https://raw.githubusercontent.com/nilicule/StadiaGameDB/master/data/gamedb.json';
 
 (() => {
-    if (!window.location.pathname === '/store') {
+    if (window.location.pathname !== '/store') {
         return;
     }
 
@@ -19,6 +19,9 @@ const databaseUrl = 'https://raw.githubusercontent.com/nilicule/StadiaGameDB/mas
     const timer = setInterval(() => {
         parent = document.querySelector('.nWmtLd');
         if (parent.length === 0) return;
+        if (window.location.pathname !== '/store') {
+            clearInterval(timer);
+        }
 
         createFilterBar();
         clearInterval(timer);
@@ -91,7 +94,7 @@ const databaseUrl = 'https://raw.githubusercontent.com/nilicule/StadiaGameDB/mas
 
             // It is important to only hide the game tile AFTER the max height has been recorded.
             gameElement.classList.add('hidden');
-            
+
             console.log(maxHeight);
             gameElement.addEventListener('mouseover', () => {
                 cr.style['max-height'] = `${maxHeight}px`;
@@ -117,11 +120,11 @@ const databaseUrl = 'https://raw.githubusercontent.com/nilicule/StadiaGameDB/mas
             game.classList.toggle('hidden', value === '' || !name.toLowerCase().startsWith(value.toLowerCase()));
         });
     }
-})();
 
-function httpGet(theUrl) {
-    const xmlHttp = new XMLHttpRequest();
-    xmlHttp.open('GET', theUrl, false); // false for synchronous request
-    xmlHttp.send('null');
-    return xmlHttp;
-}
+    function httpGet(theUrl) {
+        const xmlHttp = new XMLHttpRequest();
+        xmlHttp.open('GET', theUrl, false); // false for synchronous request
+        xmlHttp.send('null');
+        return xmlHttp;
+    }
+})();
