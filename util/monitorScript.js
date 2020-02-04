@@ -121,6 +121,7 @@
                 sessionStart = new Date();
                 active = true;
             }
+            // console.log("---");
 
             peerConnections[2].getStats().then(function (stats) {
                 for (var key of stats.keys()) {
@@ -133,7 +134,17 @@
                                 return "ssrc" == f.type && f.id.endsWith("recv") && f.names().includes("mediaType") && "video" == f.stat("mediaType");
                             });
 
+                            /*  //// DEBUG LOGGING 
+                             * 
+                             *  for(var res of stats.result()) {
+                             *      // console.log({id: res.id, names: res.names()});
+                             *  }
+                             *  console.log({id: tmp3.id, names: tmp3.names()});
+                             *  console.log(tmp3.stat("googTargetDelayMs"));
+                             */
+
                             var time = new Date();
+
                             var sessionDuration = (time - sessionStart) / 1000;
                             time = new Date(time - time.getTimezoneOffset() * 60 * 1000).toISOString().replace("T", " ").split(".")[0];
                             var resolution = tmp2.frameWidth + "x" + tmp2.frameHeight;
@@ -145,7 +156,9 @@
                             var averageData = ((((bytesReceived / sessionDuration) * 3600) / 1024) / 1024) / 1024;
                             var packetsLost = tmp1.packetsLost;
                             var framesDropped = tmp2.framesDropped;
-                            var latency = tmp3.stat("googCurrentDelayMs");
+                            //var audioLatency = tmp3.stat("googCurrentDelayMs");
+                            var latency = tmp3.stat("googTargetDelayMs");
+                            
                             var jitterBuffer = tmp3.stat("googJitterBufferMs");
 
                             lastFrames = framesReceived;
