@@ -1,15 +1,9 @@
-// ==UserScript==
-// @name         Stadia Stream Monitor
-// @version      0.3
-// @author       AquaRegia
-// @match        https://stadia.google.com/*
-// @grant        none
-// ==/UserScript==
-
+// Stadia Stream Monitor version 0.3
+// by AquaRegia
+// Reddit: u/AquaRegia
+// Discord: AquaRegia#9152
 
 (function () {
-    'use strict';
-
     setInterval(() => {
         let container = document.querySelector(".dSGvzf>div");
         let btn = document.querySelector("#network_overlay_button");
