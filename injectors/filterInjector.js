@@ -4,7 +4,6 @@ console.log('[STADIA+] Injecting Filters');
 (() => {
     const { chrome } = window;
     const gameStorage = {};
-    let sunStorage = false;
     let orderStorage;
     let recentlyPlayed = [];
 
@@ -29,20 +28,14 @@ console.log('[STADIA+] Injecting Filters');
     }
 
     function updateStorage(callback) {
-        chrome.storage.local.get(['games', 'sun', 'order'], (result) => {
+        chrome.storage.local.get(['games', 'order'], (result) => {
             let resStorage = result.games;
             if (!resStorage) resStorage = {};
 
-            sunStorage = result.sun;
             orderStorage = result.order;
-
-            const sun = document.querySelector('.stadiaplus_icon_sun');
-            if (sun) sun.classList.remove('enabled');
 
             const order = document.querySelector('.stadiaplus_filterbar>.order-dropdown>#dropdown');
             if (order) order.value = orderStorage;
-
-            if (sunStorage) sun.classList.add('enabled');
 
             const elements = Array.from(document.querySelectorAll('.GqLi4d.QAAyWd'));
 
@@ -73,16 +66,15 @@ console.log('[STADIA+] Injecting Filters');
     function saveStorage(callback) {
         chrome.storage.local.set({
             games: gameStorage,
-            sun: sunStorage,
             order: orderStorage,
         }, callback);
     }
 
     function updateGame(name) {
         const tile = getTile(name);
-        const sun = document.querySelector('.stadiaplus_filterbar>.stadiaplus_icon_sun');
+        const showAll = document.querySelector('.stadiaplus_filterbar .stadiaplus_show-all>input').checked;
 
-        if (sun.classList.contains('enabled')) {
+        if (showAll) {
             tile.style.display = '';
         } else {
             tile.style.display = getFromStorage(name).visible ? '' : 'none';
@@ -168,7 +160,12 @@ console.log('[STADIA+] Injecting Filters');
                         <option value="random">Random</option>
                     </select>
                 </div>
-                <img class="stadiaplus_icon_sun" src="${chrome.runtime.getURL('images/icons/sun.svg')}">
+                <div class="pretty p-bigger p-default p-curve stadiaplus_show-all">
+                    <input type="checkbox" />
+                    <div class="state">
+                        <label>Show hidden</label>
+                    </div>
+                </div>
             </div>
             `;
 
@@ -196,11 +193,8 @@ console.log('[STADIA+] Injecting Filters');
             sortGames();
         });
 
-
-        const sun = document.querySelector('.stadiaplus_filterbar>.stadiaplus_icon_sun');
-        sun.addEventListener('click', () => {
-            sun.classList.toggle('enabled');
-            sunStorage = !sunStorage;
+        const showAll = document.querySelector('.stadiaplus_filterbar .stadiaplus_show-all>input');
+        showAll.addEventListener('click', () => {
             saveStorage();
             updateStorage();
         });
