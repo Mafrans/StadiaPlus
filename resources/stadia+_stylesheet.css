@@ -215,19 +215,21 @@
     padding: 0 1rem;
 }
 
-.stadiaplus_icon_sun {
+.stadiaplus_show-all {
     padding: 0 1rem;
     margin-left: auto;
-    opacity: 0.3;
+    opacity: 0.7;
 }
 
-.stadiaplus_icon_sun.enabled {
-    opacity: 1;
+.stadiaplus_show-all {
+    padding: initial;
+    margin-left: auto;
+    opacity: 0.7;
 }
 
-.stadiaplus_icon_sun:hover {
+.stadiaplus_show-all:hover {
     cursor: pointer;
-    opacity: 0.6;
+    opacity: 1;
 }
 
 .stadiaplus_icon_search {
