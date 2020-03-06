@@ -203,16 +203,9 @@
                                         Resolution: ${resolution}<br/>
                                         FPS: ${framesReceivedPerSecond}<br/>
                                         Codec: ${codec}<br/>
-                                        Session traffic: ${formatBytes(
-        bytesReceived,
-    )}<br/>
-                                        Current traffic: ${formatBytes(
-        bytesReceivedPerSecond * 8,
-        2,
-    ).slice(0, -1)} b/s<br/>
-                                        Average traffic: ${averageData.toFixed(
-        2,
-    )} GB/h<br/>
+                                        Session traffic: ${formatBytes(bytesReceived)}<br/>
+                                        Current traffic: ${formatBytes(bytesReceivedPerSecond * 8, 2).slice(0, -1)} b/s<br/>
+                                        Average traffic: ${averageData.toFixed(2)} GB/h<br/>
                                         Packets lost: ${packetsLost}<br/>
                                         Frames dropped: ${framesDropped}<br/>
                                         Latency: ${latency} ms<br/>
