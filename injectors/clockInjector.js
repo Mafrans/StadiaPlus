@@ -19,6 +19,11 @@ window.addEventListener('load', () => {
         if (!container) {
             return;
         }
+
+        if (!el) {
+            container.prepend(el);
+        }
+        
         time = new Date().toLocaleTimeString();
 
         window.requestAnimationFrame(updateClock);
