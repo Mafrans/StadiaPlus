@@ -79,6 +79,45 @@
     display: block;
 }
 
+.stadiaplus_ui-component {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translateX(100%);
+}
+
+.stadiaplus_ui-btn-container {
+    margin-top: -16px;
+}
+
+.stadiaplus_ui-button {
+    width: 116.156px;
+}
+
+.stadiaplus_rating {
+    margin-top: -1rem;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.stadiaplus_rating:hover .stadiaplus_rating-tooltip {
+    opacity: 1;
+}
+
+.stadiaplus_rating-tooltip {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.5rem;
+    background: rgba(0,0,0,0.8);
+    border-radius: 0.5rem;
+    color: #ffffff;
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out 0.5s;
+}
 
 
 
@@ -86,7 +125,11 @@
  *  Specific Component Styles
  */
 
- .stadiaplus_overlay.top {  
+ .stadiaplus_ui-component.open {
+    transform: translateX(0);
+}
+
+.stadiaplus_overlay.top {  
     top: 0;
     border-top-left-radius: 0 !important;
     border-top-right-radius: 0 !important;
