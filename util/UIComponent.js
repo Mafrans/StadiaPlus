@@ -26,7 +26,6 @@ function UIComponent(title, content) {
         const container = document.querySelector('.hxhAyf.fi8Jxd');
         container.appendChild(this.element);
 
-        console.log(this.container);
         this.element.outerHTML = this.html;
 
         // ReQuery element since outerHTML breaks it.
@@ -41,7 +40,6 @@ function UIComponent(title, content) {
         if (!document.getElementById(this.id)) {
             this.create();
         }
-        console.log(this.element);
         this.element.classList.add('open');
     };
 
