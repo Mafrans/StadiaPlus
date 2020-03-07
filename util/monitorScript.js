@@ -10,7 +10,7 @@
 
 (() => {
     setInterval(() => {
-        const container = document.querySelector('.dSGvzf>div');
+        const container = document.querySelector('.overlay-toggle-container');
         const btn = document.querySelector('#network_overlay_button');
         if (!container || btn) {
             return;

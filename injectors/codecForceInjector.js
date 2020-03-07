@@ -12,18 +12,18 @@ console.log('[STADIA+] Injecting Codec Force');
             switch (val) {
             case 'automatic':
                 script.innerHTML = `
-            localStorage.setItem("video_codec_implementation_by_codec_key", '');
-          `;
+                    localStorage.setItem("video_codec_implementation_by_codec_key", '');
+                `;
                 break;
             case 'vp9':
                 script.innerHTML = `
-            localStorage.setItem("video_codec_implementation_by_codec_key", '{"vp9":"ExternalDecoder"}');
-          `;
+                    localStorage.setItem("video_codec_implementation_by_codec_key", '{"vp9":"ExternalDecoder"}');
+                `;
                 break;
             case 'h264':
                 script.innerHTML = `
-            localStorage.setItem("video_codec_implementation_by_codec_key", '{"h264":"ExternalDecoder", "vp9":"libvpx"}');
-          `;
+                    localStorage.setItem("video_codec_implementation_by_codec_key", '{"h264":"ExternalDecoder", "vp9":"libvpx"}');
+                `;
                 break;
             default:
                 break;
@@ -33,7 +33,7 @@ console.log('[STADIA+] Injecting Codec Force');
     });
 
     setInterval(() => {
-        const container = document.querySelector('.dSGvzf>div');
+        const container = document.querySelector('.codec-container');
         const dropdown = document.querySelector('#codec_force_dropdown');
         if (!container || dropdown) {
             return;
@@ -41,18 +41,17 @@ console.log('[STADIA+] Injecting Codec Force');
 
         const element = document.createElement('div');
         element.innerHTML = `
-      <hr>
-      <p>Force Codec</p>
-      <div class="stadiaplus_row">
-        <select name="codec" id="codec-dropdown">
-          <option value="automatic">Automatic</option>
-          <option value="vp9">VP9</option>
-          <option value="h264">H264</option>
-        </select>
-        <a class="stadiaplus_button_small">Apply</a>
-      </div>
-      <p class="stadiaplus_muted">Note: changing the codec will reload the page.</p>
-    `;
+            <p>Force Codec</p>
+            <div class="stadiaplus_row">
+                <select name="codec" id="codec-dropdown">
+                <option value="automatic">Automatic</option>
+                <option value="vp9">VP9</option>
+                <option value="h264">H264</option>
+                </select>
+                <a class="stadiaplus_button_small">Apply</a>
+            </div>
+            <p class="stadiaplus_muted">Note: changing the codec will reload the page.</p>
+        `;
         element.id = 'codec_force_dropdown';
         element.classList.add('stadiaplus_dropdown', 'stadiaplus_force_codec');
         container.appendChild(element);

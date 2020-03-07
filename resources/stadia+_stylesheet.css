@@ -44,7 +44,8 @@
     opacity: 0.5;
 }
 
-.stadiaplus_force_codec {
+.stadiaplus_force_codec,
+.stadiaplus_force_resolution {
     margin-top: 1rem;
     text-align: center;
 }
@@ -84,8 +85,11 @@
     height: 100%;
     position: absolute;
     top: 0;
-    right: 0;
+    left: 0;
     transform: translateX(100%);
+    padding: 1rem;
+    background-color: #2d2e30;
+    transition: transform 0.15s ease-in-out;
 }
 
 .stadiaplus_ui-btn-container {
@@ -125,8 +129,17 @@
  *  Specific Component Styles
  */
 
- .stadiaplus_ui-component.open {
+.stadiaplus_ui-component.open {
     transform: translateX(0);
+}
+
+.stadiaplus_ui-component header {
+    display: flex;
+    align-items: center;
+}
+
+.stadiaplus_ui-component header .CwCxFd {
+    font-size: 22px;
 }
 
 .stadiaplus_overlay.top {  

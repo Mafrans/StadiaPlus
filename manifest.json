@@ -44,6 +44,10 @@
                 "injectors/networkInjector.js",
                 "injectors/codecForceInjector.js",
                 "injectors/storeFilterInjector.js",
+                "injectors/ratingInjector.js",
+                "injectors/forceResolutionInjector.js",
+                "util/UIComponent.js",
+                "injectors/tabInjector.js",
                 "util/forceReload.js"
             ],
             "css": [

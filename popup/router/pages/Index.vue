@@ -1,12 +1,16 @@
 <template>
-    <page title="Stadia+">
+    <page :style="{'color': colors.primary}" :background="colors.secondary" title="Stadia+">
         <h2>Hi there!</h2>
         <p>
-            Thank you for your interest in Stadia+<br>
-            Sadly this page isn't finished yet.<br>
-            <br>
+            Thank you for your interest in Stadia+
+        </p>
+        <p>
+            Sadly this page isn't finished yet.
+        </p>
+        <p>
             Remember to check this page again later!
         </p>
+        <btn :color="colors.secondary">Test Button</btn>
     </page>
 </template>
 
@@ -37,5 +41,9 @@ body {
     width: 250px;
     font-size: 16px;
     font-family: 'Roboto', sans-serif;
+}
+
+h1, h2, h3, h4, h5, p {
+    margin-bottom: 10px;
 }
 </style>

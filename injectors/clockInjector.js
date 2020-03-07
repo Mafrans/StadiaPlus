@@ -23,7 +23,7 @@ window.addEventListener('load', () => {
         if (!el) {
             container.prepend(el);
         }
-        
+
         time = new Date().toLocaleTimeString();
 
         window.requestAnimationFrame(updateClock);

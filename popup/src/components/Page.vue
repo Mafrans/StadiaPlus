@@ -1,5 +1,5 @@
 <template>
-    <div class="page">
+    <div class="page" :style="{'background': background}">
         <h1><i v-if="icon" class="material-icons">{{icon}}</i>{{title}}</h1>
         <hr>
 
@@ -12,7 +12,8 @@ export default {
     name: "Page",
     props: [
         "title",
-        "icon"
+        "icon",
+        "background"
     ]
 }
 </script>
@@ -28,6 +29,8 @@ export default {
     }
 
     hr {
+        border: none;
+        border-bottom: 1px solid rgba(255,255,255,0.25);
         margin: 0.5rem 0;
     }
 </style>

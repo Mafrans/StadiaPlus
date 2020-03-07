@@ -1,7 +1,7 @@
 <template>
     <div 
         class="btn" 
-        :style="{'background': format(color.hsl)}"
+        :style="{'background': color, 'filter': `brightness(${hover ? 2 : 1.4})`}"
         @mouseenter="hover = true"
         @mouseleave="hover = false"
     >
@@ -18,19 +18,6 @@ export default {
     data() {
         return {
             hover: false,
-            hoverColor: null,
-        }
-    },
-    methods: {
-        format(hsl) {
-            return `hsl(${hsl.h}%, ${hsl.s}%, ${hsl.l}%)`;
-        }
-    },
-    mounted() {
-        this.hoverColor = {
-            h: this.color.h,
-            s: this.color.s,
-            l: this.color.l + 20,
         }
     },
 }
