@@ -81,8 +81,11 @@
 }
 
 .stadiaplus_ui-component {
-    width: 100%;
-    height: 100%;
+    /* 
+     *   Must remove 2 x padding or it doesnt work 
+     */
+    width: calc(100% - 2rem);
+    height: calc(100% - 2rem);
     position: absolute;
     top: 0;
     left: 0;
