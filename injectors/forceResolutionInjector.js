@@ -54,7 +54,7 @@ console.log('[STADIA+] Injecting Resolution Forcing');
                 <a class="stadiaplus_button_small">Apply</a>
             </div>
             
-            <p class="stadiaplus_muted">Note: changing the resolution will take you back to the main menu, you will have to manually restart the game. Unsaved progress may be lost.</p>
+            <p class="stadiaplus_muted">Note: changing the resolution will reload the page.</p>
             <p class="stadiaplus_muted">Note: the set value is the maximum resolution Stadia will attempt to achieve. If your computer is not capable of rendering the resolution or it is not available with the current data usage option, it will not be displayed.</p>
         `;
         element.id = 'resolution_force_dropdown';
