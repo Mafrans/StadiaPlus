@@ -3,22 +3,15 @@ console.log('[STADIA+] Injecting Resolution Forcing');
 (() => {
     const { chrome, SlimSelect } = window;
 
-    function updateResolution() {
+    const script = document.createElement('script');
+    function prepareResolution() {
         chrome.storage.local.get(['forceResolution'], (result) => {
-            const val = result.forceCodec;
+            const val = result.forceResolution;
+            console.log('updating resolution to ', val);
             let width = 0;
             let height = 0;
 
-            const script = document.createElement('script');
             switch (val) {
-            case '720p':
-                width = 1280;
-                height = 720;
-                break;
-            case '1080p':
-                width = 1920;
-                height = 1080;
-                break;
             case '4K':
                 width = 3840;
                 height = 2160;
@@ -33,12 +26,16 @@ console.log('[STADIA+] Injecting Resolution Forcing');
                 Object.defineProperty(window.screen, 'width', { value: ${width} });
                 Object.defineProperty(window.screen, 'height', { value: ${height} });
             `;
-
-            document.body.appendChild(script);
         });
     }
 
-    document.addEventListener('DOMContentLoaded', updateResolution);
+    prepareResolution();
+
+    // Hope and pray it prepares the resolution before the window loads.
+    window.addEventListener('load', () => {
+        document.body.appendChild(script);
+        console.log(script.innerHTML);
+    });
 
     setInterval(() => {
         const container = document.querySelector('.force-resolution-container');
@@ -53,36 +50,37 @@ console.log('[STADIA+] Injecting Resolution Forcing');
             <div class="stadiaplus_row">
                 <select name="resolution" id="resolution-dropdown">
                 <option value="automatic">Automatic</option>
-                <option value="720p">720p</option>
-                <option value="1080p">1080p</option>
                 <option value="4K">4K</option>
                 </select>
                 <a class="stadiaplus_button_small">Apply</a>
             </div>
-            <p class="stadiaplus_muted">Note: there will be a short delay before your resolution is applied.</p>
+            
+            <p class="stadiaplus_muted">Note: changing the resolution will take you back to the main menu, you will have to manually restart the game. Unsaved progress may be lost.</p>
             <p class="stadiaplus_muted">Note: the set value is the maximum resolution Stadia will attempt to achieve. If your computer is not capable of rendering the resolution or it is not available with the current data usage option, it will not be displayed.</p>
         `;
         element.id = 'resolution_force_dropdown';
         element.classList.add('stadiaplus_dropdown', 'stadiaplus_force_resolution');
         container.appendChild(element);
 
-        chrome.storage.local.get(['forceResolution'], (result) => {
-            const val = result.forceResolution;
-            document.querySelector('#resolution-dropdown').value = val;
-        });
-
         const btn = document.querySelector(
             '.stadiaplus_force_resolution .stadiaplus_button_small',
         );
         btn.addEventListener('click', () => {
             const val = document.querySelector('#resolution-dropdown').value;
-            chrome.storage.local.set({ forceResolution: val }, updateResolution);
+            chrome.storage.local.set({ forceResolution: val });
+            // window.location = 'https://stadia.google.com/home';
+            window.location.reload();
         });
 
         // eslint-disable-next-line no-new
-        new SlimSelect({
+        const select = new SlimSelect({
             select: '#resolution-dropdown',
             showSearch: false,
+        });
+
+        chrome.storage.local.get(['forceResolution'], (result) => {
+            const val = result.forceResolution;
+            select.set(val);
         });
     }, 2000);
 })();
