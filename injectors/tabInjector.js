@@ -4,6 +4,13 @@
         const component = new UIComponent(
             'Stadia+',
             `
+                <i 
+                    class="stadiaplus_muted" 
+                    style="margin-top: 1rem; margin-bottom: 5rem; display: block"
+                >
+                    Don't look here, look below!
+                </i>
+                
                 <div class="overlay-toggle-container"></div>
                 <hr />
                 <div class="codec-container"></div>
