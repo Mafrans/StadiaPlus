@@ -17,6 +17,11 @@
         'Have you tried GeForce Now?',
         'A hot dog is definitely not a sandwich.',
         'Idk about you, but I really want one of those fancy smart toilets.',
+        'Chris is typing guys!!',
+        'Does anyone have a buddy pass I could borrow?',
+        'I paid $139 for this?',
+        'Is Fortnite on Stadia yet?',
+        'u/baconrules was the first to see 4k!',
     ];
 
     window.addEventListener('load', () => {
