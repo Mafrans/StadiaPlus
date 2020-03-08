@@ -13,8 +13,12 @@
                 
                 <div class="overlay-toggle-container"></div>
                 <hr />
+                
+                <p>Force Codec</p>
                 <div class="codec-container"></div>
                 <hr />
+                
+                <p>Force Resolution</p>
                 <div class="force-resolution-container"></div>
             `,
         );

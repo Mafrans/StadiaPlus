@@ -41,7 +41,6 @@ console.log('[STADIA+] Injecting Codec Force');
 
         const element = document.createElement('div');
         element.innerHTML = `
-            <p>Force Codec</p>
             <div class="stadiaplus_row">
                 <select name="codec" id="codec-dropdown">
                 <option value="automatic">Automatic</option>

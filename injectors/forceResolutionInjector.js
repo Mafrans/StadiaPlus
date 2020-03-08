@@ -46,7 +46,6 @@ console.log('[STADIA+] Injecting Resolution Forcing');
 
         const element = document.createElement('div');
         element.innerHTML = `
-            <p>Force Resolution</p>
             <div class="stadiaplus_row">
                 <select name="resolution" id="resolution-dropdown">
                 <option value="automatic">Automatic</option>
