@@ -56,11 +56,6 @@ console.log('[STADIA+] Injecting Codec Force');
         element.classList.add('stadiaplus_dropdown', 'stadiaplus_force_codec');
         container.appendChild(element);
 
-        chrome.storage.local.get(['forceCodec'], (result) => {
-            const val = result.forceCodec;
-            document.querySelector('#codec-dropdown').value = val;
-        });
-
         const btn = document.querySelector('.stadiaplus_force_codec .stadiaplus_button_small');
         btn.addEventListener('click', () => {
             const val = document.querySelector('#codec-dropdown').value;
@@ -69,9 +64,14 @@ console.log('[STADIA+] Injecting Codec Force');
         });
 
         // eslint-disable-next-line no-new
-        new SlimSelect({
+        const select = new SlimSelect({
             select: '#codec-dropdown',
             showSearch: false,
+        });
+
+        chrome.storage.local.get(['forceCodec'], (result) => {
+            const val = result.forceCodec;
+            select.set(val);
         });
     }, 2000);
 })();
