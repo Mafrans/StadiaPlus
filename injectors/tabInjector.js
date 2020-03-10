@@ -48,7 +48,7 @@
             `,
         );
 
-        const icon = chrome.runtime.getURL('images/icons/visibility.svg');
+        const icon = chrome.runtime.getURL('images/icons/stadiaplus.svg');
         const button = new UIButton(icon, 'Stadia+');
 
         setInterval(() => {
