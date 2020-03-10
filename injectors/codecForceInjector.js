@@ -10,11 +10,6 @@ console.log('[STADIA+] Injecting Codec Force');
 
             const script = document.createElement('script');
             switch (val) {
-            case 'automatic':
-                script.innerHTML = `
-                    localStorage.setItem("video_codec_implementation_by_codec_key", '');
-                `;
-                break;
             case 'vp9':
                 script.innerHTML = `
                     localStorage.setItem("video_codec_implementation_by_codec_key", '{"vp9":"ExternalDecoder"}');
@@ -26,6 +21,9 @@ console.log('[STADIA+] Injecting Codec Force');
                 `;
                 break;
             default:
+                script.innerHTML = `
+                    localStorage.removeItem("video_codec_implementation_by_codec_key");
+                `;
                 break;
             }
             document.body.appendChild(script);
