@@ -17,7 +17,7 @@
         "persistent": false
     },
     "page_action": {
-        "default_popup": "popup/dist/popup/popup.html",
+        "default_popup": "dist/popup/popup.html",
         "default_icon": {
             "16": "images/Stadia+16.png",
             "32": "images/Stadia+32.png",
@@ -63,6 +63,7 @@
         "images/icons/filter.svg",
         "images/icons/sun.svg",
         "images/icons/search.svg",
+        "images/icons/stadiaplus.svg",
         "util/monitorScript.js"
     ],
     "manifest_version": 2
