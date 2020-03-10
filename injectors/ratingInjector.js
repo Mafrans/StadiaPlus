@@ -59,7 +59,7 @@ console.log('[STADIA+] Injecting Ratings');
 
         // Clamps the rating to values between 0 and 1,
         // where (0 + graceAmount) is 0 and (100 - graceAmount) is 1
-        const clampedR = (_rating / 100) * (1 + (1 / graceAmount) * 2) - (1 / graceAmount);
+        const clampedR = (_rating / 100) * (1 + (graceAmount / 100) * 2) - (graceAmount / 100);
 
         for (let i = 0, r = clampedR; i < maxStars; i += 1, r -= 1 / maxStars) {
             if (r >= 1 / maxStars) {
