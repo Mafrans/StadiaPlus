@@ -1,0 +1,69 @@
+{
+    "name": "Stadia+ Extension",
+    "short_name": "Stadia+",
+    "version": "2.0",
+    "author": "Malte Klüft (Mafrans)",
+    "description": "Extends Google's Stadia gaming platform with additional features, such as custom filters and in game network monitoring.",
+    "permissions": [
+        "declarativeContent",
+        "storage",
+        "https://www.stadiagamedb.com/*",
+        "https://raw.githubusercontent.com/nilicule/StadiaGameDB/master/data/gamedb.json"
+    ],
+    "background": {
+        "scripts": [
+            "background.js"
+        ],
+        "persistent": false
+    },
+    "page_action": {
+        "default_icon": {
+            "16": "images/Stadia+16.png",
+            "32": "images/Stadia+32.png",
+            "48": "images/Stadia+48.png",
+            "128": "images/Stadia+128.png"
+        }
+    },
+    "icons": {
+        "16": "images/Stadia+16.png",
+        "32": "images/Stadia+32.png",
+        "48": "images/Stadia+48.png",
+        "128": "images/Stadia+128.png"
+    },
+    "content_scripts": [
+        {
+            "run_at": "document_start",
+            "matches": [
+                "https://stadia.google.com/*"
+            ],
+            "js": [
+                "util/slimselect.min.js",
+                "injectors/clockInjector.js",
+                "injectors/filterInjector.js",
+                "injectors/networkInjector.js",
+                "injectors/codecForceInjector.js",
+                "injectors/storeFilterInjector.js",
+                "injectors/ratingInjector.js",
+                "injectors/forceResolutionInjector.js",
+                "util/UIComponent.js",
+                "injectors/tabInjector.js",
+                "util/forceReload.js"
+            ],
+            "css": [
+                "resources/stadia+_stylesheet.css",
+                "resources/slimselect.min.css",
+                "resources/pretty-checkbox.min.css"
+            ]
+        }
+    ],
+    "web_accessible_resources": [
+        "images/icons/visibility.svg",
+        "images/icons/visibility_off.svg",
+        "images/icons/filter.svg",
+        "images/icons/sun.svg",
+        "images/icons/search.svg",
+        "images/icons/stadiaplus.svg",
+        "util/monitorScript.js"
+    ],
+    "manifest_version": 2
+}
