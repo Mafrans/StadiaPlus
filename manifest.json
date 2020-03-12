@@ -37,22 +37,7 @@
                 "https://stadia.google.com/*"
             ],
             "js": [
-                "util/slimselect.min.js",
-                "injectors/clockInjector.js",
-                "injectors/filterInjector.js",
-                "injectors/networkInjector.js",
-                "injectors/codecForceInjector.js",
-                "injectors/storeFilterInjector.js",
-                "injectors/ratingInjector.js",
-                "injectors/forceResolutionInjector.js",
-                "util/UIComponent.js",
-                "injectors/tabInjector.js",
-                "util/forceReload.js"
-            ],
-            "css": [
-                "resources/stadia+_stylesheet.css",
-                "resources/slimselect.min.css",
-                "resources/pretty-checkbox.min.css"
+                "dist/bundle.js"
             ]
         }
     ],
@@ -62,8 +47,7 @@
         "images/icons/filter.svg",
         "images/icons/sun.svg",
         "images/icons/search.svg",
-        "images/icons/stadiaplus.svg",
-        "util/monitorScript.js"
+        "images/icons/stadiaplus.svg"
     ],
     "manifest_version": 2
 }
