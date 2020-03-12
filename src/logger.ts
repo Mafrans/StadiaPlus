@@ -1,16 +1,16 @@
 const prefix:string = '[Stadia+]';
 
 class Logger {
-    info = function(str: string) {
-        console.log(`${prefix} %c📃 ${str}`, 'color: black');
+    info = function(...obj: any[]) {
+        console.log(`${prefix} %c📃 ${obj.join(' ')}`, 'color: black');
     };
 
-    warning = function(str: string) {
-        console.log(`${prefix} %c😟 ${str}`, 'color: orange');
+    warning = function(...obj: any[]) {
+        console.log(`${prefix} %c😟 ${obj.join(' ')}`, 'color: orange');
     };
 
-    error = function(str: string) {
-        console.log(`${prefix} %c❌ ${str}`, 'color: red; font-weight: 700');
+    error = function(...obj: any[]) {
+        console.log(`${prefix} %c❌ ${obj.join(' ')}`, 'color: red; font-weight: 700');
     };
 }
 
