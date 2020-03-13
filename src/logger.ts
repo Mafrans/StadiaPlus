@@ -13,6 +13,10 @@ class Logger {
         console.log(`${prefix} %c❌ ${obj.join(' ')}`, 'color: red; font-weight: 700');
     };
 
+    component = function(...obj: any[]) {
+        console.log(`${prefix} %c🧩 ${obj.join(' ')}`, 'color: darkgreen');
+    }
+
     /**
      * Dubiously created by Adrian Cooney
      * http://adriancooney.github.io
