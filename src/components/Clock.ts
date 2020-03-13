@@ -1,15 +1,19 @@
 import { Component } from '../Component';
+import Logger from '../Logger';
 
 export class Clock extends Component {
-    name: string;    
+    name: string;
     id: string;
     enabled: boolean;
-    
+
     constructor() {
         super();
     }
 
-    onStart(): void {}
+    onStart(): void {
+        this.enabled = true;
+        Logger.component('Component', name, 'has been enabled');
+    }
     onStop(): void {}
-    onMutation(): void {}
+    onMutation(event: MutationEvent): void {}
 }

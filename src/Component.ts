@@ -1,13 +1,14 @@
 export class Component {
-    name:string = 'MyComponent';
-    id:string;
-    enabled:boolean;
+    name: string = 'MyComponent';
+    id: string;
+    enabled: boolean;
 
     constructor() {
-        this.id = this.name.toLowerCase() + "-" + Math.floor(Math.random() * 999999);
+        this.id =
+            this.name.toLowerCase() + '-' + Math.floor(Math.random() * 999999);
     }
 
-    onStart():void {};
-    onStop():void {};
-    onMutation():void {};
+    onStart(): void {}
+    onStop(): void {}
+    onMutation(event: MutationEvent): void {}
 }
