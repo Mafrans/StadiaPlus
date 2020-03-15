@@ -22,11 +22,6 @@ export class Clock extends Component {
      */
     element: HTMLElement;
 
-    /**
-     * The element containing the clock.
-     */
-    container: HTMLElement;
-
     constructor() {
         super();
 
@@ -47,7 +42,6 @@ export class Clock extends Component {
     onStart(): void {
         this.enabled = true;
         this.element.id = this.id;
-        this.container = document.querySelector('.hxhAyf');
 
         Logger.component('Component', this.name, 'has been enabled');
     }
@@ -65,8 +59,10 @@ export class Clock extends Component {
     onUpdate() {
         // Only update the clock when it's visible
         if(Util.isMenuOpen()) {
-            if(!this.exists() && this.container !== null) {
-                this.container.prepend(this.element);
+            console.log({exists: this.exists(), container: this.container});
+            if(!this.exists()) {
+                const container = document.querySelector('.hxhAyf');
+                container.prepend(this.element);
             }
 
             const time = new Date().toLocaleTimeString();
