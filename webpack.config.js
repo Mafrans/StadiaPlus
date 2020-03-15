@@ -1,4 +1,5 @@
 const path = require('path');
+var TypedocWebpackPlugin = require('typedoc-webpack-plugin');
 
 module.exports = {
     entry: './src/index.js',
@@ -32,6 +33,12 @@ module.exports = {
             },
         ],
     },
+    plugins: [
+        new TypedocWebpackPlugin({
+            name: 'Contoso',
+            mode: 'file',
+        }, './src')
+    ],
     resolve: {
         extensions: [ '.tsx', '.ts', '.js' ],
     },

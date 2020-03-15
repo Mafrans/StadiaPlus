@@ -19,7 +19,7 @@ class Logger {
 
     /**
      * Dubiously created by Adrian Cooney
-     * http://adriancooney.github.io
+     * @author http://adriancooney.github.io
      */
     image = function(url: string, width: number, height: number) {
         const getBox = function(width:number, height:number) {
