@@ -1,0 +1,36 @@
+
+.stadiaplus_ui-component {
+    /* 
+     *   Must remove 2 x padding or it doesnt work 
+     */
+    width: calc(100% - 2rem);
+    height: calc(100% - 2rem);
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translateX(100%);
+    padding: 1rem;
+    background-color: #2d2e30;
+    transition: transform 0.15s ease-in-out;
+
+    &.open {
+        transform: translateX(0);
+    }
+
+    header {
+        display: flex;
+        align-items: center;
+        
+        .CwCxFd {
+            font-size: 22px;
+        }
+    }
+}
+
+.stadiaplus_ui-btn-container {
+    margin-top: -16px;
+}
+
+.stadiaplus_ui-button {
+    width: 116.156px;
+}
