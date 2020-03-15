@@ -1,7 +1,8 @@
 import { Component } from './Component';
 
 export class ComponentLoader {
-    components: any[];
+    components: Component[];
+    timer: number;
 
     constructor() {
         this.components = [];
@@ -17,13 +18,28 @@ export class ComponentLoader {
 
     start() {
         this.components.forEach(component => {
-            if (component.enabled) component.onStart();
+            if (!component.enabled) component.onStart();
         });
+        this.startTimer();
     }
 
     stop() {
         this.components.forEach(component => {
             if (component.enabled) component.onStop();
         });
+    }
+
+    private startTimer() {
+        const self = this;
+
+        this.timer = setInterval(() => {
+            self.components.forEach(component => {
+                if(component.enabled) component.onUpdate();
+            });
+        }, 1000);
+    }
+
+    private stopTimer() {
+        clearInterval(this.timer);
     }
 }
