@@ -10,7 +10,7 @@ export class Component {
     /**
      * The Component's name.
      */
-    name: string = 'MyComponent';
+    name: string = 'My Component';
 
     /**
      * The Component's unique ID, automatically generated on load.
@@ -27,7 +27,7 @@ export class Component {
      */
     load(): void {
         this.id =
-            this.name.toLowerCase() + '-' + Math.floor(Math.random() * 999999);
+            this.name.toLowerCase().replace(/\s/g, '') + '-' + Math.floor(Math.random() * 999999);
 
         this.onStart();
     }
