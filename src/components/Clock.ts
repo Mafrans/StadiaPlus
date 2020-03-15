@@ -50,6 +50,8 @@ export class Clock extends Component {
      * Called on stop, makes sure to dispose of elements and variables.
      */
     onStop(): void {
+        this.enabled = false;
+        this.element.remove();
         Logger.component('Component', this.name, 'has been disabled');
     }
 
@@ -59,7 +61,6 @@ export class Clock extends Component {
     onUpdate() {
         // Only update the clock when it's visible
         if(Util.isMenuOpen()) {
-            console.log({exists: this.exists(), container: this.container});
             if(!this.exists()) {
                 const container = document.querySelector('.hxhAyf');
                 container.prepend(this.element);
