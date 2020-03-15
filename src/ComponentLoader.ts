@@ -18,14 +18,14 @@ export class ComponentLoader {
 
     start() {
         this.components.forEach(component => {
-            if (!component.enabled) component.onStart();
+            if (!component.enabled) component.load();
         });
         this.startTimer();
     }
 
     stop() {
         this.components.forEach(component => {
-            if (component.enabled) component.onStop();
+            if (component.enabled) component.unload();
         });
         this.stopTimer();
     }

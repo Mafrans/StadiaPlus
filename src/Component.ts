@@ -7,11 +7,16 @@ export class Component {
     observeTarget: Element;
     exists: boolean;
 
-    createId() {
+    load(): void {
         this.id =
             this.name.toLowerCase() + '-' + Math.floor(Math.random() * 999999);
 
         this.exists = document.getElementById(this.id) !== null;
+        this.onStart();
+    }
+
+    unload(): void {
+        this.onStop();
     }
 
     onStart(): void {}
