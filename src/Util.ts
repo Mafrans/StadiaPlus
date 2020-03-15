@@ -5,7 +5,6 @@ class Util {
     menuElement: HTMLElement;
 
     constructor() {
-        window.addEventListener('load', this.load);
     }
 
     load() {

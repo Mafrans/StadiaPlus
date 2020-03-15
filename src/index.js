@@ -8,5 +8,6 @@ const loader = new ComponentLoader();
 loader.register(new Clock());
 
 window.addEventListener('load', () => {
+    Util.load();
     loader.start();
 })
