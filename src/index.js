@@ -1,4 +1,5 @@
 import Logger from './Logger';
+import Util from './Util';
 import { ComponentLoader } from './ComponentLoader';
 import { Clock } from './components/Clock'
 

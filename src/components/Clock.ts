@@ -26,11 +26,6 @@ export class Clock extends Component {
      */
     container: HTMLElement;
 
-    /**
-     * Stadia's menu bar element, used to know when the player has opened the menu.
-     */
-    menuElement: HTMLElement;
-
     constructor() {
         super();
 
@@ -52,7 +47,6 @@ export class Clock extends Component {
         this.enabled = true;
         this.element.id = this.id;
         this.container = document.querySelector('.hxhAyf');
-        this.menuElement = document.querySelector('.X1asv');
 
         Logger.component('Component', this.name, 'has been enabled');
     }
@@ -69,7 +63,7 @@ export class Clock extends Component {
      */
     onUpdate() {
         // Only update the clock when it's visible
-        if(this.menuElement.style['opacity'] !== '0') {
+        if(Util.isMenuOpen()) {
             if(!this.exists() && this.container !== null) {
                 this.container.prepend(this.element);
             }
