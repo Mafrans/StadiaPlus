@@ -27,6 +27,7 @@ export class ComponentLoader {
         this.components.forEach(component => {
             if (component.enabled) component.onStop();
         });
+        this.stopTimer();
     }
 
     private startTimer() {
