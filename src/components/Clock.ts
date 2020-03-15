@@ -1,6 +1,7 @@
 import { Component } from '../Component';
 import Logger from '../Logger';
 import Util from '../Util';
+import './styles/Clock.scss';
 
 /**
  * A simple clock displayed in the Stadia Menu.
