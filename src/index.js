@@ -5,4 +5,7 @@ import { Clock } from './components/Clock'
 const loader = new ComponentLoader();
 
 loader.register(new Clock());
-loader.start();
+
+window.addEventListener('load', () => {
+    loader.start();
+})
