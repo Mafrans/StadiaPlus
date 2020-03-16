@@ -6,10 +6,10 @@ import './styles/UITab.scss';
 const chrome: any = (window as any).chrome;
 
 /**
- * A simple clock displayed in the Stadia Menu.
+ * A tab and button displayed in the Stadia Menu.
  *
- * @export the Clock type.
- * @class Clock
+ * @export the UITab type.
+ * @class UITab
  * @extends {Component}
  */
 export class UITab extends Component {
@@ -22,10 +22,25 @@ export class UITab extends Component {
      * The tab element.
      */
     element: HTMLElement;
+
+    /**
+     * The [[UIComponent]] used to display the tab.
+     */
     component: UIComponent;
+
+    /**
+     * The [[UIButton]] used to open the tab.
+     */
     button: UIButton;
+
+    /**
+     * An amount of rows, each containing content.
+     */
     rows: UIRow[] = [];
 
+    /**
+     * A list of fun MOTD messages added to the tab.
+     */
     motdList: string[] = [
         '<img src="https://cdn.discordapp.com/emojis/636227864076746772.png?v=1" style="display: inline-flex; width: 24px">',
         "Don't look here, look below!",
@@ -55,7 +70,7 @@ export class UITab extends Component {
     }
 
     /**
-     * Creates a simple <span>, adds the right classes, and stores it in [@link #element]
+     * Creates a [[UIComponent]] and a [[UIButton]]
      */
     createElement() {
         this.component = new UIComponent(
@@ -79,6 +94,9 @@ export class UITab extends Component {
         this.button = new UIButton(icon, 'Stadia+', this.id + '-button');
     }
 
+    /**
+     * Append all rows that don't already exist.
+     */
     createRows() {
         let i = 0;
         this.rows.forEach(row => {
@@ -87,6 +105,24 @@ export class UITab extends Component {
                 i++
             }
         });
+    }
+
+    /**
+     * Add a row to the list.
+     */
+    addRow(row: UIRow) {
+        this.rows.push(row);
+    }
+
+    /**
+     * Clear and unload all rows.
+     */
+    clearRows() {
+        for(const row of this.rows) {
+            row.element.remove();
+        }
+
+        this.rows = [];
     }
 
     /**
@@ -117,10 +153,10 @@ export class UITab extends Component {
     }
 
     /**
-     * Called every second, updates the element to match the clock.
+     * Called every second, makes sure to create components if they don't already exist.
      */
     onUpdate() {
-        // Only update the clock when it's visible
+        // Only create components if the menu is open already.
         if (Util.isMenuOpen()) {
             if (!this.exists()) {
                 this.component.create();
