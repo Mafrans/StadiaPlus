@@ -19,11 +19,12 @@ export class UITab extends Component {
     name: string = 'UI Tab';
 
     /**
-     * The clock element.
+     * The tab element.
      */
     element: HTMLElement;
     component: UIComponent;
     button: UIButton;
+    rows: UIRow[] = [];
 
     motdList: string[] = [
         '<img src="https://cdn.discordapp.com/emojis/636227864076746772.png?v=1" style="display: inline-flex; width: 24px">',
@@ -70,23 +71,22 @@ export class UITab extends Component {
                         ]
                     }
                 </i>
-                
-                <p>Network Overlay</p>
-                <div class="overlay-toggle-container"></div>
-                <hr />
-                
-                <p>Force Codec</p>
-                <div class="codec-container"></div>
-                <hr />
-                
-                <p>Force Resolution</p>
-                <div class="force-resolution-container"></div>
             `,
             this.id,
         );
 
         const icon = chrome.runtime.getURL('images/icons/stadiaplus.svg');
         this.button = new UIButton(icon, 'Stadia+', this.id + '-button');
+    }
+
+    createRows() {
+        let i = 0;
+        this.rows.forEach(row => {
+            if(!row.exists()) {
+                row.append(this.component, i > 0);
+                i++
+            }
+        });
     }
 
     /**
@@ -109,6 +109,10 @@ export class UITab extends Component {
         this.button.container.remove();
         this.component.element.remove();
 
+        this.rows.forEach(row => {
+            row.element.remove();
+        });
+
         Logger.component('Component', this.name, 'has been disabled');
     }
 
@@ -127,12 +131,52 @@ export class UITab extends Component {
                         self.component.open();
                     });
                 });
+
+                this.createRows();
             }
         }
     }
 }
 
-class UIComponent {
+export class UIRow {
+    title: string;
+    content: string;
+    id: string;
+    callback: Function;
+    element: Element;
+
+    constructor(title: string, content: string, id: string, callback: Function) {
+        this.title = title;
+        this.content = content;
+        this.callback = callback;
+        this.id = id;
+
+        this.element = document.createElement('div');
+        this.element.id = this.id;
+        this.element.innerHTML = `
+            <p>${this.title}</p>
+            <div>
+                ${this.content}
+            </div>
+        `;
+        this.element.classList.add('stadiaplus_ui-row');
+    }
+
+    exists() {
+        return document.getElementById(this.id);
+    }
+
+    append(component: UIComponent, useHr: boolean = false) {
+        if(useHr) {
+            component.element.appendChild(document.createElement('hr'));
+        }
+        
+        component.element.appendChild(this.element);
+        this.callback();
+    }
+}
+
+export class UIComponent {
     id: string;
     html: string;
     element: Element;
@@ -186,7 +230,7 @@ class UIComponent {
     }
 }
 
-class UIButton {
+export class UIButton {
     id: string;
     html: string;
     element: Element;
