@@ -13,6 +13,19 @@ module.exports = {
                 exclude: /node_modules/,
             },
             {
+                test: /\.css$/i,
+                use: [
+                    // Creates `style` nodes from JS strings
+                    {
+                        loader: 'style-loader',
+                        options: {
+                            insert: 'html',
+                        }
+                    },
+                    'css-loader'
+                ],
+            },
+            {
                 test: /\.s[ac]ss$/i,
                 use: [
                     // Creates `style` nodes from JS strings
