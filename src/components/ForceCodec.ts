@@ -76,19 +76,50 @@ export class ForceCodec extends Component {
                     button.addEventListener('click', () => {
                         self.codec = parseInt(self.select.get()[0]);
 
-                        this.setStorage(() => {
+                        self.setStorage(() => {
                             location.reload();
                         });
                     });
 
-                    this.getStorage(() => {
-                        this.select.set(this.codec);
+                    self.getStorage(() => {
+                        this.select.set(self.codec);
+                        ForceCodec.setCodec(self.codec);
                     });            
                 },
             ),
         );
         
         Logger.component('Component', this.name, 'has been enabled');
+    }
+
+    static setCodec(codec: number) {
+        const script = document.createElement('script');
+        switch (codec) {
+        case Codec.VP9:
+            script.innerHTML = `
+                localStorage.setItem("video_codec_implementation_by_codec_key", '{"vp9":"ExternalDecoder"}');
+            `;
+            break;
+
+        case Codec.H264:
+            script.innerHTML = `
+                localStorage.setItem("video_codec_implementation_by_codec_key", '{"h264":"ExternalDecoder", "vp9":"libvpx"}');
+            `;
+            break;
+            
+        case Codec.AUTOMATIC:
+            script.innerHTML = `
+                localStorage.removeItem("video_codec_implementation_by_codec_key");
+            `;
+            break;
+
+        default:
+            script.innerHTML = `
+                localStorage.removeItem("video_codec_implementation_by_codec_key");
+            `;
+            break;
+        }
+        document.body.appendChild(script);
     }
 
     /**
