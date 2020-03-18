@@ -72,11 +72,11 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>A simple clock displayed in the Stadia Menu.</p>
+						<p>A tab and button displayed in the Stadia Menu.</p>
 					</div>
 					<dl class="tsd-comment-tags">
 						<dt>export</dt>
-						<dd><p>the Clock type.</p>
+						<dd><p>the UITab type.</p>
 						</dd>
 					</dl>
 				</div>
@@ -114,12 +114,16 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_components_uitab_.uitab.html#id" class="tsd-kind-icon">id</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_components_uitab_.uitab.html#motdlist" class="tsd-kind-icon">motd<wbr>List</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-overwrite"><a href="_components_uitab_.uitab.html#name" class="tsd-kind-icon">name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_components_uitab_.uitab.html#rows" class="tsd-kind-icon">rows</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_components_uitab_.uitab.html#addrow" class="tsd-kind-icon">add<wbr>Row</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_components_uitab_.uitab.html#clearrows" class="tsd-kind-icon">clear<wbr>Rows</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_components_uitab_.uitab.html#createelement" class="tsd-kind-icon">create<wbr>Element</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_components_uitab_.uitab.html#createrows" class="tsd-kind-icon">create<wbr>Rows</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_components_uitab_.uitab.html#exists" class="tsd-kind-icon">exists</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_components_uitab_.uitab.html#load" class="tsd-kind-icon">load</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="_components_uitab_.uitab.html#onstart" class="tsd-kind-icon">on<wbr>Start</a></li>
@@ -143,7 +147,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in components/UITab.ts:51</li>
+									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/components/UITab.ts#L69">components/UITab.ts:69</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="_components_uitab_.uitab.html" class="tsd-signature-type">UITab</a></h4>
@@ -156,22 +160,32 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="button" class="tsd-anchor"></a>
 					<h3>button</h3>
-					<div class="tsd-signature tsd-kind-icon">button<span class="tsd-signature-symbol">:</span> <a href="_components_uitab_.uibutton.html" class="tsd-signature-type">UIButton</a></div>
+					<div class="tsd-signature tsd-kind-icon">button<span class="tsd-signature-symbol">:</span> <a href="_ui_uibutton_.uibutton.html" class="tsd-signature-type">UIButton</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in components/UITab.ts:27</li>
+							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/components/UITab.ts#L37">components/UITab.ts:37</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The <a href="_ui_uibutton_.uibutton.html">UIButton</a> used to open the tab.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="component" class="tsd-anchor"></a>
 					<h3>component</h3>
-					<div class="tsd-signature tsd-kind-icon">component<span class="tsd-signature-symbol">:</span> <a href="_components_uitab_.uicomponent.html" class="tsd-signature-type">UIComponent</a></div>
+					<div class="tsd-signature tsd-kind-icon">component<span class="tsd-signature-symbol">:</span> <a href="_ui_uicomponent_.uicomponent.html" class="tsd-signature-type">UIComponent</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in components/UITab.ts:26</li>
+							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/components/UITab.ts#L32">components/UITab.ts:32</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The <a href="_ui_uicomponent_.uicomponent.html">UIComponent</a> used to display the tab.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="element" class="tsd-anchor"></a>
@@ -179,12 +193,12 @@
 					<div class="tsd-signature tsd-kind-icon">element<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in components/UITab.ts:25</li>
+							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/components/UITab.ts#L27">components/UITab.ts:27</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The clock element.</p>
+							<p>The tab element.</p>
 						</div>
 					</div>
 				</section>
@@ -195,7 +209,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="_component_.component.html">Component</a>.<a href="_component_.component.html#enabled">enabled</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/447938c/src/Component.ts#L23">Component.ts:23</a></li>
+							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/Component.ts#L23">Component.ts:23</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -211,7 +225,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="_component_.component.html">Component</a>.<a href="_component_.component.html#id">id</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/447938c/src/Component.ts#L18">Component.ts:18</a></li>
+							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/Component.ts#L18">Component.ts:18</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -223,12 +237,17 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="motdlist" class="tsd-anchor"></a>
 					<h3>motd<wbr>List</h3>
-					<div class="tsd-signature tsd-kind-icon">motd<wbr>List<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = [&#x27;&lt;img src&#x3D;&quot;https://cdn.discordapp.com/emojis/636227864076746772.png?v&#x3D;1&quot; style&#x3D;&quot;display: inline-flex; width: 24px&quot;&gt;&#x27;,&#x27;Don\&#x27;t look here, look below!&#x27;,&#x27;Reality can be whatever I want.&#x27;,&#x27;If you ask nicely, Stadia might even do your laundry for you!&#x27;,&#x27;Have you tried asking customer support?&#x27;,&#x27;Follow u/mafrans on Reddit!&#x27;,&#x27;Stadia+, like Google+ but still alive.&#x27;,&#x27;Stadia is DOA, believe me.&#x27;,&#x27;Get a load of this guy, using chrome extensions to improve his Stadia experience.&#x27;,&#x27;I\&#x27;m telling you, don\&#x27;t trust that guy. You know, the guy.&#x27;,&#x27;Shoutout to Chris and Grace!&#x27;,&#x27;Have you tried Splitlings yet?&#x27;,&#x27;Always check the ratings before you buy a new game.&#x27;,&#x27;Have you tried GeForce Now?&#x27;,&#x27;A hot dog is definitely not a sandwich.&#x27;,&#x27;Idk about you, but I really want one of those fancy smart toilets.&#x27;,&#x27;Chris is typing guys!!&#x27;,&#x27;Does anyone have a buddy pass I could borrow?&#x27;,&#x27;I paid $139 for this?&#x27;,&#x27;Is Fortnite on Stadia yet?&#x27;,&#x27;u/baconrules was the first to see 4k!&#x27;,]</span></div>
+					<div class="tsd-signature tsd-kind-icon">motd<wbr>List<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = [&#x27;&lt;img src&#x3D;&quot;https://cdn.discordapp.com/emojis/636227864076746772.png?v&#x3D;1&quot; style&#x3D;&quot;display: inline-flex; width: 24px&quot;&gt;&#x27;,&quot;Don&#x27;t look here, look below!&quot;,&#x27;Reality can be whatever I want.&#x27;,&#x27;If you ask nicely, Stadia might even do your laundry for you!&#x27;,&#x27;Have you tried asking customer support?&#x27;,&#x27;Follow u/mafrans on Reddit!&#x27;,&#x27;Stadia+, like Google+ but still alive.&#x27;,&#x27;Stadia is DOA, believe me.&#x27;,&#x27;Get a load of this guy, using chrome extensions to improve his Stadia experience.&#x27;,&quot;I&#x27;m telling you, don&#x27;t trust that guy. You know, the guy.&quot;,&#x27;Shoutout to Chris and Grace!&#x27;,&#x27;Have you tried Splitlings yet?&#x27;,&#x27;Always check the ratings before you buy a new game.&#x27;,&#x27;Have you tried GeForce Now?&#x27;,&#x27;A hot dog is definitely not a sandwich.&#x27;,&#x27;Idk about you, but I really want one of those fancy smart toilets.&#x27;,&#x27;Chris is typing guys!!&#x27;,&#x27;Does anyone have a buddy pass I could borrow?&#x27;,&#x27;I paid $139 for this?&#x27;,&#x27;Is Fortnite on Stadia yet?&#x27;,&#x27;u/baconrules was the first to see 4k!&#x27;,]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in components/UITab.ts:29</li>
+							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/components/UITab.ts#L47">components/UITab.ts:47</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A list of fun MOTD messages added to the tab.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-overwrite">
 					<a name="name" class="tsd-anchor"></a>
@@ -237,7 +256,7 @@
 					<aside class="tsd-sources">
 						<p>Overrides <a href="_component_.component.html">Component</a>.<a href="_component_.component.html#name">name</a></p>
 						<ul>
-							<li>Defined in components/UITab.ts:20</li>
+							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/components/UITab.ts#L22">components/UITab.ts:22</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -246,9 +265,74 @@
 						</div>
 					</div>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="rows" class="tsd-anchor"></a>
+					<h3>rows</h3>
+					<div class="tsd-signature tsd-kind-icon">rows<span class="tsd-signature-symbol">:</span> <a href="_ui_uirow_.uirow.html" class="tsd-signature-type">UIRow</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = []</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/components/UITab.ts#L42">components/UITab.ts:42</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>An amount of rows, each containing content.</p>
+						</div>
+					</div>
+				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="addrow" class="tsd-anchor"></a>
+					<h3>add<wbr>Row</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Row<span class="tsd-signature-symbol">(</span>row<span class="tsd-signature-symbol">: </span><a href="_ui_uirow_.uirow.html" class="tsd-signature-type">UIRow</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/components/UITab.ts#L116">components/UITab.ts:116</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Add a row to the list.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>row: <a href="_ui_uirow_.uirow.html" class="tsd-signature-type">UIRow</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="clearrows" class="tsd-anchor"></a>
+					<h3>clear<wbr>Rows</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">clear<wbr>Rows<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/components/UITab.ts#L123">components/UITab.ts:123</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Clear and unload all rows.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="createelement" class="tsd-anchor"></a>
 					<h3>create<wbr>Element</h3>
@@ -259,12 +343,34 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in components/UITab.ts:60</li>
+									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/components/UITab.ts#L78">components/UITab.ts:78</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Creates a simple <span>, adds the right classes, and stores it in [@link #element]</p>
+									<p>Creates a <a href="_ui_uicomponent_.uicomponent.html">UIComponent</a> and a <a href="_ui_uibutton_.uibutton.html">UIButton</a></p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="createrows" class="tsd-anchor"></a>
+					<h3>create<wbr>Rows</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Rows<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/components/UITab.ts#L103">components/UITab.ts:103</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Append all rows that don&#39;t already exist.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -282,7 +388,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_component_.component.html">Component</a>.<a href="_component_.component.html#exists">exists</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/447938c/src/Component.ts#L41">Component.ts:41</a></li>
+									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/Component.ts#L41">Component.ts:41</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -305,7 +411,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_component_.component.html">Component</a>.<a href="_component_.component.html#load">load</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/447938c/src/Component.ts#L28">Component.ts:28</a></li>
+									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/Component.ts#L28">Component.ts:28</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -328,7 +434,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="_component_.component.html">Component</a>.<a href="_component_.component.html#onstart">onStart</a></p>
 								<ul>
-									<li>Defined in components/UITab.ts:92</li>
+									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/components/UITab.ts#L134">components/UITab.ts:134</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -351,7 +457,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="_component_.component.html">Component</a>.<a href="_component_.component.html#onstop">onStop</a></p>
 								<ul>
-									<li>Defined in components/UITab.ts:102</li>
+									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/components/UITab.ts#L144">components/UITab.ts:144</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -374,12 +480,12 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="_component_.component.html">Component</a>.<a href="_component_.component.html#onupdate">onUpdate</a></p>
 								<ul>
-									<li>Defined in components/UITab.ts:115</li>
+									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/components/UITab.ts#L161">components/UITab.ts:161</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Called every second, updates the element to match the clock.</p>
+									<p>Called every second, makes sure to create components if they don&#39;t already exist.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -397,7 +503,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_component_.component.html">Component</a>.<a href="_component_.component.html#unload">unload</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/447938c/src/Component.ts#L48">Component.ts:48</a></li>
+									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/Component.ts#L48">Component.ts:48</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -417,9 +523,6 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class="label tsd-is-external">
-						<span>Internals</span>
-					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_component_.html">&quot;<wbr>Component&quot;</a>
 					</li>
@@ -427,30 +530,36 @@
 						<a href="../modules/_componentloader_.html">&quot;<wbr>Component<wbr>Loader&quot;</a>
 					</li>
 					<li class=" tsd-kind-external-module">
+						<a href="../modules/_logger_.html">&quot;<wbr>Logger&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/_util_.html">&quot;<wbr>Util&quot;</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_components_clock_.html">&quot;components/<wbr>Clock&quot;</a>
 					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_components_forcecodec_.html">&quot;components/<wbr>Force<wbr>Codec&quot;</a>
+					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="../modules/_components_uitab_.html">&quot;components/UITab&quot;</a>
 					</li>
-					<li class="label tsd-is-external">
-						<span>Externals</span>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_ui_select_.html">&quot;ui/<wbr>Select&quot;</a>
 					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="../modules/_logger_.html">&quot;<wbr>Logger&quot;</a>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_ui_uibutton_.html">&quot;ui/UIButton&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_ui_uicomponent_.html">&quot;ui/UIComponent&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_ui_uirow_.html">&quot;ui/UIRow&quot;</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_components_uitab_.uibutton.html" class="tsd-kind-icon">UIButton</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_components_uitab_.uicomponent.html" class="tsd-kind-icon">UIComponent</a>
-					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-parent-kind-external-module">
@@ -480,8 +589,20 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-overwrite">
 								<a href="_components_uitab_.uitab.html#name" class="tsd-kind-icon">name</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_components_uitab_.uitab.html#rows" class="tsd-kind-icon">rows</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_components_uitab_.uitab.html#addrow" class="tsd-kind-icon">add<wbr>Row</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_components_uitab_.uitab.html#clearrows" class="tsd-kind-icon">clear<wbr>Rows</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_components_uitab_.uitab.html#createelement" class="tsd-kind-icon">create<wbr>Element</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_components_uitab_.uitab.html#createrows" class="tsd-kind-icon">create<wbr>Rows</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="_components_uitab_.uitab.html#exists" class="tsd-kind-icon">exists</a>

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Util | stadiaplus</title>
+	<title>UIRow | stadiaplus</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,13 +56,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_util_.html">&quot;Util&quot;</a>
+					<a href="../modules/_ui_uirow_.html">&quot;ui/UIRow&quot;</a>
 				</li>
 				<li>
-					<a href="_util_.util.html">Util</a>
+					<a href="_ui_uirow_.uirow.html">UIRow</a>
 				</li>
 			</ul>
-			<h1>Class Util</h1>
+			<h1>Class UIRow</h1>
 		</div>
 	</div>
 </header>
@@ -73,7 +73,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">Util</span>
+						<span class="target">UIRow</span>
 					</li>
 				</ul>
 			</section>
@@ -84,20 +84,24 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_util_.util.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_ui_uirow_.uirow.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_util_.util.html#menuelement" class="tsd-kind-icon">menu<wbr>Element</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_ui_uirow_.uirow.html#callback" class="tsd-kind-icon">callback</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_ui_uirow_.uirow.html#content" class="tsd-kind-icon">content</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_ui_uirow_.uirow.html#element" class="tsd-kind-icon">element</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_ui_uirow_.uirow.html#id" class="tsd-kind-icon">id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_ui_uirow_.uirow.html#title" class="tsd-kind-icon">title</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_util_.util.html#ismenuopen" class="tsd-kind-icon">is<wbr>Menu<wbr>Open</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_util_.util.html#load" class="tsd-kind-icon">load</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_ui_uirow_.uirow.html#append" class="tsd-kind-icon">append</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_ui_uirow_.uirow.html#exists" class="tsd-kind-icon">exists</a></li>
 							</ul>
 						</section>
 					</div>
@@ -109,16 +113,31 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Util<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_util_.util.html" class="tsd-signature-type">Util</a></li>
+						<li class="tsd-signature tsd-kind-icon">new UIRow<span class="tsd-signature-symbol">(</span>title<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, content<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_ui_uirow_.uirow.html" class="tsd-signature-type">UIRow</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/Util.ts#L5">Util.ts:5</a></li>
+									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/ui/UIRow.ts#L8">ui/UIRow.ts:8</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="_util_.util.html" class="tsd-signature-type">Util</a></h4>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>title: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>content: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>id: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>callback: <span class="tsd-signature-type">Function</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="_ui_uirow_.uirow.html" class="tsd-signature-type">UIRow</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -126,54 +145,98 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="menuelement" class="tsd-anchor"></a>
-					<h3>menu<wbr>Element</h3>
-					<div class="tsd-signature tsd-kind-icon">menu<wbr>Element<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span></div>
+					<a name="callback" class="tsd-anchor"></a>
+					<h3>callback</h3>
+					<div class="tsd-signature tsd-kind-icon">callback<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/Util.ts#L5">Util.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/ui/UIRow.ts#L7">ui/UIRow.ts:7</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Stadia&#39;s menu bar element, used to know when the player has opened the menu.</p>
-						</div>
-					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="content" class="tsd-anchor"></a>
+					<h3>content</h3>
+					<div class="tsd-signature tsd-kind-icon">content<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/ui/UIRow.ts#L5">ui/UIRow.ts:5</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="element" class="tsd-anchor"></a>
+					<h3>element</h3>
+					<div class="tsd-signature tsd-kind-icon">element<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Element</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/ui/UIRow.ts#L8">ui/UIRow.ts:8</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="id" class="tsd-anchor"></a>
+					<h3>id</h3>
+					<div class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/ui/UIRow.ts#L6">ui/UIRow.ts:6</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="title" class="tsd-anchor"></a>
+					<h3>title</h3>
+					<div class="tsd-signature tsd-kind-icon">title<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/ui/UIRow.ts#L4">ui/UIRow.ts:4</a></li>
+						</ul>
+					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="ismenuopen" class="tsd-anchor"></a>
-					<h3>is<wbr>Menu<wbr>Open</h3>
+					<a name="append" class="tsd-anchor"></a>
+					<h3>append</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">is<wbr>Menu<wbr>Open<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">append<span class="tsd-signature-symbol">(</span>component<span class="tsd-signature-symbol">: </span><a href="_ui_uicomponent_.uicomponent.html" class="tsd-signature-type">UIComponent</a>, useHr<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/Util.ts#L14">Util.ts:14</a></li>
+									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/ui/UIRow.ts#L31">ui/UIRow.ts:31</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>component: <a href="_ui_uicomponent_.uicomponent.html" class="tsd-signature-type">UIComponent</a></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> useHr: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="load" class="tsd-anchor"></a>
-					<h3>load</h3>
+					<a name="exists" class="tsd-anchor"></a>
+					<h3>exists</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">load<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">exists<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/Util.ts#L10">Util.ts:10</a></li>
+									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/ui/UIRow.ts#L27">ui/UIRow.ts:27</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -194,7 +257,7 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_logger_.html">&quot;<wbr>Logger&quot;</a>
 					</li>
-					<li class="current tsd-kind-external-module">
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/_util_.html">&quot;<wbr>Util&quot;</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -215,7 +278,7 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_ui_uicomponent_.html">&quot;ui/UIComponent&quot;</a>
 					</li>
-					<li class=" tsd-kind-external-module">
+					<li class="current tsd-kind-external-module">
 						<a href="../modules/_ui_uirow_.html">&quot;ui/UIRow&quot;</a>
 					</li>
 				</ul>
@@ -225,19 +288,31 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-parent-kind-external-module">
-						<a href="_util_.util.html" class="tsd-kind-icon">Util</a>
+						<a href="_ui_uirow_.uirow.html" class="tsd-kind-icon">UIRow</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="_util_.util.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="_ui_uirow_.uirow.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_util_.util.html#menuelement" class="tsd-kind-icon">menu<wbr>Element</a>
+								<a href="_ui_uirow_.uirow.html#callback" class="tsd-kind-icon">callback</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_ui_uirow_.uirow.html#content" class="tsd-kind-icon">content</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_ui_uirow_.uirow.html#element" class="tsd-kind-icon">element</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_ui_uirow_.uirow.html#id" class="tsd-kind-icon">id</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_ui_uirow_.uirow.html#title" class="tsd-kind-icon">title</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_util_.util.html#ismenuopen" class="tsd-kind-icon">is<wbr>Menu<wbr>Open</a>
+								<a href="_ui_uirow_.uirow.html#append" class="tsd-kind-icon">append</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_util_.util.html#load" class="tsd-kind-icon">load</a>
+								<a href="_ui_uirow_.uirow.html#exists" class="tsd-kind-icon">exists</a>
 							</li>
 						</ul>
 					</li>
