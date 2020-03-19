@@ -156,8 +156,7 @@ export class UITab extends Component {
     onStop(): void {
         this.enabled = false;
         this.button.element.remove();
-        this.button.button.remove();
-        this.button.container.remove();
+        this.button.destroy();
         this.component.element.remove();
 
         this.rows.forEach(row => {

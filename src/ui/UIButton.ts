@@ -1,9 +1,13 @@
+import { UIButtonContainer } from "./UIButtonContainer";
+
 export class UIButton {
     id: string;
     html: string;
     element: Element;
-    container: Element;
+    container: UIButtonContainer;
     button: Element;
+
+    static buttonContainers: UIButtonContainer[] = [];
 
     constructor(icon: string, title: string, id: string) {
         this.id = id;
@@ -27,33 +31,26 @@ export class UIButton {
         this.button.setAttribute('tabindex', '0');
         this.button.classList.add('CTvDXd', 'QAAyWd', 'Pjpac', 'zcMYd');
         this.button.innerHTML = this.html;
+        this.element.appendChild(this.button);
     }
 
     create(callback?: Function): void {
-        this.container = UIButton.createButtonContainer(
-            this.id + '-button-container',
-        );
-
-        this.element.appendChild(this.button);
-        this.container.appendChild(this.element);
-
-        if (callback) callback();
-    }
-
-    static createButtonContainer(id: string) {
-        const existing = document.getElementById(id);
-        if (existing) {
-            return existing;
+        for(const container of UIButton.buttonContainers) {
+            if(container.buttons.length < 3) {
+                this.container = container;
+            }
         }
 
-        const wrapper = document.querySelector('.TZ0BN');
-        const container = document.createElement('div');
-        container.classList.add('ZgUMo', 'stadiaplus_ui-btn-container');
-        wrapper.appendChild(container);
-        container.innerHTML = `
-            <div class="E0Zk9b"></div>
-        `;
+        if(this.container === undefined) {
+            this.container = new UIButtonContainer();
+            UIButton.buttonContainers.push(this.container);
+        }
+        this.container.addButton(this);
+        this.container.create(callback);
+    }
 
-        return container.querySelector('.E0Zk9b');
+    destroy() {
+        this.element.remove();
+        this.container.removeButton(this);
     }
 }

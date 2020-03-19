@@ -1,3 +1,5 @@
+import Logger from '../Logger';
+
 export class UIComponent {
     id: string;
     html: string;
@@ -35,7 +37,7 @@ export class UIComponent {
         this.element = document.getElementById(this.id);
 
         const backBtn = document.querySelector(
-            '.stadiaplus_ui-component > header > .rkvT7c',
+            `#${this.id} > header > .rkvT7c`,
         );
         const self = this;
         backBtn.addEventListener('click', () => {
@@ -48,6 +50,7 @@ export class UIComponent {
     }
 
     close(): void {
+        Logger.info('Closing', this.id);
         this.element.classList.remove('open');
     }
 }
