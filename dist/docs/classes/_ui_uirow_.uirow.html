@@ -90,10 +90,10 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_ui_uirow_.uirow.html#callback" class="tsd-kind-icon">callback</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_ui_uirow_.uirow.html#content" class="tsd-kind-icon">content</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_ui_uirow_.uirow.html#element" class="tsd-kind-icon">element</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_ui_uirow_.uirow.html#id" class="tsd-kind-icon">id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_ui_uirow_.uirow.html#options" class="tsd-kind-icon">options</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_ui_uirow_.uirow.html#title" class="tsd-kind-icon">title</a></li>
 							</ul>
 						</section>
@@ -101,7 +101,9 @@
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_ui_uirow_.uirow.html#append" class="tsd-kind-icon">append</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_ui_uirow_.uirow.html#destroy" class="tsd-kind-icon">destroy</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_ui_uirow_.uirow.html#exists" class="tsd-kind-icon">exists</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_ui_uirow_.uirow.html#reload" class="tsd-kind-icon">reload</a></li>
 							</ul>
 						</section>
 					</div>
@@ -113,13 +115,13 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new UIRow<span class="tsd-signature-symbol">(</span>title<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, content<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_ui_uirow_.uirow.html" class="tsd-signature-type">UIRow</a></li>
+						<li class="tsd-signature tsd-kind-icon">new UIRow<span class="tsd-signature-symbol">(</span>title<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, content<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">?: </span><a href="_ui_uirow_.uirowoptions.html" class="tsd-signature-type">UIRowOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_ui_uirow_.uirow.html" class="tsd-signature-type">UIRow</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/ui/UIRow.ts#L8">ui/UIRow.ts:8</a></li>
+									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/0278c9a/src/ui/UIRow.ts#L8">ui/UIRow.ts:8</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -134,7 +136,7 @@
 									<h5>id: <span class="tsd-signature-type">string</span></h5>
 								</li>
 								<li>
-									<h5>callback: <span class="tsd-signature-type">Function</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="_ui_uirow_.uirowoptions.html" class="tsd-signature-type">UIRowOptions</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="_ui_uirow_.uirow.html" class="tsd-signature-type">UIRow</a></h4>
@@ -145,22 +147,12 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="callback" class="tsd-anchor"></a>
-					<h3>callback</h3>
-					<div class="tsd-signature tsd-kind-icon">callback<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Function</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/ui/UIRow.ts#L7">ui/UIRow.ts:7</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="content" class="tsd-anchor"></a>
 					<h3>content</h3>
 					<div class="tsd-signature tsd-kind-icon">content<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/ui/UIRow.ts#L5">ui/UIRow.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/0278c9a/src/ui/UIRow.ts#L5">ui/UIRow.ts:5</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -170,7 +162,7 @@
 					<div class="tsd-signature tsd-kind-icon">element<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Element</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/ui/UIRow.ts#L8">ui/UIRow.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/0278c9a/src/ui/UIRow.ts#L8">ui/UIRow.ts:8</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -180,7 +172,17 @@
 					<div class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/ui/UIRow.ts#L6">ui/UIRow.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/0278c9a/src/ui/UIRow.ts#L6">ui/UIRow.ts:6</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="options" class="tsd-anchor"></a>
+					<h3>options</h3>
+					<div class="tsd-signature tsd-kind-icon">options<span class="tsd-signature-symbol">:</span> <a href="_ui_uirow_.uirowoptions.html" class="tsd-signature-type">UIRowOptions</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/0278c9a/src/ui/UIRow.ts#L7">ui/UIRow.ts:7</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -190,7 +192,7 @@
 					<div class="tsd-signature tsd-kind-icon">title<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/ui/UIRow.ts#L4">ui/UIRow.ts:4</a></li>
+							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/0278c9a/src/ui/UIRow.ts#L4">ui/UIRow.ts:4</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -207,7 +209,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/ui/UIRow.ts#L31">ui/UIRow.ts:31</a></li>
+									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/0278c9a/src/ui/UIRow.ts#L40">ui/UIRow.ts:40</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -224,6 +226,23 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="destroy" class="tsd-anchor"></a>
+					<h3>destroy</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">destroy<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/0278c9a/src/ui/UIRow.ts#L31">ui/UIRow.ts:31</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="exists" class="tsd-anchor"></a>
 					<h3>exists</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -233,10 +252,27 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/e88cf0a/src/ui/UIRow.ts#L27">ui/UIRow.ts:27</a></li>
+									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/0278c9a/src/ui/UIRow.ts#L27">ui/UIRow.ts:27</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="reload" class="tsd-anchor"></a>
+					<h3>reload</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">reload<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/0278c9a/src/ui/UIRow.ts#L36">ui/UIRow.ts:36</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -267,6 +303,12 @@
 						<a href="../modules/_components_forcecodec_.html">&quot;components/<wbr>Force<wbr>Codec&quot;</a>
 					</li>
 					<li class=" tsd-kind-external-module">
+						<a href="../modules/_components_forceresolution_.html">&quot;components/<wbr>Force<wbr>Resolution&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_components_networkmonitor_.html">&quot;components/<wbr>Network<wbr>Monitor&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/_components_uitab_.html">&quot;components/UITab&quot;</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -274,6 +316,9 @@
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_ui_uibutton_.html">&quot;ui/UIButton&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_ui_uibuttoncontainer_.html">&quot;ui/UIButton<wbr>Container&quot;</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_ui_uicomponent_.html">&quot;ui/UIComponent&quot;</a>
@@ -294,9 +339,6 @@
 								<a href="_ui_uirow_.uirow.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_ui_uirow_.uirow.html#callback" class="tsd-kind-icon">callback</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="_ui_uirow_.uirow.html#content" class="tsd-kind-icon">content</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
@@ -306,18 +348,30 @@
 								<a href="_ui_uirow_.uirow.html#id" class="tsd-kind-icon">id</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_ui_uirow_.uirow.html#options" class="tsd-kind-icon">options</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="_ui_uirow_.uirow.html#title" class="tsd-kind-icon">title</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_ui_uirow_.uirow.html#append" class="tsd-kind-icon">append</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_ui_uirow_.uirow.html#destroy" class="tsd-kind-icon">destroy</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_ui_uirow_.uirow.html#exists" class="tsd-kind-icon">exists</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_ui_uirow_.uirow.html#reload" class="tsd-kind-icon">reload</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="_ui_uirow_.uirowoptions.html" class="tsd-kind-icon">UIRow<wbr>Options</a>
+					</li>
 				</ul>
 			</nav>
 		</div>
