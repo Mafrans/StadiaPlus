@@ -106,11 +106,9 @@ export class UITab extends Component {
 
         this.rows.forEach(row => {
             if(!row.exists()) {
-                Logger.warning('Row doesn\'t exist!');
                 row.append(this.component, i > 0);
             }
             else if(reload) {
-                Logger.warning('Row exists but is broken, reloading...');
                 row.reload();
             }
             i++

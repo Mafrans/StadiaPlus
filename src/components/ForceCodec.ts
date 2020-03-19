@@ -89,7 +89,6 @@ export class ForceCodec extends Component {
                     },
 
                     onReload: (row:UIRow) => {
-                        Logger.info('reloading row')
                         self.select.destroy();
                         self.select = new Select(row.element.querySelector('select'), Codec.AUTOMATIC);
                         self.select.set(self.codec);
