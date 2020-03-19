@@ -6,13 +6,14 @@ export class Select {
     slimselect: SlimSelect;
     element: Element;
 
-    constructor(element: Element) {
+    constructor(element: Element, placeholder?: any) {
         this.element = element;
 
         this.element.classList.add('stadiaplus_dropdown');
         this.slimselect = new SlimSelect({
             select: this.element,
-            showSearch: false
+            showSearch: false,
+            placeholder: placeholder
         });
     }
 

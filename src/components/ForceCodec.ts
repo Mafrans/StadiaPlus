@@ -70,7 +70,7 @@ export class ForceCodec extends Component {
                 `,
                 this.id + '-row',
                 (element:Element) => {
-                    self.select = new Select(element.querySelector('select'));
+                    self.select = new Select(element.querySelector('select'), Codec.AUTOMATIC);
 
                     const button = element.querySelector('.stadiaplus_button-small');
                     button.addEventListener('click', () => {
