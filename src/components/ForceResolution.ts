@@ -3,7 +3,7 @@ import Logger from '../Logger';
 import Util from '../Util';
 import './styles/ForceResolution.scss';
 import { UITab } from './UITab';
-import { UIRow } from '../ui/UIRow';
+import { UIRow, UIRowOptions } from '../ui/UIRow';
 import { Select } from '../ui/Select';
 
 const chrome = (window as any).chrome;
@@ -69,23 +69,31 @@ export class ForceResolution extends Component {
                     <p class="stadiaplus_muted">Note: the set value is the maximum resolution Stadia will attempt to achieve. If your computer is not capable of rendering the resolution or it is not available with the current data usage option, it will not be displayed.</p>
                 `,
                 this.id + '-row',
-                (element:Element) => {
-                    self.select = new Select(element.querySelector('select'), Resolution.AUTOMATIC);
+                {
+                    onCreate: (row:UIRow) => {
+                        self.select = new Select(row.element.querySelector('select'), Resolution.AUTOMATIC);
 
-                    const button = element.querySelector('.stadiaplus_button-small');
-                    button.addEventListener('click', () => {
-                        self.resolution = parseInt(self.select.get()[0]);
+                        const button = row.element.querySelector('.stadiaplus_button-small');
+                        button.addEventListener('click', () => {
+                            self.resolution = parseInt(self.select.get()[0]);
 
-                        self.setStorage(() => {
-                            location.reload();
+                            self.setStorage(() => {
+                                location.reload();
+                            });
                         });
-                    });
 
-                    self.getStorage(() => {
-                        this.select.set(self.resolution);
-                        ForceResolution.setResolution(self.resolution);
-                    });            
-                },
+                        self.getStorage(() => {
+                            this.select.set(self.resolution);
+                            ForceResolution.setResolution(self.resolution);
+                        });            
+                    },
+
+                    onReload: (row:UIRow) => {
+                        self.select.destroy();
+                        self.select = new Select(row.element.querySelector('select'), Resolution.AUTOMATIC);
+                        self.select.set(self.resolution);
+                    },
+                }
             ),
         );
         

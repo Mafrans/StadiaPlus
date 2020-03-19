@@ -4,13 +4,13 @@ export class UIRow {
     title: string;
     content: string;
     id: string;
-    callback: Function;
+    options: UIRowOptions;
     element: Element;
 
-    constructor(title: string, content: string, id: string, callback: Function) {
+    constructor(title: string, content: string, id: string, options?: UIRowOptions) {
         this.title = title;
         this.content = content;
-        this.callback = callback;
+        this.options = options;
         this.id = id;
 
         this.element = document.createElement('div');
@@ -28,12 +28,27 @@ export class UIRow {
         return document.getElementById(this.id);
     }
 
+    destroy() {
+        this.options.onDestroy(this);
+        this.element.remove();
+    }
+
+    reload() {
+        this.options.onReload(this);
+    }
+
     append(component: UIComponent, useHr: boolean = false) {
         if(useHr) {
             component.element.appendChild(document.createElement('hr'));
         }
         
         component.element.appendChild(this.element);
-        this.callback(this.element);
+        this.options.onCreate(this);
     }
+}
+
+export class UIRowOptions {
+    onCreate?: Function;
+    onDestroy?: Function;
+    onReload?: Function;
 }

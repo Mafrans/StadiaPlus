@@ -69,23 +69,32 @@ export class ForceCodec extends Component {
                     <p class="stadiaplus_muted">Note: changing the codec will reload the page.</p>
                 `,
                 this.id + '-row',
-                (element:Element) => {
-                    self.select = new Select(element.querySelector('select'), Codec.AUTOMATIC);
-
-                    const button = element.querySelector('.stadiaplus_button-small');
-                    button.addEventListener('click', () => {
-                        self.codec = parseInt(self.select.get()[0]);
-
-                        self.setStorage(() => {
-                            location.reload();
+                {
+                    onCreate: (row:UIRow) => {
+                        self.select = new Select(row.element.querySelector('select'), Codec.AUTOMATIC);
+    
+                        const button = row.element.querySelector('.stadiaplus_button-small');
+                        button.addEventListener('click', () => {
+                            self.codec = parseInt(self.select.get()[0]);
+    
+                            self.setStorage(() => {
+                                location.reload();
+                            });
                         });
-                    });
+    
+                        self.getStorage(() => {
+                            this.select.set(self.codec);
+                            ForceCodec.setCodec(self.codec);
+                        });            
+                    },
 
-                    self.getStorage(() => {
-                        this.select.set(self.codec);
-                        ForceCodec.setCodec(self.codec);
-                    });            
-                },
+                    onReload: (row:UIRow) => {
+                        Logger.info('reloading row')
+                        self.select.destroy();
+                        self.select = new Select(row.element.querySelector('select'), Codec.AUTOMATIC);
+                        self.select.set(self.codec);
+                    },
+                }
             ),
         );
         

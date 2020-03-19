@@ -100,14 +100,28 @@ export class UITab extends Component {
     /**
      * Append all rows that don't already exist.
      */
-    createRows() {
+    createRows(reload?: boolean) {
         let i = 0;
+        Logger.info('Rows:', this.rows)
+
         this.rows.forEach(row => {
             if(!row.exists()) {
+                Logger.warning('Row doesn\'t exist!');
                 row.append(this.component, i > 0);
-                i++
             }
+            else if(reload) {
+                Logger.warning('Row exists but is broken, reloading...');
+                row.reload();
+            }
+            i++
         });
+    }
+
+    /**
+     * Reload all rows
+     */
+    reloadRows() {
+        this.rows.forEach(row => row.reload());
     }
 
     /**
@@ -167,11 +181,10 @@ export class UITab extends Component {
                 const self = this;
                 this.button.create(() => {
                     self.button.button.addEventListener('click', () => {
+                        this.createRows(true);
                         self.component.open();
                     });
                 });
-
-                this.createRows();
             }
         }
     }

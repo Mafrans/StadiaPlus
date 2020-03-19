@@ -34,4 +34,12 @@ export class Select {
     search(query: string) {
         return this.slimselect.search(query);
     }
+
+    destroy() {
+        if(this.slimselect.config !== undefined) {
+            this.slimselect.destroy();
+        }
+        this.element.classList.remove('stadiaplus_dropdown');
+        this.element = null;
+    }
 }
