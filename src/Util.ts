@@ -18,5 +18,13 @@ class Util {
     isInGame() {
         return window.location.pathname.indexOf('player') !== -1;
     }
+
+    isInHome() {
+        return window.location.pathname.indexOf('home') !== -1;
+    }
+
+    isInStore() {
+        return window.location.pathname.indexOf('store') !== -1;
+    }
 }
 export default new Util();
