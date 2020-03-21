@@ -14,5 +14,9 @@ class Util {
     isMenuOpen() {
         return this.menuElement.style.opacity !== '0';
     }
+
+    isInGame() {
+        return window.location.pathname.indexOf('player') !== -1;
+    }
 }
 export default new Util();

@@ -102,8 +102,6 @@ export class UITab extends Component {
      */
     createRows(reload?: boolean) {
         let i = 0;
-        Logger.info('Rows:', this.rows)
-
         this.rows.forEach(row => {
             if(!row.exists()) {
                 row.append(this.component, i > 0);
@@ -171,7 +169,7 @@ export class UITab extends Component {
      */
     onUpdate() {
         // Only create components if the menu is open already.
-        if (Util.isMenuOpen()) {
+        if (Util.isMenuOpen() && Util.isInGame()) {
             if (!this.exists()) {
                 this.component.create();
 
@@ -182,6 +180,10 @@ export class UITab extends Component {
                         self.component.open();
                     });
                 });
+            }
+            
+            if(!this.button.container.exists()) {
+                this.button.container.create();
             }
         }
     }

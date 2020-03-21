@@ -28,9 +28,10 @@ export class UIComponent {
     }
 
     create(): void {
-        this.element.innerHTML = this.html;
-
         const container = document.querySelector('.hxhAyf.fi8Jxd');
+        if(!container) return;
+
+        this.element.innerHTML = this.html;
         container.appendChild(this.element);
 
         // ReQuery element since outerHTML breaks it.

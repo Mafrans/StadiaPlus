@@ -83,7 +83,7 @@ export class NetworkMonitor extends Component {
      */
     onUpdate() {
         // Only create components if the menu is open already.
-        if (Util.isMenuOpen()) {
+        if (Util.isMenuOpen() && Util.isInGame()) {
             if (!this.exists()) {
                 this.component.create();
 
@@ -93,6 +93,10 @@ export class NetworkMonitor extends Component {
                         self.component.open();
                     });
                 });
+            }
+
+            if(!this.button.container.exists()) {
+                this.button.container.create();
             }
         }
     }

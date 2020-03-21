@@ -1,4 +1,5 @@
 import { UIButton } from "./UIButton";
+import Logger from "../Logger";
 
 export class UIButtonContainer {
     buttons: UIButton[] = [];
@@ -25,12 +26,15 @@ export class UIButtonContainer {
 
     create(callback?: Function) {
         if(!this.exists()) {
+            this.container = document.querySelector('.TZ0BN'); // Requery in case the container was deleted
             this.wrapper.appendChild(this.element);
             this.container.appendChild(this.wrapper);
         }
 
         this.buttons.forEach(button => {
-            this.element.appendChild(button.element);
+            if(!button.exists()) {
+                this.element.appendChild(button.element);
+            }
         });
 
         if(callback)

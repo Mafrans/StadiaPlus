@@ -10,11 +10,23 @@ export class Select {
         this.element = element;
 
         this.element.classList.add('stadiaplus_dropdown');
-        this.slimselect = new SlimSelect({
-            select: this.element,
-            showSearch: false,
-            placeholder: placeholder
-        });
+
+        /** 
+         * Slimselect throws a TypeError if the elements/containers 
+         * have been deleted without properly being destroyed. As Stadia
+         * runs in a virtual DOM, we have no control of when the DOM changes
+         * therefore we can't solve it in a proper way.
+         * 
+         * Let's just hope garbage collection takes care of it.
+         */
+        try {
+            this.slimselect = new SlimSelect({
+                select: this.element,
+                showSearch: false,
+                placeholder: placeholder
+            });
+        }
+        catch(error) {} 
     }
 
     get() {

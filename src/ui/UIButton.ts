@@ -1,4 +1,5 @@
 import { UIButtonContainer } from "./UIButtonContainer";
+import Logger from "../Logger";
 
 export class UIButton {
     id: string;
@@ -48,6 +49,16 @@ export class UIButton {
         this.container.addButton(this);
         this.container.create(callback);
     }
+
+    update() {
+        if(!this.exists()) {
+            this.create();
+        }
+    }
+
+    exists(): boolean {
+        return document.getElementById(this.id) !== null;
+    } 
 
     destroy() {
         this.element.remove();
