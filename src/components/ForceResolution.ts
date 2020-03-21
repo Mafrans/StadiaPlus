@@ -5,6 +5,7 @@ import './styles/ForceResolution.scss';
 import { UITab } from './UITab';
 import { UIRow, UIRowOptions } from '../ui/UIRow';
 import { Select } from '../ui/Select';
+import { Snackbar } from '../ui/Snackbar';
 
 const chrome = (window as any).chrome;
 
@@ -23,11 +24,13 @@ export class ForceResolution extends Component {
     resolution: number = Resolution.AUTOMATIC;
     select: Select;
     tab: UITab;
+    snackbar: Snackbar;
 
-    constructor(tab: UITab) {
+    constructor(tab: UITab, snackbar: Snackbar) {
         super();
 
         this.tab = tab;
+        this.snackbar = snackbar;
     }
 
     getStorage(callback?: Function) {
@@ -65,7 +68,6 @@ export class ForceResolution extends Component {
                         <a class="stadiaplus_button-small">Apply</a>
                     </div>
 
-                    <p class="stadiaplus_muted">Note: changing the resolution will reload the page.</p>
                     <p class="stadiaplus_muted">Note: the set value is the maximum resolution Stadia will attempt to achieve. If your computer is not capable of rendering the resolution or it is not available with the current data usage option, it will not be displayed.</p>
                 `,
                 this.id + '-row',
@@ -78,7 +80,7 @@ export class ForceResolution extends Component {
                             self.resolution = parseInt(self.select.get()[0]);
 
                             self.setStorage(() => {
-                                location.reload();
+                                self.snackbar.activate('Reload the page to see your changes.');
                             });
                         });
 

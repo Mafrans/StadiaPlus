@@ -1,0 +1,43 @@
+.stadiaplus_snackbar {
+    width: 400px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    border-radius: 4px;
+    z-index: 999; // Always show on top.
+
+    -webkit-box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
+    box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
+
+    position: fixed;
+    bottom: 8px;
+    left: calc(50% - 200px); // Subtract half-width to center
+
+    transform: scale(0.5) translateY(16px);
+    opacity: 0;
+    transition: transform 0.15s cubic-bezier(0,0,.2,1), opacity 0.15s cubic-bezier(0,0,.2,1);
+
+    &.active {
+        transform: scale(1) translateY(0px);
+        opacity: 1;
+    }
+}
+
+.stadiaplus_snackbar-label {
+    font-size: 16px;
+    padding: 16px;
+}
+
+.stadiaplus_snackbar-close {
+    padding: 8px;
+    margin: 8px;
+    border-radius: 50%;
+    color: white;
+    font-size: 20px;
+
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+        cursor: pointer;
+    }
+}

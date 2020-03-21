@@ -5,6 +5,7 @@ import './styles/ForceCodec.scss';
 import { UITab } from './UITab';
 import { UIRow } from '../ui/UIRow';
 import { Select } from '../ui/Select';
+import { Snackbar } from '../ui/Snackbar';
 
 const chrome = (window as any).chrome;
 
@@ -23,11 +24,13 @@ export class ForceCodec extends Component {
     codec: number = Codec.AUTOMATIC;
     select: Select;
     tab: UITab;
+    snackbar: Snackbar;
 
-    constructor(tab: UITab) {
+    constructor(tab: UITab, snackbar: Snackbar) {
         super();
 
         this.tab = tab;
+        this.snackbar = snackbar;
     }
 
     getStorage(callback?: Function) {
@@ -65,8 +68,6 @@ export class ForceCodec extends Component {
                         </div>
                         <a class="stadiaplus_button-small">Apply</a>
                     </div>
-
-                    <p class="stadiaplus_muted">Note: changing the codec will reload the page.</p>
                 `,
                 this.id + '-row',
                 {
@@ -78,7 +79,7 @@ export class ForceCodec extends Component {
                             self.codec = parseInt(self.select.get()[0]);
     
                             self.setStorage(() => {
-                                location.reload();
+                                self.snackbar.activate('Reload the page to see your changes.');
                             });
                         });
     
