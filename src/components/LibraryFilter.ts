@@ -2,6 +2,7 @@ import { Component } from '../Component';
 import Logger from '../Logger';
 import Util from '../Util';
 import './styles/LibraryFilter.scss';
+import { Snackbar } from '../ui/Snackbar';
 
 const { chrome } = window as any;
 const iconVisible = chrome.runtime.getURL('images/icons/visibility.svg');
@@ -25,9 +26,13 @@ export class LibraryFilter extends Component {
      */
     template: HTMLElement;
     games: any = {};
+    snackbar: Snackbar;
 
-    constructor() {
+    constructor(snackbar: Snackbar) {
         super();
+        this.snackbar = snackbar;
+        this.setStorage();
+
         this.template = document.createElement('div');
         this.template.classList.add('stadiaplus_libraryfilter-eye');
     }
@@ -73,6 +78,7 @@ export class LibraryFilter extends Component {
         icon.style.marginLeft = element.clientWidth - icon.clientWidth + 'px';
         icon.addEventListener('click', () => {
             wrapper.classList.add('closing');
+            this.snackbar.activate('A game has been hidden.');
 
             setTimeout(() => {
                 wrapper.classList.add('closed');

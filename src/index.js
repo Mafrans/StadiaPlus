@@ -17,7 +17,7 @@ const snackbar = new Snackbar();
 const tab = new UITab();
 
 loader.register(new Clock());
-loader.register(new LibraryFilter());
+loader.register(new LibraryFilter(snackbar));
 loader.register(new ForceCodec(tab, snackbar));
 loader.register(new ForceResolution(tab, snackbar));
 loader.register(tab);
