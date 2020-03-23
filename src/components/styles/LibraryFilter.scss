@@ -2,6 +2,10 @@
     position: absolute;
     font-family: 'Material Icons Extended';
     font-size: 32px;
-    margin-left: -32px;
     z-index: 4;
+
+    padding: 16px;
+    border-top-right-radius: 8px;
+    border-bottom-left-radius: 32px;
+    background-color: #393a3c;
 }

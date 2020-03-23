@@ -53,8 +53,10 @@ export class LibraryFilter extends Component {
         icon.innerHTML = 'visibility';
 
         element.parentNode.insertBefore(wrapper, element);
-        wrapper.appendChild(element);
         wrapper.appendChild(icon);
+        wrapper.appendChild(element);
+        
+        icon.style.marginLeft = element.clientWidth - icon.clientWidth + 'px';
     }
 
     /**
