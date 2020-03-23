@@ -9,6 +9,7 @@ import { ForceCodec } from './components/ForceCodec'
 import { ForceResolution } from './components/ForceResolution'
 import { NetworkMonitor } from './components/NetworkMonitor';
 import { Snackbar } from './ui/Snackbar';
+import { LibraryFilter } from './components/LibraryFilter';
 
 const loader = new ComponentLoader();
 const snackbar = new Snackbar();
@@ -16,6 +17,7 @@ const snackbar = new Snackbar();
 const tab = new UITab();
 
 loader.register(new Clock());
+loader.register(new LibraryFilter());
 loader.register(new ForceCodec(tab, snackbar));
 loader.register(new ForceResolution(tab, snackbar));
 loader.register(tab);
