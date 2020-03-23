@@ -119,7 +119,7 @@ export class LibraryFilter extends Component {
     onStop(): void {
         this.enabled = false;
         document
-            .querySelectorAll('.stadiaplus_libraryfilter-eye')
+            .querySelectorAll('.stadiaplus_libraryfilter-icon')
             .forEach((e) => e.remove());
         Logger.component('Component', this.name, 'has been disabled');
     }
