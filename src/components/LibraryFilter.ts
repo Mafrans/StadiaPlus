@@ -25,6 +25,7 @@ export class LibraryFilter extends Component {
      * The clock element.
      */
     template: HTMLElement;
+    games: any = {};
 
     constructor() {
         super();
@@ -55,8 +56,19 @@ export class LibraryFilter extends Component {
         element.parentNode.insertBefore(wrapper, element);
         wrapper.appendChild(icon);
         wrapper.appendChild(element);
+
+        const uuid = element.getAttribute('jslog').split('; ')[1].substring(3);
+        Logger.info(uuid);
+        if(this.games[uuid] === undefined) {
+            this.games[uuid] = { visible: true };
+        }
         
         icon.style.marginLeft = element.clientWidth - icon.clientWidth + 'px';
+        icon.addEventListener('click', () => {
+            wrapper.classList.add('closing');
+
+            setTimeout(() => wrapper.classList.add('closed'), 1000);
+        })
     }
 
     /**
