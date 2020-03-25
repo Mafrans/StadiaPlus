@@ -3,13 +3,13 @@ import Logger from "./Logger";
 export class Database {
     url: string;
     connected: boolean;
-    connection: object;
+    connection: string[][];
     
     constructor(url: string) {
         this.url = url;
     }
 
-    connect(callback?: (connection:object) => {}) {
+    connect(callback?: (connection:string[][]) => {}) {
         if(this.connected) {
             Logger.error('Error: Already connected to the database.');
             return;
@@ -22,8 +22,7 @@ export class Database {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     self.connected = true;
-                    console.log(xhr);
-                    self.connection = JSON.parse(xhr.responseText);
+                    self.connection = JSON.parse(xhr.responseText)['data'];
                     if(callback)
                         callback(self.connection);
                 }
@@ -40,7 +39,7 @@ export class Database {
         xhr.send(null); 
     }
 
-    getConnection(): object {
+    getConnection(): string[][] {
         if(!this.connected) {
             Logger.error('Error: Not connected to the database');
             return null;
