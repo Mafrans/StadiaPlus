@@ -22,8 +22,10 @@ export class Database {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     self.connected = true;
+                    console.log(xhr);
                     self.connection = JSON.parse(xhr.responseText);
-                    callback(self.connection);
+                    if(callback)
+                        callback(self.connection);
                 }
                 else {
                     self.connected = false;

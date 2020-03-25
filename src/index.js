@@ -10,14 +10,17 @@ import { ForceResolution } from './components/ForceResolution'
 import { NetworkMonitor } from './components/NetworkMonitor';
 import { Snackbar } from './ui/Snackbar';
 import { LibraryFilter } from './components/LibraryFilter';
+import { Database } from './Database';
 
 const loader = new ComponentLoader();
 const snackbar = new Snackbar();
-
 const tab = new UITab();
 
+const database = new Database('https://raw.githubusercontent.com/nilicule/StadiaGameDB/master/data/gamedb.json');
+database.connect();
+
 loader.register(new Clock());
-loader.register(new LibraryFilter(snackbar));
+loader.register(new LibraryFilter(snackbar, database));
 loader.register(new ForceCodec(tab, snackbar));
 loader.register(new ForceResolution(tab, snackbar));
 loader.register(tab);
