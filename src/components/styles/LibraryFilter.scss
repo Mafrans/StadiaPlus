@@ -45,4 +45,31 @@
     .stadiaplus_filterbar-checkbox {
         margin-left: auto;
     }
+
+    .stadiaplus_filterbar-direction {
+        transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+        border-radius: 50%;
+        padding: 2px;
+        cursor: pointer;
+
+        &::after {
+            content: 'arrow_drop_down';
+        }
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        &:active {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        &.ascending {
+            transform: rotate(0deg);
+        }
+
+        &.descending {
+            transform: rotate(180deg);
+        }
+    }
 }

@@ -4,8 +4,10 @@ import Util from '../Util';
 import './styles/LibraryFilter.scss';
 import { Snackbar } from '../ui/Snackbar';
 import { Select } from '../ui/Select';
+import { Database } from '../Database';
+import { uuidMap } from '../uuidMap';
 
-const { chrome } = window as any;
+const { chrome, Array } = window as any;
 
 
 export class LibraryFilter extends Component {
@@ -66,39 +68,23 @@ export class LibraryFilter extends Component {
      */
     showAll: boolean;
 
-    gameTiles: NodeList;
+    direction: OrderDirection;
 
-    constructor(snackbar: Snackbar) {
+    gameTiles: NodeList;
+    database: Database;
+
+    constructor(snackbar: Snackbar, database: Database) {
         super();
 
+        // Import database from index.js
+        this.database = database;
+        
         // Import snackbar from index.js
         this.snackbar = snackbar;
 
         // Create new filter bar element
         this.filterBar = document.createElement('div');
         this.filterBar.classList.add('stadiaplus_libraryfilter-bar');
-        this.filterBar.innerHTML = `
-            <span class="material-icons-extended">
-                filter_list
-            </span>
-            <select name="order">
-                <option value="${FilterOrder.RECENT}">Recently Played</option>
-                <option value="${FilterOrder.ALPHABETICAL}">A-Z</option>
-                <option value="${FilterOrder.RANDOM}">Random</option>
-            </select>
-            <div class="pretty p-bigger p-default p-curve stadiaplus_filterbar-checkbox">
-                <input type="checkbox" />
-                <div class="state">
-                    <label>Show hidden</label>
-                </div>
-            </div>
-        `;
-
-        // Style the custom select box in the filter bar
-        this.select = new Select(
-            this.filterBar.querySelector('select'),
-            FilterOrder.RECENT,
-        );
     }
 
     /**
@@ -108,8 +94,15 @@ export class LibraryFilter extends Component {
      */
     createAllWrappers() {
         this.getStorage(() => {
+            let i = 0;
             this.gameTiles.forEach((tile) => {
-                this.createWrapper(tile as Element, this.getUUID(tile));
+                i++;
+                const element = tile as Element;
+                this.createWrapper(element, this.getUUID(element));
+                
+                if(i === this.gameTiles.length) {
+                    this.sortGames();
+                }
             });
         });
     }
@@ -136,9 +129,13 @@ export class LibraryFilter extends Component {
      * @memberof LibraryFilter
      */
     createWrapper(element: Element, uuid: string) {
+        const connection = this.database.getConnection();
+        const entry = connection[uuidMap[uuid]];
 
         // Create the wrapper
         const wrapper = document.createElement('div');
+        wrapper.setAttribute('game-uuid', uuid);
+        wrapper.setAttribute('game-name', entry[1]);
         wrapper.classList.add('stadiaplus_libraryfilter-wrapper');
         wrapper.id = this.id + '-' + uuid;
 
@@ -242,9 +239,11 @@ export class LibraryFilter extends Component {
      * @memberof LibraryFilter
      */
     updateAllGames() {
-        this.gameTiles.forEach((tile) =>
-            this.updateGame(tile.parentElement, tile as Element, false),
-        );
+        this.sortGames();
+
+        this.gameTiles.forEach((tile) => {
+            this.updateGame(tile.parentElement, tile as Element, false);
+        });
     }
 
     /**
@@ -259,8 +258,10 @@ export class LibraryFilter extends Component {
             if (callback) callback();
         }
 
-        chrome.storage.sync.get(['games'], (result: any) => {
+        chrome.storage.sync.get(['games', 'sort-order', 'sort-direction'], (result: any) => {
             this.games = result.games !== undefined ? result.games : {};
+            this.order = result['sort-order'] !== undefined ? result['sort-order'] : FilterOrder.RECENT;
+            this.direction = result['sort-direction'] !== undefined ? result['sort-direction'] : OrderDirection.ASCENDING;
 
             if (callback) callback();
         });
@@ -279,7 +280,7 @@ export class LibraryFilter extends Component {
             return;
         }
 
-        chrome.storage.sync.set({ games: this.games }, callback);
+        chrome.storage.sync.set({ games: this.games, 'sort-order': this.order, 'sort-direction': this.direction }, callback);
     }
 
     /**
@@ -290,7 +291,29 @@ export class LibraryFilter extends Component {
     onStart(): void {
         this.enabled = true;
         this.filterBar.id = this.id + '-filterbar';
-        this.gameTiles = document.querySelectorAll('.GqLi4d');
+        this.filterBar.innerHTML = `
+            <span class="material-icons-extended">
+                filter_list
+            </span>
+            <select name="order">
+                <option value="${FilterOrder.RECENT}">Recently Played</option>
+                <option value="${FilterOrder.ALPHABETICAL}">Alphabetical</option>
+                <option value="${FilterOrder.RANDOM}">Random</option>
+            </select>
+            <span id='${this.filterBar.id + '-direction'}' class="material-icons-extended stadiaplus_filterbar-direction"></span>
+            <div id='${this.filterBar.id + '-checkbox'}' class="pretty p-bigger p-default p-curve stadiaplus_filterbar-checkbox">
+                <input type="checkbox" />
+                <div class="state">
+                    <label>Show hidden</label>
+                </div>
+            </div>
+        `;
+        
+        // Style the custom select box in the filter bar
+        this.select = new Select(
+            this.filterBar.querySelector('select'),
+            FilterOrder.RECENT,
+        );
 
         // Create an observer observing the filterbar container, making sure to reload the bar whenever it gets destroyed.
         const config = { attributes: true, childList: true, subtree: true };
@@ -304,10 +327,14 @@ export class LibraryFilter extends Component {
                 if (!this.filterBarExists()) {
                     // Create it
                     const container = document.querySelector('.CVVXfc.YYy3Zb');
+                    this.gameTiles = document.querySelectorAll('.GqLi4d');
                     container.appendChild(this.filterBar);
 
                     this.createAllWrappers();
-                    this.addFilterBarEvents();
+
+                    if(!this.eventsExist) {
+                        this.addFilterBarEvents();
+                    }
                 }
             }
         });
@@ -316,6 +343,7 @@ export class LibraryFilter extends Component {
         Logger.component('Component', this.name, 'has been enabled');
     }
 
+    private eventsExist: boolean;
     /**
      * Adds a variety of events to the filter bar
      *
@@ -325,18 +353,36 @@ export class LibraryFilter extends Component {
         // When the order is changed, set it in the storage
         this.select.element.addEventListener('change', () => {
             this.order = parseInt(this.select.get()[0]) as FilterOrder;
+            this.sortGames();
             this.setStorage();
         });
 
-        const checkbox = document.querySelector(
-            '.stadiaplus_filterbar-checkbox>input',
-        );
-
+        const checkbox = document.getElementById(this.filterBar.id + '-checkbox');
         // When the show all checkbox is clicked, toggle the showAll variable and update the games
         checkbox.addEventListener('click', () => {
             this.showAll = (checkbox as any).checked;
             this.updateAllGames();
         });
+
+        const dir = document.getElementById(this.filterBar.id + '-direction');
+        // Toggle the sort direction
+        dir.addEventListener('mouseup', () => {
+            if(this.direction === OrderDirection.ASCENDING) {
+                this.direction = OrderDirection.DESCENDING;
+                dir.classList.add('descending');
+                dir.classList.remove('ascending');
+            }
+            else {
+                this.direction = OrderDirection.ASCENDING;
+                dir.classList.add('ascending');
+                dir.classList.remove('descending');
+            }
+            this.sortGames();
+            this.setStorage();
+            event.stopPropagation();
+        });
+
+        this.eventsExist = true;
     }
 
     /**
@@ -356,15 +402,55 @@ export class LibraryFilter extends Component {
         return document.getElementById(this.id + '-filterbar') !== null;
     }
 
-    sortGames(games: NodeList) {
+    sortGames() {
+        let arr = (Array.from(this.gameTiles) as Element[]).map(e => e.parentElement); // Get all wrappers as an array
+        arr = arr.sort(FilterOrder.getSorter(this.order));
 
+        if(this.direction === OrderDirection.ASCENDING) {
+            arr = arr.reverse();
+        }
+
+        arr.forEach(el => {
+            el.parentElement.prepend(el);
+        })
     }
 
     onUpdate() {}
 }
 
-export enum FilterOrder {
-    RECENT,
-    ALPHABETICAL,
-    RANDOM,
+export class FilterOrder {
+    static RECENT = 0;
+    static ALPHABETICAL = 1;
+    static ALPHABETICAL_REVERSE = 2;
+    static RANDOM = 3;
+
+    static getSorter(order: FilterOrder) {
+        switch(order) {
+            case this.RECENT: 
+                return this.sortRecent;
+
+            case this.ALPHABETICAL: 
+                return this.sortAlphabetical;
+
+            case this.RANDOM: 
+                return this.sortRandom;
+        }
+    }
+
+    private static sortRecent(a:any, b:any) {
+        return 1;
+    }
+
+    private static sortAlphabetical(a:any, b:any) {
+        return a.getAttribute('game-name').localeCompare(b.getAttribute('game-name'));
+    }
+
+    private static sortRandom(a:any, b:any) {
+        return Math.round(Math.random() * 2) - 1;
+    }
+}
+
+export enum OrderDirection {
+    ASCENDING,
+    DESCENDING
 }
