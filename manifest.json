@@ -7,7 +7,7 @@
     "permissions": [
         "declarativeContent",
         "storage",
-        "https://www.stadiagamedb.com/*",
+        "https://stadiagamedb.com/data/gamedb.json",
         "https://raw.githubusercontent.com/nilicule/StadiaGameDB/master/data/gamedb.json"
     ],
     "background": {
