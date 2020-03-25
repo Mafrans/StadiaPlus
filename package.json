@@ -39,6 +39,7 @@
     },
     "dependencies": {
         "css-loader": "^3.4.2",
+        "pretty-checkbox": "^3.0.3",
         "slim-select": "^1.25.0",
         "style-loader": "^1.1.3"
     }
