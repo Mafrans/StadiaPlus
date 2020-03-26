@@ -16,11 +16,13 @@ const loader = new ComponentLoader();
 const snackbar = new Snackbar();
 const tab = new UITab();
 
-const database = new Database('https://raw.githubusercontent.com/nilicule/StadiaGameDB/master/data/gamedb.json');
+const database = new Database('https://stadiagamedb.com/data/gamedb.json');
+const uuidMap = new Database('https://stadiagamedb.com/data/uuidmap.json');
 database.connect();
+uuidMap.connect(console.log);
 
 loader.register(new Clock());
-loader.register(new LibraryFilter(snackbar, database));
+loader.register(new LibraryFilter(snackbar, database, uuidMap));
 loader.register(new ForceCodec(tab, snackbar));
 loader.register(new ForceResolution(tab, snackbar));
 loader.register(tab);

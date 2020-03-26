@@ -5,7 +5,6 @@ import './styles/LibraryFilter.scss';
 import { Snackbar } from '../ui/Snackbar';
 import { Select } from '../ui/Select';
 import { Database } from '../Database';
-import { uuidMap } from '../uuidMap';
 
 const { chrome, Array } = window as any;
 
@@ -72,12 +71,14 @@ export class LibraryFilter extends Component {
 
     gameTiles: NodeList;
     database: Database;
+    uuidMap: Database;
 
-    constructor(snackbar: Snackbar, database: Database) {
+    constructor(snackbar: Snackbar, database: Database, uuidMap: Database) {
         super();
 
-        // Import database from index.js
+        // Import database & uuidMap from index.js
         this.database = database;
+        this.uuidMap = uuidMap;
         
         // Import snackbar from index.js
         this.snackbar = snackbar;
@@ -101,6 +102,7 @@ export class LibraryFilter extends Component {
                 this.createWrapper(element, this.getUUID(element));
                 
                 if(i === this.gameTiles.length) {
+                    this.updateSortDirection();
                     this.sortGames();
                 }
             });
@@ -129,8 +131,10 @@ export class LibraryFilter extends Component {
      * @memberof LibraryFilter
      */
     createWrapper(element: Element, uuid: string) {
-        const connection = this.database.getConnection();
-        const entry = connection[uuidMap[uuid]];
+        const connection = this.database.getConnection()['data'];
+        const map = this.uuidMap.getConnection()['uuidMap'];
+        console.log(map);
+        const entry = connection[map[uuid]];
 
         // Create the wrapper
         const wrapper = document.createElement('div');
@@ -198,9 +202,6 @@ export class LibraryFilter extends Component {
             '.stadiaplus_libraryfilter-icon',
         ) as HTMLElement;
 
-        // Make sure the icon stays in place and doesn't get reset back to the top left corner
-        icon.style.marginLeft = tile.clientWidth - icon.clientWidth + 'px';
-
         // If the game isn't visible...
         if (!this.games[uuid].visible) {
             // ...but all games should still be shown
@@ -228,9 +229,13 @@ export class LibraryFilter extends Component {
                 }
             }
         } else { // If the game is visible
+            // Make sure the icon stays in place and doesn't get reset back to the top left corner
+            icon.style.marginLeft = tile.clientWidth - icon.clientWidth + 'px';
+
             // Make sure the icon shows that it is visible
             icon.innerHTML = 'visibility';
         }
+        
     }
 
     /**
@@ -300,7 +305,7 @@ export class LibraryFilter extends Component {
                 <option value="${FilterOrder.ALPHABETICAL}">Alphabetical</option>
                 <option value="${FilterOrder.RANDOM}">Random</option>
             </select>
-            <span id='${this.filterBar.id + '-direction'}' class="material-icons-extended stadiaplus_filterbar-direction"></span>
+            <span id='${this.filterBar.id + '-direction'}' class="material-icons-extended ascending stadiaplus_filterbar-direction"></span>
             <div id='${this.filterBar.id + '-checkbox'}' class="pretty p-bigger p-default p-curve stadiaplus_filterbar-checkbox">
                 <input type="checkbox" />
                 <div class="state">
@@ -327,14 +332,18 @@ export class LibraryFilter extends Component {
                 if (!this.filterBarExists()) {
                     // Create it
                     const container = document.querySelector('.CVVXfc.YYy3Zb');
+
                     this.gameTiles = document.querySelectorAll('.GqLi4d');
                     container.appendChild(this.filterBar);
 
                     this.createAllWrappers();
+                    this.select.set(this.order);
 
                     if(!this.eventsExist) {
                         this.addFilterBarEvents();
                     }
+                    
+                    container.parentNode.prepend(container); // Always append container at the top 
                 }
             }
         });
@@ -357,32 +366,39 @@ export class LibraryFilter extends Component {
             this.setStorage();
         });
 
-        const checkbox = document.getElementById(this.filterBar.id + '-checkbox');
+        const checkbox = document.getElementById(this.filterBar.id + '-checkbox').querySelector('input');
         // When the show all checkbox is clicked, toggle the showAll variable and update the games
         checkbox.addEventListener('click', () => {
             this.showAll = (checkbox as any).checked;
+            console.log(this.showAll);
+            console.log((checkbox as any));
             this.updateAllGames();
         });
 
         const dir = document.getElementById(this.filterBar.id + '-direction');
         // Toggle the sort direction
-        dir.addEventListener('mouseup', () => {
-            if(this.direction === OrderDirection.ASCENDING) {
-                this.direction = OrderDirection.DESCENDING;
-                dir.classList.add('descending');
-                dir.classList.remove('ascending');
-            }
-            else {
-                this.direction = OrderDirection.ASCENDING;
-                dir.classList.add('ascending');
-                dir.classList.remove('descending');
-            }
-            this.sortGames();
-            this.setStorage();
+        dir.addEventListener('click', () => {
+            this.updateSortDirection();
             event.stopPropagation();
         });
 
         this.eventsExist = true;
+    }
+
+    updateSortDirection() {
+        const element: Element = document.getElementById(this.filterBar.id + '-direction');
+        if(this.direction === OrderDirection.ASCENDING) {
+            this.direction = OrderDirection.DESCENDING;
+            element.classList.add('descending');
+            element.classList.remove('ascending');
+        }
+        else {
+            this.direction = OrderDirection.ASCENDING;
+            element.classList.add('ascending');
+            element.classList.remove('descending');
+        }
+        this.sortGames();
+        this.setStorage();
     }
 
     /**
@@ -403,6 +419,7 @@ export class LibraryFilter extends Component {
     }
 
     sortGames() {
+        console.log(this.gameTiles);
         let arr = (Array.from(this.gameTiles) as Element[]).map(e => e.parentElement); // Get all wrappers as an array
         arr = arr.sort(FilterOrder.getSorter(this.order));
 
@@ -442,7 +459,14 @@ export class FilterOrder {
     }
 
     private static sortAlphabetical(a:any, b:any) {
-        return a.getAttribute('game-name').localeCompare(b.getAttribute('game-name'));
+        const nameA = a.getAttribute('game-name');
+        const nameB = b.getAttribute('game-name');
+
+        if(nameA === undefined || nameB === undefined) {
+            return 1;
+        }
+
+        return nameA.localeCompare(nameB);
     }
 
     private static sortRandom(a:any, b:any) {
