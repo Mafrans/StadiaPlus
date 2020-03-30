@@ -123,6 +123,11 @@ export class LibraryFilter extends Component {
             .substring(3);
     }
 
+
+    wrapperExists(uuid: string) {
+        return document.getElementById(this.id + '-' + uuid);
+    }
+
     /**
      * Given a tile element, create a wrapper around it and an icon allowing it to be shown or hidden.
      *
@@ -131,9 +136,10 @@ export class LibraryFilter extends Component {
      * @memberof LibraryFilter
      */
     createWrapper(element: Element, uuid: string) {
+        if(this.wrapperExists(uuid)) return;
+
         const connection = this.database.getConnection()['data'];
         const map = this.uuidMap.getConnection()['uuidMap'];
-        console.log(map);
         const entry = connection[map[uuid]];
 
         // Create the wrapper
@@ -164,6 +170,7 @@ export class LibraryFilter extends Component {
         // Position the icon in the top right corner rather than the top left using 
         // a margin (using the 'left' css attribute is not possible)
         icon.style.marginLeft = element.clientWidth - icon.clientWidth + 'px';
+        icon.style.transformOrigin = `calc(100% - ${element.clientWidth/2}px) ${element.clientHeight/2}px`;
 
         // When the icon is clicked on
         icon.addEventListener('click', () => {
@@ -288,12 +295,18 @@ export class LibraryFilter extends Component {
         chrome.storage.sync.set({ games: this.games, 'sort-order': this.order, 'sort-direction': this.direction }, callback);
     }
 
-    /**
-     * Runs when the component has loaded
-     *
-     * @memberof LibraryFilter
-     */
-    onStart(): void {
+    oldInHome: boolean = false;
+    create(): void {
+        const inHome = Util.isInHome();
+        if(!inHome || inHome === this.oldInHome) {
+            // this.enabled = false;
+            this.oldInHome = inHome;
+            return;
+        }
+        else {
+            this.oldInHome = inHome;
+        }
+
         this.enabled = true;
         this.filterBar.id = this.id + '-filterbar';
         this.filterBar.innerHTML = `
@@ -352,6 +365,15 @@ export class LibraryFilter extends Component {
         Logger.component('Component', this.name, 'has been enabled');
     }
 
+    /**
+     * Runs when the component has loaded
+     *
+     * @memberof LibraryFilter
+     */
+    onStart(): void {
+        this.create();
+    }
+
     private eventsExist: boolean;
     /**
      * Adds a variety of events to the filter bar
@@ -370,8 +392,6 @@ export class LibraryFilter extends Component {
         // When the show all checkbox is clicked, toggle the showAll variable and update the games
         checkbox.addEventListener('click', () => {
             this.showAll = (checkbox as any).checked;
-            console.log(this.showAll);
-            console.log((checkbox as any));
             this.updateAllGames();
         });
 
@@ -419,7 +439,6 @@ export class LibraryFilter extends Component {
     }
 
     sortGames() {
-        console.log(this.gameTiles);
         let arr = (Array.from(this.gameTiles) as Element[]).map(e => e.parentElement); // Get all wrappers as an array
         arr = arr.sort(FilterOrder.getSorter(this.order));
 
@@ -432,7 +451,9 @@ export class LibraryFilter extends Component {
         })
     }
 
-    onUpdate() {}
+    onUpdate() {
+        this.create();
+    }
 }
 
 export class FilterOrder {
