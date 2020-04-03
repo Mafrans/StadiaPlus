@@ -1,3 +1,5 @@
+import '~pretty-checkbox/src/pretty-checkbox.scss';
+
 export class Checkbox {
     private label: string;
     private shape: string = CheckboxShape.DEFAULT;
@@ -7,6 +9,7 @@ export class Checkbox {
     private border: boolean = true;
     private icon: string;
     private disabled: boolean;
+    private bigger: boolean;
 
     constructor(label: string) {
         this.label = label;
@@ -47,21 +50,37 @@ export class Checkbox {
         return this;
     }
 
+    setBigger(bigger: boolean) {
+        this.bigger = bigger;
+        return this;
+    }
+
     build() {
         // Create element
         const element = document.createElement('div');
 
         // Add main classes
-        element.classList.add('pretty', this.shape);
+        element.classList.add('pretty', this.shape, this.style);
 
         // If animated, add animation
         if(this.animation) {
             element.classList.add(this.animation);
         }
 
+        // Set bigger
+        if(this.bigger) {
+            element.classList.add('p-bigger');
+        }
+
+        // Set border
+        if(!this.border) {
+            element.classList.add('p-plain');
+        }
+
         // Add checkbox input
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
+        checkbox.disabled = this.disabled;
         element.appendChild(checkbox);
 
         // Add state div
