@@ -48,7 +48,7 @@ export class Select {
     }
 
     destroy() {
-        if(this.slimselect.config !== undefined) {
+        if(this.slimselect !== undefined) {
             this.slimselect.destroy();
         }
         this.element.classList.remove('stadiaplus_dropdown');
