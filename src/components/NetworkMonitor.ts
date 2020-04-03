@@ -2,11 +2,15 @@ import { Component } from '../Component';
 import Logger from '../Logger';
 import Util from '../Util';
 import { UIButton } from '../ui/UIButton';
-import { UIRow } from '../ui/UIRow';
 import { UIComponent } from '../ui/UIComponent';
-import './styles/UITab.scss';
+import './styles/NetworkMonitor.scss';
 
-const chrome: any = (window as any).chrome;
+// Import the Monitor runnable as a raw string
+// @ts-ignore
+import runnable from '!raw-loader!../MonitorRunnable';
+import { Checkbox, CheckboxShape, CheckboxAnimation } from '../ui/Checkbox';
+
+const { chrome, RTCPeerConnection } = (window as any);
 
 /**
  * A tab and button displayed in the Stadia Menu.
@@ -24,6 +28,11 @@ export class NetworkMonitor extends Component {
     /**
      * The tab element.
      */
+    tabElement: HTMLElement;
+
+    /**
+     * The monitor element.
+     */
     element: HTMLElement;
 
     /**
@@ -36,24 +45,89 @@ export class NetworkMonitor extends Component {
      */
     button: UIButton;
 
+    peerConnections: any[] = [];
+
     constructor() {
         super();
+
+        this.element = document.createElement('div');
+        this.element.classList.add('stadiaplus_network-monitor');
     }
+
+    active: boolean = false;
+    visible: any = {
+        'resolution': true,
+        'FPS': true,
+        'latency': true,
+        'codec': true,
+        'traffic': true,
+        'current-traffic': true,
+        'average-traffic': true,
+        'packets-lost': true,
+        'average-packet-loss': true,
+        'jitter-buffer': true,
+    };
+    orderMap: any = [
+        'resolution',
+        'FPS',
+        'latency',
+        'codec',
+        'traffic',
+        'current-traffic',
+        'average-traffic',
+        'packets-lost',
+        'average-packet-loss',
+        'jitter-buffer'
+    ]
 
     /**
      * Creates a [[UIComponent]] and a [[UIButton]]
      */
-    createElement() {
+    createUI() {
         this.component = new UIComponent(
             'Network Monitor',
             `
-                This feature is still being worked on, please wait for future updates.
+            <div class='CTvDXd QAAyWd Fjy05d ivWUhc QSDHyc rpgZzc RkyH1e stadiaplus_button stadiaplus_networkmonitor-toggle-button' id='${this.id}-togglebutton'>Network Monitor</div>
+            <hr>
+            <h6>Visible Stats</h6>
+            <ul id='${this.id}-visiblelist'></ul>
             `,
             this.id,
         );
+        this.component.element.classList.add('stadiaplus_networkmonitor-tab');
 
         const icon = chrome.runtime.getURL('images/icons/network-monitor.svg');
         this.button = new UIButton(icon, 'Monitor', this.id + '-button');
+
+        this.getStorage(() => { this.updateVisible() });
+    }
+
+    startRunnable() {
+        this.desandbox(runnable);
+    }
+
+    openMonitor() {
+        this.active = true;
+        this.desandbox('StadiaPlusMonitor.start()');
+    }
+
+    closeMonitor() {
+        this.active = false;
+        this.desandbox('StadiaPlusMonitor.stop()');
+    }
+    
+    getStorage(callback?: Function) {
+        chrome.storage.local.get(['monitorStatsVisible'], (result: any) => {
+            this.visible = result.monitorStatsVisible;
+
+            if(callback) 
+                callback();
+        });
+    }
+
+    setStorage(callback?: Function) {
+        const self = this;
+        chrome.storage.local.set({ monitorStatsVisible: self.visible }, callback);
     }
 
     /**
@@ -61,7 +135,8 @@ export class NetworkMonitor extends Component {
      */
     onStart(): void {
         this.enabled = true;
-        this.createElement();
+        this.startRunnable();
+        this.createUI();
 
         Logger.component('Component', this.name, 'has been enabled');
     }
@@ -74,8 +149,15 @@ export class NetworkMonitor extends Component {
         this.button.element.remove();
         this.button.destroy();
         this.component.element.remove();
+        this.closeMonitor();
+
+        this.desandbox('StadiaPlusMonitor = null');
 
         Logger.component('Component', this.name, 'has been disabled');
+    }
+
+    updateVisible() {
+        this.desandbox(`StadiaPlusMonitor.setVisible(${JSON.stringify(this.visible)})`);
     }
 
     /**
@@ -85,9 +167,43 @@ export class NetworkMonitor extends Component {
         // Only create components if the menu is open already.
         if (Util.isMenuOpen() && Util.isInGame()) {
             if (!this.exists()) {
-                this.component.create();
-
                 const self = this;
+                this.component.create();
+                
+                const list = document.getElementById(this.id + '-visiblelist');            
+                for(const key of this.orderMap) {
+                    const name: string = key.replace(/-/g, ' ').split(' ').map((name:string) => name.substring(0, 1).toUpperCase() + name.substring(1)).join(' ');
+                    const value: boolean = this.visible[key];
+                    const item = document.createElement('li');
+
+                    const {pretty, checkbox} = new Checkbox(name).setBigger(true).setAnimation(CheckboxAnimation.SMOOTH).build();
+                    pretty.classList.add('stadiaplus_networkmonitor-checkbox');
+
+                    item.appendChild(pretty);
+                    list.appendChild(item);
+                    
+                    checkbox.checked = value;
+                    checkbox.addEventListener('click', () => {
+                        this.visible[key] = checkbox.checked;
+                        console.log('click');
+                        this.updateVisible();
+                        this.setStorage();
+                    });
+                }
+
+                const toggleButton = document.getElementById(this.id + '-togglebutton');
+                toggleButton.classList.toggle('shown', this.active);
+                
+                toggleButton.addEventListener('click', () => {
+                    toggleButton.classList.toggle('shown', this.active);
+                    if(!this.active) {
+                        this.openMonitor();
+                    }
+                    else {
+                        this.closeMonitor();
+                    }
+                });
+
                 this.button.create(() => {
                     self.button.button.addEventListener('click', () => {
                         self.component.open();
@@ -99,5 +215,17 @@ export class NetworkMonitor extends Component {
                 this.button.container.create();
             }
         }
+        
+        if(!Util.isInGame() && document.querySelector('body>.stadiaplus_networkmonitor')) {
+            this.closeMonitor();
+        }
+    }
+
+    desandbox(javascript: string) {
+        const script = document.createElement('script');
+        script.innerHTML = javascript;
+        document.body.appendChild(script);
+        console.log(script);
+        script.remove();
     }
 }

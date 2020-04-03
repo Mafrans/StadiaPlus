@@ -1,0 +1,41 @@
+.stadiaplus_networkmonitor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 150;
+    padding: 1rem;
+    background-color: rgba(0,0,0,0.4);
+
+    ul {
+        list-style-type: none;
+        padding-inline-start: 0;
+        margin-block-start: 0;
+        margin-block-end: 0;
+    }
+}
+
+.stadiaplus_networkmonitor-tab {
+    ul {
+        list-style-type: none;
+        padding-inline-start: 1rem;
+        margin-block-start: 0;
+        margin-block-end: 0;
+    }
+}
+
+.stadiaplus_networkmonitor-checkbox {
+    margin: 0.4rem 0;
+}
+
+.stadiaplus_networkmonitor-toggle-button {
+    &::before {
+        margin-right: 4px;
+        content: 'Show';
+    }
+
+    &.shown {
+        &::before {
+            content: 'Hide';
+        }
+    }
+}
