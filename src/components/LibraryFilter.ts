@@ -5,6 +5,7 @@ import './styles/LibraryFilter.scss';
 import { Snackbar } from '../ui/Snackbar';
 import { Select } from '../ui/Select';
 import { Database } from '../Database';
+import { Checkbox, CheckboxShape } from '../ui/Checkbox';
 
 const { chrome, Array } = window as any;
 
@@ -66,6 +67,7 @@ export class LibraryFilter extends Component {
      * @memberof LibraryFilter
      */
     showAll: boolean;
+    checkbox: HTMLElement;
 
     direction: OrderDirection;
 
@@ -319,13 +321,12 @@ export class LibraryFilter extends Component {
                 <option value="${FilterOrder.RANDOM}">Random</option>
             </select>
             <span id='${this.filterBar.id + '-direction'}' class="material-icons-extended ascending stadiaplus_filterbar-direction"></span>
-            <div id='${this.filterBar.id + '-checkbox'}' class="pretty p-bigger p-default p-curve stadiaplus_filterbar-checkbox">
-                <input type="checkbox" />
-                <div class="state">
-                    <label>Show hidden</label>
-                </div>
-            </div>
         `;
+
+        const {pretty, checkbox} = new Checkbox('Show hidden').setBigger(true).setShape(CheckboxShape.CURVED).build();
+        pretty.classList.add('stadiaplus_filterbar-checkbox');
+        this.filterBar.appendChild(pretty);
+        this.checkbox = checkbox;
         
         // Style the custom select box in the filter bar
         this.select = new Select(
@@ -388,10 +389,10 @@ export class LibraryFilter extends Component {
             this.setStorage();
         });
 
-        const checkbox = document.getElementById(this.filterBar.id + '-checkbox').querySelector('input');
         // When the show all checkbox is clicked, toggle the showAll variable and update the games
-        checkbox.addEventListener('click', () => {
-            this.showAll = (checkbox as any).checked;
+        console.log(this.checkbox);
+        this.checkbox.addEventListener('click', () => {
+            this.showAll = (this.checkbox as any).checked;
             this.updateAllGames();
         });
 

@@ -1,4 +1,4 @@
-import '~pretty-checkbox/src/pretty-checkbox.scss';
+import '../../node_modules/pretty-checkbox/src/pretty-checkbox.scss';
 
 export class Checkbox {
     private label: string;
@@ -60,7 +60,17 @@ export class Checkbox {
         const element = document.createElement('div');
 
         // Add main classes
-        element.classList.add('pretty', this.shape, this.style);
+        element.classList.add('pretty', 'p-default');
+
+        // If style is not default, add style
+        if(this.shape) {
+            element.classList.add(this.shape);
+        }
+
+        // If style is not default, add style
+        if(this.style) {
+            element.classList.add(this.style);
+        }
 
         // If animated, add animation
         if(this.animation) {
@@ -110,18 +120,18 @@ export class Checkbox {
 
         element.appendChild(state);
 
-        return {element, checkbox};
+        return {pretty: element, checkbox};
     }
 }
 
 export class CheckboxShape {
-    public static DEFAULT: string = 'p-default';
-    public static CURVED: string = 'p-curved';
+    public static DEFAULT: string = null;
+    public static CURVED: string = 'p-curve';
     public static ROUND: string = 'p-round';
 }
 
 export class CheckboxStyle {
-    public static DEFAULT: string = '';
+    public static DEFAULT: string = null;
     public static FILL: string = 'p-fill';
     public static THICK: string = 'p-thick';
 }
