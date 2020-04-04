@@ -4,6 +4,8 @@ export class UIComponent {
     id: string;
     html: string;
     element: Element;
+    openListeners: (() => void)[] = [];
+    closeListeners: (() => void)[] = [];
 
     constructor(title: string, content: string, id: string) {
         this.id = id;
@@ -48,10 +50,24 @@ export class UIComponent {
 
     open(): void {
         this.element.classList.add('open');
+
+        this.openListeners.forEach(c => c());
     }
 
     close(): void {
         Logger.info('Closing', this.id);
         this.element.classList.remove('open');
+
+        this.closeListeners.forEach(c => c());
+    }
+
+    onOpen(callback?:() => void) {
+        if(callback)
+            this.openListeners.push(callback)
+    }
+
+    onClose(callback?:() => void) {
+        if(callback)
+            this.closeListeners.push(callback)
     }
 }
