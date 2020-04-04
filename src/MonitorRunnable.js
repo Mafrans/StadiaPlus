@@ -1,18 +1,20 @@
-const MonitorRunnable = function() {
+const MonitorRunnable = function () {
     this.enabled = false;
     this.peerConnections = [];
     this.originalRTC;
     this.startTime;
     this.element;
     this.editable = false;
+    this.x = 0;
+    this.y = 0;
 
-    console.log('trying to connect hook...')
+    console.log('trying to connect hook...');
     const self = this;
     this.originalRTC = RTCPeerConnection;
-    (function(OriginalRTCConnection) {
+    (function (OriginalRTCConnection) {
         self.originalRTC = OriginalRTCConnection;
 
-        RTCPeerConnection = function(args) {
+        RTCPeerConnection = function (args) {
             const connection = new OriginalRTCConnection(args);
             self.peerConnections.push(connection);
             return connection;
@@ -20,26 +22,58 @@ const MonitorRunnable = function() {
         RTCPeerConnection.prototype = OriginalRTCConnection.prototype;
     })(RTCPeerConnection);
 
-    this.start = function() {
+    this.start = function () {
         this.enabled = true;
         this.element = document.createElement('div');
         this.element.classList.add('stadiaplus_networkmonitor');
-        this.element.id = 'networkmonitor-' + Math.floor(Math.random() * 999999);
-        document.body.appendChild(this.element);
+        this.element.id =
+            'networkmonitor-' + Math.floor(Math.random() * 999999);
+        document.body.appendChild(this.element);        
 
         this.update();
     };
 
-    this.setEditable = function(editable) {
+    this.setPosition = function(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    this.mouseEvents = [];
+    this.moving = false;
+    this.setEditable = function (editable) {
         this.editable = editable;
         this.element.classList.toggle('editable', editable);
-    }
 
-    this.setVisible = function(visible) {
+        if(editable) {
+            this.mouseEvents.push(
+                {
+                    type: 'mousemove',
+                    fn: (event) => {
+                    }
+                },
+                {
+                    type: 'mousedown',
+                    fn: (event) => {
+                    }
+                },
+                {
+                    type: 'mouseup',
+                    fn: (event) => {
+                    }
+                },
+            );
+            this.mouseEvents.forEach(event => this.element.addEventListener(event.type, event.fn));
+        }
+        else {
+            this.mouseEvents.forEach(event => this.element.removeEventListener(event.type, event.fn));
+        }
+    };
+
+    this.setVisible = function (visible) {
         this.visible = visible;
-    }
+    };
 
-    this.stop = function() {
+    this.stop = function () {
         this.enabled = false;
         this.element.remove();
 
@@ -48,11 +82,11 @@ const MonitorRunnable = function() {
     };
 
     this.visible = {
-        'resolution': true,
-        'FPS': true,
-        'latency': true,
-        'codec': true,
-        'traffic': true,
+        resolution: true,
+        FPS: true,
+        latency: true,
+        codec: true,
+        traffic: true,
         'current-traffic': true,
         'average-traffic': true,
         'packets-lost': true,
@@ -61,28 +95,50 @@ const MonitorRunnable = function() {
     };
 
     this.stats = [];
-    this.update = function() {
+    this.update = function () {
         if (this.peerConnections.length === 3) {
             this.peerConnections[2].getStats().then((_stats) => {
                 this.stats = Array.from(_stats);
 
-                const RTCInboundRTPVideoStream = this.getStat((stat) => stat[0].startsWith('RTCInboundRTPVideoStream'), );
-                const RTCIceCandidatePair = this.getStat((stat) => stat[0].startsWith('RTCIceCandidatePair'), );
-                const RTCMediaStreamTrack_receiver = this.getStat( (stat) => stat[0].startsWith('RTCMediaStreamTrack_receiver') && stat[1].kind === 'video', );
+                const RTCInboundRTPVideoStream = this.getStat((stat) =>
+                    stat[0].startsWith('RTCInboundRTPVideoStream'),
+                );
+                const RTCIceCandidatePair = this.getStat((stat) =>
+                    stat[0].startsWith('RTCIceCandidatePair'),
+                );
+                const RTCMediaStreamTrack_receiver = this.getStat(
+                    (stat) =>
+                        stat[0].startsWith('RTCMediaStreamTrack_receiver') &&
+                        stat[1].kind === 'video',
+                );
 
-                const resolution = this.getResolution(RTCMediaStreamTrack_receiver);
+                const resolution = this.getResolution(
+                    RTCMediaStreamTrack_receiver,
+                );
                 const fps = this.getFPS(RTCInboundRTPVideoStream);
                 const latency = this.getLatency(RTCIceCandidatePair) + ' ms';
                 const codec = this.getCodec(RTCInboundRTPVideoStream);
-                const totalTraffic = this.translateBitUnits(this.getTotalDownload(RTCIceCandidatePair));
-                const currentTraffic = this.translateBitUnits(this.getDownloadSpeed(RTCIceCandidatePair)) + '/s';
-                const averageTraffic = this.translateBitUnits(this.getAverageDownloadSpeed(RTCIceCandidatePair)) + '/s';
-                const packetsLost = this.getPacketsLost( RTCInboundRTPVideoStream);
-                const averagePacketLoss = this.getAveragePacketLoss(RTCInboundRTPVideoStream) + '%';
-                const jitterBuffer = this.getJitterBuffer(RTCMediaStreamTrack_receiver) + ' ms';
+                const totalTraffic = this.translateBitUnits(
+                    this.getTotalDownload(RTCIceCandidatePair),
+                );
+                const currentTraffic =
+                    this.translateBitUnits(
+                        this.getDownloadSpeed(RTCIceCandidatePair),
+                    ) + '/s';
+                const averageTraffic =
+                    this.translateBitUnits(
+                        this.getAverageDownloadSpeed(RTCIceCandidatePair),
+                    ) + '/s';
+                const packetsLost = this.getPacketsLost(
+                    RTCInboundRTPVideoStream,
+                );
+                const averagePacketLoss =
+                    this.getAveragePacketLoss(RTCInboundRTPVideoStream) + '%';
+                const jitterBuffer =
+                    this.getJitterBuffer(RTCMediaStreamTrack_receiver) + ' ms';
 
                 let time = new Date();
-                time = new Date( time - time.getTimezoneOffset() * 60 * 1000 )
+                time = new Date(time - time.getTimezoneOffset() * 60 * 1000);
                 let timeString = time.toLocaleString();
                 let html = `<h5>${timeString}</h5>`;
 
@@ -131,8 +187,7 @@ const MonitorRunnable = function() {
 
                 this.element.innerHTML = html;
             });
-        } 
-        else {
+        } else {
             this.startTime = Date.now();
         }
 
@@ -143,11 +198,11 @@ const MonitorRunnable = function() {
         }
     };
 
-    this.getStat = function(filter) {
+    this.getStat = function (filter) {
         return this.stats.find(filter)[1];
     };
 
-    this.translateBitUnits = function(value) {
+    this.translateBitUnits = function (value) {
         const units = ['b', 'kb', 'Mb', 'Gb'];
 
         let i = 0;
@@ -161,22 +216,22 @@ const MonitorRunnable = function() {
         );
     };
 
-    this.getLatency = function(RTCIceCandidatePair) {
+    this.getLatency = function (RTCIceCandidatePair) {
         return RTCIceCandidatePair.currentRoundTripTime * 1000;
     };
 
-    this.getJitterBuffer = function(RTCMediaStreamTrack_receiver) {
+    this.getJitterBuffer = function (RTCMediaStreamTrack_receiver) {
         return (
             (RTCMediaStreamTrack_receiver.jitterBufferDelay * 1000) /
             RTCMediaStreamTrack_receiver.jitterBufferEmittedCount
         ).toPrecision(4);
     };
 
-    this.getPacketsLost = function(RTCInboundRTPVideoStream) {
+    this.getPacketsLost = function (RTCInboundRTPVideoStream) {
         return RTCInboundRTPVideoStream.packetsLost;
     };
 
-    this.getAveragePacketLoss = function(RTCInboundRTPVideoStream) {
+    this.getAveragePacketLoss = function (RTCInboundRTPVideoStream) {
         return (
             (RTCInboundRTPVideoStream.packetsLost /
                 (RTCInboundRTPVideoStream.packetsReceived +
@@ -186,32 +241,32 @@ const MonitorRunnable = function() {
     };
 
     this.lastDownload = 0;
-    this.getDownloadSpeed = function(RTCIceCandidatePair) {
+    this.getDownloadSpeed = function (RTCIceCandidatePair) {
         const download = this.getTotalDownload(RTCIceCandidatePair);
         const speed = download - this.lastDownload;
         this.lastDownload = download;
         return speed;
     };
 
-    this.getAverageDownloadSpeed = function(RTCIceCandidatePair) {
+    this.getAverageDownloadSpeed = function (RTCIceCandidatePair) {
         return (
             this.getTotalDownload(RTCIceCandidatePair) /
             (this.timeSinceStart() / 1000)
         );
     };
 
-    this.getTotalDownload = function(RTCIceCandidatePair) {
+    this.getTotalDownload = function (RTCIceCandidatePair) {
         return RTCIceCandidatePair.bytesReceived * 8;
     };
 
-    this.getResolution = function(RTCMediaStreamTrack_receiver) {
+    this.getResolution = function (RTCMediaStreamTrack_receiver) {
         return {
             width: RTCMediaStreamTrack_receiver.frameWidth,
             height: RTCMediaStreamTrack_receiver.frameHeight,
         };
     };
 
-    this.getCodec = function(RTCInboundRTPVideoStream) {
+    this.getCodec = function (RTCInboundRTPVideoStream) {
         const codecStat = this.getStat(
             (stat) => stat[0] === RTCInboundRTPVideoStream.codecId,
         );
@@ -219,13 +274,13 @@ const MonitorRunnable = function() {
     };
 
     this.lastFrames = 0;
-    this.getFPS = function(RTCInboundRTPVideoStream) {
+    this.getFPS = function (RTCInboundRTPVideoStream) {
         const fps = RTCInboundRTPVideoStream.framesDecoded - this.lastFrames;
         this.lastFrames = RTCInboundRTPVideoStream.framesDecoded;
         return fps;
     };
 
-    this.timeSinceStart = function() {
+    this.timeSinceStart = function () {
         return Date.now() - this.startTime;
     };
 };
