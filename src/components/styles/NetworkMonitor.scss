@@ -12,6 +12,11 @@
         margin-block-start: 0;
         margin-block-end: 0;
     }
+
+    &.editable {
+        z-index: 300;
+        cursor: move;
+    }
 }
 
 .stadiaplus_networkmonitor-tab {
