@@ -86,7 +86,6 @@ export class ForceResolution extends Component {
 
                         self.getStorage(() => {
                             this.select.set(self.resolution);
-                            ForceResolution.setResolution(self.resolution);
                         });            
                     },
 
@@ -98,6 +97,9 @@ export class ForceResolution extends Component {
                 }
             ),
         );
+        self.getStorage(() => {
+            ForceResolution.setResolution(self.resolution);
+        });
         
         Logger.component('Component', this.name, 'has been enabled');
     }
@@ -107,18 +109,20 @@ export class ForceResolution extends Component {
 
         let height;
         let width;
+        console.log(codec);
         switch (codec) {
-        case Resolution.UHD_4K:
-            width = 3840;
-            height = 2160;
-            break;
-            
-        case Resolution.AUTOMATIC:
-            return;
+            case Resolution.UHD_4K:
+                width = 3840;
+                height = 2160;
+                break;
+                
+            case Resolution.AUTOMATIC:
+                return;
 
-        default:
-            return;
+            default:
+                return;
         }
+        console.log(width, height);
 
         script.innerHTML = `
             Object.defineProperty(window.screen, 'availWidth', { value: ${width} });
