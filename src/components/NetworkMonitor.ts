@@ -169,6 +169,14 @@ export class NetworkMonitor extends Component {
             if (!this.exists()) {
                 const self = this;
                 this.component.create();
+
+                this.component.onOpen(() => {
+                    this.desandbox('StadiaPlusMonitor.setEditable(true)');
+                });
+
+                this.component.onClose(() => {
+                    this.desandbox('StadiaPlusMonitor.setEditable(false)');
+                });
                 
                 const list = document.getElementById(this.id + '-visiblelist');            
                 for(const key of this.orderMap) {

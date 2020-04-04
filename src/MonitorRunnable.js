@@ -4,6 +4,7 @@ const MonitorRunnable = function() {
     this.originalRTC;
     this.startTime;
     this.element;
+    this.editable = false;
 
     console.log('trying to connect hook...')
     const self = this;
@@ -28,6 +29,11 @@ const MonitorRunnable = function() {
 
         this.update();
     };
+
+    this.setEditable = function(editable) {
+        this.editable = editable;
+        this.element.classList.toggle('editable', editable);
+    }
 
     this.setVisible = function(visible) {
         this.visible = visible;
