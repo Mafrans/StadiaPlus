@@ -1,10 +1,15 @@
 .stadiaplus_networkmonitor {
     position: absolute;
+    width: 250px;
     top: 0;
     left: 0;
     z-index: 150;
     padding: 1rem;
     background-color: rgba(0,0,0,0.4);
+
+    * {
+        user-select: none;
+    }
 
     ul {
         list-style-type: none;
