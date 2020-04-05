@@ -90,9 +90,11 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_ui_uicomponent_.uicomponent.html#closelisteners" class="tsd-kind-icon">close<wbr>Listeners</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_ui_uicomponent_.uicomponent.html#element" class="tsd-kind-icon">element</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_ui_uicomponent_.uicomponent.html#html" class="tsd-kind-icon">html</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_ui_uicomponent_.uicomponent.html#id" class="tsd-kind-icon">id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_ui_uicomponent_.uicomponent.html#openlisteners" class="tsd-kind-icon">open<wbr>Listeners</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -100,6 +102,8 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_ui_uicomponent_.uicomponent.html#close" class="tsd-kind-icon">close</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_ui_uicomponent_.uicomponent.html#create" class="tsd-kind-icon">create</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_ui_uicomponent_.uicomponent.html#onclose" class="tsd-kind-icon">on<wbr>Close</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_ui_uicomponent_.uicomponent.html#onopen" class="tsd-kind-icon">on<wbr>Open</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_ui_uicomponent_.uicomponent.html#open" class="tsd-kind-icon">open</a></li>
 							</ul>
 						</section>
@@ -118,7 +122,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/4c463b8/src/ui/UIComponent.ts#L6">ui/UIComponent.ts:6</a></li>
+									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/c71efbc/src/ui/UIComponent.ts#L8">ui/UIComponent.ts:8</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -141,12 +145,22 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="closelisteners" class="tsd-anchor"></a>
+					<h3>close<wbr>Listeners</h3>
+					<div class="tsd-signature tsd-kind-icon">close<wbr>Listeners<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = []</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/c71efbc/src/ui/UIComponent.ts#L8">ui/UIComponent.ts:8</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="element" class="tsd-anchor"></a>
 					<h3>element</h3>
 					<div class="tsd-signature tsd-kind-icon">element<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Element</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/4c463b8/src/ui/UIComponent.ts#L6">ui/UIComponent.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/c71efbc/src/ui/UIComponent.ts#L6">ui/UIComponent.ts:6</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -156,7 +170,7 @@
 					<div class="tsd-signature tsd-kind-icon">html<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/4c463b8/src/ui/UIComponent.ts#L5">ui/UIComponent.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/c71efbc/src/ui/UIComponent.ts#L5">ui/UIComponent.ts:5</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -166,7 +180,17 @@
 					<div class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/4c463b8/src/ui/UIComponent.ts#L4">ui/UIComponent.ts:4</a></li>
+							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/c71efbc/src/ui/UIComponent.ts#L4">ui/UIComponent.ts:4</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="openlisteners" class="tsd-anchor"></a>
+					<h3>open<wbr>Listeners</h3>
+					<div class="tsd-signature tsd-kind-icon">open<wbr>Listeners<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = []</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/c71efbc/src/ui/UIComponent.ts#L7">ui/UIComponent.ts:7</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -183,7 +207,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/4c463b8/src/ui/UIComponent.ts#L53">ui/UIComponent.ts:53</a></li>
+									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/c71efbc/src/ui/UIComponent.ts#L57">ui/UIComponent.ts:57</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -200,9 +224,79 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/4c463b8/src/ui/UIComponent.ts#L30">ui/UIComponent.ts:30</a></li>
+									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/c71efbc/src/ui/UIComponent.ts#L32">ui/UIComponent.ts:32</a></li>
 								</ul>
 							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="onclose" class="tsd-anchor"></a>
+					<h3>on<wbr>Close</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Close<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/c71efbc/src/ui/UIComponent.ts#L69">ui/UIComponent.ts:69</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callback: <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-siganture">
+											<ul class="tsd-signatures tsd-kind-type-literal">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="onopen" class="tsd-anchor"></a>
+					<h3>on<wbr>Open</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Open<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/c71efbc/src/ui/UIComponent.ts#L64">ui/UIComponent.ts:64</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callback: <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-siganture">
+											<ul class="tsd-signatures tsd-kind-type-literal">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -217,7 +311,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/4c463b8/src/ui/UIComponent.ts#L49">ui/UIComponent.ts:49</a></li>
+									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/c71efbc/src/ui/UIComponent.ts#L51">ui/UIComponent.ts:51</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -266,6 +360,9 @@
 						<a href="../modules/_components_uitab_.html">&quot;components/UITab&quot;</a>
 					</li>
 					<li class=" tsd-kind-external-module">
+						<a href="../modules/_ui_checkbox_.html">&quot;ui/<wbr>Checkbox&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/_ui_select_.html">&quot;ui/<wbr>Select&quot;</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -296,6 +393,9 @@
 								<a href="_ui_uicomponent_.uicomponent.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_ui_uicomponent_.uicomponent.html#closelisteners" class="tsd-kind-icon">close<wbr>Listeners</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="_ui_uicomponent_.uicomponent.html#element" class="tsd-kind-icon">element</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
@@ -304,11 +404,20 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="_ui_uicomponent_.uicomponent.html#id" class="tsd-kind-icon">id</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_ui_uicomponent_.uicomponent.html#openlisteners" class="tsd-kind-icon">open<wbr>Listeners</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_ui_uicomponent_.uicomponent.html#close" class="tsd-kind-icon">close</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_ui_uicomponent_.uicomponent.html#create" class="tsd-kind-icon">create</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_ui_uicomponent_.uicomponent.html#onclose" class="tsd-kind-icon">on<wbr>Close</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_ui_uicomponent_.uicomponent.html#onopen" class="tsd-kind-icon">on<wbr>Open</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_ui_uicomponent_.uicomponent.html#open" class="tsd-kind-icon">open</a>
