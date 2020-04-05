@@ -56,6 +56,7 @@ export class NetworkMonitor extends Component {
 
     active: boolean = false;
     visible: any = {
+        'time': true,
         'resolution': true,
         'FPS': true,
         'latency': true,
@@ -68,6 +69,7 @@ export class NetworkMonitor extends Component {
         'jitter-buffer': true,
     };
     orderMap: any = [
+        'time',
         'resolution',
         'FPS',
         'latency',
@@ -203,13 +205,13 @@ export class NetworkMonitor extends Component {
                 toggleButton.classList.toggle('shown', this.active);
                 
                 toggleButton.addEventListener('click', () => {
-                    toggleButton.classList.toggle('shown', this.active);
                     if(!this.active) {
                         this.openMonitor();
                     }
                     else {
                         this.closeMonitor();
                     }
+                    toggleButton.classList.toggle('shown', this.active);
                 });
 
                 this.button.create(() => {
