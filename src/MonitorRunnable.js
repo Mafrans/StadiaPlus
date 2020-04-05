@@ -28,44 +28,113 @@ const MonitorRunnable = function () {
         this.element.classList.add('stadiaplus_networkmonitor');
         this.element.id =
             'networkmonitor-' + Math.floor(Math.random() * 999999);
-        document.body.appendChild(this.element);        
+        document.body.appendChild(this.element);
 
+        this.setEditable(true);
         this.update();
     };
 
-    this.setPosition = function(x, y) {
+    this.setPosition = function (x, y) {
         this.x = x;
         this.y = y;
-    }
+        this.updatePosition();
+    };
+
+    this.updatePosition = function () {
+        this.element.style.left = this.x + 'px';
+        this.element.style.top = this.y + 'px';
+
+        const corners = {
+            tl: 10,
+            tr: 10,
+            bl: 10,
+            br: 10,
+        };
+
+        if (this.x < 10) {
+            corners.tl = 0;
+            corners.bl = 0;
+        }
+
+        if (this.y < 10) {
+            corners.tl = 0;
+            corners.tr = 0;
+        }
+
+        if (this.x > window.innerWidth - this.element.clientWidth - 10) {
+            corners.tr = 0;
+            corners.br = 0;
+        }
+
+        if (this.y > window.innerHeight - this.element.clientHeight - 10) {
+            corners.bl = 0;
+            corners.br = 0;
+        }
+
+        this.element.style[
+            'border-radius'
+        ] = `${corners.tl}px ${corners.tr}px ${corners.br}px ${corners.bl}px`;
+    };
 
     this.mouseEvents = [];
     this.moving = false;
+    this.offset = { x: 0, y: 0 };
     this.setEditable = function (editable) {
         this.editable = editable;
         this.element.classList.toggle('editable', editable);
 
-        if(editable) {
+        if (editable) {
             this.mouseEvents.push(
                 {
+                    target: document,
                     type: 'mousemove',
                     fn: (event) => {
-                    }
+                        if (this.moving) {
+                            this.x = Math.max(
+                                0, // Minimum x value
+                                Math.min(
+                                    window.innerWidth -
+                                        this.element.clientWidth, // Maximum x value
+                                    event.clientX - this.offset.x,
+                                ),
+                            );
+                            this.y = Math.max(
+                                0, // Minimum y value
+                                Math.min(
+                                    window.innerHeight -
+                                        this.element.clientHeight, // Maximum y value
+                                    event.clientY - this.offset.y,
+                                ),
+                            );
+
+                            this.updatePosition();
+                        }
+                    },
                 },
                 {
+                    target: this.element,
                     type: 'mousedown',
                     fn: (event) => {
-                    }
+                        this.moving = true;
+                        this.offset.x = event.clientX - this.x;
+                        this.offset.y = event.clientY - this.y;
+                    },
                 },
                 {
+                    target: document,
                     type: 'mouseup',
                     fn: (event) => {
-                    }
+                        this.moving = false;
+                    },
                 },
             );
-            this.mouseEvents.forEach(event => this.element.addEventListener(event.type, event.fn));
-        }
-        else {
-            this.mouseEvents.forEach(event => this.element.removeEventListener(event.type, event.fn));
+            this.mouseEvents.forEach((event) =>
+                event.target.addEventListener(event.type, event.fn),
+            );
+        } else {
+            this.mouseEvents.forEach((event) =>
+                event.target.removeEventListener(event.type, event.fn),
+            );
         }
     };
 
@@ -75,6 +144,7 @@ const MonitorRunnable = function () {
 
     this.stop = function () {
         this.enabled = false;
+        this.setEditable(false);
         this.element.remove();
 
         RTCPeerConnection = this.originalRTC;
@@ -82,6 +152,7 @@ const MonitorRunnable = function () {
     };
 
     this.visible = {
+        time: true,
         resolution: true,
         FPS: true,
         latency: true,
@@ -137,10 +208,12 @@ const MonitorRunnable = function () {
                 const jitterBuffer =
                     this.getJitterBuffer(RTCMediaStreamTrack_receiver) + ' ms';
 
-                let time = new Date();
-                time = new Date(time - time.getTimezoneOffset() * 60 * 1000);
-                let timeString = time.toLocaleString();
-                let html = `<h5>${timeString}</h5>`;
+                let html = '';
+                if (this.visible['time']) {
+                    let time = new Date();
+                    let timeString = time.toLocaleString();
+                    html += `<h5>${timeString}</h5>`;
+                }
 
                 html += '<ul>';
                 if (this.visible['resolution']) {
@@ -189,6 +262,17 @@ const MonitorRunnable = function () {
             });
         } else {
             this.startTime = Date.now();
+            this.element.innerHTML = `
+                <h5>Error</h5>
+                <p>
+                    Uh oh, something went terribly wrong. 
+                    This feature is still very unstable and 
+                    the developer knows there are problems, 
+                    please understand that this issue is 
+                    actively being worked on.
+                </p>
+                <p class='stadiaplus_muted'>Error Code: 001 - Stats unavailable</p>
+            `;
         }
 
         if (this.enabled) {
