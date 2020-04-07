@@ -120,7 +120,8 @@ export class NetworkMonitor extends Component {
     
     getStorage(callback?: Function) {
         chrome.storage.local.get(['monitorStatsVisible'], (result: any) => {
-            this.visible = result.monitorStatsVisible;
+            if(result.monitorStatsVisible)
+                this.visible = result.monitorStatsVisible;
 
             if(callback) 
                 callback();
