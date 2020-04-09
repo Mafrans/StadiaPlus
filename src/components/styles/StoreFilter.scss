@@ -1,27 +1,40 @@
-.stadiaplus_storefilter-game {
-    display: flex;
-    height: 90px;
-    align-content: center;
-    border-radius: 0.5rem;
-    background-color: #2d2e31;
-    margin-bottom: 1rem;
-    box-shadow: 0 0 0 0.1875rem transparent;
+.stadiaplus_storefilter {
+    .bar {
 
-    &.shown {
-        display: flex;
     }
+    .games {
+        margin-bottom: 1.5rem;
+        padding: 0.5rem;
+        background-color: rgba(255,255,255,.06);
+        border-radius: 0 0 0.5rem 0.5rem;
 
-    img {
-        object-fit: cover;
-        width: 140px;
-        border-top-left-radius: 0.5rem;
-        border-bottom-left-radius: 0.5rem;
-    }
-
-    .detail {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        margin-left: 1.5rem;
+        .stadiaplus_storefilter-game {
+            display: flex;
+            height: 90px;
+            align-content: center;
+            border-radius: 0.5rem;
+            background-color: rgba(255,255,255,.06);
+            margin: 0.5rem;
+            box-shadow: 0 0 0 0.1875rem transparent;
+            color: #ffffff;
+    
+            &.shown {
+                display: flex;
+            }
+    
+            img {
+                object-fit: cover;
+                width: 140px;
+                border-top-left-radius: 0.5rem;
+                border-bottom-left-radius: 0.5rem;
+            }
+    
+            .detail {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                margin-left: 1.5rem;
+            }
+        }
     }
 }
