@@ -6,9 +6,18 @@
         background-color: rgba(255,255,255,.12);
         padding: 1rem;
         align-items: center;
+        display: flex;
+        align-content: center;
+        
+        &::before {
+            content: 'search';
+            font-size: 32px;
+            margin-right: 0.5rem;
+            font-family: 'Material Icons Extended';
+        }
 
         input {
-            margin-top: 0.5rem;
+            width: calc(100% - 1rem);
             padding: 0.5rem;
             background-color: rgba(255,255,255,.12);
             font-family: 'Google Sans',sans-serif;

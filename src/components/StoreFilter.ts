@@ -46,7 +46,6 @@ export class StoreFilter extends Component {
         this.element.id = this.id;
         this.element.innerHTML = `
             <div class='bar'>
-                <h5>Search</h5>
                 <input type='text' placeholder="${connection[Math.floor(Math.random() * connection.length)][1]}..." id='${this.id}-search'>
             </div>
             <div class='games' id='${this.id}-games'>
