@@ -127,7 +127,7 @@ export class LibraryFilter extends Component {
 
 
     wrapperExists(uuid: string) {
-        return document.getElementById(this.id + '-' + uuid);
+        return this.renderer.querySelector('#' + this.id + '-' + uuid);
     }
 
     /**
@@ -297,82 +297,14 @@ export class LibraryFilter extends Component {
         chrome.storage.sync.set({ games: this.games, 'sort-order': this.order, 'sort-direction': this.direction }, callback);
     }
 
-    oldInHome: boolean = false;
-    create(): void {
-        const inHome = Util.isInHome();
-        if(!inHome || inHome === this.oldInHome) {
-            // this.enabled = false;
-            this.oldInHome = inHome;
-            return;
-        }
-        else {
-            this.oldInHome = inHome;
-        }
-
-        this.enabled = true;
-        this.filterBar.id = this.id + '-filterbar';
-        this.filterBar.innerHTML = `
-            <span class="material-icons-extended">
-                filter_list
-            </span>
-            <select name="order">
-                <option value="${FilterOrder.RECENT}">Recently Played</option>
-                <option value="${FilterOrder.ALPHABETICAL}">Alphabetical</option>
-                <option value="${FilterOrder.RANDOM}">Random</option>
-            </select>
-            <span id='${this.filterBar.id + '-direction'}' class="material-icons-extended ascending stadiaplus_filterbar-direction"></span>
-        `;
-
-        const {pretty, checkbox} = new Checkbox('Show hidden').setBigger(true).setShape(CheckboxShape.CURVED).build();
-        pretty.classList.add('stadiaplus_filterbar-checkbox');
-        this.filterBar.appendChild(pretty);
-        this.checkbox = checkbox;
-        
-        // Style the custom select box in the filter bar
-        this.select = new Select(
-            this.filterBar.querySelector('select'),
-            FilterOrder.RECENT,
-        );
-
-        // Create an observer observing the filterbar container, making sure to reload the bar whenever it gets destroyed.
-        const config = { attributes: true, childList: true, subtree: true };
-        const observer = new MutationObserver((event) => {
-            const childChanges = event.filter((e) => e.type === 'childList');
-
-            // Identify the correct changes in the DOM
-            if (childChanges.length === 4) {
-
-                // If the filter bar doesn't already exist...
-                if (!this.filterBarExists()) {
-                    // Create it
-                    const container = document.querySelector('.CVVXfc.YYy3Zb');
-
-                    this.gameTiles = document.querySelectorAll('.GqLi4d');
-                    container.appendChild(this.filterBar);
-
-                    this.createAllWrappers();
-                    this.select.set(this.order);
-
-                    if(!this.eventsExist) {
-                        this.addFilterBarEvents();
-                    }
-                    
-                    container.parentNode.prepend(container); // Always append container at the top 
-                }
-            }
-        });
-        observer.observe(document.querySelector('.iadg4b'), config);
-
-        Logger.component('Component', this.name, 'has been enabled');
-    }
-
     /**
      * Runs when the component has loaded
      *
      * @memberof LibraryFilter
      */
     onStart(): void {
-        this.create();
+        this.enabled = true;
+        Logger.component('Component', this.name, 'has been enabled');
     }
 
     private eventsExist: boolean;
@@ -390,7 +322,6 @@ export class LibraryFilter extends Component {
         });
 
         // When the show all checkbox is clicked, toggle the showAll variable and update the games
-        console.log(this.checkbox);
         this.checkbox.addEventListener('click', () => {
             this.showAll = (this.checkbox as any).checked;
             this.updateAllGames();
@@ -435,10 +366,6 @@ export class LibraryFilter extends Component {
         Logger.component('Component', this.name, 'has been disabled');
     }
 
-    filterBarExists(): boolean {
-        return document.getElementById(this.id + '-filterbar') !== null;
-    }
-
     sortGames() {
         let arr = (Array.from(this.gameTiles) as Element[]).map(e => e.parentElement); // Get all wrappers as an array
         arr = arr.sort(FilterOrder.getSorter(this.order));
@@ -453,8 +380,47 @@ export class LibraryFilter extends Component {
     }
 
     onUpdate() {
-        this.create();
-    }
+        if(Util.isInHome()) {
+            if(!this.exists()) {
+                this.updateRenderer();
+                
+                const container = this.renderer.querySelector('.CVVXfc.YYy3Zb');
+                if(!container) return;
+
+                this.filterBar.id = this.id;
+                this.filterBar.innerHTML = `
+                    <span class="material-icons-extended">
+                        sort
+                    </span>
+                    <select name="order">
+                        <option value="${FilterOrder.RECENT}">Recently Played</option>
+                        <option value="${FilterOrder.ALPHABETICAL}">Alphabetical</option>
+                        <option value="${FilterOrder.RANDOM}">Random</option>
+                    </select>
+                    <span id='${this.filterBar.id + '-direction'}' class="material-icons-extended ascending stadiaplus_filterbar-direction"></span>
+                `;
+
+                const {pretty, checkbox} = new Checkbox('Show hidden').setBigger(true).setShape(CheckboxShape.CURVED).build();
+                pretty.classList.add('stadiaplus_filterbar-checkbox');
+                this.filterBar.appendChild(pretty);
+                this.checkbox = checkbox;
+                this.gameTiles = this.renderer.querySelectorAll('.GqLi4d');
+                container.appendChild(this.filterBar);
+
+                this.createAllWrappers();
+
+                // Style the custom select box in the filter bar
+                this.select = new Select(
+                    this.filterBar.querySelector('select'),
+                    FilterOrder.RECENT,
+                );
+
+                this.select.set(this.order);
+
+                this.addFilterBarEvents();
+            }
+        }
+    }  
 }
 
 export class FilterOrder {

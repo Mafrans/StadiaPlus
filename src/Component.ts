@@ -22,14 +22,21 @@ export class Component {
      */
     enabled: boolean;
 
+    renderer: HTMLElement;
+
     /**
      * This method is called whenever the component should start loading.
      */
     load(): void {
         this.id =
             this.name.toLowerCase().replace(/\s/g, '') + '-' + Math.floor(Math.random() * 999999);
-
+        this.updateRenderer();
         this.onStart();
+    }
+
+    updateRenderer(): void {
+        const renderers = document.querySelectorAll('.lhsE4e>c-wiz');
+        this.renderer = renderers[renderers.length - 1] as HTMLElement;
     }
 
     
@@ -39,6 +46,7 @@ export class Component {
      * @returns {boolean}
      */
     exists(): boolean {
+        if(this.renderer.style.opacity === '0') return false;
         return document.querySelector('#' + this.id) !== null;
     }
 
