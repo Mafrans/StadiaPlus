@@ -55,7 +55,7 @@ export class StoreFilter extends Component {
             console.log(key);
             const entry = connection[map[key]];
 
-            const element: HTMLElement = document.createElement('div');
+            const element: HTMLElement = document.createElement('a');
             element.classList.add('stadiaplus_storefilter-game');
             element.innerHTML = `
                 <img src='https://loremflickr.com/640/360'>
@@ -68,7 +68,7 @@ export class StoreFilter extends Component {
             element.setAttribute('data-uuid', key);
             element.setAttribute('data-name', entry[1]);
             element.setAttribute('data-tags', entry[2]);
-            element.setAttribute('data-url', entry[0].match(/(https:\/\/stadia.google.com\/store\/details\/[0-9a-z/]+)/g));
+            element.setAttribute('href', entry[0].match(/(https:\/\/stadia.google.com\/store\/details\/[0-9a-z/]+)/g));
             element.setAttribute('data-img', 'https://stadiagamedb.com/' + entry[0].match(/(images\/posters\/[a-z0-9_.-]+.png)/g));
 
             this.games.push(element);
