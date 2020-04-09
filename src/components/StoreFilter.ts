@@ -60,12 +60,14 @@ export class StoreFilter extends Component {
             element.innerHTML = `
                 <img src='https://loremflickr.com/640/360'>
                 <div class='detail'>
-                    <h6 class='name'>Lorem Ipsum</h6>
+                    <h5 class='name'>Lorem Ipsum</h5>
+                    <span class='stadiaplus_muted tags'></span>
                 </div>
             `
             
             element.setAttribute('data-uuid', key);
             element.setAttribute('data-name', entry[1]);
+            element.setAttribute('data-tags', entry[2]);
             element.setAttribute('data-url', entry[0].match(/(https:\/\/stadia.google.com\/store\/details\/[0-9a-z/]+)/g));
             element.setAttribute('data-img', 'https://stadiagamedb.com/' + entry[0].match(/(images\/posters\/[a-z0-9_.-]+.png)/g));
 
@@ -111,6 +113,9 @@ export class StoreFilter extends Component {
         
                     const name = game.querySelector('.detail>.name');
                     name.innerHTML = game.getAttribute('data-name');
+                    
+                    const tags = game.querySelector('.detail>.tags');
+                    tags.innerHTML = game.getAttribute('data-tags');
                 }
             }
         }
