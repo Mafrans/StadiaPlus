@@ -1,0 +1,27 @@
+.stadiaplus_storefilter-game {
+    display: flex;
+    height: 90px;
+    align-content: center;
+    border-radius: 0.5rem;
+    background-color: #2d2e31;
+    margin-bottom: 1rem;
+    box-shadow: 0 0 0 0.1875rem transparent;
+
+    &.shown {
+        display: flex;
+    }
+
+    img {
+        object-fit: cover;
+        width: 140px;
+        border-top-left-radius: 0.5rem;
+        border-bottom-left-radius: 0.5rem;
+    }
+
+    .detail {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-left: 1.5rem;
+    }
+}
