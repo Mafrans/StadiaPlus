@@ -1,0 +1,22 @@
+.stadiaplus_rating {
+    margin-top: -1rem;
+    margin-bottom: 1rem;
+    position: relative;
+
+    &:hover .stadiaplus_rating-tooltip {
+        opacity: 1;
+    }
+
+    .stadiaplus_rating-tooltip {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 0.5rem;
+        background: rgba(0,0,0,0.8);
+        border-radius: 0.5rem;
+        color: #ffffff;
+        opacity: 0;
+        transition: opacity 0.4s ease-in-out 0.5s;
+    }
+}
