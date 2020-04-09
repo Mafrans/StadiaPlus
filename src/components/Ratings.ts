@@ -95,8 +95,8 @@ export class Ratings extends Component {
                     this.element.innerHTML = `
                         ${stars.join(' ')}
         
-                        <div class="material-icons-extended stadiaplus_rating-tooltip">
-                            ${rating} / 100
+                        <div class="stadiaplus_rating-tooltip">
+                            ${rating} / 100 (Metacritic)
                         </div>
                     `;
                 }
