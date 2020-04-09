@@ -1,7 +1,7 @@
 import { Component } from '../Component';
 import Logger from '../Logger';
 import Util from '../Util';
-// import './styles/StoreFilter.scss';
+import './styles/StoreFilter.scss';
 import { Database } from '../Database';
 
 /**
