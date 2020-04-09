@@ -24,7 +24,7 @@ class Util {
     }
 
     isInStore() {
-        return window.location.pathname.indexOf('store') !== -1;
+        return window.location.pathname.indexOf('store') !== -1 && !this.isInStoreDetail();
     }
 
     isInStoreDetail() {
