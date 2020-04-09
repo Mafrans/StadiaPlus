@@ -38,21 +38,22 @@ export class StoreFilter extends Component {
      * Creates a simple <span>, adds the right classes, and stores it in [@link #element]
      */
     createElement() {
+        const connection = this.database.getConnection()['data'];
+        const map = this.uuidMap.getConnection()['uuidMap'];
+
         this.element = document.createElement('div');
         this.element.classList.add('stadiaplus_storefilter');
         this.element.id = this.id;
         this.element.innerHTML = `
             <div class='bar'>
                 <h5>Search</h5>
-                <input type='text' id='${this.id}-search'>
+                <input type='text' placeholder="${connection[Math.floor(Math.random() * connection.length)][1]}..." id='${this.id}-search'>
             </div>
             <div class='games' id='${this.id}-games'>
 
             </div>
         `;
 
-        const connection = this.database.getConnection()['data'];
-        const map = this.uuidMap.getConnection()['uuidMap'];
         Object.keys(map).forEach((key: string) => {
             console.log(key);
             const entry = connection[map[key]];
