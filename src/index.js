@@ -12,6 +12,7 @@ import { Snackbar } from './ui/Snackbar';
 import { LibraryFilter } from './components/LibraryFilter';
 import { Database } from './Database';
 import { StoreFilter } from './components/StoreFilter';
+import { Ratings } from './components/Ratings';
 
 const loader = new ComponentLoader();
 const snackbar = new Snackbar();
