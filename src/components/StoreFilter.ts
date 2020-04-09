@@ -53,7 +53,7 @@ export class StoreFilter extends Component {
         this.gameTemplate.innerHTML = `
             <img src='https://loremflickr.com/640/360'>
             <div class='detail'>
-                <h6>Lorem Ipsum</h6>
+                <h6 class='name'>Lorem Ipsum</h6>
             </div>
         `
 
