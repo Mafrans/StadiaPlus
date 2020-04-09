@@ -25,8 +25,6 @@ export class Ratings extends Component {
     createElement() {
         this.element = document.createElement('div');
         this.element.classList.add('stadiaplus_rating', 'material-icons-extended');
-
-        this.updateRating();
     }
 
     getUUID() {
@@ -39,7 +37,6 @@ export class Ratings extends Component {
         const map = this.uuidMap.getConnection()['uuidMap'];
         
         const entry = connection[map[uuid]];
-        console.log(entry);
 
         this.element.setAttribute('data-rating', entry[6]);
     }
@@ -83,13 +80,14 @@ export class Ratings extends Component {
             if(!this.exists()) {
                 this.updateRating();
                 this.updateRenderer();
-                console.log(this.element);
-
                 const rating = parseInt(this.element.getAttribute('data-rating'));
                 const stars = this.getStars(rating);
                 
                 if (rating > 0) {
                     const nextSibling = this.renderer.querySelector('.ZzBJSb > .BMUnfd');
+
+                    if(nextSibling === null) return;
+
                     nextSibling.parentNode.insertBefore(this.element, nextSibling);
 
                     this.element.innerHTML = `

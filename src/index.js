@@ -21,7 +21,7 @@ const tab = new UITab();
 const database = new Database('https://stadiagamedb.com/data/gamedb.json');
 const uuidMap = new Database('https://stadiagamedb.com/data/uuidmap.json');
 database.connect();
-uuidMap.connect(console.log);
+uuidMap.connect();
 
 loader.register(new Clock());
 loader.register(new LibraryFilter(snackbar, database, uuidMap));

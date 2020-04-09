@@ -109,7 +109,6 @@ export class ForceResolution extends Component {
 
         let height;
         let width;
-        console.log(codec);
         switch (codec) {
             case Resolution.UHD_4K:
                 width = 3840;
@@ -122,7 +121,6 @@ export class ForceResolution extends Component {
             default:
                 return;
         }
-        console.log(width, height);
 
         script.innerHTML = `
             Object.defineProperty(window.screen, 'availWidth', { value: ${width} });

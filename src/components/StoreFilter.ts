@@ -54,7 +54,6 @@ export class StoreFilter extends Component {
         `;
 
         Object.keys(map).forEach((key: string) => {
-            console.log(key);
             const entry = connection[map[key]];
 
             const element: HTMLElement = document.createElement('div');
@@ -118,6 +117,9 @@ export class StoreFilter extends Component {
             if(!this.exists()) {
                 this.updateRenderer();
                 const container = this.renderer.querySelector('.nWmtLd');
+
+                if(container === null) return;
+
                 container.prepend(this.element);
 
                 const gameContainer = document.getElementById(this.id + '-games');

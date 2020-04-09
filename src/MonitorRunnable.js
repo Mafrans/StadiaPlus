@@ -8,7 +8,6 @@ const MonitorRunnable = function () {
     this.x = 0;
     this.y = 0;
 
-    console.log('trying to connect hook...');
     const self = this;
     this.originalRTC = RTCPeerConnection;
     (function (OriginalRTCConnection) {

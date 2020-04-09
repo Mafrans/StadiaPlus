@@ -196,7 +196,6 @@ export class NetworkMonitor extends Component {
                     checkbox.checked = value;
                     checkbox.addEventListener('click', () => {
                         this.visible[key] = checkbox.checked;
-                        console.log('click');
                         this.updateVisible();
                         this.setStorage();
                     });
@@ -236,7 +235,6 @@ export class NetworkMonitor extends Component {
         const script = document.createElement('script');
         script.innerHTML = javascript;
         document.body.appendChild(script);
-        console.log(script);
         script.remove();
     }
 }
