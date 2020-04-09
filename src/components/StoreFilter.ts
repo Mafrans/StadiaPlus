@@ -26,6 +26,7 @@ export class StoreFilter extends Component {
     database: Database;
     uuidMap: Database;
     games: HTMLElement[] = [];
+    searchField: HTMLElement;
 
     constructor(database: Database, uuidMap: Database) {
         super();
@@ -51,11 +52,11 @@ export class StoreFilter extends Component {
 
         const connection = this.database.getConnection()['data'];
         const map = this.uuidMap.getConnection()['uuidMap'];
-        for(const key in map) {
+        Object.keys(map).forEach((key: string) => {
             console.log(key);
             const entry = connection[map[key]];
 
-            const element: HTMLElement = document.createElement('a');
+            const element: HTMLElement = document.createElement('div');
             element.classList.add('stadiaplus_storefilter-game');
             element.innerHTML = `
                 <img src='https://loremflickr.com/640/360'>
@@ -72,7 +73,20 @@ export class StoreFilter extends Component {
             element.setAttribute('data-img', 'https://stadiagamedb.com/' + entry[0].match(/(images\/posters\/[a-z0-9_.-]+.png)/g));
 
             this.games.push(element);
-        }
+        });
+    }
+
+    addEvents() {
+        this.searchField.addEventListener('input', () => {
+            this.search((this.searchField as any).value);
+        });
+    }
+
+    search(query: string) {
+        this.games.forEach((game) => {
+            const name = game.getAttribute('data-name').toLowerCase();
+            game.classList.toggle('shown', query.length > 0 && name.indexOf(query.toLowerCase()) !== -1);
+        })
     }
 
     /**
@@ -101,11 +115,12 @@ export class StoreFilter extends Component {
         // Only update the clock when it's visible
         if(Util.isInStore()) {
             if(!this.exists()) {
-                const container = document.querySelector('.nWmtLd');
+                this.updateRenderer();
+                const container = this.renderer.querySelector('.nWmtLd');
                 container.prepend(this.element);
 
                 const gameContainer = document.getElementById(this.id + '-games');
-                for(const game of this.games) {
+                this.games.forEach((game) => {
                     gameContainer.appendChild(game);
 
                     const image = game.querySelector('img');
@@ -116,7 +131,11 @@ export class StoreFilter extends Component {
                     
                     const tags = game.querySelector('.detail>.tags');
                     tags.innerHTML = game.getAttribute('data-tags');
-                }
+                });
+
+                this.searchField = this.renderer.querySelector('#' + this.id + '-search');
+            
+                this.addEvents();
             }
         }
     }
