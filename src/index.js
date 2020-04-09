@@ -11,6 +11,7 @@ import { NetworkMonitor } from './components/NetworkMonitor';
 import { Snackbar } from './ui/Snackbar';
 import { LibraryFilter } from './components/LibraryFilter';
 import { Database } from './Database';
+import { StoreFilter } from './components/StoreFilter';
 
 const loader = new ComponentLoader();
 const snackbar = new Snackbar();
@@ -27,6 +28,7 @@ loader.register(new ForceCodec(tab, snackbar));
 loader.register(new ForceResolution(tab, snackbar));
 loader.register(tab);
 loader.register(new NetworkMonitor());
+loader.register(new StoreFilter(database));
 
 window.addEventListener('load', () => {
     Util.load();
