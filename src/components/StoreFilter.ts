@@ -56,7 +56,7 @@ export class StoreFilter extends Component {
         Object.keys(map).forEach((key: string) => {
             const entry = connection[map[key]];
 
-            const element: HTMLElement = document.createElement('div');
+            const element: HTMLElement = document.createElement('a');
             element.classList.add('stadiaplus_storefilter-game');
             element.innerHTML = `
                 <img src='https://loremflickr.com/640/360'>
