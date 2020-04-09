@@ -29,6 +29,7 @@ loader.register(new ForceResolution(tab, snackbar));
 loader.register(tab);
 loader.register(new NetworkMonitor());
 loader.register(new StoreFilter(database, uuidMap));
+loader.register(new Ratings(database, uuidMap));
 
 window.addEventListener('load', () => {
     Util.load();
