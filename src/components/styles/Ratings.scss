@@ -5,18 +5,22 @@
 
     &:hover .stadiaplus_rating-tooltip {
         opacity: 1;
+        transform: translateX(-50%) scale(1);
     }
 
     .stadiaplus_rating-tooltip {
+        font-family: 'Google Sans', sans-serif;
         position: absolute;
         top: 100%;
         left: 50%;
-        transform: translateX(-50%);
+        transform: translateX(-50%) scale(.9);
         padding: 0.5rem;
         background: rgba(0,0,0,0.8);
         border-radius: 0.5rem;
         color: #ffffff;
+        font-size: 20px;
         opacity: 0;
-        transition: opacity 0.4s ease-in-out 0.5s;
+
+        transition: opacity 0.3s ease-in-out 0.3s, transform 0.3s ease-in-out 0.3s;
     }
 }
