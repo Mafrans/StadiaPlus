@@ -26,5 +26,9 @@ class Util {
     isInStore() {
         return window.location.pathname.indexOf('store') !== -1;
     }
+
+    isInStoreDetail() {
+        return window.location.pathname.indexOf('store/details') !== -1;
+    }
 }
 export default new Util();
