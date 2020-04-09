@@ -1,7 +1,7 @@
 import { Component } from '../Component';
 import Logger from '../Logger';
 import Util from '../Util';
-import './styles/StoreFilter.scss';
+// import './styles/StoreFilter.scss';
 import { Database } from '../Database';
 
 /**
@@ -24,12 +24,13 @@ export class StoreFilter extends Component {
     element: HTMLElement;
     gameTemplate: HTMLElement;
     database: Database;
+    uuidMap: Database;
+    games: HTMLElement[] = [];
 
-    constructor(database: Database) {
+    constructor(database: Database, uuidMap: Database) {
         super();
         this.database = database;
-
-        this.createElement();
+        this.uuidMap = uuidMap;
     }
 
     /**
@@ -48,16 +49,28 @@ export class StoreFilter extends Component {
             </div>
         `;
 
-        this.gameTemplate = document.createElement('div');
-        this.gameTemplate.classList.add('stadiaplus_storefilter-game');
-        this.gameTemplate.innerHTML = `
-            <img src='https://loremflickr.com/640/360'>
-            <div class='detail'>
-                <h6 class='name'>Lorem Ipsum</h6>
-            </div>
-        `
+        const connection = this.database.getConnection()['data'];
+        const map = this.uuidMap.getConnection()['uuidMap'];
+        for(const key in map) {
+            console.log(key);
+            const entry = connection[map[key]];
 
-        for()
+            const element: HTMLElement = document.createElement('div');
+            element.classList.add('stadiaplus_storefilter-game');
+            element.innerHTML = `
+                <img src='https://loremflickr.com/640/360'>
+                <div class='detail'>
+                    <h6 class='name'>Lorem Ipsum</h6>
+                </div>
+            `
+            
+            element.setAttribute('data-uuid', key);
+            element.setAttribute('data-name', entry[1]);
+            element.setAttribute('data-url', entry[0].match(/(https:\/\/stadia.google.com\/store\/details\/[0-9a-z/]+)/g));
+            element.setAttribute('data-img', 'https://stadiagamedb.com/' + entry[0].match(/(images\/posters\/[a-z0-9_.-]+.png)/g));
+
+            this.games.push(element);
+        }
     }
 
     /**
@@ -65,6 +78,7 @@ export class StoreFilter extends Component {
      */
     onStart(): void {
         this.enabled = true;
+        this.createElement();
 
         Logger.component('Component', this.name, 'has been enabled');
     }
@@ -84,15 +98,21 @@ export class StoreFilter extends Component {
     onUpdate() {
         // Only update the clock when it's visible
         if(Util.isInStore()) {
-            // if(!this.exists()) {
-            //     const container = document.querySelector('.hxhAyf');
-            //     container.prepend(this.element);
-            // }
+            if(!this.exists()) {
+                const container = document.querySelector('.nWmtLd');
+                container.prepend(this.element);
 
-            // const time = new Date().toLocaleTimeString();
-            // window.requestAnimationFrame(() => {
-            //     this.element.innerHTML = time;
-            // });
+                const gameContainer = document.getElementById(this.id + '-games');
+                for(const game of this.games) {
+                    gameContainer.appendChild(game);
+
+                    const image = game.querySelector('img');
+                    image.src = game.getAttribute('data-img');
+        
+                    const name = game.querySelector('.detail>.name');
+                    name.innerHTML = game.getAttribute('data-name');
+                }
+            }
         }
     }
 }

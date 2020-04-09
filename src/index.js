@@ -28,7 +28,7 @@ loader.register(new ForceCodec(tab, snackbar));
 loader.register(new ForceResolution(tab, snackbar));
 loader.register(tab);
 loader.register(new NetworkMonitor());
-loader.register(new StoreFilter(database));
+loader.register(new StoreFilter(database, uuidMap));
 
 window.addEventListener('load', () => {
     Util.load();
