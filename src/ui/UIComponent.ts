@@ -4,6 +4,7 @@ export class UIComponent {
     id: string;
     html: string;
     element: Element;
+    open: boolean;
     openListeners: (() => void)[] = [];
     closeListeners: (() => void)[] = [];
 
@@ -44,19 +45,21 @@ export class UIComponent {
         );
         const self = this;
         backBtn.addEventListener('click', () => {
-            self.close();
+            self.closeTab();
         });
     }
 
-    open(): void {
+    openTab(): void {
         this.element.classList.add('open');
+        this.open = true;
 
         this.openListeners.forEach(c => c());
     }
 
-    close(): void {
+    closeTab(): void {
         Logger.info('Closing', this.id);
         this.element.classList.remove('open');
+        this.open = false;
 
         this.closeListeners.forEach(c => c());
     }

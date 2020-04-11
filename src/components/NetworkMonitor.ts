@@ -171,6 +171,7 @@ export class NetworkMonitor extends Component {
         if (Util.isMenuOpen() && Util.isInGame()) {
             if (!this.exists()) {
                 const self = this;
+                this.updateRenderer();
                 this.component.create();
 
                 this.component.onOpen(() => {
@@ -216,7 +217,7 @@ export class NetworkMonitor extends Component {
 
                 this.button.create(() => {
                     self.button.button.addEventListener('click', () => {
-                        self.component.open();
+                        self.component.openTab();
                     });
                 });
             }
@@ -224,6 +225,9 @@ export class NetworkMonitor extends Component {
             if(!this.button.container.exists()) {
                 this.button.container.create();
             }
+        }
+        else if(this.component.open) {
+            this.component.closeTab();
         }
         
         if(!Util.isInGame() && document.querySelector('body>.stadiaplus_networkmonitor')) {

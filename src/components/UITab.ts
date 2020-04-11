@@ -174,13 +174,15 @@ export class UITab extends Component {
         // Only create components if the menu is open already.
         if (Util.isMenuOpen() && Util.isInGame()) {
             if (!this.exists()) {
+                this.updateRenderer();
                 this.component.create();
+                this.createRows(true);
 
                 const self = this;
                 this.button.create(() => {
                     self.button.button.addEventListener('click', () => {
                         this.createRows(true);
-                        self.component.open();
+                        self.component.openTab();
                     });
                 });
             }
@@ -188,6 +190,9 @@ export class UITab extends Component {
             if(!this.button.container.exists()) {
                 this.button.container.create();
             }
+        }
+        else if(this.component.open) {
+            this.component.closeTab();
         }
     }
 }
