@@ -166,7 +166,7 @@ const MonitorRunnable = function () {
 
     this.stats = [];
     this.update = function () {
-        if (this.peerConnections.length > 0) {
+        if (this.peerConnections.length > 1) {
             const index = this.peerConnections.length - 1;
 
             this.peerConnections[index].getStats().then((_stats) => {
