@@ -10,10 +10,10 @@ import { Snackbar } from '../ui/Snackbar';
 const chrome = (window as any).chrome;
 
 /**
- * A dropdown allowing changing of the codec.
+ * A dropdown allowing changing of the resolution.
  *
- * @export the ForceCodec type.
- * @class ForceCodec
+ * @export the ForceResolution type.
+ * @class ForceResolution
  * @extends {Component}
  */
 export class ForceResolution extends Component {
@@ -63,6 +63,7 @@ export class ForceResolution extends Component {
                             <select name="resolution">
                                 <option value="${Resolution.AUTOMATIC}">Automatic</option>
                                 <option value="${Resolution.UHD_4K}">4K</option>
+                                <option value="${Resolution.FHD}">1080p</option>
                             </select>
                         </div>
                         <a class="stadiaplus_button-small">Apply</a>
@@ -114,6 +115,11 @@ export class ForceResolution extends Component {
                 width = 3840;
                 height = 2160;
                 break;
+            
+            case Resolution.FHD:
+                width = 1920;
+                height = 1080;
+                break;
                 
             case Resolution.AUTOMATIC:
                 return;
@@ -150,4 +156,5 @@ export class ForceResolution extends Component {
 export class Resolution {
     static AUTOMATIC = 0;
     static UHD_4K = 1;
+    static FHD = 2;
 }
