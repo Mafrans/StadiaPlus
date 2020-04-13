@@ -8,7 +8,7 @@ import './styles/NetworkMonitor.scss';
 // Import the Monitor runnable as a raw string
 // @ts-ignore
 import runnable from '!raw-loader!../MonitorRunnable';
-import { Checkbox, CheckboxShape, CheckboxAnimation } from '../ui/Checkbox';
+import { Checkbox, CheckboxAnimation } from '../ui/Checkbox';
 
 const { chrome, RTCPeerConnection } = (window as any);
 
@@ -45,13 +45,15 @@ export class NetworkMonitor extends Component {
      */
     button: UIButton;
 
-    peerConnections: any[] = [];
-
     constructor() {
         super();
 
         this.element = document.createElement('div');
         this.element.classList.add('stadiaplus_network-monitor');
+
+        document.addEventListener('DOMContentLoaded', () => {
+            this.startRunnable();
+        })
     }
 
     active: boolean = false;
