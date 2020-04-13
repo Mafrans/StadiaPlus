@@ -31,6 +31,8 @@ export class ForceResolution extends Component {
 
         this.tab = tab;
         this.snackbar = snackbar;
+        
+        this.getStorage();
     }
 
     getStorage(callback?: Function) {
@@ -53,6 +55,8 @@ export class ForceResolution extends Component {
     onStart(): void {
         this.enabled = true;
 
+        ForceResolution.setResolution(this.resolution);
+        
         const self = this;
         this.tab.addRow(
             new UIRow(
@@ -97,9 +101,6 @@ export class ForceResolution extends Component {
                 }
             ),
         );
-        self.getStorage(() => {
-            ForceResolution.setResolution(self.resolution);
-        });
         
         Logger.component('Component', this.name, 'has been enabled');
     }
