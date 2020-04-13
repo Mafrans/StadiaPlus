@@ -30,6 +30,7 @@ const MonitorRunnable = function () {
         document.body.appendChild(this.element);
 
         this.setEditable(true);
+        this.updatePosition();
         this.update();
     };
 
