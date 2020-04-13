@@ -13,6 +13,7 @@
     padding: 1rem;
     background-color: #2d2e30;
     transition: transform 0.15s ease-in-out;
+    z-index: 999;
 
     &.open {
         transform: translateX(0);
