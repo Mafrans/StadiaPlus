@@ -28,6 +28,9 @@
         "name": "Ratings",
         "source-name": "Metacritic"
     },
+    "store-filter": {
+        "name": "Store Filter"
+    },
     "snackbar": {
         "reload-to-update": "Reload the page to see your changes.",
         "hide-game": "A game has been hidden.",

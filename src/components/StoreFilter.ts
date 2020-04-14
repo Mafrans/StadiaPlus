@@ -3,6 +3,7 @@ import Logger from '../Logger';
 import Util from '../Util';
 import './styles/StoreFilter.scss';
 import { Database } from '../Database';
+import { Language } from '../Language';
 
 /**
  * A simple clock displayed in the Stadia Menu.
@@ -16,7 +17,7 @@ export class StoreFilter extends Component {
     /**
      * The name of the Component.
      */
-    name: string = "Store Filter";
+    name: string = Language.get('store-filter.name');
 
     /**
      * The clock element.
@@ -104,7 +105,7 @@ export class StoreFilter extends Component {
         this.enabled = true;
         this.createElement();
 
-        Logger.component('Component', this.name, 'has been enabled');
+        Logger.component(Language.get('component.enabled', { name: this.name }));
     }
 
     /**
@@ -113,7 +114,7 @@ export class StoreFilter extends Component {
     onStop(): void {
         this.enabled = false;
         this.element.remove();
-        Logger.component('Component', this.name, 'has been disabled');
+        Logger.component(Language.get('component.disabled', { name: this.name }));
     }
 
     /**
