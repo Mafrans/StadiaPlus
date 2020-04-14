@@ -2,8 +2,8 @@ export class Language {
     name: string;
     data: LanguageData = {};
     
-    constructor(name: string, data: string) {
-        this.data = JSON.parse(data);
+    constructor(name: string, data: any) {
+        this.data = data;
     }
 
     register(): void {
@@ -14,7 +14,7 @@ export class Language {
         let val = this.data[name];
         if(vars !== undefined) {
             for(const _var in vars) {
-                val.split('{{' + _var + '}}').join(vars[_var]);
+                val = val.split('{{' + _var + '}}').join(vars[_var]);
             }
         }
 
