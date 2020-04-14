@@ -6,11 +6,20 @@
     "clock": {
         "name": "Clock"
     },
-    "forcecodec": {
+    "force-codec": {
         "name": "Force Codec"
+    },
+    "force-resolution": {
+        "name": "Force Resolution",
+        "note": "Note: the set value is the maximum resolution Stadia will attempt to achieve. If your computer is not capable of rendering the resolution or it is not available with the current data usage option, it will not be displayed."
+    },
+    "snackbar": {
+        "reload-to-update": "Reload the page to see your changes."
     },
     "automatic": "Automatic",
     "vp9": "VP9",
     "h264": "H264",
-    "apply": "Apply"
+    "apply": "Apply",
+    "4k": "4K",
+    "1080p": "1080p"
 }

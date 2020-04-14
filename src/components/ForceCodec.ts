@@ -21,7 +21,7 @@ export class ForceCodec extends Component {
     /**
      * The name of the Component.
      */
-    name: string = Language.get('forcecodec.name');
+    name: string = Language.get('force-codec.name');
     codec: number = Codec.AUTOMATIC;
     select: Select;
     tab: UITab;
@@ -80,7 +80,7 @@ export class ForceCodec extends Component {
                             self.codec = parseInt(self.select.get()[0]);
     
                             self.setStorage(() => {
-                                self.snackbar.activate('Reload the page to see your changes.');
+                                self.snackbar.activate(Language.get('snackbar.reload-to-update'));
                             });
                         });
     

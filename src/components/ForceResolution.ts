@@ -6,6 +6,7 @@ import { UITab } from './UITab';
 import { UIRow, UIRowOptions } from '../ui/UIRow';
 import { Select } from '../ui/Select';
 import { Snackbar } from '../ui/Snackbar';
+import { Language } from '../Language';
 
 const chrome = (window as any).chrome;
 
@@ -20,7 +21,7 @@ export class ForceResolution extends Component {
     /**
      * The name of the Component.
      */
-    name: string = 'Force Resolution';
+    name: string = Language.get('force-resolution.name');
     resolution: number = Resolution.AUTOMATIC;
     select: Select;
     tab: UITab;
@@ -65,15 +66,15 @@ export class ForceResolution extends Component {
                     <div class='stadiaplus_row'>
                         <div class='stadiaplus_select'>
                             <select name="resolution">
-                                <option value="${Resolution.AUTOMATIC}">Automatic</option>
-                                <option value="${Resolution.UHD_4K}">4K</option>
-                                <option value="${Resolution.FHD}">1080p</option>
+                                <option value="${Resolution.AUTOMATIC}">${Language.get('automatic')}</option>
+                                <option value="${Resolution.UHD_4K}">${Language.get('4k')}</option>
+                                <option value="${Resolution.FHD}">${Language.get('1080p')}</option>
                             </select>
                         </div>
-                        <a class="stadiaplus_button-small">Apply</a>
+                        <a class="stadiaplus_button-small">${Language.get('apply')}</a>
                     </div>
 
-                    <p class="stadiaplus_muted">Note: the set value is the maximum resolution Stadia will attempt to achieve. If your computer is not capable of rendering the resolution or it is not available with the current data usage option, it will not be displayed.</p>
+                    <p class="stadiaplus_muted">${Language.get('force-resolution.note')}</p>
                 `,
                 this.id + '-row',
                 {
@@ -85,7 +86,7 @@ export class ForceResolution extends Component {
                             self.resolution = parseInt(self.select.get()[0]);
 
                             self.setStorage(() => {
-                                self.snackbar.activate('Reload the page to see your changes.');
+                                self.snackbar.activate(Language.get('snackbar.reload-to-update'));
                             });
                         });
 
@@ -103,7 +104,7 @@ export class ForceResolution extends Component {
             ),
         );
         
-        Logger.component('Component', this.name, 'has been enabled');
+        Logger.component(Language.get('component.enabled', { name: this.name }));
     }
 
     static setResolution(codec: number) {
@@ -144,7 +145,7 @@ export class ForceResolution extends Component {
      */
     onStop(): void {
         this.enabled = false;
-        Logger.component('Component', this.name, 'has been disabled');
+        Logger.component(Language.get('component.disabled', { name: this.name }));
     }
 
     /**
