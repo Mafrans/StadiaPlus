@@ -19,6 +19,11 @@
         "alphabetical": "Alphabetical",
         "random": "Random"
     },
+    "network-monitor": {
+        "name": "Network Monitor",
+        "heading-visible": "Visible Stats",
+        "button-label": "Monitor"
+    },
     "snackbar": {
         "reload-to-update": "Reload the page to see your changes.",
         "hide-game": "A game has been hidden.",

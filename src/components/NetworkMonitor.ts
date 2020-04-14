@@ -9,6 +9,7 @@ import './styles/NetworkMonitor.scss';
 // @ts-ignore
 import runnable from '!raw-loader!../MonitorRunnable';
 import { Checkbox, CheckboxAnimation } from '../ui/Checkbox';
+import { Language } from '../Language';
 
 const { chrome, RTCPeerConnection } = (window as any);
 
@@ -23,7 +24,7 @@ export class NetworkMonitor extends Component {
     /**
      * The name of the Component.
      */
-    name: string = 'Network Monitor';
+    name: string = Language.get('network-monitor.name');
 
     /**
      * The tab element.
@@ -89,11 +90,11 @@ export class NetworkMonitor extends Component {
      */
     createUI() {
         this.component = new UIComponent(
-            'Network Monitor',
+            Language.get('network-monitor.name'),
             `
             <div class='CTvDXd QAAyWd Fjy05d ivWUhc QSDHyc rpgZzc RkyH1e stadiaplus_button stadiaplus_networkmonitor-toggle-button' id='${this.id}-togglebutton'>Network Monitor</div>
             <hr>
-            <h6>Visible Stats</h6>
+            <h6>${Language.get('network-monitor.heading-visible')}</h6>
             <ul id='${this.id}-visiblelist'></ul>
             `,
             this.id,
@@ -101,7 +102,7 @@ export class NetworkMonitor extends Component {
         this.component.element.classList.add('stadiaplus_networkmonitor-tab');
 
         const icon = chrome.runtime.getURL('images/icons/network-monitor.svg');
-        this.button = new UIButton(icon, 'Monitor', this.id + '-button');
+        this.button = new UIButton(icon, Language.get('network-monitor.button-label'), this.id + '-button');
 
         this.getStorage(() => { this.updateVisible() });
     }
@@ -143,7 +144,7 @@ export class NetworkMonitor extends Component {
         this.startRunnable();
         this.createUI();
 
-        Logger.component('Component', this.name, 'has been enabled');
+        Logger.component(Language.get('component.enabled', { name: this.name }));
     }
 
     /**
@@ -158,7 +159,7 @@ export class NetworkMonitor extends Component {
 
         this.desandbox('StadiaPlusMonitor = null');
 
-        Logger.component('Component', this.name, 'has been disabled');
+        Logger.component(Language.get('component.disabled', { name: this.name }));
     }
 
     updateVisible() {
