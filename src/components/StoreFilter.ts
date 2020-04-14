@@ -70,10 +70,10 @@ export class StoreFilter extends Component {
             element.setAttribute('data-name', entry[1]);
             element.setAttribute('data-tags', entry[2]);
 
-            let url = "https://stadia.google.com/" as any;
+            let url = "https://stadia.google.com" as any;
             const locArr = location.href.split('/');
             if(locArr.length > 5) {
-                url = locArr.slice(0, 5).join('/')
+                url = locArr.slice(0, 5).join('/') + '/';
                 url = url.substring(0, url.length + (url.endsWith('/') ? -1 : 0));
             }
             const storeId = entry[0].match(/https:\/\/stadia.google.com\/store\/details\/([0-9a-z/]+)/)[1];
