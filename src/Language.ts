@@ -1,8 +1,11 @@
+import Logger from "./Logger";
+
 export class Language {
     name: string;
     data: {[key: string]: any} = {};
     
     constructor(name: string, data: any) {
+        this.name = name;
         this.data = data;
     }
 
@@ -14,7 +17,7 @@ export class Language {
         let keys = name.split('.');
         let val = this.data;
         for(const key of keys) {
-            val = val[key];
+           val = val[key];
         }
 
         if(vars !== undefined) {
@@ -34,15 +37,20 @@ export class Language {
     static default: Language;
     static current: Language;
     static init(): void {
-        this.current = this.default;
+        // Check for the first language that isn't equal to the default
+        const language = (window.navigator.languages as any).find((l:string) => l.length >= 5 && (this.default === undefined || l !== this.default.name));
+        Logger.info('Using language configuration ' + language);
         this.languages.forEach((lang) => {
-            if(lang.name === window.navigator.language) {
+            if(lang.name === language) {
                 this.current = lang;
             }
         });
     }
 
     static get(name: string, vars?: {[key: string]: any}): string {
+        if(this.current === undefined) {
+            this.current = this.default; 
+        }
         let val = this.current.get(name, vars);
 
         return val;
