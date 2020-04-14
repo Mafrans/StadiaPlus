@@ -13,15 +13,22 @@ import { LibraryFilter } from './components/LibraryFilter';
 import { Database } from './Database';
 import { StoreFilter } from './components/StoreFilter';
 import { Ratings } from './components/Ratings';
+import lang_enUS_data from './lang/en-US.json';
+import { Language } from './Language';
 
 const loader = new ComponentLoader();
 const snackbar = new Snackbar();
 const tab = new UITab();
 
+const lang_enUS = new Language('en-US', lang_enUS_data);
+lang_enUS.register();
+lang_enUS.setDefault();
+
 const database = new Database('https://stadiagamedb.com/data/gamedb.json');
 const uuidMap = new Database('https://stadiagamedb.com/data/uuidmap.json');
 database.connect();
 uuidMap.connect();
+Language.init();
 
 loader.register(new Clock());
 loader.register(new LibraryFilter(snackbar, database, uuidMap));
