@@ -1,5 +1,16 @@
 {
-    "component.enabled": "Component {{name}} has been enabled.",
-    "component.disabled": "Component {{name}} has been disabled.",
-    "clock.name": "Clock"
+    "component": {
+        "enabled": "Component {{name}} has been enabled.",
+        "disabled": "Component {{name}} has been disabled."
+    },
+    "clock": {
+        "name": "Clock"
+    },
+    "forcecodec": {
+        "name": "Force Codec"
+    },
+    "automatic": "Automatic",
+    "vp9": "VP9",
+    "h264": "H264",
+    "apply": "Apply"
 }

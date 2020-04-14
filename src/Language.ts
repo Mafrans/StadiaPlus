@@ -1,6 +1,6 @@
 export class Language {
     name: string;
-    data: LanguageData = {};
+    data: {[key: string]: any} = {};
     
     constructor(name: string, data: any) {
         this.data = data;
@@ -11,14 +11,19 @@ export class Language {
     }
 
     get(name: string, vars?: {[key: string]: any}): string {
-        let val = this.data[name];
+        let keys = name.split('.');
+        let val = this.data;
+        for(const key of keys) {
+            val = val[key];
+        }
+
         if(vars !== undefined) {
             for(const _var in vars) {
                 val = val.split('{{' + _var + '}}').join(vars[_var]);
             }
         }
 
-        return val;
+        return val as any;
     }
 
     setDefault() {
@@ -42,8 +47,4 @@ export class Language {
 
         return val;
     }
-}
-
-interface LanguageData {
-    [key: string]: string;
 }

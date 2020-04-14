@@ -6,6 +6,7 @@ import { UITab } from './UITab';
 import { UIRow } from '../ui/UIRow';
 import { Select } from '../ui/Select';
 import { Snackbar } from '../ui/Snackbar';
+import { Language } from '../Language';
 
 const chrome = (window as any).chrome;
 
@@ -20,7 +21,7 @@ export class ForceCodec extends Component {
     /**
      * The name of the Component.
      */
-    name: string = 'Force Codec';
+    name: string = Language.get('forcecodec.name');
     codec: number = Codec.AUTOMATIC;
     select: Select;
     tab: UITab;
@@ -61,12 +62,12 @@ export class ForceCodec extends Component {
                     <div class='stadiaplus_row'>
                         <div class='stadiaplus_select'>
                             <select name="codec">
-                                <option value="${Codec.AUTOMATIC}">Automatic</option>
-                                <option value="${Codec.VP9}">VP9</option>
-                                <option value="${Codec.H264}">H264</option>
+                                <option value="${Codec.AUTOMATIC}">${Language.get('automatic')}</option>
+                                <option value="${Codec.VP9}">${Language.get('vp9')}</option>
+                                <option value="${Codec.H264}">${Language.get('h264')}</option>
                             </select>
                         </div>
-                        <a class="stadiaplus_button-small">Apply</a>
+                        <a class="stadiaplus_button-small">${Language.get('apply')}</a>
                     </div>
                 `,
                 this.id + '-row',
@@ -98,7 +99,7 @@ export class ForceCodec extends Component {
             ),
         );
         
-        Logger.component('Component', this.name, 'has been enabled');
+        Logger.component(Language.get("component.enabled", { name: this.name }));
     }
 
     static setCodec(codec: number) {
@@ -136,7 +137,7 @@ export class ForceCodec extends Component {
      */
     onStop(): void {
         this.enabled = false;
-        Logger.component('Component', this.name, 'has been disabled');
+        Logger.component(Language.get('component.disabled', { name: this.name }));
     }
 
     /**
