@@ -1,0 +1,5 @@
+{
+    "component.enabled": "Component {{name}} has been enabled.",
+    "component.disabled": "Component {{name}} has been disabled.",
+    "clock.name": "Clock"
+}
