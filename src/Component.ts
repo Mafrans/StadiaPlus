@@ -28,8 +28,7 @@ export class Component {
      * This method is called whenever the component should start loading.
      */
     load(): void {
-        this.id =
-            this.name.toLowerCase().replace(/\s/g, '') + '-' + Math.floor(Math.random() * 999999);
+        this.id = Math.floor(Math.random() * 999999).toString();
         this.updateRenderer();
         this.onStart();
     }
