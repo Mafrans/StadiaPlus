@@ -13,8 +13,16 @@
         "name": "Force Resolution",
         "note": "Note: the set value is the maximum resolution Stadia will attempt to achieve. If your computer is not capable of rendering the resolution or it is not available with the current data usage option, it will not be displayed."
     },
+    "library-filter": {
+        "name": "Library Filter",
+        "recent": "Recent",
+        "alphabetical": "Alphabetical",
+        "random": "Random"
+    },
     "snackbar": {
-        "reload-to-update": "Reload the page to see your changes."
+        "reload-to-update": "Reload the page to see your changes.",
+        "hide-game": "A game has been hidden.",
+        "show-game": "A game is no longer hidden."
     },
     "automatic": "Automatic",
     "vp9": "VP9",

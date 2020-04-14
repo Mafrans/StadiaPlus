@@ -6,6 +6,7 @@ import { Snackbar } from '../ui/Snackbar';
 import { Select } from '../ui/Select';
 import { Database } from '../Database';
 import { Checkbox, CheckboxShape } from '../ui/Checkbox';
+import { Language } from '../Language';
 
 const { chrome, Array } = window as any;
 
@@ -18,7 +19,7 @@ export class LibraryFilter extends Component {
      * @type {string}
      * @memberof LibraryFilter
      */
-    name: string = 'Library Filter';
+    name: string = Language.get('library-filter.name');
 
     /**
      * List of games and game data imported from the DOM
@@ -180,11 +181,11 @@ export class LibraryFilter extends Component {
 
             // If the game is visible, set it to hidden
             if (visible) {
-                this.snackbar.activate('A game has been hidden.');
+                this.snackbar.activate(Language.get('snackbar.hide-game'));
                 this.games[uuid].visible = false;
             } 
             else { // Otherwise set it to shown
-                this.snackbar.activate('A game is no longer hidden.');
+                this.snackbar.activate(Language.get('snackbar.show-game'));
                 this.games[uuid].visible = true;
             }
 
@@ -304,7 +305,7 @@ export class LibraryFilter extends Component {
      */
     onStart(): void {
         this.enabled = true;
-        Logger.component('Component', this.name, 'has been enabled');
+        Logger.component(Language.get('component.enabled', { name: this.name }));
     }
 
     private eventsExist: boolean;
@@ -367,7 +368,7 @@ export class LibraryFilter extends Component {
         document
             .querySelectorAll('.stadiaplus_libraryfilter-icon')
             .forEach((e) => e.remove());
-        Logger.component('Component', this.name, 'has been disabled');
+        Logger.component(Language.get('component.disabled', { name: this.name }));
     }
 
     sortGames() {
@@ -397,9 +398,9 @@ export class LibraryFilter extends Component {
                         sort
                     </span>
                     <select name="order">
-                        <option value="${FilterOrder.RECENT}">Recently Played</option>
-                        <option value="${FilterOrder.ALPHABETICAL}">Alphabetical</option>
-                        <option value="${FilterOrder.RANDOM}">Random</option>
+                        <option value="${FilterOrder.RECENT}">${Language.get('library-filter.recent')}</option>
+                        <option value="${FilterOrder.ALPHABETICAL}">${Language.get('library-filter.alphabetical')}</option>
+                        <option value="${FilterOrder.RANDOM}">${Language.get('library-filter.random')}</option>
                     </select>
                     <span id='${this.filterBar.id + '-direction'}' class="material-icons-extended ascending stadiaplus_filterbar-direction"></span>
                 `;
