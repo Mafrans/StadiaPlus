@@ -3,10 +3,11 @@ import Logger from '../Logger';
 import Util from '../Util';
 import { Database } from '../Database';
 import './styles/Ratings.scss';
+import { Language } from '../Language';
 
 export class Ratings extends Component {
 
-    name: string = "Ratings";
+    name: string = Language.get('ratings.name');
 
     element: HTMLElement;
     rating: number;
@@ -66,13 +67,13 @@ export class Ratings extends Component {
         this.createElement();
         this.element.id = this.id;
 
-        Logger.component('Component', this.name, 'has been enabled');
+        Logger.component(Language.get('component.enabled', { name: this.name }));
     }
 
     onStop(): void {
         this.enabled = false;
         this.element.remove();
-        Logger.component('Component', this.name, 'has been disabled');
+        Logger.component(Language.get('component.disabled', { name: this.name }));
     }
 
     onUpdate() {
@@ -94,7 +95,7 @@ export class Ratings extends Component {
                         ${stars.join(' ')}
         
                         <div class="stadiaplus_rating-tooltip">
-                            ${rating} / 100 (Metacritic)
+                            ${rating} / 100 (${Language.get('ratings.source-name')})
                         </div>
                     `;
                 }

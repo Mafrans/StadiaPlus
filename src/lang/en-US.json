@@ -24,6 +24,10 @@
         "heading-visible": "Visible Stats",
         "button-label": "Monitor"
     },
+    "ratings": {
+        "name": "Ratings",
+        "source-name": "Metacritic"
+    },
     "snackbar": {
         "reload-to-update": "Reload the page to see your changes.",
         "hide-game": "A game has been hidden.",
