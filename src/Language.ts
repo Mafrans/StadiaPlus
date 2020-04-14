@@ -10,7 +10,7 @@ export class Language {
         Language.languages.push(this);
     }
 
-    get(name: string, vars: {[key: string]: any}): string {
+    get(name: string, vars?: {[key: string]: any}): string {
         let val = this.data[name];
         for(const _var in vars) {
             val.split('{{' + _var + '}}').join(vars[_var]);
@@ -35,7 +35,7 @@ export class Language {
         });
     }
 
-    static get(name: string, vars: {[key: string]: any}): string {
+    static get(name: string, vars?: {[key: string]: any}): string {
         let val = this.current.get(name, vars);
 
         return val;
