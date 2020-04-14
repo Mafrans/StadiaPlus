@@ -405,7 +405,7 @@ export class LibraryFilter extends Component {
                     <span id='${this.filterBar.id + '-direction'}' class="material-icons-extended ascending stadiaplus_filterbar-direction"></span>
                 `;
 
-                const {pretty, checkbox} = new Checkbox('Show hidden').setBigger(true).setShape(CheckboxShape.CURVED).build();
+                const {pretty, checkbox} = new Checkbox(Language.get('library-filter.show-hidden')).setBigger(true).setShape(CheckboxShape.CURVED).build();
                 pretty.classList.add('stadiaplus_filterbar-checkbox');
                 this.filterBar.appendChild(pretty);
                 this.checkbox = checkbox;

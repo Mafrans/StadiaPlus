@@ -1,0 +1,50 @@
+{
+    "component": {
+        "enabled": "Komponenten {{name}} är nu aktiverad.",
+        "disabled": "Komponenten {{name}} är inte längre aktiverad."
+    },
+    "clock": {
+        "name": "Klocka"
+    },
+    "force-codec": {
+        "name": "Påtvigad Codec"
+    },
+    "force-resolution": {
+        "name": "Påtvingad Upplösning",
+        "note": "Observera: det satta värdet är den maximala upplösningen Stadia kommer försöka uppnå. Om din dator inte klarar av att rendera upplösningen eller den inte är tillgänglig med dina nuvarande datainställningar kommer inte den påtvingade upplösningen visas."
+    },
+    "library-filter": {
+        "name": "Biblioteksfilter",
+        "recent": "Senaste",
+        "alphabetical": "Alfabetiskt",
+        "random": "Slumpmässigt",
+        "show-hidden": "Visa Gömda"
+    },
+    "network-monitor": {
+        "name": "Nätverksövervakning",
+        "heading-visible": "Synlig Statistik",
+        "button-label": "Övervakning"
+    },
+    "ratings": {
+        "name": "Recensioner",
+        "source-name": "Metacritic"
+    },
+    "store-filter": {
+        "name": "Butiksfiltrering"
+    },
+    "ui-tab": {
+        "name": "Stadia+ Gränssnittstabb",
+        "button-label": "Stadia+"
+    },
+    "snackbar": {
+        "reload-to-update": "Uppdatera sidan för att se dina ändringar.",
+        "hide-game": "Ett spel har gömts.",
+        "show-game": "Ett spel är inte längre gömt."
+    },
+    "automatic": "Automatisk",
+    "vp9": "VP9",
+    "h264": "H264",
+    "apply": "Tillämpa",
+    "4k": "4K",
+    "1080p": "1080p"
+}

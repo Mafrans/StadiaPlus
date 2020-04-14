@@ -17,7 +17,8 @@
         "name": "Library Filter",
         "recent": "Recent",
         "alphabetical": "Alphabetical",
-        "random": "Random"
+        "random": "Random",
+        "show-hidden": "Show Hidden"
     },
     "network-monitor": {
         "name": "Network Monitor",

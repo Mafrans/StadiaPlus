@@ -14,9 +14,13 @@ import { Database } from './Database';
 import { StoreFilter } from './components/StoreFilter';
 import { Ratings } from './components/Ratings';
 import lang_enUS_data from './lang/en-US.json';
+import lang_svSE_data from './lang/sv-SE.json';
 import { Language } from './Language';
 
 // Always initialize Languages first
+const lang_svSE = new Language('sv-SE', lang_svSE_data);
+lang_svSE.register();
+
 const lang_enUS = new Language('en-US', lang_enUS_data);
 lang_enUS.register();
 lang_enUS.setDefault();

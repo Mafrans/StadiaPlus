@@ -28,7 +28,7 @@ export class Component {
      * This method is called whenever the component should start loading.
      */
     load(): void {
-        this.id = Math.floor(Math.random() * 999999).toString();
+        this.id = 'stadiaplus_' + Math.floor(Math.random() * 999999);
         this.updateRenderer();
         this.onStart();
     }
