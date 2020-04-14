@@ -5,6 +5,7 @@ import { UIButton } from '../ui/UIButton';
 import { UIRow } from '../ui/UIRow';
 import { UIComponent } from '../ui/UIComponent';
 import './styles/UITab.scss';
+import { Language } from '../Language';
 
 const chrome: any = (window as any).chrome;
 
@@ -19,7 +20,7 @@ export class UITab extends Component {
     /**
      * The name of the Component.
      */
-    name: string = 'UI Tab';
+    name: string = Language.get('ui-tab.name');
 
     /**
      * The tab element.
@@ -97,7 +98,7 @@ export class UITab extends Component {
         );
 
         const icon = chrome.runtime.getURL('images/icons/stadiaplus.svg');
-        this.button = new UIButton(icon, 'Stadia+', this.id + '-button');
+        this.button = new UIButton(icon, Language.get('ui-tab.button-label'), this.id + '-button');
     }
 
     /**
@@ -148,7 +149,7 @@ export class UITab extends Component {
         this.enabled = true;
         this.createElement();
 
-        Logger.component('Component', this.name, 'has been enabled');
+        Logger.component(Language.get('component.enabled', { name: this.name }));
     }
 
     /**
@@ -164,7 +165,7 @@ export class UITab extends Component {
             row.element.remove();
         });
 
-        Logger.component('Component', this.name, 'has been disabled');
+        Logger.component(Language.get('component.disabled', { name: this.name }));
     }
 
     /**

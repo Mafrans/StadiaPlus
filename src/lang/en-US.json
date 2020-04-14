@@ -31,6 +31,10 @@
     "store-filter": {
         "name": "Store Filter"
     },
+    "ui-tab": {
+        "name": "Stadia+ UI Tab",
+        "button-label": "Stadia+"
+    },
     "snackbar": {
         "reload-to-update": "Reload the page to see your changes.",
         "hide-game": "A game has been hidden.",
