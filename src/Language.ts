@@ -12,8 +12,10 @@ export class Language {
 
     get(name: string, vars?: {[key: string]: any}): string {
         let val = this.data[name];
-        for(const _var in vars) {
-            val.split('{{' + _var + '}}').join(vars[_var]);
+        if(vars !== undefined) {
+            for(const _var in vars) {
+                val.split('{{' + _var + '}}').join(vars[_var]);
+            }
         }
 
         return val;

@@ -2,6 +2,7 @@ import { Component } from '../Component';
 import Logger from '../Logger';
 import Util from '../Util';
 import './styles/Clock.scss';
+import { Language } from '../Language';
 
 /**
  * A simple clock displayed in the Stadia Menu.
@@ -15,7 +16,7 @@ export class Clock extends Component {
     /**
      * The name of the Component.
      */
-    name: string = "Clock";
+    name: string = Language.get('clock.name');
 
     /**
      * The clock element.
@@ -43,7 +44,7 @@ export class Clock extends Component {
         this.enabled = true;
         this.element.id = this.id;
 
-        Logger.component('Component', this.name, 'has been enabled');
+        Logger.component(Language.get('component.enabled', {'name': this.name}));
     }
 
     /**
@@ -52,7 +53,7 @@ export class Clock extends Component {
     onStop(): void {
         this.enabled = false;
         this.element.remove();
-        Logger.component('Component', this.name, 'has been disabled');
+        Logger.component(Language.get('component.disabled', {'name': this.name}));
     }
 
     /**
