@@ -51,6 +51,8 @@
     });
 
     chrome.storage.sync.get(['language'], (result) => {
-        languageSelect.set(result.language);
+        if(result.language !== undefined) {
+            languageSelect.set(result.language);
+        }
     });
 })()

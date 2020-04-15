@@ -1,4 +1,5 @@
 import Logger from "./Logger";
+const { chrome } = window as any;
 
 export class Language {
     name: string;
@@ -38,13 +39,19 @@ export class Language {
     static current: Language;
     static init(): void {
         // Check for the first language that isn't equal to the default
-        const language = (window.navigator.languages as any).find((l:string) => l.length >= 5 && (this.default === undefined || l !== this.default.name));
-        Logger.info('Using language configuration ' + language);
-        this.languages.forEach((lang) => {
-            if(lang.name === language) {
-                this.current = lang;
+        chrome.storage.sync.get(['language'], (result: any) => {
+            let language = result.language;
+            if(language === undefined || language === 'automatic') {
+                language = (window.navigator.languages as any).find((l:string) => l.length >= 5 && (this.default === undefined || l !== this.default.name));
             }
-        });
+
+            Logger.info('Using language configuration ' + language);
+            this.languages.forEach((lang) => {
+                if(lang.name === language) {
+                    this.current = lang;
+                }
+            });
+        })
     }
 
     static get(name: string, vars?: {[key: string]: any}): string {
