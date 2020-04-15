@@ -35,12 +35,7 @@ export class Component {
 
     updateRenderer(): void {
         const renderers = document.querySelectorAll('.lhsE4e>c-wiz');
-        for(let i = 0; i < renderers.length; i++) {
-            const renderer = renderers[i] as HTMLElement;
-            if(renderer.style.opacity !== '0') {
-                this.renderer = renderer;
-            }
-        }
+        this.renderer = (Array as any).from(renderers).find((renderer: HTMLElement) => renderer.style.opacity !== '0');
     }
 
     
