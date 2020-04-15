@@ -18,10 +18,11 @@ body {
     width: 100vw;
     height: 100vh;
     position: fixed;
+    transition: 0.3s left ease-in-out;
 }
 
-.page.loaded {
-    transition: 0.3s left ease-in-out;
+.page.active {
+    z-index: 1;
 }
 
 .page.left {
