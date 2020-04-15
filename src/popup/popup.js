@@ -1,7 +1,9 @@
 (() => {
-    window.addEventListener('load', () => {
+
+    // Dumb solution to a dumb problem, works for me.
+    setTimeout(() => {
         document.querySelectorAll('.load').forEach(e => e.classList.add('loaded'));
-    });
+    }, 500);
 
     const history = [];
     const open = function(element) {
