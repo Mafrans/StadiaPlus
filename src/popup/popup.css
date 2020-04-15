@@ -7,7 +7,7 @@ body {
     font-size: 16px;
     font-family: 'Roboto', sans-serif;
     width: 340px;
-    height: 425px;
+    height: 500px;
     color: #585858;
 }
 
@@ -81,6 +81,10 @@ p {
 .button-row {
     justify-content: space-between;
     margin-top: 1rem;
+}
+
+.button-row .button{
+    width: fit-content;
 }
 
 .button-row .button {
