@@ -1,0 +1,50 @@
+{
+    "component": {
+        "enabled": "El componente {{name}}  ha sido habilitado.",
+        "disabled": "El componente {{name}} ha sido deshabilitado."
+    },
+    "clock": {
+        "name": "Reloj"
+    },
+    "force-codec": {
+        "name": "Fuerza Códec"
+    },
+    "force-resolution": {
+        "name": "Fuerza Resolución",
+        "note": "Nota: el valor establecido es la resolución máxima que Stadia intentará lograr. Si su computadora no es capaz de procesar la resolución o no está disponible con la opción de uso de datos actual, no se mostrará."
+    },
+    "library-filter": {
+        "name": "Filtro Biblioteca",
+        "recent": "Reciente",
+        "alphabetical": "Alfabético",
+        "random": "Aleatorio",
+        "show-hidden": "Mostrar oculto"
+    },
+    "network-monitor": {
+        "name": "Monitor de red",
+        "heading-visible": "Estadísticas visibles",
+        "button-label": "Monitor"
+    },
+    "ratings": {
+        "name": "Calificaciones",
+        "source-name": "Metacrítico"
+    },
+    "store-filter": {
+        "name": "Filtro de tienda"
+    },
+    "ui-tab": {
+        "name": "Stadia+ UI Tab",
+        "button-label": "Stadia+"
+    },
+      "snackbar": {
+        "reload-to-update": "Vuelva a cargar la página para ver sus cambios.",
+        "hide-game": "Un juego ha sido escondido.",
+        "show-game": "Un juego ya no está oculto."
+    },
+    "automatic": "Automático",
+    "vp9": "VP9",
+    "h264": "H264",
+    "apply": "Aplicar",
+    "4k": "4K",
+    "1080p": "1080p"
+    }
