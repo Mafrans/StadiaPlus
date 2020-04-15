@@ -1,0 +1,50 @@
+{
+    "component": {
+        "enabled": "Komponente {{name}} wurde aktiviert.",
+        "disabled": "Komponente {{name}} wurde deaktiviert."
+    },
+    "clock": {
+        "name": "Uhr"
+    },
+    "force-codec": {
+        "name": "Codec erzwingen"
+    },
+    "force-resolution": {
+        "name": "Auflösung erzwingen",
+        "note": "Anmerkung: Die gewählte Auflösung ist die Maximale, die Stadia verweden wird. Falls Ihr Computer diese Auflösung nicht darstellen kann oder nicht genug Bandbreite zu Verfügung steht, wird eine kleinere Auflösung verwendet."
+    },
+    "library-filter": {
+        "name": "Sammlungsfilter",
+        "recent": "Neuste",
+        "alphabetical": "Alphabetisch",
+        "random": "Zufällig",
+        "show-hidden": "Zeige Versteckte"
+    },
+    "network-monitor": {
+        "name": "Netwerkmonitor",
+        "heading-visible": "Sichtbare Statistiken",
+        "button-label": "Monitor"
+    },
+    "ratings": {
+        "name": "Bewertungen",
+        "source-name": "Metacritic"
+    },
+    "store-filter": {
+        "name": "Store Filter"
+    },
+    "ui-tab": {
+        "name": "Stadia+ UI Tab",
+        "button-label": "Stadia+"
+    },
+    "snackbar": {
+        "reload-to-update": "Seite neu laden um die Änderung anzuzeigen.",
+        "hide-game": "Ein Spiel wurde versteckt.",
+        "show-game": "Ein Spiel ist nicht mehr versteckt."
+    },
+    "automatic": "Automatisch",
+    "vp9": "VP9",
+    "h264": "H264",
+    "apply": "Anwenden",
+    "4k": "4K",
+    "1080p": "1080p"
+}
