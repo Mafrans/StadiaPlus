@@ -52,7 +52,7 @@ p {
     background: #F0F0F0;
     color: #505050;
     text-align: center;
-    display: block;
+    display: flex;
     text-decoration: none;
 }
 
