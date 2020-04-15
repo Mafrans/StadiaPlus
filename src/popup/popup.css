@@ -4,12 +4,36 @@
 }
 
 body {
-    margin: 1rem;
     font-size: 16px;
     font-family: 'Roboto', sans-serif;
-    width: 300px;
-    height: 400px;
+    width: 340px;
+    height: 425px;
     color: #585858;
+}
+
+.page {
+    background-color: #ffffff;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+}
+
+.page.loaded {
+    transition: 0.3s left ease-in-out;
+}
+
+.page.left {
+    left: -100vw;
+}
+
+.page.right {
+    left: 100vw;
+}
+
+.page>.content {
+    margin: 1rem;
 }
 
 p {
@@ -63,6 +87,12 @@ h1 {
     font-size: 24px;
 }
 
+h3 {
+    margin-top: 1rem; 
+    margin-bottom: 0.25rem; 
+    font-weight: 300;
+}
+
 hr {
     margin: 1.5rem 0;
     border: none;
@@ -81,4 +111,27 @@ footer {
 
 footer a {
     color: #969696;
+}
+
+.settings-button {
+    font-size: 32px;
+    margin-left: auto;
+    color: #505050;
+    cursor: pointer;
+    transition: all 0.3s ease-out;
+}
+
+.settings-button:hover {
+    opacity: 0.9;
+    transform: rotate(45deg);
+}
+
+.back-button {
+    padding: 4px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.back-button:hover {
+    background: rgba(0, 0, 0, 0.06);
 }

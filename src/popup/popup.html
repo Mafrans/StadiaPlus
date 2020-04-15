@@ -1,46 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+
+    <!-- Slim Select JS -->
+    <script src="./slim-select/slim-select.min.js"></script>
+    <link href="./slim-select/slim-select.min.css" rel="stylesheet"></link>
+    <link href="./slim-select/custom.css" rel="stylesheet"></link>
+    
     <link rel="stylesheet" href="popup.css">
 </head>
+
 <body>
-    <div class="row">
-        <img src="./img/Logo.png">
-        <h1 style="margin-left: 0.75rem;">Stadia+</h1>
+    <div class="load page main active">
+        <div class="content">
+            <div class="row">
+                <img src="./img/Logo.png">
+                <h1 style="margin-left: 0.75rem;">Stadia+</h1>
+
+                <span class="settings-button material-icons">settings</span>
+            </div>
+
+            <p>The extension is all ready to go. Just fire up Stadia and start playing! 🎮</p>
+
+            <a target="_blank" href="https://stadia.google.com" class="button gradient">
+                <span class="material-icons">launch</span>
+                Launch Stadia
+            </a>
+            <a target="_blank" href="https://github.com/Mafrans/StadiaPlus/wiki" class="button">
+                <span class="material-icons">help_outline</span>
+                Help & FAQ
+            </a>
+
+            <hr>
+
+            <strong>Any questions or feedback?</strong>
+            <div class="row button-row">
+                <a target="_blank" href="https://discord.gg/2VDbEQ8" class="button">
+                    Discord
+                </a>
+                <a target="_blank" href="" class="button" disabled>
+                    Reddit
+                </a>
+            </div>
+
+            <footer>
+                <span>Stadia+ 2.0</span>
+                <span>Developed by <a target="_blank" href='https://reddit.com/u/mafrans'>Mafrans</a></span>
+            </footer>
+        </div>
     </div>
 
-    <p>The extension is all ready to go. Just fire up Stadia and start playing! 🎮</p>
+    <div class="load page settings right">
+        <div class="content">
+            <div class="row">
+                <span class="material-icons back-button">arrow_back</span>
+                <h1 style="margin-left: 0.75rem;">Settings</h1>
+            </div>
 
-    <a target="_blank" href="https://stadia.google.com" class="button gradient">
-        <span class="material-icons">launch</span>
-        Launch Stadia
-    </a>
-    <a target="_blank" href="https://github.com/Mafrans/StadiaPlus/wiki" class="button">
-        <span class="material-icons">help_outline</span>
-        Help & FAQ
-    </a>
+            <h3>Language</h3>
+            <select name="language" id="language-select">
+                <option value="en-US">English (US)</option>
+                <option value="sv-SE">Svenska (SE)</option>
+            </select>
 
-    <hr>
-
-    <strong>Any questions or feedback?</strong>
-    <div class="row button-row">
-        <a target="_blank" href="https://discord.gg/2VDbEQ8" class="button">
-            Discord
-        </a>
-        <a target="_blank" href="" class="button" disabled>
-            Reddit
-        </a>
+            <footer>
+                <span>Stadia+ 2.0</span>
+                <span>Developed by <a target="_blank" href='https://reddit.com/u/mafrans'>Mafrans</a></span>
+            </footer>
+        </div>
     </div>
 
-    <footer>
-        <span>Stadia+ 2.0</span>
-        <span>Developed by <a target="_blank" href='https://reddit.com/u/mafrans'>Mafrans</a></span>
-    </footer>
+    <script src="popup.js"></script>
 </body>
+
 </html>
