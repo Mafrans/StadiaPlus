@@ -11,7 +11,7 @@
     },
     "force-resolution": {
         "name": "Forcer Résolution",
-        "note": "Remarque: la valeur définie est la résolution maximale que Stadia tentera d'atteindre. Si votre ordinateur ne peut pas restituer la résolution ou n'est pas disponible avec l'option d'utilisation actuelle des données, elle ne sera pas affichée."
+        "note": "Remarque: la valeur définie est la résolution maximale que Stadia tentera d'atteindre. Si votre ordinateur ne peut pas resituer cette résolution ou que l'option de consommation des données ne le permets pas, elle ne sera pas utilisée."
     },
     "library-filter": {
         "name": "Filtre bibliothèque",
