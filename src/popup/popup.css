@@ -36,6 +36,10 @@ body {
     margin: 1rem;
 }
 
+.material-icons {
+    vertical-align: text-bottom;
+}
+
 p {
     margin: 1.5rem 0;
 }
@@ -52,7 +56,7 @@ p {
     background: #F0F0F0;
     color: #505050;
     text-align: center;
-    display: flex;
+    display: block;
     text-decoration: none;
 }
 
