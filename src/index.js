@@ -15,6 +15,7 @@ import { StoreFilter } from './components/StoreFilter';
 import { Ratings } from './components/Ratings';
 import lang_enUS_data from './lang/en-US.json';
 import lang_svSE_data from './lang/sv-SE.json';
+import lang_frFR_data from './lang/fr-FR.json';
 import lang_itIT_data from './lang/it-IT.json';
 import lang_enSTEEF_data from './lang/en-STEEF.json';
 import { Language } from './Language';
@@ -25,6 +26,9 @@ lang_svSE.register();
 
 const lang_enSTEEF = new Language('en-STEEF', lang_enSTEEF_data);
 lang_enSTEEF.register();
+
+const lang_frFR = new Language('fr-FR', lang_frFR_data);
+lang_frFR.register();
 
 const lang_itIT = new Language('it-IT', lang_itIT_data);
 lang_itIT.register();
