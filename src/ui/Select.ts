@@ -6,10 +6,10 @@ export class Select {
     slimselect: SlimSelect;
     element: Element;
 
-    constructor(element: Element, placeholder?: any) {
+    constructor(element: Element, placeholder?: any, style: string = SelectStyle.DARK) {
         this.element = element;
 
-        this.element.classList.add('stadiaplus_dropdown');
+        this.element.classList.add('stadiaplus_dropdown', style);
 
         /** 
          * Slimselect throws a TypeError if the elements/containers 
@@ -54,4 +54,11 @@ export class Select {
         this.element.classList.remove('stadiaplus_dropdown');
         this.element = null;
     }
+}
+
+export class SelectStyle {
+    public static SLIMSELECT: string = null;
+    public static SLIMSELECT_LARGE: string = "style-slimselect-large";
+    public static LIGHT: string = "style-light";
+    public static DARK: string = "style-dark";
 }

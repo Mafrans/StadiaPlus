@@ -1,37 +1,72 @@
-.stadiaplus_dropdown.ss-main .ss-multi-selected,
-.stadiaplus_dropdown.ss-main .ss-single-selected {
-    background: transparent;
-    border: none;
-    border-bottom: #93959F 1px solid;
-    border-radius: 0;
-    width: 180px;
-}
+.stadiaplus_dropdown {
+    &.style-dark {
+        &.ss-main {
+            border-color: #3C3E43;
+            width: auto;
 
-.stadiaplus_dropdown.ss-main .ss-multi-selected .ss-plus span,
-.stadiaplus_dropdown.ss-main .ss-single-selected .ss-arrow span {
-    border-color: #93959F;
-}
+            .ss-content {
+                border-color: #3C3E43;
 
-.stadiaplus_dropdown.ss-main {
-    border-color: #3C3E43;
-    width: auto;
-}
+                .ss-list .ss-option {
+                    background-color: #3C3E43;
+                    color: rgba(255, 255, 255, 0.8);
 
-.stadiaplus_dropdown.ss-main .ss-content {
-    border-color: #3C3E43;
-}
+                    &.ss-disabled {
+                        background-color: #3C3E43;
+                        color: rgba(255, 255, 255, 0.4);
+                    }
+                }
+            }
 
-.stadiaplus_dropdown.ss-main .ss-multi-selected .placeholder,
-.stadiaplus_dropdown.ss-main .ss-single-selected .placeholder {
-    color: rgba(255, 255, 255, 0.8)
-}
+            .ss-multi-selected,
+            .ss-single-selected {
+                background: transparent;
+                border: none;
+                border-bottom: #93959F 1px solid;
+                border-radius: 0;
+                width: 180px;
 
-.stadiaplus_dropdown.ss-main .ss-content .ss-list .ss-option {
-    background-color: #3C3E43;
-    color: rgba(255, 255, 255, 0.8)
-}
+                .placeholder {
+                    color: rgba(255, 255, 255, 0.8)
+                }
 
-.stadiaplus_dropdown.ss-main .ss-content .ss-list .ss-option.ss-disabled {
-    background-color: #3C3E43;
-    color: rgba(255, 255, 255, 0.4);
+                .ss-plus span,
+                .ss-arrow span {
+                    border-color: #93959F;
+                }
+            }
+        }
+    }
+
+    &.style-light {
+        &.ss-main {
+            width: auto;
+
+            .ss-multi-selected,
+            .ss-single-selected {
+                background: transparent;
+                border: none;
+                border-bottom: #cccccc 1px solid;
+                border-radius: 0;
+                width: 180px;
+
+                .ss-plus span,
+                .ss-arrow span {
+                    border-color: #cccccc;
+                }
+            }
+        }
+    }
+
+    &.style-slimselect-large {
+        &.ss-main {
+            width: 200px;
+            height: 40px;
+
+            .ss-multi-selected,
+            .ss-single-selected {
+                height: 100%;
+            }
+        }
+    }
 }
