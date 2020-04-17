@@ -2,6 +2,7 @@
     <div class="heading">
         <div class="row">
             <div class="col">
+                <img :src="img" alt="Header image">
                 <h1><slot/></h1>
             </div>
             <div class="col">
@@ -21,7 +22,8 @@ export default {
         Icon
     },
     props: [
-        'icon'
+        'icon',
+        'img'
     ],
     methods: {
         iconClick() {
@@ -51,6 +53,13 @@ h1 {
 
     &>* {
         font-size: 30px;
+        vertical-align: text-top;
     }
+}
+
+img {
+    height: 29px;
+    float: left;
+    margin-right: 0.5rem;
 }
 </style>

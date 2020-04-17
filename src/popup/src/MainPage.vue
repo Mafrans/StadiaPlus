@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <page-header icon="settings" v-on:icon-click="settings">Stadia+</page-header>
+        <page-header :img="logo" icon="settings" v-on:icon-click="settings">Stadia+</page-header>
         <p>
             The extension is all ready to go. Just fire up Stadia and start
             playing! 🎮
@@ -8,18 +8,18 @@
 
         <div class="row">
             <div class="col">
-                <a target="_blank" href="https://stadia.google.com" class="btn gradient">
+                <btn v-on:click="open('https://stadia.google.com')" :gradient="true">
                     <icon>launch</icon>
                     Launch Stadia
-                </a>
+                </btn>
             </div>
         </div>
         <div class="row">
             <div class="col">
-                <a target="_blank" href="https://github.com/Mafrans/StadiaPlus/wiki" class="btn">
+                <btn v-on:click="open('https://github.com/Mafrans/StadiaPlus/wiki')">
                     <icon>help_outline</icon>
                     Help & FAQ
-                </a>
+                </btn>
             </div>
         </div>
 
@@ -27,14 +27,14 @@
 
         <div class="row">
             <div class="col">
-                <a target="_blank" href="https://stadia.google.com" class="btn">
+                <btn v-on:click="open('https://discord.gg/2VDbEQ8')">
                     Discord
-                </a>
+                </btn>
             </div>
             <div class="col">
-                <a target="_blank" href="https://stadia.google.com" class="btn">
+                <btn v-on:click="open('https://www.reddit.com/r/Stadia/comments/fz7xgm/stadia_20_what_youve_all_been_waiting_for/')">
                     Reddit
-                </a>
+                </btn>
             </div>
         </div>
 
@@ -48,14 +48,25 @@
 <script>
 import Icon from './components/Icon.vue';
 import PageHeader from './components/PageHeader.vue';
+import Button from './components/Button.vue';
+import logo from './assets/logo.png';
 export default {
+    data() {
+        return {
+            logo: logo
+        }
+    },
     components: {
         Icon,
-        PageHeader
+        PageHeader,
+        btn: Button
     },
     methods: {
         settings() {
             this.$router.push('settings');
+        },
+        open(url) {
+            window.open(url,'_blank');
         }
     }
 };
@@ -64,35 +75,6 @@ export default {
 <style lang="scss" scoped>
 .container {
     padding: 1rem;
-}
-
-.btn {
-    display: block;
-    padding: 1rem;
-    margin: 0.5rem 0;
-    border-radius: 8px;
-    background: #F0F0F0;
-    color: #505050;
-    text-align: center;
-    display: block;
-    text-decoration: none;
-
-    &[disabled] {
-        opacity: 0.7;
-        pointer-events: none;
-        cursor: initial;
-    }
-
-    &.gradient {
-        background: linear-gradient(90deg, #FA4821 0%, #AE0F56 100%);
-        color: #ffffff;
-    }
-
-    .material-icons {
-        vertical-align: text-top;
-        font-size: 18px;
-        margin-right: 0.25rem;
-    }
 }
 
 footer {
