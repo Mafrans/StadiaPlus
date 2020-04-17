@@ -16,7 +16,7 @@
         "persistent": false
     },
     "browser_action": {
-        "default_popup": "src/popup/popup.html",
+        "default_popup": "dist/popup.html",
         "default_icon": {
             "16": "images/Stadia+16.png",
             "32": "images/Stadia+32.png",
@@ -37,7 +37,7 @@
                 "https://stadia.google.com/*"
             ],
             "js": [
-                "dist/bundle.js"
+                "dist/app.js"
             ]
         }
     ],

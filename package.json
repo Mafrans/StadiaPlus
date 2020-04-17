@@ -31,6 +31,7 @@
         "sass": "^1.26.3",
         "sass-loader": "^8.0.2",
         "ts-loader": "^6.2.1",
+        "ttf-loader": "^1.0.2",
         "typedoc": "^0.16.11",
         "typedoc-webpack-plugin": "^1.1.4",
         "typescript": "^3.8.3",
@@ -38,10 +39,17 @@
         "webpack-cli": "^3.3.11"
     },
     "dependencies": {
+        "bootstrap-vue": "^2.11.0",
         "css-loader": "^3.4.2",
+        "deepmerge": "^4.2.2",
+        "fibers": "^4.0.2",
+        "material-design-icons": "^3.0.1",
         "pretty-checkbox": "^3.0.3",
         "raw-loader": "^4.0.0",
         "slim-select": "^1.25.0",
-        "style-loader": "^1.1.3"
+        "style-loader": "^1.1.3",
+        "vue": "^2.6.11",
+        "vue-loader": "^15.9.1",
+        "vue-template-compiler": "^2.6.11"
     }
 }
