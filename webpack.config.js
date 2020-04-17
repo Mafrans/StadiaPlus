@@ -33,17 +33,7 @@ module.exports = {
                     'css-loader'
                 ],
             },
-            {
-                test: /\.ttf$/,
-                use: [
-                  {
-                    loader: 'ttf-loader',
-                    options: {
-                      name: './font/[hash].[ext]',
-                    },
-                  },
-                ]
-            },
+            
             {
                 test: /\.s[ac]ss$/i,
                 use: [
