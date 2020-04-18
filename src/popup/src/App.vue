@@ -1,7 +1,6 @@
 <template>
     <div id="app">
-        <main-page />
-        <!-- <select-box :items="items" :placeholder="items[0].value" :selectstyle="selectStyle" /> -->
+        <router-view />
     </div>
 </template>
 
