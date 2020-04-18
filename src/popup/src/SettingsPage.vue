@@ -39,11 +39,9 @@ export default {
         return {
             Language: Language,
             logo: logo,
-            languages: [{ value: 'automatic', label: Language.get('automatic') }].concat(
-                Language.languages.map((lang) => {
-                    return { value: lang.tag, label: lang.name };
-                })
-            ),
+            languages: Language.languages.map((lang) => {
+                return { value: lang.tag, label: lang.name };
+            }),
             currentLanguage: Language.current,
             SelectStyle: SelectStyle,
         };
@@ -63,7 +61,7 @@ export default {
         },
         changeLanguage(info) {
             let language = info.value;
-            if(language === 'automatic') {
+            if (language === 'automatic') {
                 language = Language.automatic();
             }
 
