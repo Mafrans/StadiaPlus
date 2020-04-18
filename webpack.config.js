@@ -8,7 +8,7 @@ module.exports = {
         popup: './src/popup/src/main.js'
     },
     devtool: 'inline-source-map',
-    mode: 'development',
+    // mode: 'development',
     module: {
         rules: [
             {
