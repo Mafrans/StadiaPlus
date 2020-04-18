@@ -2,10 +2,12 @@ import Logger from "./Logger";
 const { chrome } = window as any;
 
 export class Language {
+    tag: string;
     name: string;
     data: {[key: string]: any} = {};
     
-    constructor(name: string, data: any) {
+    constructor(name: string, tag: string, data: any) {
+        this.tag = tag;
         this.name = name;
         this.data = data;
     }
@@ -42,12 +44,12 @@ export class Language {
         chrome.storage.sync.get(['language'], (result: any) => {
             let language = result.language;
             if(language === undefined || language === 'automatic') {
-                language = (window.navigator.languages as any).find((l:string) => l.length >= 5 && (this.default === undefined || l !== this.default.name));
+                language = (window.navigator.languages as any).find((l:string) => l.length >= 5 && (this.default === undefined || l !== this.default.tag));
             }
 
             Logger.info('Using language configuration ' + language);
             this.languages.forEach((lang) => {
-                if(lang.name === language) {
+                if(lang.tag === language) {
                     this.current = lang;
                 }
             });
