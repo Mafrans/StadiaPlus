@@ -43,7 +43,7 @@ export class SyncStorage {
         chrome.storage.sync.set({ [this.tag]: value }, callback);
     }
 
-    static get(storages: LocalStorage[], callback: (result: any) => any) {
+    static get(storages: SyncStorage[], callback: (result: any) => any) {
         chrome.storage.sync.get(storages.map(e => e.tag), callback);
     }
 }
