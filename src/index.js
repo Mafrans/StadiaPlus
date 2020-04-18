@@ -21,21 +21,23 @@ import lang_enSTEEF_data from './lang/en-STEEF.json';
 import { Language } from './Language';
 
 // Always initialize Languages first
-const lang_svSE = new Language('sv-SE', lang_svSE_data);
-lang_svSE.register();
-
-const lang_enSTEEF = new Language('en-STEEF', lang_enSTEEF_data);
-lang_enSTEEF.register();
-
-const lang_frFR = new Language('fr-FR', lang_frFR_data);
-lang_frFR.register();
-
-const lang_itIT = new Language('it-IT', lang_itIT_data);
-lang_itIT.register();
-
-const lang_enUS = new Language('en-US', lang_enUS_data);
+const lang_enUS = new Language('English (US)', 'en-US', lang_enUS_data);
 lang_enUS.register();
 lang_enUS.setDefault();
+
+const lang_enSTEEF = new Language('English (Steef)', 'en-STEEF', lang_enSTEEF_data);
+lang_enSTEEF.register();
+
+const lang_frFR = new Language('Français (FR)', 'fr-FR', lang_frFR_data);
+lang_frFR.register();
+
+const lang_itIT = new Language('Italiano (IT)', 'it-IT', lang_itIT_data);
+lang_itIT.register();
+
+const lang_svSE = new Language('Svenska (SE)', 'sv-SE', lang_svSE_data);
+lang_svSE.register();
+
+Language.init();
 
 const loader = new ComponentLoader();
 const snackbar = new Snackbar();
@@ -45,7 +47,6 @@ const database = new Database('https://stadiagamedb.com/data/gamedb.json');
 const uuidMap = new Database('https://stadiagamedb.com/data/uuidmap.json');
 database.connect();
 uuidMap.connect();
-Language.init();
 
 loader.register(new Clock());
 loader.register(new LibraryFilter(snackbar, database, uuidMap));
