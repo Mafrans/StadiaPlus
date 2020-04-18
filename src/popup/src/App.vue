@@ -6,7 +6,7 @@
 
         <footer>
             <span>Stadia+ 2.1</span>
-            <span>{{ Language.get('popup.footer.credit', { name: '<a href="https://reddit.com/u/Mafrans">Mafrans</a>' }) }} </span>
+            <span v-html="credit"></span>
         </footer>
     </div>
 </template>
@@ -22,7 +22,10 @@ export default {
     name: 'App',
     data() {
         return {
-            Language: Language
+            transitionName: 'slide-left',
+            credit: Language.get('popup.footer.credit', {
+                name: '<a href="https://reddit.com/u/Mafrans">Mafrans</a>',
+            }),
         };
     },
     watch: {
