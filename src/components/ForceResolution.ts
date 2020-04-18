@@ -7,6 +7,7 @@ import { UIRow, UIRowOptions } from '../ui/UIRow';
 import { Select } from '../ui/Select';
 import { Snackbar } from '../ui/Snackbar';
 import { Language } from '../Language';
+import { Storage } from '../Storage';
 
 const chrome = (window as any).chrome;
 
@@ -36,18 +37,15 @@ export class ForceResolution extends Component {
         this.getStorage();
     }
 
-    getStorage(callback?: Function) {
-        chrome.storage.local.get(['resolution'], (result: any) => {
+    getStorage(callback: (() => any) = (() => {})) {
+        Storage.Local.RESOLUTION.get((result: any) => {
             this.resolution = result.resolution;
-
-            if(callback) 
-                callback();
-        });
+            callback();
+        })
     }
 
-    setStorage(callback?: Function) {
-        const self = this;
-        chrome.storage.local.set({ resolution: self.resolution }, callback);
+    setStorage(callback: (() => any) = (() => {})) {
+        Storage.Local.RESOLUTION.set(this.resolution, callback);
     }
 
     /**
@@ -92,7 +90,7 @@ export class ForceResolution extends Component {
 
                         self.getStorage(() => {
                             this.select.set(self.resolution);
-                        });            
+                        });
                     },
 
                     onReload: (row:UIRow) => {
