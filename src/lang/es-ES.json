@@ -1,4 +1,21 @@
 {
+    "popup": {
+        "footer": {
+            "credit": "Developed by {{name}}"
+        },
+        "main-page": {
+            "title": "Stadia+",
+            "ready-text": "The extension is all ready to go. Just fire up Stadia and start playing! 🎮",
+            "launch-button": "Launch Stadia",
+            "help-button": "Help & FAQ",
+            "discord": "Discord",
+            "reddit": "Reddit"
+        },
+        "settings-page": {
+            "title": "Settings",
+            "language": "Language"
+        }
+    },
     "component": {
         "enabled": "El componente {{name}}  ha sido habilitado.",
         "disabled": "El componente {{name}} ha sido deshabilitado."
@@ -36,7 +53,7 @@
         "name": "Stadia+ UI Tab",
         "button-label": "Stadia+"
     },
-      "snackbar": {
+    "snackbar": {
         "reload-to-update": "Vuelva a cargar la página para ver sus cambios.",
         "hide-game": "Un juego ha sido escondido.",
         "show-game": "Un juego ya no está oculto."
