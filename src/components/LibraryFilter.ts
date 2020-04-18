@@ -7,12 +7,11 @@ import { Select } from '../ui/Select';
 import { Database } from '../Database';
 import { Checkbox, CheckboxShape } from '../ui/Checkbox';
 import { Language } from '../Language';
+import { SyncStorage } from '../Storage';
 
 const { chrome, Array } = window as any;
 
-
 export class LibraryFilter extends Component {
-
     /**
      * Name of the component
      *
@@ -82,7 +81,7 @@ export class LibraryFilter extends Component {
         // Import database & uuidMap from index.js
         this.database = database;
         this.uuidMap = uuidMap;
-        
+
         // Import snackbar from index.js
         this.snackbar = snackbar;
 
@@ -103,8 +102,8 @@ export class LibraryFilter extends Component {
                 i++;
                 const element = tile as Element;
                 this.createWrapper(element, this.getUUID(element));
-                
-                if(i === this.gameTiles.length) {
+
+                if (i === this.gameTiles.length) {
                     this.updateSortDirection();
                     this.sortGames();
                 }
@@ -126,7 +125,6 @@ export class LibraryFilter extends Component {
             .substring(3);
     }
 
-
     wrapperExists(uuid: string) {
         return this.renderer.querySelector('#' + this.id + '-' + uuid);
     }
@@ -139,7 +137,7 @@ export class LibraryFilter extends Component {
      * @memberof LibraryFilter
      */
     createWrapper(element: Element, uuid: string) {
-        if(this.wrapperExists(uuid)) return;
+        if (this.wrapperExists(uuid)) return;
 
         const connection = this.database.getConnection()['data'];
         const map = this.uuidMap.getConnection()['uuidMap'];
@@ -165,15 +163,15 @@ export class LibraryFilter extends Component {
         // Check the storage for visibility, hide the game if both 'visible' and 'showAll' is false
         if (!this.games.hasOwnProperty(uuid)) {
             this.games[uuid] = { visible: true };
-        } 
-        else if (!this.games[uuid].visible && !this.showAll) {
+        } else if (!this.games[uuid].visible && !this.showAll) {
             wrapper.classList.add('closed');
         }
 
-        // Position the icon in the top right corner rather than the top left using 
+        // Position the icon in the top right corner rather than the top left using
         // a margin (using the 'left' css attribute is not possible)
         icon.style.marginLeft = element.clientWidth - icon.clientWidth + 'px';
-        icon.style.transformOrigin = `calc(100% - ${element.clientWidth/2}px) ${element.clientHeight/2}px`;
+        icon.style.transformOrigin = `calc(100% - ${element.clientWidth /
+            2}px) ${element.clientHeight / 2}px`;
 
         // When the icon is clicked on
         icon.addEventListener('click', () => {
@@ -183,8 +181,8 @@ export class LibraryFilter extends Component {
             if (visible) {
                 this.snackbar.activate(Language.get('snackbar.hide-game'));
                 this.games[uuid].visible = false;
-            } 
-            else { // Otherwise set it to shown
+            } else {
+                // Otherwise set it to shown
                 this.snackbar.activate(Language.get('snackbar.show-game'));
                 this.games[uuid].visible = true;
             }
@@ -209,7 +207,7 @@ export class LibraryFilter extends Component {
 
         // Get the game icon
         const icon = wrapper.querySelector(
-            '.stadiaplus_libraryfilter-icon',
+            '.stadiaplus_libraryfilter-icon'
         ) as HTMLElement;
 
         // If the game isn't visible...
@@ -221,8 +219,8 @@ export class LibraryFilter extends Component {
 
                 // Make sure the element isn't hidden
                 wrapper.classList.remove('closing', 'closed');
-            } 
-            else { // Otherwise...
+            } else {
+                // Otherwise...
                 // ...if the hiding should be animated
                 if (animate) {
                     // Fade the game tile out
@@ -232,20 +230,20 @@ export class LibraryFilter extends Component {
                     setTimeout(() => {
                         wrapper.classList.add('closed');
                     }, 1000);
-                } 
-                else { // Otherwise
+                } else {
+                    // Otherwise
                     // Hide the element normally
                     wrapper.classList.add('closed');
                 }
             }
-        } else { // If the game is visible
+        } else {
+            // If the game is visible
             // Make sure the icon stays in place and doesn't get reset back to the top left corner
             icon.style.marginLeft = tile.clientWidth - icon.clientWidth + 'px';
 
             // Make sure the icon shows that it is visible
             icon.innerHTML = 'visibility';
         }
-        
     }
 
     /**
@@ -267,19 +265,32 @@ export class LibraryFilter extends Component {
      * @param {Function} [callback] // Callback that is run after the data has been read
      * @memberof LibraryFilter
      */
-    getStorage(callback?: Function) {
-        if(!this.enabled) {
+    getStorage(callback: () => any = () => {}) {
+        if (!this.enabled) {
             this.games = {};
-            if (callback) callback();
+            callback();
         }
 
-        chrome.storage.sync.get(['games', 'sort-order', 'sort-direction'], (result: any) => {
-            this.games = result.games !== undefined ? result.games : {};
-            this.order = result['sort-order'] !== undefined ? result['sort-order'] : FilterOrder.RECENT;
-            this.direction = result['sort-direction'] !== undefined ? result['sort-direction'] : OrderDirection.ASCENDING;
+        SyncStorage.get(
+            [
+                SyncStorage.LIBRARY_GAMES,
+                SyncStorage.LIBRARY_SORT_ORDER,
+                SyncStorage.LIBRARY_SORT_DIRECTION,
+            ],
+            (result: any) => {
+                this.games = result.games !== undefined ? result.games : {};
+                this.order =
+                    result[SyncStorage.LIBRARY_GAMES.tag] !== undefined
+                        ? result[SyncStorage.LIBRARY_SORT_ORDER.tag]
+                        : FilterOrder.RECENT;
+                this.direction =
+                    result[SyncStorage.LIBRARY_SORT_DIRECTION.tag] !== undefined
+                        ? result[SyncStorage.LIBRARY_SORT_DIRECTION.tag]
+                        : OrderDirection.ASCENDING;
 
-            if (callback) callback();
-        });
+                callback();
+            }
+        );
     }
 
     /**
@@ -289,13 +300,20 @@ export class LibraryFilter extends Component {
      * @returns
      * @memberof LibraryFilter
      */
-    setStorage(callback?: Function) {
-        if(!this.enabled) {
-            if (callback) callback();
+    setStorage(callback: () => any = () => {}) {
+        if (!this.enabled) {
+            callback();
             return;
         }
 
-        chrome.storage.sync.set({ games: this.games, 'sort-order': this.order, 'sort-direction': this.direction }, callback);
+        SyncStorage.set(
+            {
+                [SyncStorage.LIBRARY_GAMES.tag]: this.games,
+                [SyncStorage.LIBRARY_SORT_ORDER.tag]: this.order,
+                [SyncStorage.LIBRARY_SORT_DIRECTION.tag]: this.direction,
+            },
+            callback
+        );
     }
 
     /**
@@ -305,7 +323,9 @@ export class LibraryFilter extends Component {
      */
     onStart(): void {
         this.enabled = true;
-        Logger.component(Language.get('component.enabled', { name: this.name }));
+        Logger.component(
+            Language.get('component.enabled', { name: this.name })
+        );
     }
 
     private eventsExist: boolean;
@@ -328,7 +348,9 @@ export class LibraryFilter extends Component {
             this.updateAllGames();
         });
 
-        const dir = this.renderer.querySelector('#' + this.filterBar.id + '-direction');
+        const dir = this.renderer.querySelector(
+            '#' + this.filterBar.id + '-direction'
+        );
         // Toggle the sort direction
         dir.addEventListener('click', () => {
             this.updateSortDirection();
@@ -339,15 +361,16 @@ export class LibraryFilter extends Component {
     }
 
     updateSortDirection() {
-        const element: Element = this.renderer.querySelector('#' + this.filterBar.id + '-direction');
+        const element: Element = this.renderer.querySelector(
+            '#' + this.filterBar.id + '-direction'
+        );
 
-        if(element) {
-            if(this.direction === OrderDirection.ASCENDING) {
+        if (element) {
+            if (this.direction === OrderDirection.ASCENDING) {
                 this.direction = OrderDirection.DESCENDING;
                 element.classList.add('descending');
                 element.classList.remove('ascending');
-            }
-            else {
+            } else {
                 this.direction = OrderDirection.ASCENDING;
                 element.classList.add('ascending');
                 element.classList.remove('descending');
@@ -368,29 +391,33 @@ export class LibraryFilter extends Component {
         document
             .querySelectorAll('.stadiaplus_libraryfilter-icon')
             .forEach((e) => e.remove());
-        Logger.component(Language.get('component.disabled', { name: this.name }));
+        Logger.component(
+            Language.get('component.disabled', { name: this.name })
+        );
     }
 
     sortGames() {
-        let arr = (Array.from(this.gameTiles) as Element[]).map(e => e.parentElement); // Get all wrappers as an array
+        let arr = (Array.from(this.gameTiles) as Element[]).map(
+            (e) => e.parentElement
+        ); // Get all wrappers as an array
         arr = arr.sort(FilterOrder.getSorter(this.order));
 
-        if(this.direction === OrderDirection.ASCENDING) {
+        if (this.direction === OrderDirection.ASCENDING) {
             arr = arr.reverse();
         }
 
-        arr.forEach(el => {
+        arr.forEach((el) => {
             el.parentElement.prepend(el);
-        })
+        });
     }
 
     onUpdate() {
-        if(Util.isInHome()) {
-            if(!this.exists()) {
+        if (Util.isInHome()) {
+            if (!this.exists()) {
                 this.updateRenderer();
-                
+
                 const container = this.renderer.querySelector('.CVVXfc.YYy3Zb');
-                if(!container) return;
+                if (!container) return;
 
                 this.filterBar.id = this.id;
                 this.filterBar.innerHTML = `
@@ -398,14 +425,28 @@ export class LibraryFilter extends Component {
                         sort
                     </span>
                     <select name="order">
-                        <option value="${FilterOrder.RECENT}">${Language.get('library-filter.recent')}</option>
-                        <option value="${FilterOrder.ALPHABETICAL}">${Language.get('library-filter.alphabetical')}</option>
-                        <option value="${FilterOrder.RANDOM}">${Language.get('library-filter.random')}</option>
+                        <option value="${FilterOrder.RECENT}">${Language.get(
+                    'library-filter.recent'
+                )}</option>
+                        <option value="${
+                            FilterOrder.ALPHABETICAL
+                        }">${Language.get(
+                    'library-filter.alphabetical'
+                )}</option>
+                        <option value="${FilterOrder.RANDOM}">${Language.get(
+                    'library-filter.random'
+                )}</option>
                     </select>
-                    <span id='${this.filterBar.id + '-direction'}' class="material-icons-extended ascending stadiaplus_filterbar-direction"></span>
+                    <span id='${this.filterBar.id +
+                        '-direction'}' class="material-icons-extended ascending stadiaplus_filterbar-direction"></span>
                 `;
 
-                const {pretty, checkbox} = new Checkbox(Language.get('library-filter.show-hidden')).setBigger(true).setShape(CheckboxShape.CURVED).build();
+                const { pretty, checkbox } = new Checkbox(
+                    Language.get('library-filter.show-hidden')
+                )
+                    .setBigger(true)
+                    .setShape(CheckboxShape.CURVED)
+                    .build();
                 pretty.classList.add('stadiaplus_filterbar-checkbox');
                 this.filterBar.appendChild(pretty);
                 this.checkbox = checkbox;
@@ -417,7 +458,7 @@ export class LibraryFilter extends Component {
                 // Style the custom select box in the filter bar
                 this.select = new Select(
                     this.filterBar.querySelector('select'),
-                    FilterOrder.RECENT,
+                    FilterOrder.RECENT
                 );
 
                 this.select.set(this.order);
@@ -425,7 +466,7 @@ export class LibraryFilter extends Component {
                 this.addFilterBarEvents();
             }
         }
-    }  
+    }
 }
 
 export class FilterOrder {
@@ -435,39 +476,39 @@ export class FilterOrder {
     static RANDOM = 3;
 
     static getSorter(order: FilterOrder) {
-        switch(order) {
-            case this.RECENT: 
+        switch (order) {
+            case this.RECENT:
                 return this.sortRecent;
 
-            case this.ALPHABETICAL: 
+            case this.ALPHABETICAL:
                 return this.sortAlphabetical;
 
-            case this.RANDOM: 
+            case this.RANDOM:
                 return this.sortRandom;
         }
     }
 
-    private static sortRecent(a:any, b:any) {
+    private static sortRecent(a: any, b: any) {
         return 1;
     }
 
-    private static sortAlphabetical(a:any, b:any) {
+    private static sortAlphabetical(a: any, b: any) {
         const nameA = a.getAttribute('game-name');
         const nameB = b.getAttribute('game-name');
 
-        if(nameA === undefined || nameB === undefined) {
+        if (nameA === undefined || nameB === undefined) {
             return 1;
         }
 
         return nameA.localeCompare(nameB);
     }
 
-    private static sortRandom(a:any, b:any) {
+    private static sortRandom(a: any, b: any) {
         return Math.round(Math.random() * 2) - 1;
     }
 }
 
 export enum OrderDirection {
     ASCENDING,
-    DESCENDING
+    DESCENDING,
 }
