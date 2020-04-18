@@ -1,14 +1,18 @@
 <template>
     <div class="settings-page">
         <div class="container">
-            <page-header :back-button="true">{{ Language.get('popup.settings-page.title') }}</page-header>
+            <page-header :back-button="true">{{
+                Language.get('popup.settings-page.title')
+            }}</page-header>
 
             <div class="row">
                 <div class="col">
                     <icon :style="{ float: 'left', marginRight: '4px' }"
                         >language</icon
                     >
-                    <h3 :style="{ marginBottom: '0.5rem' }">{{ Language.get('popup.settings-page.language') }}</h3>
+                    <h3 :style="{ marginBottom: '0.5rem' }">
+                        {{ Language.get('popup.settings-page.language') }}
+                    </h3>
                     <select-box
                         :items="languages"
                         :selected="currentLanguage"
@@ -35,9 +39,11 @@ export default {
         return {
             Language: Language,
             logo: logo,
-            languages: Language.languages.map((lang) => {
-                return { value: lang.tag, label: lang.name };
-            }),
+            languages: [{ value: 'automatic', label: Language.get('automatic') }].concat(
+                Language.languages.map((lang) => {
+                    return { value: lang.tag, label: lang.name };
+                })
+            ),
             currentLanguage: Language.current,
             SelectStyle: SelectStyle,
         };
@@ -56,8 +62,13 @@ export default {
             window.open(url, '_blank');
         },
         changeLanguage(info) {
-            SyncStorage.LANGUAGE.set(info.value);
-        }
+            let language = info.value;
+            if(language === 'automatic') {
+                language = Language.automatic();
+            }
+
+            SyncStorage.LANGUAGE.set(language);
+        },
     },
 };
 </script>

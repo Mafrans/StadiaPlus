@@ -45,7 +45,7 @@ export class Language {
     static languages: Language[] = [];
     static default: Language;
     static current: Language;
-    static load(): void {
+    static load(callback: (() => any) = (() => {})): void {
         // Check for the first language that isn't equal to the default
         SyncStorage.LANGUAGE.get((result: any) => {
             let language = result[SyncStorage.LANGUAGE.tag];
@@ -54,9 +54,13 @@ export class Language {
             }
 
             Logger.info('Using language configuration ' + language);
-            this.languages.forEach((lang) => {
+            this.languages.forEach((lang, index) => {
                 if (lang.tag === language) {
                     this.current = lang;
+                }
+
+                if(index === this.languages.length - 1) {
+                    callback();
                 }
             });
         });

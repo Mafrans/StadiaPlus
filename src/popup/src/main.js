@@ -10,13 +10,9 @@ import lang_itIT_data from '../../lang/it-IT.json';
 import lang_enSTEEF_data from '../../lang/en-STEEF.json';
 import { Language } from '../../Language';
 
-// Always load languages first
-Language.init();
-Language.load();
-
 Vue.config.productionTip = false;
 Vue.use(VueRouter);
-
+    
 const routes = [
     { path: '/', component: MainPage },
     { path: '/settings/', component: SettingsPage },
@@ -28,7 +24,11 @@ const router = new VueRouter({
     routes, // short for `routes: routes`
 });
 
-new Vue({
-    router,
-    render: h => h(App),
-}).$mount('#app');
+// Always load languages first
+Language.init();
+Language.load(() => {
+    new Vue({
+        router,
+        render: h => h(App),
+    }).$mount('#app');
+});
