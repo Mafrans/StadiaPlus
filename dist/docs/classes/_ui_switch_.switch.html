@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ComponentLoader | stadiaplus</title>
+	<title>Switch | stadiaplus</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,36 +56,24 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_componentloader_.html">&quot;ComponentLoader&quot;</a>
+					<a href="../modules/_ui_switch_.html">&quot;ui/Switch&quot;</a>
 				</li>
 				<li>
-					<a href="_componentloader_.componentloader.html">ComponentLoader</a>
+					<a href="_ui_switch_.switch.html">Switch</a>
 				</li>
 			</ul>
-			<h1>Class ComponentLoader</h1>
+			<h1>Class Switch</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>A utility class responsible for loading <a href="_component_.component.html">Components</a> and delivering events.</p>
-					</div>
-					<dl class="tsd-comment-tags">
-						<dt>export</dt>
-						<dd><p>the ComponentLoader type.</p>
-						</dd>
-					</dl>
-				</div>
-			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">ComponentLoader</span>
+						<span class="target">Switch</span>
 					</li>
 				</ul>
 			</section>
@@ -96,25 +84,27 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_componentloader_.componentloader.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_ui_switch_.switch.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section ">
+						<section class="tsd-index-section tsd-is-private tsd-is-private-protected">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_componentloader_.componentloader.html#components" class="tsd-kind-icon">components</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_componentloader_.componentloader.html#timer" class="tsd-kind-icon">timer</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_ui_switch_.switch.html#bigger" class="tsd-kind-icon">bigger</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_ui_switch_.switch.html#color" class="tsd-kind-icon">color</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_ui_switch_.switch.html#disabled" class="tsd-kind-icon">disabled</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_ui_switch_.switch.html#label" class="tsd-kind-icon">label</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_ui_switch_.switch.html#style" class="tsd-kind-icon">style</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_componentloader_.componentloader.html#register" class="tsd-kind-icon">register</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_componentloader_.componentloader.html#start" class="tsd-kind-icon">start</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_componentloader_.componentloader.html#starttimer" class="tsd-kind-icon">start<wbr>Timer</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_componentloader_.componentloader.html#stop" class="tsd-kind-icon">stop</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_componentloader_.componentloader.html#stoptimer" class="tsd-kind-icon">stop<wbr>Timer</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_componentloader_.componentloader.html#unregister" class="tsd-kind-icon">unregister</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_ui_switch_.switch.html#build" class="tsd-kind-icon">build</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_ui_switch_.switch.html#setbigger" class="tsd-kind-icon">set<wbr>Bigger</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_ui_switch_.switch.html#setcolor" class="tsd-kind-icon">set<wbr>Color</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_ui_switch_.switch.html#setdisabled" class="tsd-kind-icon">set<wbr>Disabled</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_ui_switch_.switch.html#setstyle" class="tsd-kind-icon">set<wbr>Style</a></li>
 							</ul>
 						</section>
 					</div>
@@ -126,44 +116,75 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Component<wbr>Loader<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_componentloader_.componentloader.html" class="tsd-signature-type">ComponentLoader</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Switch<span class="tsd-signature-symbol">(</span>label<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_ui_switch_.switch.html" class="tsd-signature-type">Switch</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/ba6d72c/src/ComponentLoader.ts#L14">ComponentLoader.ts:14</a></li>
+									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/ba6d72c/src/ui/Switch.ts#L8">ui/Switch.ts:8</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="_componentloader_.componentloader.html" class="tsd-signature-type">ComponentLoader</a></h4>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>label: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="_ui_switch_.switch.html" class="tsd-signature-type">Switch</a></h4>
 						</li>
 					</ul>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group ">
+			<section class="tsd-panel-group tsd-member-group tsd-is-private tsd-is-private-protected">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="components" class="tsd-anchor"></a>
-					<h3>components</h3>
-					<div class="tsd-signature tsd-kind-icon">components<span class="tsd-signature-symbol">:</span> <a href="_component_.component.html" class="tsd-signature-type">Component</a><span class="tsd-signature-symbol">[]</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="bigger" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> bigger</h3>
+					<div class="tsd-signature tsd-kind-icon">bigger<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/ba6d72c/src/ComponentLoader.ts#L13">ComponentLoader.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/ba6d72c/src/ui/Switch.ts#L8">ui/Switch.ts:8</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>A list of all registered components.</p>
-						</div>
-					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="timer" class="tsd-anchor"></a>
-					<h3>timer</h3>
-					<div class="tsd-signature tsd-kind-icon">timer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="color" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> color</h3>
+					<div class="tsd-signature tsd-kind-icon">color<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/ba6d72c/src/ComponentLoader.ts#L14">ComponentLoader.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/ba6d72c/src/ui/Switch.ts#L6">ui/Switch.ts:6</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="disabled" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> disabled</h3>
+					<div class="tsd-signature tsd-kind-icon">disabled<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/ba6d72c/src/ui/Switch.ts#L7">ui/Switch.ts:7</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="label" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> label</h3>
+					<div class="tsd-signature tsd-kind-icon">label<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/ba6d72c/src/ui/Switch.ts#L4">ui/Switch.ts:4</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="style" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> style</h3>
+					<div class="tsd-signature tsd-kind-icon">style<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = SwitchStyle.DEFAULT</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/ba6d72c/src/ui/Switch.ts#L5">ui/Switch.ts:5</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -171,141 +192,119 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="register" class="tsd-anchor"></a>
-					<h3>register</h3>
+					<a name="build" class="tsd-anchor"></a>
+					<h3>build</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">register<span class="tsd-signature-symbol">(</span>component<span class="tsd-signature-symbol">: </span><a href="_component_.component.html" class="tsd-signature-type">Component</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">build<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>checkbox<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLInputElement</span><span class="tsd-signature-symbol">; </span>pretty<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLDivElement</span><span class="tsd-signature-symbol"> }</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/ba6d72c/src/ComponentLoader.ts#L25">ComponentLoader.ts:25</a></li>
+									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/ba6d72c/src/ui/Switch.ts#L34">ui/Switch.ts:34</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Registers a new component.</p>
-								</div>
-							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">{ </span>checkbox<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLInputElement</span><span class="tsd-signature-symbol">; </span>pretty<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLDivElement</span><span class="tsd-signature-symbol"> }</span></h4>
+							<ul class="tsd-parameters">
+								<li class="tsd-parameter">
+									<h5>checkbox<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLInputElement</span></h5>
+								</li>
+								<li class="tsd-parameter">
+									<h5>pretty<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLDivElement</span></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="setbigger" class="tsd-anchor"></a>
+					<h3>set<wbr>Bigger</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Bigger<span class="tsd-signature-symbol">(</span>bigger<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/ba6d72c/src/ui/Switch.ts#L29">ui/Switch.ts:29</a></li>
+								</ul>
+							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>component: <a href="_component_.component.html" class="tsd-signature-type">Component</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>the component to register.</p>
-									</div>
+									<h5>bigger: <span class="tsd-signature-type">boolean</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="start" class="tsd-anchor"></a>
-					<h3>start</h3>
+					<a name="setcolor" class="tsd-anchor"></a>
+					<h3>set<wbr>Color</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">start<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Color<span class="tsd-signature-symbol">(</span>color<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/ba6d72c/src/ComponentLoader.ts#L41">ComponentLoader.ts:41</a></li>
+									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/ba6d72c/src/ui/Switch.ts#L19">ui/Switch.ts:19</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Starts the component loader.</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
-					<a name="starttimer" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> start<wbr>Timer</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">start<wbr>Timer<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/ba6d72c/src/ComponentLoader.ts#L58">ComponentLoader.ts:58</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="stop" class="tsd-anchor"></a>
-					<h3>stop</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">stop<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/ba6d72c/src/ComponentLoader.ts#L51">ComponentLoader.ts:51</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Stops the component loader.</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
-					<a name="stoptimer" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> stop<wbr>Timer</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">stop<wbr>Timer<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/ba6d72c/src/ComponentLoader.ts#L68">ComponentLoader.ts:68</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="unregister" class="tsd-anchor"></a>
-					<h3>unregister</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">unregister<span class="tsd-signature-symbol">(</span>component<span class="tsd-signature-symbol">: </span><a href="_component_.component.html" class="tsd-signature-type">Component</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/ba6d72c/src/ComponentLoader.ts#L34">ComponentLoader.ts:34</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Unregisters a component.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>component: <a href="_component_.component.html" class="tsd-signature-type">Component</a></h5>
-									<div class="tsd-comment tsd-typography">
-									</div>
+									<h5>color: <span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="setdisabled" class="tsd-anchor"></a>
+					<h3>set<wbr>Disabled</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Disabled<span class="tsd-signature-symbol">(</span>disabled<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/ba6d72c/src/ui/Switch.ts#L24">ui/Switch.ts:24</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>disabled: <span class="tsd-signature-type">boolean</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="setstyle" class="tsd-anchor"></a>
+					<h3>set<wbr>Style</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Style<span class="tsd-signature-symbol">(</span>style<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/Mafrans/StadiaPlus/blob/ba6d72c/src/ui/Switch.ts#L14">ui/Switch.ts:14</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>style: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -323,7 +322,7 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_component_.html">&quot;<wbr>Component&quot;</a>
 					</li>
-					<li class="current tsd-kind-external-module">
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/_componentloader_.html">&quot;<wbr>Component<wbr>Loader&quot;</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -371,7 +370,7 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_ui_snackbar_.html">&quot;ui/<wbr>Snackbar&quot;</a>
 					</li>
-					<li class=" tsd-kind-external-module">
+					<li class="current tsd-kind-external-module">
 						<a href="../modules/_ui_switch_.html">&quot;ui/<wbr>Switch&quot;</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -399,39 +398,48 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-parent-kind-external-module">
-						<a href="_componentloader_.componentloader.html" class="tsd-kind-icon">Component<wbr>Loader</a>
+						<a href="_ui_switch_.switch.html" class="tsd-kind-icon">Switch</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="_componentloader_.componentloader.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="_ui_switch_.switch.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_componentloader_.componentloader.html#components" class="tsd-kind-icon">components</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_ui_switch_.switch.html#bigger" class="tsd-kind-icon">bigger</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_componentloader_.componentloader.html#timer" class="tsd-kind-icon">timer</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_ui_switch_.switch.html#color" class="tsd-kind-icon">color</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_componentloader_.componentloader.html#register" class="tsd-kind-icon">register</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_ui_switch_.switch.html#disabled" class="tsd-kind-icon">disabled</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_componentloader_.componentloader.html#start" class="tsd-kind-icon">start</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_ui_switch_.switch.html#label" class="tsd-kind-icon">label</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="_componentloader_.componentloader.html#starttimer" class="tsd-kind-icon">start<wbr>Timer</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_componentloader_.componentloader.html#stop" class="tsd-kind-icon">stop</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="_componentloader_.componentloader.html#stoptimer" class="tsd-kind-icon">stop<wbr>Timer</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_ui_switch_.switch.html#style" class="tsd-kind-icon">style</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_componentloader_.componentloader.html#unregister" class="tsd-kind-icon">unregister</a>
+								<a href="_ui_switch_.switch.html#build" class="tsd-kind-icon">build</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_ui_switch_.switch.html#setbigger" class="tsd-kind-icon">set<wbr>Bigger</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_ui_switch_.switch.html#setcolor" class="tsd-kind-icon">set<wbr>Color</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_ui_switch_.switch.html#setdisabled" class="tsd-kind-icon">set<wbr>Disabled</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_ui_switch_.switch.html#setstyle" class="tsd-kind-icon">set<wbr>Style</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="_ui_switch_.switchstyle.html" class="tsd-kind-icon">Switch<wbr>Style</a>
+					</li>
 				</ul>
 			</nav>
 		</div>
