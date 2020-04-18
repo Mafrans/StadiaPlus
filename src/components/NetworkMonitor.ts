@@ -10,6 +10,7 @@ import './styles/NetworkMonitor.scss';
 import runnable from '!raw-loader!../MonitorRunnable';
 import { Checkbox, CheckboxAnimation } from '../ui/Checkbox';
 import { Language } from '../Language';
+import { LocalStorage } from '../Storage';
 
 const { chrome, RTCPeerConnection } = (window as any);
 
@@ -121,19 +122,17 @@ export class NetworkMonitor extends Component {
         this.desandbox('StadiaPlusMonitor.stop()');
     }
     
-    getStorage(callback?: Function) {
-        chrome.storage.local.get(['monitorStatsVisible'], (result: any) => {
-            if(result.monitorStatsVisible)
+    getStorage(callback: (() => any) = (() => {})) {
+        LocalStorage.MONITOR_STATS.get((result: any) => {
+            if(result[LocalStorage.MONITOR_STATS.tag]) {
                 this.visible = result.monitorStatsVisible;
-
-            if(callback) 
-                callback();
-        });
+            }
+            callback();
+        })
     }
 
-    setStorage(callback?: Function) {
-        const self = this;
-        chrome.storage.local.set({ monitorStatsVisible: self.visible }, callback);
+    setStorage(callback: (() => any) = (() => {})) {
+        LocalStorage.MONITOR_STATS.set(this.visible, callback);
     }
 
     /**

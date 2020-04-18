@@ -3,7 +3,7 @@ const { chrome } = window as any;
 export class LocalStorage {
     static CODEC = new LocalStorage('Codec', 'codec');
     static RESOLUTION = new LocalStorage('Resolution', 'resolution');
-
+    static MONITOR_STATS = new LocalStorage('Monitor Stats', 'monitor-stats');
 
     name: string;
     tag: string;
