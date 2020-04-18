@@ -103,10 +103,10 @@ export class Language {
         lang_svSE.register();
 
 	const lang_euES = new Language('Euskara (EU)', 'eu-ES', lang_euES_data);
-        lang_svSE.register();
+        lang_euES.register();
 
 	const lang_glES= new Language('Galego (GL)', 'gl-ES', lang_glES_data);
-        lang_svSE.register();
+        lang_glES.register();
     }
 
     static get(name: string, vars?: { [key: string]: any }): string {
