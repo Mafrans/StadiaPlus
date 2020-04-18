@@ -4,6 +4,8 @@ import lang_enUS_data from './lang/en-US.json';
 import lang_svSE_data from './lang/sv-SE.json';
 import lang_frFR_data from './lang/fr-FR.json';
 import lang_itIT_data from './lang/it-IT.json';
+import lang_esES_data from './lang/es-ES.json';
+import lang_deDE_data from './lang/de-DE.json';
 import lang_enSTEEF_data from './lang/en-STEEF.json';
 const { chrome } = window as any;
 
@@ -75,6 +77,12 @@ export class Language {
     }
 
     static init(): void {
+        const lang_deDE = new Language('Deutsche (DE)', 'de-DE', lang_deDE_data);
+        lang_deDE.register();
+
+        const lang_esES = new Language('Español (ES)', 'es-ES', lang_esES_data);
+        lang_esES.register();
+
         const lang_enUS = new Language('English (US)', 'en-US', lang_enUS_data);
         lang_enUS.register();
         lang_enUS.setDefault();
