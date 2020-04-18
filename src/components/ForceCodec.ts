@@ -7,7 +7,7 @@ import { UIRow } from '../ui/UIRow';
 import { Select } from '../ui/Select';
 import { Snackbar } from '../ui/Snackbar';
 import { Language } from '../Language';
-import { Storage } from '../Storage';
+import { LocalStorage } from '../Storage';
 
 const chrome = (window as any).chrome;
 
@@ -36,14 +36,14 @@ export class ForceCodec extends Component {
     }
 
     getStorage(callback: (() => any) = (() => {})) {
-        Storage.Local.CODEC.get((result: any) => {
+        LocalStorage.CODEC.get((result: any) => {
             this.codec = result.codec;
             callback();
         });
     }
 
     setStorage(callback: (() => any) = (() => {})) {
-        Storage.Local.CODEC.set(this.codec, callback);
+        LocalStorage.CODEC.set(this.codec, callback);
     }
 
     /**

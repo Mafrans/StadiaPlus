@@ -1,12 +1,8 @@
 const { chrome } = window as any;
 
-export class Storage {
-    static Local: LocalStorage;
-    static Sync: SyncStorage;
-}
-
-class LocalStorage {
-    CODEC = new LocalStorage('Codec', 'codec');
+export class LocalStorage {
+    static CODEC = new LocalStorage('Codec', 'codec');
+    static RESOLUTION = new LocalStorage('Resolution', 'resolution');
 
 
     name: string;
@@ -30,7 +26,7 @@ class LocalStorage {
     }
 }
 
-class SyncStorage {
+export class SyncStorage {
     name: string;
     tag: string;
     
