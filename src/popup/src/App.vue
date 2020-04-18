@@ -1,8 +1,16 @@
 <template>
     <div id="app">
         <transition :name="transitionName">
-            <router-view class="child-view" />
+            <router-view class="router-view" />
         </transition>
+
+        <footer>
+            <span>Stadia+ 2.1</span>
+            <span
+                >Developed by
+                <a href="https://reddit.com/u/Mafrans">Mafrans</a></span
+            >
+        </footer>
     </div>
 </template>
 
@@ -54,7 +62,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 * {
     margin: 0;
     padding: 0;
@@ -65,6 +73,7 @@ export default {
     font-family: 'Roboto', sans-serif;
     width: 340px;
     height: 425px;
+    color: #585858;
 }
 
 h1,
@@ -74,6 +83,10 @@ h4,
 h5,
 p {
     margin-bottom: 1.5rem;
+}
+
+h3 {
+    font-weight: 500;
 }
 
 hr {
@@ -92,10 +105,13 @@ hr {
     width: 100%;
 }
 
-.child-view {
+.router-view {
     position: absolute;
     transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+    width: 100%;
+    height: 100%;
 }
+
 .slide-left-enter,
 .slide-right-leave-active {
     -webkit-transform: translate(100vw, 0);
@@ -105,5 +121,23 @@ hr {
 .slide-right-enter {
     -webkit-transform: translate(-100vw, 0);
     transform: translate(-100vw, 0);
+}
+
+footer {
+    position: absolute;
+    width: calc(100% - 2rem); // full page width minus the padding on both sides
+    padding: 1rem;
+    bottom: 0;
+
+    display: flex;
+    justify-content: space-between;
+    opacity: 0.5;
+    margin-top: 1rem;
+
+    span,
+    a {
+        color: #000000;
+        font-size: 12px;
+    }
 }
 </style>
