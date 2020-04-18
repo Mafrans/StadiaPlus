@@ -1,19 +1,19 @@
 {
     "popup": {
         "footer": {
-            "credit": "Developed by {{name}}"
+            "credit": "Sviluppato da {{name}}"
         },
         "main-page": {
             "title": "Stadia+",
-            "ready-text": "The extension is all ready to go. Just fire up Stadia and start playing! 🎮",
-            "launch-button": "Launch Stadia",
-            "help-button": "Help & FAQ",
+            "ready-text": "L'estensione è pronta per l'uso. Avvia Stadia e iniziare a giocare! 🎮",
+            "launch-button": "Avvia Stadia",
+            "help-button": "Aiuto & FAQ",
             "discord": "Discord",
             "reddit": "Reddit"
         },
         "settings-page": {
-            "title": "Settings",
-            "language": "Language"
+            "title": "Impostazioni",
+            "language": "Lingua"
         }
     },
     "component": {
