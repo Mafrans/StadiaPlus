@@ -1,6 +1,8 @@
 <template>
     <div id="app">
-        <router-view />
+        <transition :name="transitionName">
+            <router-view class="child-view" />
+        </transition>
     </div>
 </template>
 
@@ -14,6 +16,7 @@ export default {
     name: 'App',
     data() {
         return {
+            transitionName: 'slide-left',
             selectStyle: SelectStyle.SLIMSELECT_LARGE,
             items: [
                 {
@@ -34,6 +37,14 @@ export default {
                 },
             ],
         };
+    },
+    watch: {
+        '$route'(to, from) {
+            const toDepth = to.path.split('/').filter(e => e !== "").length;
+            const fromDepth = from.path.split('/').filter(e => e !== "").length;
+            this.transitionName =
+                toDepth < fromDepth ? 'slide-right' : 'slide-left';
+        },
     },
     components: {
         HelloWorld,
@@ -56,14 +67,19 @@ export default {
     height: 425px;
 }
 
-h1, h2, h3, h4, h5, p {
+h1,
+h2,
+h3,
+h4,
+h5,
+p {
     margin-bottom: 1.5rem;
 }
 
 hr {
     margin: 1rem 0;
     border: none;
-    border-bottom: 2px solid #F0F0F0;
+    border-bottom: 2px solid #f0f0f0;
 }
 
 .row {
@@ -74,5 +90,20 @@ hr {
 .col {
     margin: 0 0.5rem;
     width: 100%;
+}
+
+.child-view {
+    position: absolute;
+    transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+}
+.slide-left-enter,
+.slide-right-leave-active {
+    -webkit-transform: translate(100vw, 0);
+    transform: translate(100vw, 0);
+}
+.slide-left-leave-active,
+.slide-right-enter {
+    -webkit-transform: translate(-100vw, 0);
+    transform: translate(-100vw, 0);
 }
 </style>
