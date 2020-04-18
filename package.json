@@ -31,7 +31,6 @@
         "sass": "^1.26.3",
         "sass-loader": "^8.0.2",
         "ts-loader": "^6.2.1",
-        "ttf-loader": "^1.0.2",
         "typedoc": "^0.16.11",
         "typedoc-webpack-plugin": "^1.1.4",
         "typescript": "^3.8.3",
