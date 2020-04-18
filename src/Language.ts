@@ -1,5 +1,10 @@
 import Logger from './Logger';
 import { SyncStorage } from './Storage';
+import lang_enUS_data from './lang/en-US.json';
+import lang_svSE_data from './lang/sv-SE.json';
+import lang_frFR_data from './lang/fr-FR.json';
+import lang_itIT_data from './lang/it-IT.json';
+import lang_enSTEEF_data from './lang/en-STEEF.json';
 const { chrome } = window as any;
 
 export class Language {
@@ -40,7 +45,7 @@ export class Language {
     static languages: Language[] = [];
     static default: Language;
     static current: Language;
-    static init(): void {
+    static load(): void {
         // Check for the first language that isn't equal to the default
         SyncStorage.LANGUAGE.get((result: any) => {
             let language = result[SyncStorage.LANGUAGE.tag];
@@ -59,6 +64,24 @@ export class Language {
                 }
             });
         });
+    }
+
+    static init(): void {
+        const lang_enUS = new Language('English (US)', 'en-US', lang_enUS_data);
+        lang_enUS.register();
+        lang_enUS.setDefault();
+
+        const lang_enSTEEF = new Language('English (Steef)', 'en-STEEF', lang_enSTEEF_data);
+        lang_enSTEEF.register();
+
+        const lang_frFR = new Language('Français (FR)', 'fr-FR', lang_frFR_data);
+        lang_frFR.register();
+
+        const lang_itIT = new Language('Italiano (IT)', 'it-IT', lang_itIT_data);
+        lang_itIT.register();
+
+        const lang_svSE = new Language('Svenska (SE)', 'sv-SE', lang_svSE_data);
+        lang_svSE.register();
     }
 
     static get(name: string, vars?: { [key: string]: any }): string {
