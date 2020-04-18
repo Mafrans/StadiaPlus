@@ -6,6 +6,9 @@ export class Storage {
 }
 
 class LocalStorage {
+    CODEC = new LocalStorage('Codec', 'codec');
+
+
     name: string;
     tag: string;
     
