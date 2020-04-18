@@ -1,4 +1,21 @@
 {
+    "popup": {
+        "footer": {
+            "credit": "Developed by {{name}}"
+        },
+        "main-page": {
+            "title": "Stadia+",
+            "ready-text": "The extension is all ready to go. Just fire up Stadia and start playing! 🎮",
+            "launch-button": "Launch Stadia",
+            "help-button": "Help & FAQ",
+            "discord": "Discord",
+            "reddit": "Reddit"
+        },
+        "settings-page": {
+            "title": "Settings",
+            "language": "Language"
+        }
+    },
     "component": {
         "enabled": "Component {{name}} has been enabled.",
         "disabled": "Component {{name}} has been disabled."

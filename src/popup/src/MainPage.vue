@@ -2,11 +2,10 @@
     <div class="main-page">
         <div class="container">
             <page-header :img="logo" icon="settings" v-on:icon-click="settings"
-                >Stadia+</page-header
+                >{{ Language.get('popup.main-page.title') }}</page-header
             >
             <p>
-                The extension is all ready to go. Just fire up Stadia and start
-                playing! 🎮
+                {{ Language.get('popup.main-page.ready-text') }}
             </p>
 
             <div class="row">
@@ -16,7 +15,7 @@
                         :gradient="true"
                     >
                         <icon>launch</icon>
-                        Launch Stadia
+                        {{ Language.get('popup.main-page.launch-button') }}
                     </btn>
                 </div>
             </div>
@@ -28,7 +27,7 @@
                         "
                     >
                         <icon>help_outline</icon>
-                        Help & FAQ
+                        {{ Language.get('popup.main-page.help-button') }}
                     </btn>
                 </div>
             </div>
@@ -38,7 +37,7 @@
             <div class="row">
                 <div class="col">
                     <btn v-on:click="open('https://discord.gg/2VDbEQ8')">
-                        Discord
+                        {{ Language.get('popup.main-page.discord') }}
                     </btn>
                 </div>
                 <div class="col">
@@ -49,7 +48,7 @@
                             )
                         "
                     >
-                        Reddit
+                        {{ Language.get('popup.main-page.reddit') }}
                     </btn>
                 </div>
             </div>
@@ -62,10 +61,12 @@ import Icon from './components/Icon.vue';
 import PageHeader from './components/PageHeader.vue';
 import Button from './components/Button.vue';
 import logo from './assets/logo.png';
+import { Language } from '../../Language';
 export default {
     data() {
         return {
             logo: logo,
+            Language: Language,
         };
     },
     components: {

@@ -6,10 +6,7 @@
 
         <footer>
             <span>Stadia+ 2.1</span>
-            <span
-                >Developed by
-                <a href="https://reddit.com/u/Mafrans">Mafrans</a></span
-            >
+            <span>{{ Language.get('popup.footer.credit', { name: '<a href="https://reddit.com/u/Mafrans">Mafrans</a>' }) }} </span>
         </footer>
     </div>
 </template>
@@ -19,37 +16,20 @@ import HelloWorld from './components/HelloWorld.vue';
 import MainPage from './MainPage.vue';
 import SelectBox from './components/SelectBox.vue';
 import { SelectStyle } from '../../ui/Select';
+import { Language } from '../../Language';
 
 export default {
     name: 'App',
     data() {
         return {
-            transitionName: 'slide-left',
-            selectStyle: SelectStyle.SLIMSELECT_LARGE,
-            items: [
-                {
-                    value: 't1',
-                    label: 'Test 1',
-                },
-                {
-                    value: 't2',
-                    label: 'Test 2',
-                },
-                {
-                    value: 't3',
-                    label: 'Test 3',
-                },
-                {
-                    value: 't4',
-                    label: 'Test 4',
-                },
-            ],
+            Language: Language
         };
     },
     watch: {
-        '$route'(to, from) {
-            const toDepth = to.path.split('/').filter(e => e !== "").length;
-            const fromDepth = from.path.split('/').filter(e => e !== "").length;
+        $route(to, from) {
+            const toDepth = to.path.split('/').filter((e) => e !== '').length;
+            const fromDepth = from.path.split('/').filter((e) => e !== '')
+                .length;
             this.transitionName =
                 toDepth < fromDepth ? 'slide-right' : 'slide-left';
         },

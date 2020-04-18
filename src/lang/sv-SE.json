@@ -1,4 +1,21 @@
 {
+    "popup": {
+        "footer": {
+            "credit": "Utvecklat av {{name}}"
+        },
+        "main-page": {
+            "title": "Stadia+",
+            "ready-text": "Tillägget är redo att köra. Bara starta Stadia och börja spela! 🎮",
+            "launch-button": "Starta Stadia",
+            "help-button": "Hjälp & FAQ",
+            "discord": "Discord",
+            "reddit": "Reddit"
+        },
+        "settings-page": {
+            "title": "Inställningar",
+            "language": "Språk"
+        }
+    },
     "component": {
         "enabled": "Komponenten {{name}} är nu aktiverad.",
         "disabled": "Komponenten {{name}} är inte längre aktiverad."

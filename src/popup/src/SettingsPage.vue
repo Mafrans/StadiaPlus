@@ -1,14 +1,14 @@
 <template>
     <div class="settings-page">
         <div class="container">
-            <page-header :back-button="true">Settings</page-header>
+            <page-header :back-button="true">{{ Language.get('popup.settings-page.title') }}</page-header>
 
             <div class="row">
                 <div class="col">
                     <icon :style="{ float: 'left', marginRight: '4px' }"
                         >language</icon
                     >
-                    <h3 :style="{ marginBottom: '0.5rem' }">Language</h3>
+                    <h3 :style="{ marginBottom: '0.5rem' }">{{ Language.get('popup.settings-page.language') }}</h3>
                     <select-box
                         :items="languages"
                         :selected="currentLanguage"
@@ -33,6 +33,7 @@ import { SyncStorage } from '../../Storage';
 export default {
     data() {
         return {
+            Language: Language,
             logo: logo,
             languages: Language.languages.map((lang) => {
                 return { value: lang.tag, label: lang.name };
