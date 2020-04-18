@@ -34,6 +34,7 @@ export class SyncStorage {
     static LIBRARY_GAMES = new SyncStorage('Library Games', 'games');
     static LIBRARY_SORT_ORDER = new SyncStorage('Sort Order', 'sort-order');
     static LIBRARY_SORT_DIRECTION = new SyncStorage('Sort Direction', 'sort-direction');
+    static LANGUAGE = new SyncStorage('Language', 'language');
 
     name: string;
     tag: string;
