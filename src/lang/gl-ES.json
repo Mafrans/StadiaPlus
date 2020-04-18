@@ -1,0 +1,67 @@
+{
+    "popup": {
+        "footer": {
+            "credit": "Creado por {{name}}"
+        },
+        "main-page": {
+            "title": "Stadia+",
+            "ready-text": "A extensión está lista. Carga o Stadia e dalle lume! 🎮",
+            "launch-button": "Inicia Stadia",
+            "help-button": "Axuda e FAQ",
+            "discord": "Discord",
+            "reddit": "Reddit"
+        },
+        "settings-page": {
+            "title": "Configuración",
+            "language": "Idioma"
+        }
+    },
+    "component": {
+        "enabled": "Activouse {{name}}.",
+        "disabled": "Desactivouse {{name}}."
+    },
+    "clock": {
+        "name": "Reloxo"
+    },
+    "force-codec": {
+        "name": "Forzar o codec"
+    },
+    "force-resolution": {
+        "name": "Forzar a resolución",
+        "note": "Aviso: o valor indicado será o máximo que Stadia intentará acadar. Se o teu computador non é compatíbel coa resolución ou esta non se pode activar co uso de datos que teñas vixente na conta, non se activará.."
+    },
+    "library-filter": {
+        "name": "Filtro da colección",
+        "recent": "Recente",
+        "alphabetical": "Alfabético",
+        "random": "Aleatorio",
+        "show-hidden": "Mostrar os agochados"
+    },
+    "network-monitor": {
+        "name": "Monitor de rede",
+        "heading-visible": "Estatísticas visíbeis",
+        "button-label": "Monitor"
+    },
+    "ratings": {
+        "name": "Valoracións",
+        "source-name": "Metacritic"
+    },
+    "store-filter": {
+        "name": "Filtro da tenda"
+    },
+    "ui-tab": {
+        "name": "Stadia+ UI Tab",
+        "button-label": "Stadia+"
+    },
+    "snackbar": {
+        "reload-to-update": "Recarga a páxina para activar os teus cambios.",
+        "hide-game": "Agochóuse un xogo.",
+        "show-game": "Un xogo xa non está agochado."
+    },
+    "automatic": "Automático",
+    "vp9": "VP9",
+    "h264": "H264",
+    "apply": "Aplicar",
+    "4k": "4K",
+    "1080p": "1080p"
+}

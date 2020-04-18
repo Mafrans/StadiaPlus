@@ -1,0 +1,67 @@
+{
+    "popup": {
+        "footer": {
+            "credit": "Egilea: {{name}}"
+        },
+        "main-page": {
+            "title": "Stadia+",
+            "ready-text": "Luzapena prest dago. Ireki Stadia eta hasi jolasten! Egurra! 🎮",
+            "launch-button": "Ireki Stadia",
+            "help-button": "Laguntza & FAQ",
+            "discord": "Discord",
+            "reddit": "Reddit"
+        },
+        "settings-page": {
+            "title": "Ezarpenak",
+            "language": "Hizkuntza"
+        }
+    },
+    "component": {
+        "enabled": "{{name}} gaitu egin da.",
+        "disabled": "{{name}} desgaitu egin da."
+    },
+    "clock": {
+        "name": "Erloju"
+    },
+    "force-codec": {
+        "name": "Behartu codec"
+    },
+    "force-resolution": {
+        "name": "Behartu bereizmena",
+        "note": "Oharra: jarritako balioa da handiena Stadia ezartzen saiatuko dena. Zure ordenagailuak ezin badu bereizmen hori gauzatu edota ez badator bat Stadiaren zure data-ezarpenekin ezin izango da gauzatu.."
+    },
+    "library-filter": {
+        "name": "Bildumaren iragazkia",
+        "recent": "Oraintsuak",
+        "alphabetical": "Alfabetikoa",
+        "random": "Aliritzira",
+        "show-hidden": "Erakutsi izkutatutakoak"
+    },
+    "network-monitor": {
+        "name": "Sare-monitorea",
+        "heading-visible": "Estatistikoak ikusgai",
+        "button-label": "Monitorea"
+    },
+    "ratings": {
+        "name": "Balorazioak",
+        "source-name": "Metacritic"
+    },
+    "store-filter": {
+        "name": "Denda-iragazkiar"
+    },
+    "ui-tab": {
+        "name": "Stadia+ UI Tab",
+        "button-label": "Stadia+"
+    },
+    "snackbar": {
+        "reload-to-update": "Orria berriro birkargatu ezarritako aldaketak erakusteko.",
+        "hide-game": "Joku bat izkutatu egin da.",
+        "show-game": "Joku bat jada ikusgai dago."
+    },
+    "automatic": "Automatikoa",
+    "vp9": "VP9",
+    "h264": "H264",
+    "apply": "Ezarri",
+    "4k": "4K",
+    "1080p": "1080p"
+}
