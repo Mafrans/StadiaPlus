@@ -50,11 +50,7 @@ export class Language {
         SyncStorage.LANGUAGE.get((result: any) => {
             let language = result[SyncStorage.LANGUAGE.tag];
             if (language === undefined || language === 'automatic') {
-                language = (window.navigator.languages as any).find(
-                    (l: string) =>
-                        l.length >= 5 &&
-                        (this.default === undefined || l !== this.default.tag)
-                );
+                language = this.automatic();
             }
 
             Logger.info('Using language configuration ' + language);
@@ -64,6 +60,14 @@ export class Language {
                 }
             });
         });
+    }
+
+    static automatic() {
+        return (window.navigator.languages as any).find(
+            (l: string) =>
+                l.length >= 5 &&
+                (this.default === undefined || l !== this.default.tag)
+        );
     }
 
     static init(): void {
