@@ -54,14 +54,14 @@ export default {
 
 h1 {
     margin-bottom: 0;
-    color: #585858;
     font-weight: 500;
     font-size: 24px;
+    color: #424242;
 }
 
 .icon {
     cursor: pointer;
-    color: #585858;
+    color: #424242;
     margin-left: auto;
     font-size: 30px;
     vertical-align: text-top;
