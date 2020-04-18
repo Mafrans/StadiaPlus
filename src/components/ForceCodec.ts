@@ -71,7 +71,7 @@ export class ForceCodec extends Component {
                 this.id + '-row',
                 {
                     onCreate: (row:UIRow) => {
-                        self.select = new Select(row.element.querySelector('select'), Codec.AUTOMATIC);
+                        self.select = new Select(row.element.querySelector('select'), { placeholder: Codec.AUTOMATIC });
     
                         const button = row.element.querySelector('.stadiaplus_button-small');
                         button.addEventListener('click', () => {
@@ -90,7 +90,7 @@ export class ForceCodec extends Component {
 
                     onReload: (row:UIRow) => {
                         self.select.destroy();
-                        self.select = new Select(row.element.querySelector('select'), Codec.AUTOMATIC);
+                        self.select = new Select(row.element.querySelector('select'), { placeholder: Codec.AUTOMATIC });
                         self.select.set(self.codec);
                     },
                 }

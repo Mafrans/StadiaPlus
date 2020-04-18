@@ -77,7 +77,7 @@ export class ForceResolution extends Component {
                 this.id + '-row',
                 {
                     onCreate: (row:UIRow) => {
-                        self.select = new Select(row.element.querySelector('select'), Resolution.AUTOMATIC);
+                        self.select = new Select(row.element.querySelector('select'), { placeholder: Resolution.AUTOMATIC });
 
                         const button = row.element.querySelector('.stadiaplus_button-small');
                         button.addEventListener('click', () => {
@@ -95,7 +95,7 @@ export class ForceResolution extends Component {
 
                     onReload: (row:UIRow) => {
                         self.select.destroy();
-                        self.select = new Select(row.element.querySelector('select'), Resolution.AUTOMATIC);
+                        self.select = new Select(row.element.querySelector('select'), { placeholder: Resolution.AUTOMATIC });
                         self.select.set(self.resolution);
                     },
                 }

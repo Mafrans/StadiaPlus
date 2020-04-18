@@ -458,7 +458,7 @@ export class LibraryFilter extends Component {
                 // Style the custom select box in the filter bar
                 this.select = new Select(
                     this.filterBar.querySelector('select'),
-                    FilterOrder.RECENT
+                    { placeholder: FilterOrder.RECENT }
                 );
 
                 this.select.set(this.order);
