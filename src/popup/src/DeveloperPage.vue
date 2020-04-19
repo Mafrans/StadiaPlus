@@ -52,4 +52,8 @@ export default {
 .container {
     padding: 1rem;
 }
+
+h3 {
+    margin-bottom: 0.5rem;
+}
 </style>
