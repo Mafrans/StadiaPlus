@@ -125,7 +125,7 @@ export class NetworkMonitor extends Component {
     getStorage(callback: (() => any) = (() => {})) {
         LocalStorage.MONITOR_STATS.get((result: any) => {
             if(result[LocalStorage.MONITOR_STATS.tag]) {
-                this.visible = result.monitorStatsVisible;
+                this.visible = result[LocalStorage.MONITOR_STATS.tag];
             }
             callback();
         })
