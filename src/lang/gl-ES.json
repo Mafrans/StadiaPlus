@@ -5,7 +5,7 @@
         },
         "main-page": {
             "title": "Stadia+",
-            "ready-text": "A extensión está lista. Carga o Stadia e dalle lume! 🎮",
+            "ready-text": "A extensión está lista. Inicia Stadia e dalle lume! 🎮",
             "launch-button": "Inicia Stadia",
             "help-button": "Axuda e FAQ",
             "discord": "Discord",
@@ -28,7 +28,7 @@
     },
     "force-resolution": {
         "name": "Forzar a resolución",
-        "note": "Aviso: o valor indicado será o máximo que Stadia intentará acadar. Se o teu computador non é compatíbel coa resolución ou esta non se pode activar co uso de datos que teñas vixente na conta, non se activará.."
+        "note": "Aviso: o valor indicado será o máximo que Stadia intentará acadar. Se o teu computador non é compatíbel coa resolución ou esta supera o uso  de datos que teñas vixente na conta, non se activará.."
     },
     "library-filter": {
         "name": "Filtro da colección",
@@ -56,7 +56,7 @@
     "snackbar": {
         "reload-to-update": "Recarga a páxina para activar os teus cambios.",
         "hide-game": "Agochóuse un xogo.",
-        "show-game": "Un xogo xa non está agochado."
+        "show-game": "Un xogo deixou de estar agochado."
     },
     "automatic": "Automático",
     "vp9": "VP9",

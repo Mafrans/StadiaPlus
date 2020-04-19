@@ -21,25 +21,25 @@
         "disabled": "{{name}} desgaitu egin da."
     },
     "clock": {
-        "name": "Erloju"
+        "name": "Erlojua"
     },
     "force-codec": {
         "name": "Behartu codec"
     },
     "force-resolution": {
         "name": "Behartu bereizmena",
-        "note": "Oharra: jarritako balioa da handiena Stadia ezartzen saiatuko dena. Zure ordenagailuak ezin badu bereizmen hori gauzatu edota ez badator bat Stadiaren zure data-ezarpenekin ezin izango da gauzatu.."
+        "note": "Oharra: jarritako balioa izango da Stadia ezartzen saiatuko den handiena. Zure ordenagailuak ezin badu bereizmen hori exekutatu  edota ez badator bat Stadiaren zure data-ezarpenekin ezin izango da gauzatu.."
     },
     "library-filter": {
         "name": "Bildumaren iragazkia",
-        "recent": "Oraintsuak",
+        "recent": "Arestikoak",
         "alphabetical": "Alfabetikoa",
         "random": "Aliritzira",
         "show-hidden": "Erakutsi izkutatutakoak"
     },
     "network-monitor": {
         "name": "Sare-monitorea",
-        "heading-visible": "Estatistikoak ikusgai",
+        "heading-visible": "Ikusteko estatistikak",
         "button-label": "Monitorea"
     },
     "ratings": {
@@ -47,14 +47,14 @@
         "source-name": "Metacritic"
     },
     "store-filter": {
-        "name": "Denda-iragazkiar"
+        "name": "Denda-iragazkia"
     },
     "ui-tab": {
         "name": "Stadia+ UI Tab",
         "button-label": "Stadia+"
     },
     "snackbar": {
-        "reload-to-update": "Orria berriro birkargatu ezarritako aldaketak erakusteko.",
+        "reload-to-update": "Orria birkargatu ezarritako aldaketak abiarazteko.",
         "hide-game": "Joku bat izkutatu egin da.",
         "show-game": "Joku bat jada ikusgai dago."
     },
