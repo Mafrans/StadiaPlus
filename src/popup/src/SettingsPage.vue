@@ -1,7 +1,7 @@
 <template>
     <div class="settings-page">
         <div class="container">
-            <page-header :back-button="true">{{
+            <page-header :back-button="true" icon="code" v-on:icon-click="developer">{{
                 Language.get('popup.settings-page.title')
             }}</page-header>
 
@@ -53,8 +53,8 @@ export default {
         SelectBox,
     },
     methods: {
-        settings() {
-            this.$router.push('settings');
+        developer() {
+            this.$router.push('settings/developer');
         },
         open(url) {
             window.open(url, '_blank');

@@ -14,6 +14,11 @@
         "settings-page": {
             "title": "The Settings",
             "language": "The Language"
+        },
+        "developer-page": {
+            "title": "Developer",
+            "clear-cache-button": "Clear The Cache",
+            "storage": "The Storage"
         }
     },
     "component": {
