@@ -1,19 +1,19 @@
 {
     "popup": {
         "footer": {
-            "credit": "Developed by {{name}}"
+            "credit": "Développé par {{name}}"
         },
         "main-page": {
             "title": "Stadia+",
-            "ready-text": "The extension is all ready to go. Just fire up Stadia and start playing! 🎮",
-            "launch-button": "Launch Stadia",
-            "help-button": "Help & FAQ",
+            "ready-text": "L'extension est prête. Lancez Stadia et commencez à jouer! 🎮",
+            "launch-button": "Lancer Stadia",
+            "help-button": "Aide & FAQ",
             "discord": "Discord",
             "reddit": "Reddit"
         },
         "settings-page": {
-            "title": "Settings",
-            "language": "Language"
+            "title": "Paramètres",
+            "language": "Langue"
         },
         "developer-page": {
             "title": "Developer",
@@ -29,18 +29,18 @@
         "name": "Horloge"
     },
     "force-codec": {
-        "name": "Forcer Codec"
+        "name": "Forcer le codec"
     },
     "force-resolution": {
-        "name": "Forcer Résolution",
-        "note": "Remarque: la valeur définie est la résolution maximale que Stadia tentera d'atteindre. Si votre ordinateur ne peut pas resituer cette résolution ou que l'option de consommation des données ne le permets pas, elle ne sera pas utilisée."
+        "name": "Forcer la résolution",
+        "note": "Remarque: la valeur définie est la résolution maximale que Stadia tentera d'atteindre. Si votre ordinateur ne peut pas afficher cette résolution ou que l'option de consommation des données ne le permet pas, elle ne sera pas utilisée."
     },
     "library-filter": {
-        "name": "Filtre bibliothèque",
+        "name": "Filtre de la bibliothèque",
         "recent": "Récent",
         "alphabetical": "Alphabétique",
         "random": "Aléatoire",
-        "show-hidden": "Montrer caché"
+        "show-hidden": "Montrer caché(s)"
     },
     "network-monitor": {
         "name": "Moniteur réseau",
@@ -52,7 +52,7 @@
         "source-name": "Métacritique"
     },
     "store-filter": {
-        "name": "Filtre Magasin"
+        "name": "Filtre du magasin"
     },
     "ui-tab": {
         "name": "Stadia+ UI Tab",
