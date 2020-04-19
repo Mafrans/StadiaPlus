@@ -29,6 +29,8 @@ const MonitorRunnable = function () {
             'networkmonitor-' + Math.floor(Math.random() * 999999);
         document.body.appendChild(this.element);
 
+        this.startTime = Date.now();
+
         this.setEditable(true);
         this.updatePosition();
         this.update();
