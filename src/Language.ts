@@ -6,6 +6,7 @@ import lang_frFR_data from './lang/fr-FR.json';
 import lang_itIT_data from './lang/it-IT.json';
 import lang_esES_data from './lang/es-ES.json';
 import lang_deDE_data from './lang/de-DE.json';
+import lang_ukUA_data from './lang/uk-UA.json';
 import lang_enSTEEF_data from './lang/en-STEEF.json';
 const { chrome } = window as any;
 
@@ -98,6 +99,9 @@ export class Language {
 
         const lang_svSE = new Language('Svenska (SE)', 'sv-SE', lang_svSE_data);
         lang_svSE.register();
+
+	    const lang_ukUA = new Language('Ukrainian (Uk)', 'uk-US', lang_ukUA_data);
+        lang_ukUA.register();
     }
 
     static get(name: string, vars?: { [key: string]: any }): string {
