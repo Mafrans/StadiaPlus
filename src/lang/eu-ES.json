@@ -1,6 +1,8 @@
 {
     "popup": {
-        
+        "footer": {
+            "credit": "Egilea: {{name}}"
+	},
         "main-page": {
             "title": "Stadia+",
             "ready-text": "Luzapena prest dago. Ireki Stadia eta hasi jolasten! Egurra! 🎮",
