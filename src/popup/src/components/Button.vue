@@ -29,6 +29,12 @@ export default {
     text-align: center;
     display: block;
     text-decoration: none;
+    transition: filter 0.1s ease-out;
+
+    &:active {
+        filter: brightness(0.925);
+        transition: filter 0s linear;
+    }
 
     &[disabled] {
         opacity: 0.7;
