@@ -92,8 +92,8 @@ export class Language {
         lang_enUS.register();
         lang_enUS.setDefault();
 
-        const lang_enSTEEF = new Language('English (Steef)', 'en-STEEF', lang_enSTEEF_data);
-        lang_enSTEEF.register();
+        // const lang_enSTEEF = new Language('English (Steef)', 'en-STEEF', lang_enSTEEF_data);
+        // lang_enSTEEF.register();
 
         const lang_frFR = new Language('Français (FR)', 'fr-FR', lang_frFR_data);
         lang_frFR.register();
