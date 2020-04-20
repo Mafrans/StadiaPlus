@@ -14,6 +14,11 @@
         "settings-page": {
             "title": "Inställningar",
             "language": "Språk"
+        },
+        "developer-page": {
+            "title": "Utvecklare",
+            "clear-cache-button": "Rensa Cache",
+            "storage": "Lagring"
         }
     },
     "component": {

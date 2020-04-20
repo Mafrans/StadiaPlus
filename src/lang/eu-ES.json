@@ -1,0 +1,72 @@
+{
+    "popup": {
+        "footer": {
+            "credit": "Egilea: {{name}}"
+	   },
+        "main-page": {
+            "title": "Stadia+",
+            "ready-text": "Luzapena prest dago. Ireki Stadia eta hasi jolasten! Egurra! 🎮",
+            "launch-button": "Ireki Stadia",
+            "help-button": "Laguntza & FAQ",
+            "discord": "Discord",
+            "reddit": "Reddit"
+        },
+        "settings-page": {
+            "title": "Ezarpenak",
+            "language": "Hizkuntza"
+        },
+	"developer-page": {
+            "title": "Aurreratuak",
+            "clear-cache-button": "Cache ezabatu",
+            "storage": "Biltegia"
+        }
+    },
+    "component": {
+        "enabled": "{{name}} gaitu egin da.",
+        "disabled": "{{name}} desgaitu egin da."
+    },
+    "clock": {
+        "name": "Erlojua"
+    },
+    "force-codec": {
+        "name": "Behartu codec"
+    },
+    "force-resolution": {
+        "name": "Behartu bereizmena",
+        "note": "Oharra: jarritako balioa izango da Stadia ezartzen saiatuko den handiena. Zure ordenagailuak ezin badu bereizmen hori exekutatu  edota ez badator bat Stadiaren zure data-ezarpenekin ezin izango da gauzatu.."
+    },
+    "library-filter": {
+        "name": "Bildumaren iragazkia",
+        "recent": "Arestikoak",
+        "alphabetical": "Alfabetikoa",
+        "random": "Aliritzira",
+        "show-hidden": "Erakutsi izkutatutakoak"
+    },
+    "network-monitor": {
+        "name": "Sare-monitorea",
+        "heading-visible": "Ikusteko estatistikak",
+        "button-label": "Monitorea"
+    },
+    "ratings": {
+        "name": "Balorazioak",
+        "source-name": "Metacritic"
+    },
+    "store-filter": {
+        "name": "Denda-iragazkia"
+    },
+    "ui-tab": {
+        "name": "Stadia+ UI Tab",
+        "button-label": "Stadia+"
+    },
+    "snackbar": {
+        "reload-to-update": "Orria birkargatu ezarritako aldaketak abiarazteko.",
+        "hide-game": "Joku bat izkutatu egin da.",
+        "show-game": "Joku bat jada ikusgai dago."
+    },
+    "automatic": "Automatikoa",
+    "vp9": "VP9",
+    "h264": "H264",
+    "apply": "Ezarri",
+    "4k": "4K",
+    "1080p": "1080p"
+}

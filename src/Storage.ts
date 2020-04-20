@@ -28,6 +28,10 @@ export class LocalStorage {
     static set(storages: {[key: string]: any}, callback: (() => any) = (() => {})) {
         chrome.storage.local.get(storages, callback);
     }
+
+    static clear() {
+        chrome.storage.local.clear();
+    }
 }
 
 export class SyncStorage {
@@ -58,5 +62,9 @@ export class SyncStorage {
 
     static set(storages: {[key: string]: any}, callback: (() => any) = (() => {})) {
         chrome.storage.sync.get(storages, callback);
+    }
+    
+    static clear() {
+        chrome.storage.local.clear();
     }
 }
