@@ -16,9 +16,9 @@
             "language": "Langue"
         },
         "developer-page": {
-            "title": "Developer",
-            "clear-cache-button": "Clear Cache",
-            "storage": "Storage"
+            "title": "Développeur",
+            "clear-cache-button": "Vider le cache",
+            "storage": "Stockage"
         }
     },
     "component": {
