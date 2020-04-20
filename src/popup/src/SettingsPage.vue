@@ -66,6 +66,8 @@ export default {
             }
 
             SyncStorage.LANGUAGE.set(language);
+            Language.current = Language.languages.find((lang) => lang.tag === info.value);
+            this.$forceUpdate();
         },
     },
 };
