@@ -5,15 +5,20 @@
         },
         "main-page": {
             "title": "Stadia+",
-            "ready-text": "A extensión está lista. Inicia Stadia e dalle lume! 🎮",
+            "ready-text": "A extensión está lista. Inicia Stadia e lume! 🎮",
             "launch-button": "Inicia Stadia",
-            "help-button": "Axuda e FAQ",
+            "help-button": "Axuda & FAQ",
             "discord": "Discord",
             "reddit": "Reddit"
         },
         "settings-page": {
             "title": "Configuración",
             "language": "Idioma"
+        },
+        "developer-page": {
+            "title": "Avanzadas",
+            "clear-cache-button": "Limpar a caché",
+            "storage": "Almacenamento"
         }
     },
     "component": {
@@ -24,22 +29,22 @@
         "name": "Reloxo"
     },
     "force-codec": {
-        "name": "Forzar o codec"
+        "name": "Forzar códec"
     },
     "force-resolution": {
-        "name": "Forzar a resolución",
-        "note": "Aviso: o valor indicado será o máximo que Stadia intentará acadar. Se o teu computador non é compatíbel coa resolución ou esta supera o uso  de datos que teñas vixente na conta, non se activará.."
+        "name": "Forzar resolución",
+        "note": "Aviso: o valor indicado será o máximo que Stadia intentará acadar. Se o teu computador non é compatíbel coa resolución ou esta supera o uso de datos que teñas configurado na conta, non se activará."
     },
     "library-filter": {
-        "name": "Filtro da colección",
-        "recent": "Recente",
-        "alphabetical": "Alfabético",
-        "random": "Aleatorio",
-        "show-hidden": "Mostrar os agochados"
+        "name": "Filtrar",
+        "recent": "Recentes",
+        "alphabetical": "Alfabeticamente",
+        "random": "Aleatoriamente",
+        "show-hidden": "Mostrar agochados"
     },
     "network-monitor": {
         "name": "Monitor de rede",
-        "heading-visible": "Estatísticas visíbeis",
+        "heading-visible": "Estatísticas",
         "button-label": "Monitor"
     },
     "ratings": {
@@ -47,18 +52,18 @@
         "source-name": "Metacritic"
     },
     "store-filter": {
-        "name": "Filtro da tenda"
+        "name": "Filtrar"
     },
     "ui-tab": {
-        "name": "Stadia+ UI Tab",
+        "name": "Pestaña UI de Stadia+",
         "button-label": "Stadia+"
     },
     "snackbar": {
-        "reload-to-update": "Recarga a páxina para activar os teus cambios.",
+        "reload-to-update": "Recarga a páxina para activar os cambios.",
         "hide-game": "Agochóuse un xogo.",
         "show-game": "Un xogo deixou de estar agochado."
     },
-    "automatic": "Automático",
+    "automatic": "Autático",
     "vp9": "VP9",
     "h264": "H264",
     "apply": "Aplicar",

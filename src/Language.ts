@@ -105,7 +105,7 @@ export class Language {
 	const lang_euES = new Language('Euskara (EU)', 'eu-ES', lang_euES_data);
         lang_euES.register();
 
-	const lang_glES= new Language('Galego (GL)', 'gl-ES', lang_glES_data);
+	const lang_glES = new Language('Galego (GL)', 'gl-ES', lang_glES_data);
         lang_glES.register();
     }
 

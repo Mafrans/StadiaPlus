@@ -1,8 +1,6 @@
 {
     "popup": {
-        "footer": {
-            "credit": "Egilea: {{name}}"
-        },
+        
         "main-page": {
             "title": "Stadia+",
             "ready-text": "Luzapena prest dago. Ireki Stadia eta hasi jolasten! Egurra! 🎮",
@@ -14,6 +12,11 @@
         "settings-page": {
             "title": "Ezarpenak",
             "language": "Hizkuntza"
+        }
+	"developer-page": {
+            "title": "Aurreratuak",
+            "clear-cache-button": "Cache ezabatu",
+            "storage": "Biltegia"
         }
     },
     "component": {
