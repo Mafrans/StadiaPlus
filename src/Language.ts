@@ -104,7 +104,7 @@ export class Language {
         const lang_svSE = new Language('Svenska (SE)', 'sv-SE', lang_svSE_data);
         lang_svSE.register();
       
-        const lang_ukUA = new Language('Ukrainian (UA)', 'uk-UA', lang_ukUA_data);
+        const lang_ukUA = new Language('Українська (UA)', 'uk-UA', lang_ukUA_data);
         lang_ukUA.register();
       
         const lang_euES = new Language('Euskara (EU)', 'eu-ES', lang_euES_data);
