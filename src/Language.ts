@@ -6,6 +6,7 @@ import lang_frFR_data from './lang/fr-FR.json';
 import lang_itIT_data from './lang/it-IT.json';
 import lang_esES_data from './lang/es-ES.json';
 import lang_deDE_data from './lang/de-DE.json';
+import lang_ukUA_data from './lang/uk-UA.json';
 import lang_enSTEEF_data from './lang/en-STEEF.json';
 import lang_euES_data from './lang/eu-ES.json';
 import lang_glES_data from './lang/gl-ES.json';
@@ -101,11 +102,14 @@ export class Language {
 
         const lang_svSE = new Language('Svenska (SE)', 'sv-SE', lang_svSE_data);
         lang_svSE.register();
-
-	const lang_euES = new Language('Euskara (EU)', 'eu-ES', lang_euES_data);
+      
+	      const lang_ukUA = new Language('Ukrainian (UA)', 'uk-UA', lang_ukUA_data);
+        lang_ukUA.register();
+      
+	      const lang_euES = new Language('Euskara (EU)', 'eu-ES', lang_euES_data);
         lang_euES.register();
 
-	const lang_glES = new Language('Galego (GL)', 'gl-ES', lang_glES_data);
+	      const lang_glES = new Language('Galego (GL)', 'gl-ES', lang_glES_data);
         lang_glES.register();
     }
 
