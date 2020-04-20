@@ -15,7 +15,7 @@
             "title": "Ezarpenak",
             "language": "Hizkuntza"
         },
-	"developer-page": {
+	    "developer-page": {
             "title": "Aurreratuak",
             "clear-cache-button": "Cache ezabatu",
             "storage": "Biltegia"
