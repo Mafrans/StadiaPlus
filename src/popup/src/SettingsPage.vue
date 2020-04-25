@@ -21,6 +21,12 @@
                     />
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col">
+                    <page-button next="settings/components">Components</page-button>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -30,6 +36,7 @@ import Icon from './components/Icon.vue';
 import PageHeader from './components/PageHeader.vue';
 import Button from './components/Button.vue';
 import SelectBox from './components/SelectBox.vue';
+import PageButton from './components/PageButton.vue';
 import { Language } from '../../Language';
 import logo from './assets/logo.png';
 import { SelectStyle } from '../../ui/Select';
@@ -51,6 +58,7 @@ export default {
         PageHeader,
         btn: Button,
         SelectBox,
+        PageButton
     },
     methods: {
         developer() {
