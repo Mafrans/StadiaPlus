@@ -38,6 +38,8 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    color: #000000;
+    text-decoration: none;
 
     .icon {
         color: #000000;
