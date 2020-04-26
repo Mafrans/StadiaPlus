@@ -24,7 +24,10 @@
 
             <div class="row">
                 <div class="col">
-                    <page-button next="settings/components">Components</page-button>
+                    <h3 :style="{ marginBottom: '0.5rem' }">
+                        {{ Language.get('popup.settings-page.components') }}
+                    </h3>
+                    <page-button next="settings/components">{{ Language.get('popup.settings-page.edit-components') }}</page-button>
                 </div>
             </div>
         </div>

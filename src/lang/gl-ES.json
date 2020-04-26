@@ -13,7 +13,9 @@
         },
         "settings-page": {
             "title": "Configuración",
-            "language": "Idioma"
+            "language": "Idioma",
+            "components": "Components",
+            "edit-components": "Edit Components"
         },
         "developer-page": {
             "title": "Avanzadas",

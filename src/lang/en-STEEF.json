@@ -13,7 +13,9 @@
         },
         "settings-page": {
             "title": "The Settings",
-            "language": "The Language"
+            "language": "The Language",
+            "components": "The Components",
+            "edit-components": "Edit The Components"
         },
         "developer-page": {
             "title": "Developer",

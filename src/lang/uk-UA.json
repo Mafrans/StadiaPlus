@@ -13,7 +13,9 @@
         },
         "settings-page": {
             "title": "Налаштування",
-            "language": "Мова"
+            "language": "Мова",
+            "components": "Components",
+            "edit-components": "Edit Components"
         },
         "developer-page": {
             "title": "Developer",

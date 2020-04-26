@@ -13,7 +13,9 @@
         },
         "settings-page": {
             "title": "Inställningar",
-            "language": "Språk"
+            "language": "Språk",
+            "components": "Komponenter",
+            "edit-components": "Redigera Komponenter"
         },
         "developer-page": {
             "title": "Utvecklare",

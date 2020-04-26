@@ -13,7 +13,9 @@
         },
         "settings-page": {
             "title": "Ezarpenak",
-            "language": "Hizkuntza"
+            "language": "Hizkuntza",
+            "components": "Components",
+            "edit-components": "Edit Components"
         },
 	    "developer-page": {
             "title": "Aurreratuak",
