@@ -3,6 +3,7 @@ import App from './App.vue';
 import MainPage from './MainPage.vue';
 import SettingsPage from './SettingsPage.vue';
 import DeveloperPage from './DeveloperPage.vue';
+import ComponentPage from './ComponentPage.vue';
 import VueRouter from 'vue-router';
 import { Language } from '../../Language';
 
@@ -13,6 +14,7 @@ const routes = [
     { path: '/', component: MainPage },
     { path: '/settings/', component: SettingsPage },
     { path: '/settings/developer', component: DeveloperPage },
+    { path: '/settings/components', component: ComponentPage },
 ];
 
 const router = new VueRouter({
