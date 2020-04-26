@@ -73,6 +73,10 @@ export class Language {
         });
     }
 
+    static set(language: Language) {
+        this.current = language;
+    }
+
     static automatic() {
         return (window.navigator.languages as any).find(
             (l: string) =>
