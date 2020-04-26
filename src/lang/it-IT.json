@@ -16,9 +16,9 @@
             "language": "Lingua"
         },
         "developer-page": {
-            "title": "Developer",
-            "clear-cache-button": "Clear Cache",
-            "storage": "Storage"
+            "title": "Sviluppatore",
+            "clear-cache-button": "Pulisci Cache",
+            "storage": "Archiviazione"
         }
     },
     "component": {
@@ -33,7 +33,7 @@
     },
     "force-resolution": {
         "name": "Forza Risoluzione",
-        "note": "Nota: il valore impostato è la massima risoluzione che Stadia tenterà di raggiungere. Se il tuo computer non è in grado di renderizzare la risoluzione, o non è disponibile con l'opzione di utilizzo dei dati corrente, non verrà visualizzato."
+        "note": "Nota: il valore impostato è la massima risoluzione che Stadia tenterà di raggiungere. Se il tuo computer non è in grado di renderizzare la risoluzione, o non è disponibile con l'opzione di utilizzo dei dati corrente, questa non verrà visualizzata."
     },
     "library-filter": {
         "name": "Filtro Libreria",
