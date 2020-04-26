@@ -11,13 +11,15 @@
                         Hey there! This page isn't available yet as the components haven't been loaded. Go to <a href="stadia.google.com">stadia.google.com</a> and log in to enable this feature.
                     </div>
 
-                    <div v-else v-for="key in Object.keys(components)" :key="key" class="component">
-                        {{ key }}
+                    <div v-else class="components">
+                        <div v-for="key in Object.keys(components)" :key="key" class="component">
+                            <span class="label">{{ key }}</span>
 
-                        <div class="pretty p-switch p-fill">
-                            <input type="checkbox" :checked="components[key].enabled">
-                            <div class="state">
-                                <label>&#x200B;</label>
+                            <div class="pretty p-switch p-fill">
+                                <input type="checkbox" :checked="components[key].enabled">
+                                <div class="state">
+                                    <label>&#x200B;</label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -69,8 +71,20 @@ export default {
     padding: 1rem;
 }
 
+.components {
+    .component {
+        padding: 0.5rem;
+        border-bottom: rgba(0, 0, 0, 0.1) solid 1px;
+    }
+
+    :last-child {
+        border-bottom: none;
+    }
+}
+
 .pretty {
-    top: -1px;
+    float: right;
+    margin-right: 0;
 
     .state::before {
         top: calc((0% - (100% - 1em)) - 16% + 1px);
