@@ -13,10 +13,10 @@
 
                     <div v-else class="components">
                         <div v-for="key in Object.keys(components)" :key="key" class="component">
-                            <span class="label">{{ key }}</span>
+                            <span class="label">{{ Language.get(key + '.name') }}</span>
 
                             <div class="pretty p-switch p-fill">
-                                <input type="checkbox" :checked="components[key].enabled">
+                                <input type="checkbox" :checked="components[key].enabled" @click="components[key].enabled = !components[key].enabled">
                                 <div class="state">
                                     <label>&#x200B;</label>
                                 </div>
@@ -26,10 +26,10 @@
                 </div>
             </div>
             
-            <div class="row">
+            <div v-if="components !== undefined && components !== null" class="row">
                 <div class="col">
                     <btn
-                        v-on:click=""
+                        v-on:click="apply"
                     >Apply</btn>
                 </div>
             </div>
@@ -64,6 +64,11 @@ export default {
         btn: Button,
         SelectBox,
         PageButton
+    },
+    methods: {
+        apply() {
+            SyncStorage.COMPONENTS.set(this.components);
+        }
     },
     created() {
         SyncStorage.COMPONENTS.get((result) => {
