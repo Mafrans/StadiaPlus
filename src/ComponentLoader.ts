@@ -1,4 +1,5 @@
 import { Component } from './Component';
+import { SyncStorage } from './Storage';
 
 /**
  * A utility class responsible for loading [[Component|Components]] and delivering events.
@@ -39,10 +40,28 @@ export class ComponentLoader {
      * Starts the component loader.
      */
     start() {
-        this.components.forEach(component => {
-            if (!component.enabled) component.load();
-        });
-        this.startTimer();
+        SyncStorage.COMPONENTS.get((result) => {
+            let storage = result.components;
+            if(storage === undefined) {
+                storage = {};
+            }
+
+            for(const component of this.components) {
+                if(storage[component.name] === undefined) {
+                    storage[component.name] = {};
+                }
+
+                if(storage[component.name].enabled === undefined) {
+                    storage[component.name].enabled = true;
+                }
+
+                component.enabled = storage[component.name].enabled;
+                if (component.enabled && !component.active) component.load();
+            };
+
+            SyncStorage.COMPONENTS.set(storage);
+            this.startTimer();
+        })
     }
 
     /**
@@ -50,7 +69,7 @@ export class ComponentLoader {
      */
     stop() {
         this.components.forEach(component => {
-            if (component.enabled) component.unload();
+            if (component.active) component.unload();
         });
         this.stopTimer();
     }
@@ -60,7 +79,7 @@ export class ComponentLoader {
 
         this.timer = setInterval(() => {
             self.components.forEach(component => {
-                if(component.enabled) component.onUpdate();
+                if(component.active) component.onUpdate();
             });
         }, 1000);
     }
