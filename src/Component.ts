@@ -31,6 +31,10 @@ export class Component {
     load(): void {
         SyncStorage.COMPONENTS.get((result) => {
             let components = result.components;
+            if(components === undefined) {
+                components = {};
+            }
+
             if(components[this.name] === undefined || components[this.name] === null) {
                 components[this.name] = {};
             }
@@ -38,13 +42,14 @@ export class Component {
             if(components[this.name].enabled === undefined) {
                 components[this.name].enabled = true;
             }
-            else if(components[this.name].enabled) {
+            
+            if(components[this.name].enabled) {
                 this.id = 'stadiaplus_' + Math.floor(Math.random() * 999999);
                 this.updateRenderer();
                 this.onStart();
             }
 
-            SyncStorage.set(components);
+            SyncStorage.COMPONENTS.set(components);
         });
     }
 
