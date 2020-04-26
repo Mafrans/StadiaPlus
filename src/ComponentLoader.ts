@@ -1,5 +1,6 @@
 import { Component } from './Component';
 import { SyncStorage } from './Storage';
+import { Language } from './Language';
 
 /**
  * A utility class responsible for loading [[Component|Components]] and delivering events.
@@ -47,15 +48,15 @@ export class ComponentLoader {
             }
 
             for(const component of this.components) {
-                if(storage[component.name] === undefined) {
-                    storage[component.name] = {};
+                if(storage[component.tag] === undefined) {
+                    storage[component.tag] = {};
                 }
 
-                if(storage[component.name].enabled === undefined) {
-                    storage[component.name].enabled = true;
+                if(storage[component.tag].enabled === undefined) {
+                    storage[component.tag].enabled = true;
                 }
 
-                component.enabled = storage[component.name].enabled;
+                component.enabled = storage[component.tag].enabled;
                 if (component.enabled && !component.active) component.load();
             };
 
