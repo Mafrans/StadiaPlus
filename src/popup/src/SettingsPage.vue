@@ -24,6 +24,9 @@
 
             <div class="row">
                 <div class="col">
+                    <icon :style="{ float: 'left', marginRight: '4px' }"
+                        >extension</icon
+                    >
                     <h3 :style="{ marginBottom: '0.5rem', marginTop: '1rem' }">
                         {{ Language.get('popup.settings-page.components') }}
                     </h3>
