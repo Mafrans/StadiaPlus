@@ -50,7 +50,7 @@ export class ForceCodec extends Component {
      * Called on startup, initializes important variables.
      */
     onStart(): void {
-        this.enabled = true;
+        this.active = true;
 
         const self = this;
         this.tab.addRow(
@@ -134,7 +134,7 @@ export class ForceCodec extends Component {
      * Called on stop, makes sure to dispose of elements and variables.
      */
     onStop(): void {
-        this.enabled = false;
+        this.active = false;
         Logger.component(Language.get('component.disabled', { name: this.name }));
     }
 

@@ -139,7 +139,7 @@ export class NetworkMonitor extends Component {
      * Called on startup, initializes important variables.
      */
     onStart(): void {
-        this.enabled = true;
+        this.active = true;
         this.startRunnable();
         this.createUI();
 
@@ -150,7 +150,7 @@ export class NetworkMonitor extends Component {
      * Called on stop, makes sure to dispose of elements and variables.
      */
     onStop(): void {
-        this.enabled = false;
+        this.active = false;
         this.button.element.remove();
         this.button.destroy();
         this.component.element.remove();

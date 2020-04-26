@@ -63,7 +63,7 @@ export class Ratings extends Component {
     }
 
     onStart(): void {
-        this.enabled = true;
+        this.active = true;
         this.createElement();
         this.element.id = this.id;
 
@@ -71,7 +71,7 @@ export class Ratings extends Component {
     }
 
     onStop(): void {
-        this.enabled = false;
+        this.active = false;
         this.element.remove();
         Logger.component(Language.get('component.disabled', { name: this.name }));
     }

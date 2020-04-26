@@ -21,6 +21,8 @@ export class Component {
     /**
      * A boolean keeping track of whether the Component should receive events or not.
      */
+    active: boolean;
+
     enabled: boolean;
 
     renderer: HTMLElement;
@@ -29,28 +31,9 @@ export class Component {
      * This method is called whenever the component should start loading.
      */
     load(): void {
-        SyncStorage.COMPONENTS.get((result) => {
-            let components = result.components;
-            if(components === undefined) {
-                components = {};
-            }
-
-            if(components[this.name] === undefined || components[this.name] === null) {
-                components[this.name] = {};
-            }
-
-            if(components[this.name].enabled === undefined) {
-                components[this.name].enabled = true;
-            }
-            
-            if(components[this.name].enabled) {
-                this.id = 'stadiaplus_' + Math.floor(Math.random() * 999999);
-                this.updateRenderer();
-                this.onStart();
-            }
-
-            SyncStorage.COMPONENTS.set(components);
-        });
+        this.id = 'stadiaplus_' + Math.floor(Math.random() * 999999);
+        this.updateRenderer();
+        this.onStart();
     }
 
     updateRenderer(): void {

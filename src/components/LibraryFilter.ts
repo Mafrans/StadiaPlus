@@ -266,7 +266,7 @@ export class LibraryFilter extends Component {
      * @memberof LibraryFilter
      */
     getStorage(callback: () => any = () => {}) {
-        if (!this.enabled) {
+        if (!this.active) {
             this.games = {};
             callback();
         }
@@ -301,7 +301,7 @@ export class LibraryFilter extends Component {
      * @memberof LibraryFilter
      */
     setStorage(callback: () => any = () => {}) {
-        if (!this.enabled) {
+        if (!this.active) {
             callback();
             return;
         }
@@ -322,7 +322,7 @@ export class LibraryFilter extends Component {
      * @memberof LibraryFilter
      */
     onStart(): void {
-        this.enabled = true;
+        this.active = true;
         Logger.component(
             Language.get('component.enabled', { name: this.name })
         );
@@ -387,7 +387,7 @@ export class LibraryFilter extends Component {
      * @memberof LibraryFilter
      */
     onStop(): void {
-        this.enabled = false;
+        this.active = false;
         document
             .querySelectorAll('.stadiaplus_libraryfilter-icon')
             .forEach((e) => e.remove());

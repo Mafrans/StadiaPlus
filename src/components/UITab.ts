@@ -146,7 +146,7 @@ export class UITab extends Component {
      * Called on startup, initializes important variables.
      */
     onStart(): void {
-        this.enabled = true;
+        this.active = true;
         this.createElement();
 
         Logger.component(Language.get('component.enabled', { name: this.name }));
@@ -156,7 +156,7 @@ export class UITab extends Component {
      * Called on stop, makes sure to dispose of elements and variables.
      */
     onStop(): void {
-        this.enabled = false;
+        this.active = false;
         this.button.element.remove();
         this.button.destroy();
         this.component.element.remove();
