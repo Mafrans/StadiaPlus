@@ -7,7 +7,7 @@
 
             <div class="row">
                 <div class="col">
-                    <icon :style="{ float: 'left', marginRight: '4px' }"
+                    <icon class="icon"
                         >language</icon
                     >
                     <h3 :style="{ marginBottom: '0.5rem' }">
@@ -22,12 +22,12 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div :style="{ marginTop: '1.25rem' }" class="row">
                 <div class="col">
-                    <icon :style="{ float: 'left', marginRight: '4px' }"
+                    <icon class="icon"
                         >extension</icon
                     >
-                    <h3 :style="{ marginBottom: '0.5rem', marginTop: '1rem' }">
+                    <h3 :style="{ marginBottom: '0.5rem' }">
                         {{ Language.get('popup.settings-page.components') }}
                     </h3>
                     <page-button next="settings/components">{{ Language.get('popup.settings-page.edit-components') }}</page-button>
@@ -90,5 +90,11 @@ export default {
 <style lang="scss" scoped>
 .container {
     padding: 1rem;
+}
+
+.icon {
+    float: left;
+    margin-right: 4px;
+    margin-top: -2px;
 }
 </style>
