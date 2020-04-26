@@ -1,4 +1,5 @@
 import Logger from "./Logger";
+import { SyncStorage } from "./Storage";
 
 /**
  * A generic component of Stadia+
@@ -28,9 +29,23 @@ export class Component {
      * This method is called whenever the component should start loading.
      */
     load(): void {
-        this.id = 'stadiaplus_' + Math.floor(Math.random() * 999999);
-        this.updateRenderer();
-        this.onStart();
+        SyncStorage.COMPONENTS.get((result) => {
+            let components = result.components;
+            if(components[this.name] === undefined || components[this.name] === null) {
+                components[this.name] = {};
+            }
+
+            if(components[this.name].enabled === undefined) {
+                components[this.name].enabled = true;
+            }
+            else if(components[this.name].enabled) {
+                this.id = 'stadiaplus_' + Math.floor(Math.random() * 999999);
+                this.updateRenderer();
+                this.onStart();
+            }
+
+            SyncStorage.set(components);
+        });
     }
 
     updateRenderer(): void {
