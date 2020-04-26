@@ -18,7 +18,7 @@ export class LibraryFilter extends Component {
      * @type {string}
      * @memberof LibraryFilter
      */
-    name: string = Language.get('library-filter.name');
+    tag: string = 'library-filter';
 
     /**
      * List of games and game data imported from the DOM

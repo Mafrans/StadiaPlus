@@ -25,7 +25,7 @@ export class NetworkMonitor extends Component {
     /**
      * The name of the Component.
      */
-    name: string = Language.get('network-monitor.name');
+    tag: string = 'network-monitor';
 
     /**
      * The tab element.

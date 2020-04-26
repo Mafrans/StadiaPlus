@@ -17,7 +17,7 @@ export class StoreFilter extends Component {
     /**
      * The name of the Component.
      */
-    name: string = Language.get('store-filter.name');
+    tag: string = 'store-filter';
 
     /**
      * The clock element.

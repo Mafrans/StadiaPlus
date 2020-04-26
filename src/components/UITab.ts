@@ -20,7 +20,7 @@ export class UITab extends Component {
     /**
      * The name of the Component.
      */
-    name: string = Language.get('ui-tab.name');
+    tag: string = 'ui-tab';
 
     /**
      * The tab element.

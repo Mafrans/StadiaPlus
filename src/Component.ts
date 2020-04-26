@@ -1,5 +1,6 @@
 import Logger from "./Logger";
 import { SyncStorage } from "./Storage";
+import { Language } from "./Language";
 
 /**
  * A generic component of Stadia+
@@ -12,6 +13,7 @@ export class Component {
      * The Component's name.
      */
     name: string = 'My Component';
+    tag: string = "component";
 
     /**
      * The Component's unique ID, automatically generated on load.
@@ -31,6 +33,7 @@ export class Component {
      * This method is called whenever the component should start loading.
      */
     load(): void {
+        this.name = Language.get(this.tag + '.name');
         this.id = 'stadiaplus_' + Math.floor(Math.random() * 999999);
         this.updateRenderer();
         this.onStart();

@@ -22,7 +22,8 @@ export class ForceCodec extends Component {
     /**
      * The name of the Component.
      */
-    name: string = Language.get('force-codec.name');
+    tag: string = 'force-codec';
+
     codec: number = Codec.AUTOMATIC;
     select: Select;
     tab: UITab;

@@ -7,7 +7,7 @@ import { Language } from '../Language';
 
 export class Ratings extends Component {
 
-    name: string = Language.get('ratings.name');
+    tag: string = 'ratings';
 
     element: HTMLElement;
     rating: number;

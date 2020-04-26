@@ -22,7 +22,8 @@ export class ForceResolution extends Component {
     /**
      * The name of the Component.
      */
-    name: string = Language.get('force-resolution.name');
+    tag: string = 'force-resolution';
+
     resolution: number = Resolution.AUTOMATIC;
     select: Select;
     tab: UITab;

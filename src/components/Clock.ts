@@ -16,7 +16,7 @@ export class Clock extends Component {
     /**
      * The name of the Component.
      */
-    name: string = Language.get('clock.name');
+    tag: string = 'clock';
 
     /**
      * The clock element.
