@@ -1,5 +1,5 @@
 <template>
-    <div class="settings-page">
+    <div class="component-page">
         <div class="container">
             <page-header :back-button="true">{{
                 Language.get('popup.component-page.title')
@@ -23,6 +23,14 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col">
+                    <btn
+                        v-on:click=""
+                    >Apply</btn>
                 </div>
             </div>
         </div>
@@ -72,6 +80,11 @@ export default {
 }
 
 .components {
+    height: 250px;
+    overflow-y: scroll;
+    position: relative;
+    padding: 0 4px;
+
     .component {
         padding: 0.5rem;
         border-bottom: rgba(0, 0, 0, 0.1) solid 1px;
@@ -79,6 +92,13 @@ export default {
 
     :last-child {
         border-bottom: none;
+    }
+
+    &::-webkit-scrollbar,
+    &::-webkit-scrollbar-thumb {
+        width: 5px;
+        background: rgba(0,0,0,0.075);
+        border-radius: 5px;
     }
 }
 
