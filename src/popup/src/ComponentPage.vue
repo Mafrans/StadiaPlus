@@ -68,9 +68,10 @@ export default {
 .container {
     padding: 1rem;
 }
+
 .pretty {
     top: -1px;
-    
+
     .state::before {
         top: calc((0% - (100% - 1em)) - 16% + 1px);
     }
