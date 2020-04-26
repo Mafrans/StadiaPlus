@@ -21,6 +21,9 @@
             "title": "Aurreratuak",
             "clear-cache-button": "Cache ezabatu",
             "storage": "Biltegia"
+        },
+        "component-page": {
+            "title": "Components"
         }
     },
     "component": {

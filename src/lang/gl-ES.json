@@ -21,6 +21,9 @@
             "title": "Avanzadas",
             "clear-cache-button": "Limpar a caché",
             "storage": "Almacenamento"
+        },
+        "component-page": {
+            "title": "Components"
         }
     },
     "component": {

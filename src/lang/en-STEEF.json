@@ -21,6 +21,9 @@
             "title": "Developer",
             "clear-cache-button": "Clear The Cache",
             "storage": "The Storage"
+        },
+        "component-page": {
+            "title": "Components"
         }
     },
     "component": {

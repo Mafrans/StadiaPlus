@@ -21,6 +21,9 @@
             "title": "Utvecklare",
             "clear-cache-button": "Rensa Cache",
             "storage": "Lagring"
+        },
+        "component-page": {
+            "title": "Komponenter"
         }
     },
     "component": {

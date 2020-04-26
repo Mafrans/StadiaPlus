@@ -21,6 +21,9 @@
             "title": "Développeur",
             "clear-cache-button": "Vider le cache",
             "storage": "Stockage"
+        },
+        "component-page": {
+            "title": "Components"
         }
     },
     "component": {

@@ -21,6 +21,9 @@
             "title": "Sviluppatore",
             "clear-cache-button": "Pulisci Cache",
             "storage": "Archiviazione"
+        },
+        "component-page": {
+            "title": "Components"
         }
     },
     "component": {
