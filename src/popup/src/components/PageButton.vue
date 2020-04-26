@@ -1,12 +1,10 @@
 <template>
-    <router-link :to="destination">
-        <div class="page-button">
-            <icon v-if="previous" class="previous icon">navigate_previous</icon>
+    <router-link class="page-button" :to="destination">
+        <icon v-if="previous" class="previous icon">navigate_previous</icon>
 
-            <slot />
+        <slot />
 
-            <icon v-if="next" class="next icon">navigate_next</icon>
-        </div>
+        <icon v-if="next" class="next icon">navigate_next</icon>
     </router-link>
 </template>
 
@@ -34,18 +32,47 @@ export default {
 
 <style lang="scss" scoped>
 .page-button {
-    padding: 0.25rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #000000;
+    cursor: pointer;
+    display: block;
+    padding: 1rem;
+    margin: 0.5rem 0;
+    border-radius: 8px;
+    background: #F0F0F0;
+    color: #505050;
+    text-align: center;
+    display: block;
     text-decoration: none;
+    transition: filter 0.1s ease-out;
 
     .icon {
-        color: #000000;
-        padding: 2px;
+        vertical-align: text-top;
         font-size: 24px;
-        border-radius: 50%;
+        margin-right: 0.25rem;
+        margin-top: -4px;
+
+        &.next {
+            float: right;
+        }
+
+        &.previous {
+            float: left;
+        }
+    }
+
+    &:active {
+        filter: brightness(0.925);
+        transition: filter 0s linear;
+    }
+
+    &[disabled] {
+        opacity: 0.7;
+        pointer-events: none;
+        cursor: initial;
+    }
+
+    &.gradient {
+        background: linear-gradient(90deg, #FA4821 0%, #AE0F56 100%);
+        color: #ffffff;
     }
 }
 </style>
