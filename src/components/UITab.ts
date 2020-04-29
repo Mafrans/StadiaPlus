@@ -5,6 +5,9 @@ import { UIButton } from '../ui/UIButton';
 import { UIRow } from '../ui/UIRow';
 import { UIComponent } from '../ui/UIComponent';
 import './styles/UITab.scss';
+import '../ui/styles/Button.scss';
+import '../styles/Grid.scss';
+import '../styles/Typography.scss';
 import { Language } from '../Language';
 
 const chrome: any = (window as any).chrome;
