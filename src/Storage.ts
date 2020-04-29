@@ -62,7 +62,7 @@ export class SyncStorage {
     }
 
     static set(storages: {[key: string]: any}, callback: (() => any) = (() => {})) {
-        chrome.storage.sync.get(storages, callback);
+        chrome.storage.sync.set(storages, callback);
     }
     
     static clear() {
