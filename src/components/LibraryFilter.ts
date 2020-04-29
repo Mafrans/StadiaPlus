@@ -278,7 +278,7 @@ export class LibraryFilter extends Component {
                 SyncStorage.LIBRARY_SORT_DIRECTION,
             ],
             (result: any) => {
-                this.games = result[SyncStorage.LIBRARY_GAMES.tag] !== undefined ? result[SyncStorage.LIBRARY_GAMES.tag] : {};
+                this.games = result[SyncStorage.LIBRARY_GAMES.tag] !== undefined ? result : {};
                 this.order =
                     result[SyncStorage.LIBRARY_GAMES.tag] !== undefined
                         ? result[SyncStorage.LIBRARY_SORT_ORDER.tag]
@@ -328,7 +328,6 @@ export class LibraryFilter extends Component {
         );
     }
 
-    private eventsExist: boolean;
     /**
      * Adds a variety of events to the filter bar
      *
@@ -356,8 +355,6 @@ export class LibraryFilter extends Component {
             this.updateSortDirection();
             event.stopPropagation();
         });
-
-        this.eventsExist = true;
     }
 
     updateSortDirection() {
