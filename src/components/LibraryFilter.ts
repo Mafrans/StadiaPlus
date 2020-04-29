@@ -278,7 +278,7 @@ export class LibraryFilter extends Component {
                 SyncStorage.LIBRARY_SORT_DIRECTION,
             ],
             (result: any) => {
-                this.games = result.games !== undefined ? result.games : {};
+                this.games = result[SyncStorage.LIBRARY_GAMES.tag] !== undefined ? result[SyncStorage.LIBRARY_GAMES.tag] : {};
                 this.order =
                     result[SyncStorage.LIBRARY_GAMES.tag] !== undefined
                         ? result[SyncStorage.LIBRARY_SORT_ORDER.tag]
