@@ -2,8 +2,9 @@ import { Component } from '../Component';
 import Logger from '../Logger';
 import { Language } from '../Language';
 import { UIButton } from '../ui/UIButton';
+import Util from '../Util';
 
-const { chrome } = (window as any);
+const { chrome } = window as any;
 
 /**
  * A simple clock displayed in the Stadia Menu.
@@ -13,7 +14,6 @@ const { chrome } = (window as any);
  * @extends {Component}
  */
 export class AllowWindowedMode extends Component {
-
     /**
      * The name of the Component.
      */
@@ -24,43 +24,107 @@ export class AllowWindowedMode extends Component {
      */
     button: UIButton;
 
+    windowed: boolean = false;
+
     constructor() {
         super();
 
-        window.addEventListener("fullscreenchange", function (event: Event) {
-            if(this.active) {
-                event.stopPropagation();
-            }
-        }.bind(this), true);
+        const self = this;
+        window.addEventListener(
+            'fullscreenchange',
+            function(event: Event) {
+                console.log('fullscreen change', self.windowed);
+                if (self.windowed) {
+                    console.log('stop propagation');
+                    event.stopPropagation();
+                }
+            },
+            true
+        );
     }
 
-    activate(): void {
-        this.active = true;
+    enterWindowed(): void {
+        this.windowed = true;
+        console.log('enter windowed');
+        document.exitFullscreen();
     }
 
-    deactivate(): void {
-        this.active = false;
+    exitWindowed(): void {
+        this.windowed = false;
+        console.log('exit windowed');
+        document.documentElement.requestFullscreen();
     }
 
     /**
      * Called on startup, initializes important variables.
      */
     onStart(): void {
-        Logger.component(Language.get('component.enabled', {'name': this.name}));
-        
-        const icon = chrome.runtime.getURL('images/icons/network-monitor.svg');
-        this.button = new UIButton(icon, Language.get('allow-windowed-mode.button-label'), this.id + '-button');
+        Logger.component(
+            Language.get('component.enabled', { name: this.name })
+        );
+        this.active = true;
+
+        const icon = chrome.runtime.getURL('images/icons/windowed.svg');
+        this.button = new UIButton(
+            icon,
+            Language.get('allow-windowed-mode.button-label.windowed'),
+            this.id
+        );
     }
 
     /**
      * Called on stop, makes sure to dispose of elements and variables.
      */
     onStop(): void {
-        this.deactivate();
+        this.exitWindowed();
+        this.active = false;
     }
 
-    /**
-     * Called every second, updates the element to match the clock.
-     */
-    onUpdate() {}
+    updateButton(): void {
+        const icon = chrome.runtime.getURL('images/icons/windowed.svg');
+        const icon_exit = chrome.runtime.getURL(
+            'images/icons/windowed_exit.svg'
+        );
+
+        if (this.windowed) {
+            this.button.setIcon(icon_exit);
+            this.button.setTitle(
+                Language.get('allow-windowed-mode.button-label.fullscreen')
+            );
+        } else {
+            this.button.setIcon(icon);
+            this.button.setTitle(
+                Language.get('allow-windowed-mode.button-label.windowed')
+            );
+        }
+    }
+
+    eventsAdded: boolean = false;
+    onUpdate(): void {
+        if (Util.isMenuOpen() && Util.isInGame()) {
+            if (!this.exists()) {
+                this.updateRenderer();
+
+                const self = this;
+                this.button.create(() => {
+                    if (!this.eventsAdded) {
+                        self.button.button.addEventListener('click', () => {
+                            console.log('click');
+                            if (self.windowed) {
+                                self.exitWindowed();
+                            } else {
+                                self.enterWindowed();
+                            }
+                            self.updateButton();
+                        });
+                        this.eventsAdded = true;
+                    }
+                });
+            }
+
+            if (!this.button.container.exists()) {
+                this.button.container.create();
+            }
+        }
+    }
 }
