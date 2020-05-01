@@ -14,6 +14,7 @@ import { Database } from './Database';
 import { StoreFilter } from './components/StoreFilter';
 import { Ratings } from './components/Ratings';
 import { Language } from './Language';
+import { AllowWindowedMode } from './components/AllowWindowedMode';
 
 // Always load languages first
 Language.init();
@@ -36,6 +37,7 @@ loader.register(tab);
 loader.register(new NetworkMonitor());
 loader.register(new StoreFilter(database, uuidMap));
 loader.register(new Ratings(database, uuidMap));
+loader.register(new AllowWindowedMode());
 
 window.addEventListener('load', () => {
     Util.load();
