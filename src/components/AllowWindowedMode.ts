@@ -33,9 +33,7 @@ export class AllowWindowedMode extends Component {
         window.addEventListener(
             'fullscreenchange',
             function(event: Event) {
-                console.log('fullscreen change', self.windowed);
                 if (self.windowed) {
-                    console.log('stop propagation');
                     event.stopPropagation();
                 }
             },
@@ -45,13 +43,11 @@ export class AllowWindowedMode extends Component {
 
     enterWindowed(): void {
         this.windowed = true;
-        console.log('enter windowed');
         document.exitFullscreen();
     }
 
     exitWindowed(): void {
         this.windowed = false;
-        console.log('exit windowed');
         document.documentElement.requestFullscreen();
     }
 
@@ -109,7 +105,6 @@ export class AllowWindowedMode extends Component {
                 this.button.create(() => {
                     if (!this.eventsAdded) {
                         self.button.button.addEventListener('click', () => {
-                            console.log('click');
                             if (self.windowed) {
                                 self.exitWindowed();
                             } else {
