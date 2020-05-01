@@ -30,6 +30,13 @@
         "enabled": "El componente {{name}}  ha sido habilitado.",
         "disabled": "El componente {{name}} ha sido deshabilitado."
     },
+    "allow-windowed-mode": {
+        "name": "Allow Windowed Mode",
+        "button-label": {
+            "windowed": "Windowed",
+            "fullscreen": "Fullscreen"
+        }
+    },
     "clock": {
         "name": "Reloj"
     },

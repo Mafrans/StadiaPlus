@@ -30,6 +30,13 @@
         "enabled": "Komponenten {{name}} är nu aktiverad.",
         "disabled": "Komponenten {{name}} är inte längre aktiverad."
     },
+    "allow-windowed-mode": {
+        "name": "Tillåt Fönsterläge",
+        "button-label": {
+            "windowed": "Fönster",
+            "fullscreen": "Fullskärm"
+        }
+    },
     "clock": {
         "name": "Klocka"
     },

@@ -30,6 +30,13 @@
         "enabled": "Элемент {{name}} включён.",
         "disabled": "Элемент {{name}} отключен."
     },
+    "allow-windowed-mode": {
+        "name": "Allow Windowed Mode",
+        "button-label": {
+            "windowed": "Windowed",
+            "fullscreen": "Fullscreen"
+        }
+    },
     "clock": {
         "name": "Часы"
     },

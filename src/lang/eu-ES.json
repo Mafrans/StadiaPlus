@@ -30,6 +30,13 @@
         "enabled": "{{name}} gaitu egin da.",
         "disabled": "{{name}} desgaitu egin da."
     },
+    "allow-windowed-mode": {
+        "name": "Allow Windowed Mode",
+        "button-label": {
+            "windowed": "Windowed",
+            "fullscreen": "Fullscreen"
+        }
+    },
     "clock": {
         "name": "Erlojua"
     },

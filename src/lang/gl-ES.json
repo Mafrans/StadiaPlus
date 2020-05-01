@@ -30,6 +30,13 @@
         "enabled": "Activouse {{name}}.",
         "disabled": "Desactivouse {{name}}."
     },
+    "allow-windowed-mode": {
+        "name": "Allow Windowed Mode",
+        "button-label": {
+            "windowed": "Windowed",
+            "fullscreen": "Fullscreen"
+        }
+    },
     "clock": {
         "name": "Reloxo"
     },
