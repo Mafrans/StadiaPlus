@@ -20,13 +20,28 @@ const chrome = (window as any).chrome;
  */
 export class ForceCodec extends Component {
     /**
-     * The name of the Component.
+     * The component tag, used in language files.
      */
     tag: string = 'force-codec';
 
+    /**
+     * The current codec.
+     */
     codec: number = Codec.AUTOMATIC;
+
+    /** 
+     * The codec Select box.
+     */
     select: Select;
+
+    /** 
+     * The Stadia+ UI Tab.
+     */
     tab: UITab;
+
+    /**
+     * The global snackbar.
+     */
     snackbar: Snackbar;
 
     constructor(tab: UITab, snackbar: Snackbar) {
@@ -36,6 +51,12 @@ export class ForceCodec extends Component {
         this.snackbar = snackbar;
     }
 
+    /**
+     * Updates the current variable states with information from the chrome storage.
+     *
+     * @param {(() => any)} [callback=(() => {})] callback called after storage update.
+     * @memberof ForceCodec
+     */
     getStorage(callback: (() => any) = (() => {})) {
         LocalStorage.CODEC.get((result: any) => {
             this.codec = result.codec;
@@ -43,12 +64,20 @@ export class ForceCodec extends Component {
         });
     }
 
+    /**
+     * Updates the chrome storage with information from the current variable states.
+     *
+     * @param {(() => any)} [callback=(() => {})] callback called after storage update.
+     * @memberof ForceCodec
+     */
     setStorage(callback: (() => any) = (() => {})) {
         LocalStorage.CODEC.set(this.codec, callback);
     }
 
     /**
      * Called on startup, initializes important variables.
+     * 
+     * @memberof ForceCodec
      */
     onStart(): void {
         this.active = true;
@@ -101,6 +130,13 @@ export class ForceCodec extends Component {
         Logger.component(Language.get("component.enabled", { name: this.name }));
     }
 
+    /**
+     * Sets the used Codec
+     *
+     * @static
+     * @param {number} codec
+     * @memberof ForceCodec
+     */
     static setCodec(codec: number) {
         const script = document.createElement('script');
         switch (codec) {
@@ -133,6 +169,8 @@ export class ForceCodec extends Component {
 
     /**
      * Called on stop, makes sure to dispose of elements and variables.
+     * 
+     * @memberof ForceCodec
      */
     onStop(): void {
         this.active = false;
@@ -141,13 +179,32 @@ export class ForceCodec extends Component {
 
     /**
      * Called every second, updates the element to match the clock.
+     * 
+     * @memberof ForceCodec
      */
     onUpdate() {
     }
 }
 
+/**
+ * The different kinds of codecs, represented as numbers.
+ *
+ * @export the Codec type
+ * @class Codec
+ */
 export class Codec {
+    /**
+     * Automatic codec, let Stadia decide on it's own.
+     */
     static AUTOMATIC = 0;
+
+    /**
+     * VP9 codec, usually works better than H264 but at the cost of lower quality.
+     */
     static VP9 = 1;
+
+    /**
+     * H264 codec, high quality and Mac-OS compatible codec but with latency issues. 
+     */
     static H264 = 2;
 }

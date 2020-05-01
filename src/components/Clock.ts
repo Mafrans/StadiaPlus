@@ -12,9 +12,8 @@ import { Language } from '../Language';
  * @extends {Component}
  */
 export class Clock extends Component {
-
     /**
-     * The name of the Component.
+     * The component tag, used in language files.
      */
     tag: string = 'clock';
 
@@ -31,14 +30,18 @@ export class Clock extends Component {
 
     /**
      * Creates a simple <span>, adds the right classes, and stores it in [@link #element]
+     * 
+     * @memberof Clock
      */
-    createElement() {
+    createElement(): void {
         this.element = document.createElement('span');
         this.element.classList.add('stadiaplus_clock');
     }
 
     /**
      * Called on startup, initializes important variables.
+     * 
+     * @memberof Clock
      */
     onStart(): void {
         this.active = true;
@@ -49,6 +52,8 @@ export class Clock extends Component {
 
     /**
      * Called on stop, makes sure to dispose of elements and variables.
+     * 
+     * @memberof Clock
      */
     onStop(): void {
         this.active = false;
@@ -58,8 +63,10 @@ export class Clock extends Component {
 
     /**
      * Called every second, updates the element to match the clock.
+     * 
+     * @memberof Clock
      */
-    onUpdate() {
+    onUpdate(): void {
         // Only update the clock when it's visible
         if(Util.isMenuOpen()) {
             if(!this.exists()) {

@@ -81,8 +81,10 @@ export class UITab extends Component {
 
     /**
      * Creates a [[UIComponent]] and a [[UIButton]]
+     *
+     * @memberof UITab
      */
-    createElement() {
+    createElement(): void {
         this.component = new UIComponent(
             'Stadia+',
             `
@@ -106,8 +108,11 @@ export class UITab extends Component {
 
     /**
      * Append all rows that don't already exist.
+     *
+     * @param {boolean} [reload]
+     * @memberof UITab
      */
-    createRows(reload?: boolean) {
+    createRows(reload?: boolean): void {
         let i = 0;
         this.rows.forEach(row => {
             if(!row.exists()) {
@@ -122,22 +127,28 @@ export class UITab extends Component {
 
     /**
      * Reload all rows
+     *
+     * @memberof UITab
      */
-    reloadRows() {
+    reloadRows(): void {
         this.rows.forEach(row => row.reload());
     }
 
     /**
      * Add a row to the list.
+     *
+     * @memberof UITab
      */
-    addRow(row: UIRow) {
+    addRow(row: UIRow): void {
         this.rows.push(row);
     }
 
     /**
      * Clear and unload all rows.
+     * 
+     * @memberof UITab
      */
-    clearRows() {
+    clearRows(): void {
         for(const row of this.rows) {
             row.element.remove();
         }
@@ -147,6 +158,8 @@ export class UITab extends Component {
 
     /**
      * Called on startup, initializes important variables.
+     * 
+     * @memberof UITab
      */
     onStart(): void {
         this.active = true;
@@ -157,6 +170,8 @@ export class UITab extends Component {
 
     /**
      * Called on stop, makes sure to dispose of elements and variables.
+     * 
+     * @memberof UITab
      */
     onStop(): void {
         this.active = false;
@@ -173,8 +188,10 @@ export class UITab extends Component {
 
     /**
      * Called every second, makes sure to create components if they don't already exist.
+     * 
+     * @memberof UITab
      */
-    onUpdate() {
+    onUpdate(): void {
         // Only create components if the menu is open already.
         if (Util.isMenuOpen() && Util.isInGame()) {
             if (!this.exists()) {

@@ -20,13 +20,28 @@ const chrome = (window as any).chrome;
  */
 export class ForceResolution extends Component {
     /**
-     * The name of the Component.
+     * The component tag, used in language files.
      */
     tag: string = 'force-resolution';
 
+    /**
+     * The current resolution.
+     */
     resolution: number = Resolution.AUTOMATIC;
+
+    /**
+     * The resolution Select box.
+     */
     select: Select;
+
+    /**
+     * The Stadia+ UI Tab
+     */
     tab: UITab;
+
+    /**
+     * The global Snackbar
+     */
     snackbar: Snackbar;
 
     constructor(tab: UITab, snackbar: Snackbar) {
@@ -38,6 +53,12 @@ export class ForceResolution extends Component {
         this.getStorage();
     }
 
+    /**
+     * Updates the current variable states with information from the chrome storage.
+     *
+     * @param {(() => any)} [callback=(() => {})] callback called after storage update.
+     * @memberof ForceResolution
+     */
     getStorage(callback: (() => any) = (() => {})) {
         LocalStorage.RESOLUTION.get((result: any) => {
             this.resolution = result.resolution;
@@ -45,6 +66,12 @@ export class ForceResolution extends Component {
         })
     }
 
+    /**
+     * Updates the chrome storage with information from the current variable states.
+     *
+     * @param {(() => any)} [callback=(() => {})] callback called after storage update.
+     * @memberof ForceResolution
+     */
     setStorage(callback: (() => any) = (() => {})) {
         LocalStorage.RESOLUTION.set(this.resolution, callback);
     }
@@ -106,12 +133,19 @@ export class ForceResolution extends Component {
         Logger.component(Language.get('component.enabled', { name: this.name }));
     }
 
-    static setResolution(codec: number) {
+    /**
+     * Sets the user [[Resolution]]
+     *
+     * @static
+     * @param {number} resolution the user Resolution
+     * @memberof ForceResolution
+     */
+    static setResolution(resolution: number): void {
         const script = document.createElement('script');
 
         let height;
         let width;
-        switch (codec) {
+        switch (resolution) {
             case Resolution.UHD_4K:
                 width = 3840;
                 height = 2160;
@@ -154,8 +188,25 @@ export class ForceResolution extends Component {
     }
 }
 
+/**
+ * The different kinds of resolutions, represented as numbers.
+ *
+ * @export the Resolution type
+ * @class Resolution
+ */
 export class Resolution {
+    /**
+     * Automatic, let Stadia handle resolutions.
+     */
     static AUTOMATIC = 0;
+
+    /**
+     * 4K, or 3840x2160
+     */
     static UHD_4K = 1;
+    
+    /**
+     * Full HD, or 1920x1080
+     */
     static FHD = 2;
 }

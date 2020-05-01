@@ -6,27 +6,46 @@ import { Database } from '../Database';
 import { Language } from '../Language';
 
 /**
- * A simple clock displayed in the Stadia Menu.
+ * A search bar displayed on the store page of Stadia.
  *
- * @export the Clock type.
- * @class Clock
+ * @export the StoreFilter type.
+ * @class StoreFilter
  * @extends {Component}
  */
 export class StoreFilter extends Component {
-
     /**
-     * The name of the Component.
+     * The component tag, used in language files.
      */
     tag: string = 'store-filter';
 
     /**
-     * The clock element.
+     * The search bar element.
      */
     element: HTMLElement;
+
+    /**
+     * A template element for individual games in the search box.
+     */
     gameTemplate: HTMLElement;
+
+    /**
+     * The StadiaGameDB database.
+     */
     database: Database;
+
+    /**
+     * The StadiaGameDB UUID Map.
+     */
     uuidMap: Database;
+
+    /**
+     * An array of all game elements.
+     */
     games: HTMLElement[] = [];
+
+    /**
+     * The search input.
+     */
     searchField: HTMLElement;
 
     constructor(database: Database, uuidMap: Database) {
@@ -36,9 +55,11 @@ export class StoreFilter extends Component {
     }
 
     /**
-     * Creates a simple <span>, adds the right classes, and stores it in [@link #element]
+     * Creates the search bar and necessary elements/variables.
+     *
+     * @memberof StoreFilter
      */
-    createElement() {
+    createElement(): void {
         const connection = this.database.getConnection()['data'];
         const map = this.uuidMap.getConnection()['uuidMap'];
 
@@ -85,13 +106,24 @@ export class StoreFilter extends Component {
         });
     }
 
-    addEvents() {
+    /**
+     * Adds the input events to the search bar.
+     *
+     * @memberof StoreFilter
+     */
+    addEvents(): void {
         this.searchField.addEventListener('input', () => {
             this.search((this.searchField as any).value);
         });
     }
 
-    search(query: string) {
+    /**
+     * Searches the game list for a specific string and shows whichever games fit.
+     *
+     * @param {string} query the string to search for.
+     * @memberof StoreFilter
+     */
+    search(query: string): void {
         this.games.forEach((game) => {
             const name = game.getAttribute('data-name').toLowerCase();
             game.classList.toggle('shown', query.length > 0 && name.indexOf(query.toLowerCase()) !== -1);
@@ -100,6 +132,8 @@ export class StoreFilter extends Component {
 
     /**
      * Called on startup, initializes important variables.
+     * 
+     * @memberof Clock
      */
     onStart(): void {
         this.active = true;
@@ -110,6 +144,8 @@ export class StoreFilter extends Component {
 
     /**
      * Called on stop, makes sure to dispose of elements and variables.
+     * 
+     * @memberof Clock
      */
     onStop(): void {
         this.active = false;
@@ -118,10 +154,11 @@ export class StoreFilter extends Component {
     }
 
     /**
-     * Called every second, updates the element to match the clock.
+     * Called every second, makes sure the search bar only exists when it's supposed to and works properly even if accidentally destroyed.
+     * 
+     * @memberof Clock
      */
     onUpdate() {
-        // Only update the clock when it's visible
         if(Util.isInStore()) {
             if(!this.exists()) {
                 this.updateRenderer();

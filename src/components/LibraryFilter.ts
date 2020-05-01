@@ -11,68 +11,72 @@ import { SyncStorage } from '../Storage';
 
 const { chrome, Array } = window as any;
 
+/**
+ * A filtering system allowing hiding and showing specific games in your library as well as ordering them by name.
+ *
+ * @export the LibraryFilter type
+ * @class LibraryFilter
+ * @extends {Component}
+ */
 export class LibraryFilter extends Component {
     /**
-     * Name of the component
-     *
-     * @type {string}
-     * @memberof LibraryFilter
+     * The component tag, used in language files.
      */
     tag: string = 'library-filter';
 
     /**
      * List of games and game data imported from the DOM
-     *
-     * @type {*}
-     * @memberof LibraryFilter
      */
     games: any = {};
 
     /**
      * Snackbar used to display messages when hiding and showing games
-     *
-     * @type {Snackbar}
-     * @memberof LibraryFilter
      */
     snackbar: Snackbar;
 
     /**
      * Filter bar allowing for controls of the library filter
-     *
-     * @type {HTMLElement}
-     * @memberof LibraryFilter
      */
     filterBar: HTMLElement;
 
     /**
      * Select box used to order the games
-     *
-     * @type {Select}
-     * @memberof LibraryFilter
      */
     select: Select;
 
     /**
      * Current filtering order
-     *
-     * @type {FilterOrder}
-     * @memberof LibraryFilter
      */
     order: FilterOrder;
 
     /**
      * Should all games be shown regardless if theyre hidden or not?
-     *
-     * @type {boolean}
-     * @memberof LibraryFilter
      */
     showAll: boolean;
+
+    /**
+     * Checkbox showing hidden games.
+     */
     checkbox: HTMLElement;
 
+    /**
+     * Direction of which games will be ordered.
+     */
     direction: OrderDirection;
 
+    /**
+     * A list of all games in your library.
+     */
     gameTiles: NodeList;
+
+    /**
+     * StadiaGameDB Database.
+     */
     database: Database;
+
+    /**
+     * StadiaGameDB UUID Map.
+     */
     uuidMap: Database;
 
     constructor(snackbar: Snackbar, database: Database, uuidMap: Database) {
@@ -393,6 +397,11 @@ export class LibraryFilter extends Component {
         );
     }
 
+    /**
+     * Sorts the game list according to the current sort order.
+     *
+     * @memberof LibraryFilter
+     */
     sortGames() {
         let arr = (Array.from(this.gameTiles) as Element[]).map(
             (e) => e.parentElement
@@ -408,7 +417,12 @@ export class LibraryFilter extends Component {
         });
     }
 
-    onUpdate() {
+    /**
+     * Runs every second, creates and updates elements.
+     *
+     * @memberof LibraryFilter
+     */
+    onUpdate(): void {
         if (Util.isInHome()) {
             if (!this.exists()) {
                 this.updateRenderer();
@@ -466,13 +480,46 @@ export class LibraryFilter extends Component {
     }
 }
 
+/**
+ * Different types of filtering, represented as numbers
+ *
+ * @export the FilterOrder type
+ * @class FilterOrder
+ */
 export class FilterOrder {
+    /**
+     * Default Stadia sorting, recent/new games.
+     *
+     * @static
+     * @memberof FilterOrder
+     */
     static RECENT = 0;
-    static ALPHABETICAL = 1;
-    static ALPHABETICAL_REVERSE = 2;
-    static RANDOM = 3;
 
-    static getSorter(order: FilterOrder) {
+    /**
+     * Alphabetical order.
+     *
+     * @static
+     * @memberof FilterOrder
+     */
+    static ALPHABETICAL = 1;
+    
+    /**
+     * Random order.
+     *
+     * @static
+     * @memberof FilterOrder
+     */
+    static RANDOM = 2;
+
+    /**
+     * Get the sorting method of the inputed order.
+     *
+     * @static
+     * @returns a function sorting games by the inputed order.
+     * @param {FilterOrder} order
+     * @memberof FilterOrder
+     */
+    static getSorter(order: FilterOrder): Function {
         switch (order) {
             case this.RECENT:
                 return this.sortRecent;
@@ -485,11 +532,31 @@ export class FilterOrder {
         }
     }
 
-    private static sortRecent(a: any, b: any) {
+    /**
+     * Sort by recent games.
+     *
+     * @private
+     * @static
+     * @param {*} a
+     * @param {*} b
+     * @returns number representing which parameter is where.
+     * @memberof FilterOrder
+     */
+    private static sortRecent(a: any, b: any): number {
         return 1;
     }
 
-    private static sortAlphabetical(a: any, b: any) {
+    /**
+     * Sort alphabetically.
+     * 
+     * @private
+     * @static
+     * @param {*} a
+     * @param {*} b
+     * @returns number representing which parameter is where.
+     * @memberof FilterOrder
+     */
+    private static sortAlphabetical(a: any, b: any): number {
         const nameA = a.getAttribute('game-name');
         const nameB = b.getAttribute('game-name');
 
@@ -505,6 +572,12 @@ export class FilterOrder {
     }
 }
 
+/**
+ * Enum containing different order directions
+ *
+ * @export the OrderDirection type.
+ * @enum {number}
+ */
 export enum OrderDirection {
     ASCENDING,
     DESCENDING,

@@ -15,15 +15,15 @@ import { LocalStorage } from '../Storage';
 const { chrome, RTCPeerConnection } = (window as any);
 
 /**
- * A tab and button displayed in the Stadia Menu.
+ * A network monitor allowing users to see their network statistics while playing a game.
  *
- * @export the UITab type.
- * @class UITab
+ * @export the NetworkMonitor type.
+ * @class NetworkMonitor
  * @extends {Component}
  */
 export class NetworkMonitor extends Component {
     /**
-     * The name of the Component.
+     * The component tag, used in language files.
      */
     tag: string = 'network-monitor';
 
@@ -58,7 +58,14 @@ export class NetworkMonitor extends Component {
         })
     }
 
+    /**
+     * Whether the component is active or not.
+     */
     active: boolean = false;
+
+    /**
+     * Visible network statistics.
+     */
     visible: any = {
         'time': true,
         'resolution': true,
@@ -72,6 +79,10 @@ export class NetworkMonitor extends Component {
         'average-packet-loss': true,
         'jitter-buffer': true,
     };
+
+    /**
+     * Which order the network statistics show up in.
+     */
     orderMap: any = [
         'time',
         'resolution',
@@ -87,7 +98,9 @@ export class NetworkMonitor extends Component {
     ]
 
     /**
-     * Creates a [[UIComponent]] and a [[UIButton]]
+     * Creates a [[UIComponent]] and a [[UIButton]].
+     * 
+     * @memberof NetworkMonitor
      */
     createUI() {
         this.component = new UIComponent(
@@ -108,20 +121,41 @@ export class NetworkMonitor extends Component {
         this.getStorage(() => { this.updateVisible() });
     }
 
+    /**
+     * Start the network monitor runnable.
+     *
+     * @memberof NetworkMonitor
+     */
     startRunnable() {
         this.desandbox(runnable);
     }
 
+    /**
+     * Open the monitor.
+     *
+     * @memberof NetworkMonitor
+     */
     openMonitor() {
         this.active = true;
         this.desandbox('StadiaPlusMonitor.start()');
     }
 
+    /**
+     * Close the monitor.
+     *
+     * @memberof NetworkMonitor
+     */
     closeMonitor() {
         this.active = false;
         this.desandbox('StadiaPlusMonitor.stop()');
     }
     
+    /**
+     * Updates the current variable states with information from the chrome storage.
+     *
+     * @param {(() => any)} [callback=(() => {})] callback called after storage update.
+     * @memberof NetworkMonitor
+     */
     getStorage(callback: (() => any) = (() => {})) {
         LocalStorage.MONITOR_STATS.get((result: any) => {
             if(result[LocalStorage.MONITOR_STATS.tag]) {
@@ -131,12 +165,20 @@ export class NetworkMonitor extends Component {
         })
     }
 
+    /**
+     * Updates the chrome storage with information from the current variable states.
+     *
+     * @param {(() => any)} [callback=(() => {})] callback called after storage update.
+     * @memberof NetworkMonitor
+     */
     setStorage(callback: (() => any) = (() => {})) {
         LocalStorage.MONITOR_STATS.set(this.visible, callback);
     }
 
     /**
      * Called on startup, initializes important variables.
+     * 
+     * @memberof NetworkMonitor
      */
     onStart(): void {
         this.active = true;
@@ -148,6 +190,8 @@ export class NetworkMonitor extends Component {
 
     /**
      * Called on stop, makes sure to dispose of elements and variables.
+     * 
+     * @memberof NetworkMonitor
      */
     onStop(): void {
         this.active = false;
@@ -161,12 +205,19 @@ export class NetworkMonitor extends Component {
         Logger.component(Language.get('component.disabled', { name: this.name }));
     }
 
+    /**
+     * Updates which statistics should be visible.
+     *
+     * @memberof NetworkMonitor
+     */
     updateVisible() {
         this.desandbox(`StadiaPlusMonitor.setVisible(${JSON.stringify(this.visible)})`);
     }
 
     /**
      * Called every second, makes sure to create components if they don't already exist.
+     * 
+     * @memberof NetworkMonitor
      */
     onUpdate() {
         // Only create components if the menu is open already.
@@ -237,6 +288,12 @@ export class NetworkMonitor extends Component {
         }
     }
 
+    /**
+     * Runs a script outside of the chrome extension sandbox.
+     *
+     * @param {string} javascript the script to run.
+     * @memberof NetworkMonitor
+     */
     desandbox(javascript: string) {
         const script = document.createElement('script');
         script.innerHTML = javascript;

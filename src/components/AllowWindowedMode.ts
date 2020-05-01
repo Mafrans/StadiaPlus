@@ -7,15 +7,15 @@ import Util from '../Util';
 const { chrome } = window as any;
 
 /**
- * A simple clock displayed in the Stadia Menu.
+ * A button allowing users to play Stadia in windowed mode.
  *
- * @export the Clock type.
- * @class Clock
+ * @export the AllowWindowedMode type.
+ * @class AllowWindowedMode
  * @extends {Component}
  */
 export class AllowWindowedMode extends Component {
     /**
-     * The name of the Component.
+     * The component tag, used in language files.
      */
     tag: string = 'allow-windowed-mode';
 
@@ -24,12 +24,17 @@ export class AllowWindowedMode extends Component {
      */
     button: UIButton;
 
+    /**
+     * Whether windowed mode is enabled or not
+     */
     windowed: boolean = false;
 
     constructor() {
         super();
 
         const self = this;
+
+        // Main event, stops built-in fullscreen events from reaching Stadia whenever windowed mode is enabled.
         window.addEventListener(
             'fullscreenchange',
             function(event: Event) {
@@ -41,11 +46,21 @@ export class AllowWindowedMode extends Component {
         );
     }
 
+    /**
+     * Enters windowed mode.
+     *
+     * @memberof AllowWindowedMode
+     */
     enterWindowed(): void {
         this.windowed = true;
         document.exitFullscreen();
     }
 
+    /**
+     * Exits windowed mode
+     * 
+     * @memberof AllowWindowedMode
+     */
     exitWindowed(): void {
         this.windowed = false;
         document.documentElement.requestFullscreen();
@@ -53,6 +68,8 @@ export class AllowWindowedMode extends Component {
 
     /**
      * Called on startup, initializes important variables.
+     * 
+     * @memberof AllowWindowedMode
      */
     onStart(): void {
         Logger.component(
@@ -70,12 +87,19 @@ export class AllowWindowedMode extends Component {
 
     /**
      * Called on stop, makes sure to dispose of elements and variables.
+     * 
+     * @memberof AllowWindowedMode
      */
     onStop(): void {
         this.exitWindowed();
         this.active = false;
     }
 
+    /**
+     * Update button labels and icons to fit current mode.
+     * 
+     * @memberof AllowWindowedMode
+     */
     updateButton(): void {
         const icon = chrome.runtime.getURL('images/icons/windowed.svg');
         const icon_exit = chrome.runtime.getURL(
@@ -95,14 +119,27 @@ export class AllowWindowedMode extends Component {
         }
     }
 
+    // Whether events have been added already or not.
     eventsAdded: boolean = false;
+
+    /**
+     * Called once every second, updates component elements and variables
+     * 
+     * @memberof AllowWindowedMode
+     */
     onUpdate(): void {
+        // If menu is open and a game is playing.
         if (Util.isMenuOpen() && Util.isInGame()) {
+
+            // If the button doesn't already exist in the current renderer
             if (!this.exists()) {
+                // Check for new renderers
                 this.updateRenderer();
 
                 const self = this;
+                // Create the button instance
                 this.button.create(() => {
+                    // If events are already added, don't add them again
                     if (!this.eventsAdded) {
                         self.button.button.addEventListener('click', () => {
                             if (self.windowed) {

@@ -5,15 +5,42 @@ import { Database } from '../Database';
 import './styles/Ratings.scss';
 import { Language } from '../Language';
 
+/**
+ * A component adding Metacritic ratings to every Stadia game.
+ *
+ * @export the Ratings type
+ * @class Ratings
+ * @extends {Component}
+ */
 export class Ratings extends Component {
-
+    /**
+     * The component tag, used in language files.
+     */
     tag: string = 'ratings';
 
+    /**
+     * The rating element.
+     */
     element: HTMLElement;
-    rating: number;
+
+    /**
+     * The StadiaGameDB database.
+     */
     database: Database;
+
+    /**
+     * The StadiaGameDB UUID Map.
+     */
     uuidMap: Database;
+
+    /**
+     * The value from each bound in which a game will get 0 or 5 stars.
+     */
     graceAmount: number = 10;
+
+    /**
+     * The maximum number of stars to award.
+     */
     maxStars = 5;
 
     constructor(database: Database, uuidMap: Database) {
@@ -23,16 +50,32 @@ export class Ratings extends Component {
         this.uuidMap = uuidMap;
     }
 
-    createElement() {
+    /**
+     * Creates the rating element.
+     *
+     * @memberof Ratings
+     */
+    createElement(): void {
         this.element = document.createElement('div');
         this.element.classList.add('stadiaplus_rating', 'material-icons-extended');
     }
 
-    getUUID() {
+    /**
+     * The current game UUID.
+     *
+     * @returns the game UUID as a string.
+     * @memberof Ratings
+     */
+    getUUID(): string {
         return location.href.substring('https://stadia.google.com/store/details/'.length, 'https://stadia.google.com/store/details/'.length + 36);
     }
 
-    updateRating() {
+    /**
+     * Updates the current rating, fetching it from the database.
+     *
+     * @memberof Ratings
+     */
+    updateRating(): void {
         const uuid = this.getUUID();
         const connection = this.database.getConnection()['data'];
         const map = this.uuidMap.getConnection()['uuidMap'];
@@ -42,7 +85,15 @@ export class Ratings extends Component {
         this.element.setAttribute('data-rating', entry[6]);
     }
 
-    getStars(rating: number) {
+
+    /**
+     * Calculates how many stars a game should have based on it's rating.
+     *
+     * @param {number} rating the game's rating.
+     * @returns {string[]} an array of icon strings, being either "star", "star_half" or "star_outline".
+     * @memberof Ratings 
+     */
+    getStars(rating: number): string[] {
         const outputStars = [];
 
         // Clamps the rating to values between 0 and 1,
@@ -62,6 +113,11 @@ export class Ratings extends Component {
         return outputStars;
     }
 
+    /**
+     * Called on startup, initializes important variables.
+     * 
+     * @memberof ForceCodec
+     */
     onStart(): void {
         this.active = true;
         this.createElement();
@@ -70,12 +126,22 @@ export class Ratings extends Component {
         Logger.component(Language.get('component.enabled', { name: this.name }));
     }
 
+    /**
+     * Called on stop, makes sure to dispose of elements and variables.
+     * 
+     * @memberof Clock
+     */
     onStop(): void {
         this.active = false;
         this.element.remove();
         Logger.component(Language.get('component.disabled', { name: this.name }));
     }
 
+    /**
+     * Called every second, updates the rating element to make sure it always displays the correct value.
+     * 
+     * @memberof Clock
+     */
     onUpdate() {
         if(Util.isInStoreDetail()) {
             if(!this.exists()) {
