@@ -406,7 +406,7 @@ export class LibraryFilter extends Component {
         let arr = (Array.from(this.gameTiles) as Element[]).map(
             (e) => e.parentElement
         ); // Get all wrappers as an array
-        arr = arr.sort(FilterOrder.getSorter(this.order));
+        arr = arr.sort(FilterOrder.getSorter(this.order) as any);
 
         if (this.direction === OrderDirection.ASCENDING) {
             arr = arr.reverse();
