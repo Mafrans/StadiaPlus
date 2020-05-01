@@ -43,7 +43,9 @@
     ],
     "web_accessible_resources": [
         "images/icons/stadiaplus.svg",
-        "images/icons/network-monitor.svg"
+        "images/icons/network-monitor.svg",
+        "images/icons/windowed.svg",
+        "images/icons/windowed_exit.svg"
     ],
     "manifest_version": 2
 }
