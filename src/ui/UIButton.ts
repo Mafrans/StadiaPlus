@@ -51,11 +51,11 @@ export class UIButton {
     }
 
     setIcon(icon: string) {
-        this.element.querySelector('uibutton-icon').setAttribute('src', icon);
+        this.element.querySelector('.uibutton-icon').setAttribute('src', icon);
     }
 
     setTitle(title: string) {
-        this.element.querySelector('uibutton-title').innerHTML = title;
+        this.element.querySelector('.uibutton-title').innerHTML = title;
     }
 
     update() {
