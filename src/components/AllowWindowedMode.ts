@@ -1,6 +1,9 @@
 import { Component } from '../Component';
 import Logger from '../Logger';
 import { Language } from '../Language';
+import { UIButton } from '../ui/UIButton';
+
+const { chrome } = (window as any);
 
 /**
  * A simple clock displayed in the Stadia Menu.
@@ -15,6 +18,11 @@ export class AllowWindowedMode extends Component {
      * The name of the Component.
      */
     tag: string = 'allow-windowed-mode';
+
+    /**
+     * The [[UIButton]] used to toggle windowed mode.
+     */
+    button: UIButton;
 
     constructor() {
         super();
@@ -39,6 +47,9 @@ export class AllowWindowedMode extends Component {
      */
     onStart(): void {
         Logger.component(Language.get('component.enabled', {'name': this.name}));
+        
+        const icon = chrome.runtime.getURL('images/icons/network-monitor.svg');
+        this.button = new UIButton(icon, Language.get('allow-windowed-mode.button-label'), this.id + '-button');
     }
 
     /**
