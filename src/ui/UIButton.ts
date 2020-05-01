@@ -16,7 +16,7 @@ export class UIButton {
             <div class="Pyflbb" jsname="rZHESd">
                 <div class="KEaHo">
                     <span class="X5peoe" jsname="pYFhU">
-                        <img class="xduoyf" src="${icon}">
+                        <img class="xduoyf uibutton-icon" src="${icon}">
                     </span>
                     <span class="caSJV">${title}</span>
                 </div>
@@ -48,6 +48,10 @@ export class UIButton {
         }
         this.container.addButton(this);
         this.container.create(callback);
+    }
+
+    setIcon(icon: string) {
+        this.element.querySelector('uibutton-icon').setAttribute('src', icon);
     }
 
     update() {
