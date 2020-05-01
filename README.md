@@ -4,5 +4,7 @@ Stadia+ is an addon for Google's [Stadia](https://stadia.google.com) gaming plat
 
 If you're new to Stadia+, make sure to read through our [Getting Started](https://github.com/Mafrans/StadiaPlus/wiki/Getting-Started) guide.
 
+Developer documentation is available at [https://mafrans.github.io/StadiaPlus/docs](https://mafrans.github.io/StadiaPlus/docs).
+
 ## Installation
 [![Available in the Chrome Web Store](https://developer.chrome.com/webstore/images/ChromeWebStore_Badge_v2_206x58.png)](https://chrome.google.com/webstore/detail/bbhmnnecicphphjamhdefpagipoegijd)
