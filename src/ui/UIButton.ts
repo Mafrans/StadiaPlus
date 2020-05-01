@@ -18,7 +18,7 @@ export class UIButton {
                     <span class="X5peoe" jsname="pYFhU">
                         <img class="xduoyf uibutton-icon" src="${icon}">
                     </span>
-                    <span class="caSJV">${title}</span>
+                    <span class="caSJV uibutton-title">${title}</span>
                 </div>
             </div>
         `;
@@ -52,6 +52,10 @@ export class UIButton {
 
     setIcon(icon: string) {
         this.element.querySelector('uibutton-icon').setAttribute('src', icon);
+    }
+
+    setTitle(title: string) {
+        this.element.querySelector('uibutton-title').innerHTML = title;
     }
 
     update() {
