@@ -6,9 +6,10 @@ export class EventTracker {
         this.original = target.addEventListener;
         this.target = target;
 
+        const original = this.original;
         target.addEventListener = function(type, listener, options?) {
             _listener(type, listener, options);
-            this.original(type, listener, options);
+            original(type, listener, options);
         };
     }
 
