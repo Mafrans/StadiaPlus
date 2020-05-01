@@ -69,6 +69,7 @@ module.exports = {
         new TypedocWebpackPlugin({
             name: 'Contoso',
             mode: 'file',
+            out: './docs',
         }, './src')
     ],
     resolve: {

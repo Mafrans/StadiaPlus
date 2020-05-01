@@ -5,7 +5,8 @@
     "private": true,
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "webpack --env.production"
+        "build": "webpack --env.production",
+        "docs": "npx typedoc"
     },
     "repository": {
         "type": "git",
