@@ -42,7 +42,9 @@ export class UIButtonContainer {
     }
 
     addButton(button: UIButton): void {
-        this.buttons.push(button);
+        if(this.buttons.indexOf(button) === -1) {
+            this.buttons.push(button);
+        }
     }
     
     removeButton(button: UIButton) {
