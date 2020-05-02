@@ -4,7 +4,7 @@ import Util from '../Util';
 import './styles/LibraryFilter.scss';
 import { Snackbar } from '../ui/Snackbar';
 import { Select } from '../ui/Select';
-import { Database } from '../Database';
+import { WebDatabase } from '../WebDatabase';
 import { Checkbox, CheckboxShape } from '../ui/Checkbox';
 import { Language } from '../Language';
 import { SyncStorage } from '../Storage';
@@ -72,14 +72,14 @@ export class LibraryFilter extends Component {
     /**
      * StadiaGameDB Database.
      */
-    database: Database;
+    database: WebDatabase;
 
     /**
      * StadiaGameDB UUID Map.
      */
-    uuidMap: Database;
+    uuidMap: WebDatabase;
 
-    constructor(snackbar: Snackbar, database: Database, uuidMap: Database) {
+    constructor(snackbar: Snackbar, database: WebDatabase, uuidMap: WebDatabase) {
         super();
 
         // Import database & uuidMap from index.js

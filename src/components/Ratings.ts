@@ -1,7 +1,7 @@
 import { Component } from '../Component';
 import Logger from '../Logger';
 import Util from '../Util';
-import { Database } from '../Database';
+import { WebDatabase } from '../WebDatabase';
 import './styles/Ratings.scss';
 import { Language } from '../Language';
 
@@ -26,12 +26,12 @@ export class Ratings extends Component {
     /**
      * The StadiaGameDB database.
      */
-    database: Database;
+    database: WebDatabase;
 
     /**
      * The StadiaGameDB UUID Map.
      */
-    uuidMap: Database;
+    uuidMap: WebDatabase;
 
     /**
      * The value from each bound in which a game will get 0 or 5 stars.
@@ -43,7 +43,7 @@ export class Ratings extends Component {
      */
     maxStars = 5;
 
-    constructor(database: Database, uuidMap: Database) {
+    constructor(database: WebDatabase, uuidMap: WebDatabase) {
         super();
 
         this.database = database;
