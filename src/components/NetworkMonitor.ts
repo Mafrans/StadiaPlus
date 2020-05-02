@@ -127,7 +127,7 @@ export class NetworkMonitor extends Component {
      * @memberof NetworkMonitor
      */
     startRunnable() {
-        this.desandbox(runnable);
+        Util.desandbox(runnable);
     }
 
     /**
@@ -137,7 +137,7 @@ export class NetworkMonitor extends Component {
      */
     openMonitor() {
         this.active = true;
-        this.desandbox('StadiaPlusMonitor.start()');
+        Util.desandbox('StadiaPlusMonitor.start()');
     }
 
     /**
@@ -147,7 +147,7 @@ export class NetworkMonitor extends Component {
      */
     closeMonitor() {
         this.active = false;
-        this.desandbox('StadiaPlusMonitor.stop()');
+        Util.desandbox('StadiaPlusMonitor.stop()');
     }
     
     /**
@@ -200,7 +200,7 @@ export class NetworkMonitor extends Component {
         this.component.element.remove();
         this.closeMonitor();
 
-        this.desandbox('StadiaPlusMonitor = null');
+        Util.desandbox('StadiaPlusMonitor = null');
 
         Logger.component(Language.get('component.disabled', { name: this.name }));
     }
@@ -211,7 +211,7 @@ export class NetworkMonitor extends Component {
      * @memberof NetworkMonitor
      */
     updateVisible() {
-        this.desandbox(`StadiaPlusMonitor.setVisible(${JSON.stringify(this.visible)})`);
+        Util.desandbox(`StadiaPlusMonitor.setVisible(${JSON.stringify(this.visible)})`);
     }
 
     /**
@@ -228,11 +228,11 @@ export class NetworkMonitor extends Component {
                 this.component.create();
 
                 this.component.onOpen(() => {
-                    this.desandbox('StadiaPlusMonitor.setEditable(true)');
+                    Util.desandbox('StadiaPlusMonitor.setEditable(true)');
                 });
 
                 this.component.onClose(() => {
-                    this.desandbox('StadiaPlusMonitor.setEditable(false)');
+                    Util.desandbox('StadiaPlusMonitor.setEditable(false)');
                 });
                 
                 const list = document.getElementById(this.id + '-visiblelist');            
@@ -286,18 +286,5 @@ export class NetworkMonitor extends Component {
         if(!Util.isInGame() && document.querySelector('body>.stadiaplus_networkmonitor')) {
             this.closeMonitor();
         }
-    }
-
-    /**
-     * Runs a script outside of the chrome extension sandbox.
-     *
-     * @param {string} javascript the script to run.
-     * @memberof NetworkMonitor
-     */
-    desandbox(javascript: string) {
-        const script = document.createElement('script');
-        script.innerHTML = javascript;
-        document.body.appendChild(script);
-        script.remove();
     }
 }
