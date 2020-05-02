@@ -1,6 +1,6 @@
 import Logger from "./Logger";
 
-export class Database {
+export class WebDatabase {
     url: string;
     connected: boolean;
     connection: any;
