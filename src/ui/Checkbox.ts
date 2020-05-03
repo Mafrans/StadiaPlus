@@ -107,7 +107,7 @@ export class Checkbox {
             element.classList.add('p-icon');
 
             const icon = document.createElement('span');
-            icon.classList.add('material-icons-extended');
+            icon.classList.add('material-icons');
             icon.innerHTML = this.icon;
 
             state.appendChild(icon);

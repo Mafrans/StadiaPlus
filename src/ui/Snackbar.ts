@@ -14,7 +14,7 @@ export class Snackbar {
 
        this.closeButton = document.createElement('i');
        this.closeButton.innerHTML = 'close';
-       this.closeButton.classList.add('material-icons-extended', 'stadiaplus_snackbar-close');
+       this.closeButton.classList.add('material-icons', 'stadiaplus_snackbar-close');
 
        const self = this;
        this.closeButton.addEventListener('click', () => {

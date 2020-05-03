@@ -57,7 +57,7 @@ export class Ratings extends Component {
      */
     createElement(): void {
         this.element = document.createElement('div');
-        this.element.classList.add('stadiaplus_rating', 'material-icons-extended');
+        this.element.classList.add('stadiaplus_rating', 'material-icons');
     }
 
     /**
