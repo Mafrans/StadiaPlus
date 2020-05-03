@@ -26,7 +26,6 @@ export default {
             this.$emit('icon-click');
         },
         back() {
-            console.log('go back!')
             this.$router.go(-1);
         },
     }

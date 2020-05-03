@@ -310,8 +310,6 @@ export class LibraryFilter extends Component {
             return;
         }
 
-        console.log('set');
-
         SyncStorage.set(
             {
                 [SyncStorage.LIBRARY_GAMES.tag]: this.games,
@@ -434,7 +432,7 @@ export class LibraryFilter extends Component {
 
                 this.filterBar.id = this.id;
                 this.filterBar.innerHTML = `
-                    <span class="material-icons-extended">
+                    <span class="material-icons">
                         sort
                     </span>
                     <select name="order">
@@ -451,7 +449,7 @@ export class LibraryFilter extends Component {
                 )}</option>
                     </select>
                     <span id='${this.filterBar.id +
-                        '-direction'}' class="material-icons-extended ascending stadiaplus_filterbar-direction"></span>
+                        '-direction'}' class="material-icons ascending stadiaplus_filterbar-direction"></span>
                 `;
 
                 const { pretty, checkbox } = new Checkbox(
