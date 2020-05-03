@@ -31,15 +31,8 @@ uuidMap.connect();
 
 loader.register(new Clock());
 loader.register(new LibraryFilter(snackbar, database, uuidMap));
-
-const forceCodec = new ForceCodec(tab, snackbar);
-const forceResolution = new ForceResolution(tab, snackbar);
-
-forceCodec.forceResolution = forceResolution;
-forceResolution.forceCodec = forceCodec;
-
-loader.register(forceCodec);
-loader.register(forceResolution);
+loader.register(new ForceCodec(tab, snackbar));
+loader.register(new ForceResolution(tab, snackbar));
 loader.register(tab);
 loader.register(new NetworkMonitor());
 loader.register(new StoreFilter(database, uuidMap));
