@@ -1,4 +1,10 @@
 .stadiaplus_dropdown {
+    &.disabled {
+        opacity: 0.6;
+        pointer-events: none;
+        cursor: default;
+    }
+
     &.style-dark {
         &.ss-main {
             border-color: #3C3E43;
