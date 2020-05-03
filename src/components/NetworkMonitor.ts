@@ -115,6 +115,11 @@ export class NetworkMonitor extends Component {
             <hr>
             <h6>${Language.get('network-monitor.heading-visible')}</h6>
             <ul id='${this.id}-visiblelist'></ul>
+            <hr>
+            <p class='stadiaplus_muted'>
+                <strong>Why is my network speed so much lower than normal?</strong></br></br>
+                The statistics shown in the network monitor have changed units from bits (b) to bytes (B). This means the statistics in 2.2 and later will be around 1/8 of what they were in 2.1.
+            </p>
             `,
             this.id,
         );
