@@ -42,7 +42,7 @@
     },
     "force-codec": {
         "name": "Forza códec"
-        "4k-tooltip": "Forced Codec is not available when running in 4K"
+        "4k-tooltip": "O códec seleccionado non está disponíbel ao seleccionar 4K"
     },
     "force-resolution": {
         "name": "Forza resolución",
