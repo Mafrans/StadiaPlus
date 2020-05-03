@@ -46,6 +46,16 @@ export class NetworkMonitor extends Component {
      * The [[UIButton]] used to open the tab.
      */
     button: UIButton;
+    
+    /**
+     * Whether the component is active or not.
+     */
+    active: boolean = false;
+
+    /**
+     * Whether the monitor is open or not.
+     */
+    monitorOpen: boolean = false;
 
     constructor() {
         super();
@@ -57,11 +67,6 @@ export class NetworkMonitor extends Component {
             this.startRunnable();
         })
     }
-
-    /**
-     * Whether the component is active or not.
-     */
-    active: boolean = false;
 
     /**
      * Visible network statistics.
@@ -136,7 +141,7 @@ export class NetworkMonitor extends Component {
      * @memberof NetworkMonitor
      */
     openMonitor() {
-        this.active = true;
+        this.monitorOpen = true;
         Util.desandbox('StadiaPlusMonitor.start()');
     }
 
@@ -146,7 +151,7 @@ export class NetworkMonitor extends Component {
      * @memberof NetworkMonitor
      */
     closeMonitor() {
-        this.active = false;
+        this.monitorOpen = false;
         Util.desandbox('StadiaPlusMonitor.stop()');
     }
     
@@ -256,16 +261,16 @@ export class NetworkMonitor extends Component {
                 }
 
                 const toggleButton = document.getElementById(this.id + '-togglebutton');
-                toggleButton.classList.toggle('shown', this.active);
+                toggleButton.classList.toggle('shown', this.monitorOpen);
                 
                 toggleButton.addEventListener('click', () => {
-                    if(!this.active) {
+                    if(!this.monitorOpen) {
                         this.openMonitor();
                     }
                     else {
                         this.closeMonitor();
                     }
-                    toggleButton.classList.toggle('shown', this.active);
+                    toggleButton.classList.toggle('shown', this.monitorOpen);
                 });
 
                 this.button.create(() => {
