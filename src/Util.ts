@@ -30,5 +30,12 @@ class Util {
     isInStoreDetail() {
         return window.location.pathname.indexOf('store/details') !== -1;
     }
+    
+    desandbox(javascript: string) {
+        const script = document.createElement('script');
+        script.innerHTML = javascript;
+        document.body.appendChild(script);
+        script.remove();
+    }
 }
 export default new Util();

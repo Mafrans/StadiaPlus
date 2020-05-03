@@ -66,6 +66,6 @@ export class SyncStorage {
     }
     
     static clear() {
-        chrome.storage.local.clear();
+        chrome.storage.sync.clear();
     }
 }

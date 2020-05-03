@@ -41,7 +41,8 @@
         "name": "Klocka"
     },
     "force-codec": {
-        "name": "Påtvigad Codec"
+        "name": "Påtvigad Codec",
+        "4k-tooltip": "Påtvingad Codec är inte tillgängligt när du spelar i 4K"
     },
     "force-resolution": {
         "name": "Påtvingad Upplösning",

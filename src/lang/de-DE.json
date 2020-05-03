@@ -41,7 +41,8 @@
         "name": "Uhr"
     },
     "force-codec": {
-        "name": "Codec erzwingen"
+        "name": "Codec erzwingen",
+        "4k-tooltip": "Forced Codec is not available when running in 4K"
     },
     "force-resolution": {
         "name": "Auflösung erzwingen",

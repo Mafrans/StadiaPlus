@@ -41,7 +41,8 @@
         "name": "Erlojua"
     },
     "force-codec": {
-        "name": "Behartu codec"
+        "name": "Behartu codec",
+        "4k-tooltip": "Forced Codec is not available when running in 4K"
     },
     "force-resolution": {
         "name": "Behartu bereizmena",

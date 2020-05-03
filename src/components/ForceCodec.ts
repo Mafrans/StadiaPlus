@@ -8,6 +8,7 @@ import { Select } from '../ui/Select';
 import { Snackbar } from '../ui/Snackbar';
 import { Language } from '../Language';
 import { LocalStorage } from '../Storage';
+import { Resolution } from './ForceResolution';
 
 const chrome = (window as any).chrome;
 
@@ -97,6 +98,7 @@ export class ForceCodec extends Component {
                         </div>
                         <a class="stadiaplus_button-small">${Language.get('apply')}</a>
                     </div>
+                    <p class='stadiaplus_muted' id='${this.id}-4k-tooltip' style='display: none'>${Language.get('force-codec.4k-tooltip')}</p>
                 `,
                 this.id + '-row',
                 {
@@ -113,8 +115,20 @@ export class ForceCodec extends Component {
                         });
     
                         self.getStorage(() => {
-                            this.select.set(self.codec);
-                            ForceCodec.setCodec(self.codec);
+                            LocalStorage.RESOLUTION.get(result => {
+                                self.select.enable();
+                                
+                                if(result.resolution === Resolution.UHD_4K) {
+                                    self.codec = Codec.VP9;
+                                    self.select.disable();
+
+                                    const tooltip = document.getElementById(this.id + '-4k-tooltip') as HTMLElement; 
+                                    tooltip.style.display = 'block';
+                                }
+
+                                self.select.set(self.codec);
+                                ForceCodec.setCodec(self.codec);
+                            })
                         });            
                     },
 

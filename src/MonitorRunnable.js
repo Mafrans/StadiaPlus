@@ -291,7 +291,7 @@ const MonitorRunnable = function () {
     };
 
     this.translateBitUnits = function (value) {
-        const units = ['b', 'kb', 'Mb', 'Gb'];
+        const units = ['B', 'kB', 'MB', 'GB'];
 
         let i = 0;
         while (value / 1000 >= 1) {
@@ -344,7 +344,7 @@ const MonitorRunnable = function () {
     };
 
     this.getTotalDownload = function (RTCIceCandidatePair) {
-        return RTCIceCandidatePair.bytesReceived * 8;
+        return RTCIceCandidatePair.bytesReceived;
     };
 
     this.getResolution = function (RTCMediaStreamTrack_receiver) {

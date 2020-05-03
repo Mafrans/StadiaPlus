@@ -73,7 +73,6 @@ export default {
     created() {
         SyncStorage.COMPONENTS.get((result) => {
             this.components = result.components;
-            console.log(this.components)
         });
     }
 };

@@ -37,6 +37,14 @@ export class Select {
         } catch (error) {}
     }
 
+    disable() {
+        this.element.classList.add('disabled');
+    }
+    
+    enable() {
+        this.element.classList.remove('disabled');
+    }
+
     get() {
         return this.slimselect.selected();
     }

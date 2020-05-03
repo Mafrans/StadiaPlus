@@ -4,7 +4,7 @@ import Util from '../Util';
 import './styles/LibraryFilter.scss';
 import { Snackbar } from '../ui/Snackbar';
 import { Select } from '../ui/Select';
-import { Database } from '../Database';
+import { WebDatabase } from '../WebDatabase';
 import { Checkbox, CheckboxShape } from '../ui/Checkbox';
 import { Language } from '../Language';
 import { SyncStorage } from '../Storage';
@@ -72,14 +72,14 @@ export class LibraryFilter extends Component {
     /**
      * StadiaGameDB Database.
      */
-    database: Database;
+    database: WebDatabase;
 
     /**
      * StadiaGameDB UUID Map.
      */
-    uuidMap: Database;
+    uuidMap: WebDatabase;
 
-    constructor(snackbar: Snackbar, database: Database, uuidMap: Database) {
+    constructor(snackbar: Snackbar, database: WebDatabase, uuidMap: WebDatabase) {
         super();
 
         // Import database & uuidMap from index.js
@@ -282,7 +282,7 @@ export class LibraryFilter extends Component {
                 SyncStorage.LIBRARY_SORT_DIRECTION,
             ],
             (result: any) => {
-                this.games = result[SyncStorage.LIBRARY_GAMES.tag] !== undefined ? result : {};
+                this.games = result[SyncStorage.LIBRARY_GAMES.tag] !== undefined ? result[SyncStorage.LIBRARY_GAMES.tag] : {};
                 this.order =
                     result[SyncStorage.LIBRARY_GAMES.tag] !== undefined
                         ? result[SyncStorage.LIBRARY_SORT_ORDER.tag]
@@ -432,7 +432,7 @@ export class LibraryFilter extends Component {
 
                 this.filterBar.id = this.id;
                 this.filterBar.innerHTML = `
-                    <span class="material-icons-extended">
+                    <span class="material-icons">
                         sort
                     </span>
                     <select name="order">
@@ -449,7 +449,7 @@ export class LibraryFilter extends Component {
                 )}</option>
                     </select>
                     <span id='${this.filterBar.id +
-                        '-direction'}' class="material-icons-extended ascending stadiaplus_filterbar-direction"></span>
+                        '-direction'}' class="material-icons ascending stadiaplus_filterbar-direction"></span>
                 `;
 
                 const { pretty, checkbox } = new Checkbox(

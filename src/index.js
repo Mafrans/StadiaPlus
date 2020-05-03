@@ -10,7 +10,7 @@ import { ForceResolution } from './components/ForceResolution'
 import { NetworkMonitor } from './components/NetworkMonitor';
 import { Snackbar } from './ui/Snackbar';
 import { LibraryFilter } from './components/LibraryFilter';
-import { Database } from './Database';
+import { WebDatabase } from './WebDatabase';
 import { StoreFilter } from './components/StoreFilter';
 import { Ratings } from './components/Ratings';
 import { Language } from './Language';
@@ -24,8 +24,8 @@ const loader = new ComponentLoader();
 const snackbar = new Snackbar();
 const tab = new UITab();
 
-const database = new Database('https://stadiagamedb.com/data/gamedb.json');
-const uuidMap = new Database('https://stadiagamedb.com/data/uuidmap.json');
+const database = new WebDatabase('https://stadiagamedb.com/data/gamedb.json');
+const uuidMap = new WebDatabase('https://stadiagamedb.com/data/uuidmap.json');
 database.connect();
 uuidMap.connect();
 

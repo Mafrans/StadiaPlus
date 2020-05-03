@@ -2,7 +2,7 @@ import { Component } from '../Component';
 import Logger from '../Logger';
 import Util from '../Util';
 import './styles/StoreFilter.scss';
-import { Database } from '../Database';
+import { WebDatabase } from '../WebDatabase';
 import { Language } from '../Language';
 
 /**
@@ -31,12 +31,12 @@ export class StoreFilter extends Component {
     /**
      * The StadiaGameDB database.
      */
-    database: Database;
+    database: WebDatabase;
 
     /**
      * The StadiaGameDB UUID Map.
      */
-    uuidMap: Database;
+    uuidMap: WebDatabase;
 
     /**
      * An array of all game elements.
@@ -48,7 +48,7 @@ export class StoreFilter extends Component {
      */
     searchField: HTMLElement;
 
-    constructor(database: Database, uuidMap: Database) {
+    constructor(database: WebDatabase, uuidMap: WebDatabase) {
         super();
         this.database = database;
         this.uuidMap = uuidMap;

@@ -46,6 +46,16 @@ export class NetworkMonitor extends Component {
      * The [[UIButton]] used to open the tab.
      */
     button: UIButton;
+    
+    /**
+     * Whether the component is active or not.
+     */
+    active: boolean = false;
+
+    /**
+     * Whether the monitor is open or not.
+     */
+    monitorOpen: boolean = false;
 
     constructor() {
         super();
@@ -57,11 +67,6 @@ export class NetworkMonitor extends Component {
             this.startRunnable();
         })
     }
-
-    /**
-     * Whether the component is active or not.
-     */
-    active: boolean = false;
 
     /**
      * Visible network statistics.
@@ -110,6 +115,11 @@ export class NetworkMonitor extends Component {
             <hr>
             <h6>${Language.get('network-monitor.heading-visible')}</h6>
             <ul id='${this.id}-visiblelist'></ul>
+            <hr>
+            <p class='stadiaplus_muted'>
+                <strong>Why is my network speed so much lower than normal?</strong></br></br>
+                The statistics shown in the network monitor have changed units from bits (b) to bytes (B). This means the statistics in 2.2 and later will be around 1/8 of what they were in 2.1.
+            </p>
             `,
             this.id,
         );
@@ -127,7 +137,7 @@ export class NetworkMonitor extends Component {
      * @memberof NetworkMonitor
      */
     startRunnable() {
-        this.desandbox(runnable);
+        Util.desandbox(runnable);
     }
 
     /**
@@ -136,8 +146,8 @@ export class NetworkMonitor extends Component {
      * @memberof NetworkMonitor
      */
     openMonitor() {
-        this.active = true;
-        this.desandbox('StadiaPlusMonitor.start()');
+        this.monitorOpen = true;
+        Util.desandbox('StadiaPlusMonitor.start()');
     }
 
     /**
@@ -146,8 +156,8 @@ export class NetworkMonitor extends Component {
      * @memberof NetworkMonitor
      */
     closeMonitor() {
-        this.active = false;
-        this.desandbox('StadiaPlusMonitor.stop()');
+        this.monitorOpen = false;
+        Util.desandbox('StadiaPlusMonitor.stop()');
     }
     
     /**
@@ -200,7 +210,7 @@ export class NetworkMonitor extends Component {
         this.component.element.remove();
         this.closeMonitor();
 
-        this.desandbox('StadiaPlusMonitor = null');
+        Util.desandbox('StadiaPlusMonitor = null');
 
         Logger.component(Language.get('component.disabled', { name: this.name }));
     }
@@ -211,7 +221,7 @@ export class NetworkMonitor extends Component {
      * @memberof NetworkMonitor
      */
     updateVisible() {
-        this.desandbox(`StadiaPlusMonitor.setVisible(${JSON.stringify(this.visible)})`);
+        Util.desandbox(`StadiaPlusMonitor.setVisible(${JSON.stringify(this.visible)})`);
     }
 
     /**
@@ -228,11 +238,11 @@ export class NetworkMonitor extends Component {
                 this.component.create();
 
                 this.component.onOpen(() => {
-                    this.desandbox('StadiaPlusMonitor.setEditable(true)');
+                    Util.desandbox('StadiaPlusMonitor.setEditable(true)');
                 });
 
                 this.component.onClose(() => {
-                    this.desandbox('StadiaPlusMonitor.setEditable(false)');
+                    Util.desandbox('StadiaPlusMonitor.setEditable(false)');
                 });
                 
                 const list = document.getElementById(this.id + '-visiblelist');            
@@ -256,16 +266,16 @@ export class NetworkMonitor extends Component {
                 }
 
                 const toggleButton = document.getElementById(this.id + '-togglebutton');
-                toggleButton.classList.toggle('shown', this.active);
+                toggleButton.classList.toggle('shown', this.monitorOpen);
                 
                 toggleButton.addEventListener('click', () => {
-                    if(!this.active) {
+                    if(!this.monitorOpen) {
                         this.openMonitor();
                     }
                     else {
                         this.closeMonitor();
                     }
-                    toggleButton.classList.toggle('shown', this.active);
+                    toggleButton.classList.toggle('shown', this.monitorOpen);
                 });
 
                 this.button.create(() => {
@@ -286,18 +296,5 @@ export class NetworkMonitor extends Component {
         if(!Util.isInGame() && document.querySelector('body>.stadiaplus_networkmonitor')) {
             this.closeMonitor();
         }
-    }
-
-    /**
-     * Runs a script outside of the chrome extension sandbox.
-     *
-     * @param {string} javascript the script to run.
-     * @memberof NetworkMonitor
-     */
-    desandbox(javascript: string) {
-        const script = document.createElement('script');
-        script.innerHTML = javascript;
-        document.body.appendChild(script);
-        script.remove();
     }
 }
