@@ -8,6 +8,7 @@ import { Select } from '../ui/Select';
 import { Snackbar } from '../ui/Snackbar';
 import { Language } from '../Language';
 import { LocalStorage } from '../Storage';
+import { ForceCodec } from './ForceCodec';
 
 const chrome = (window as any).chrome;
 
@@ -43,6 +44,11 @@ export class ForceResolution extends Component {
      * The global Snackbar
      */
     snackbar: Snackbar;
+
+    /**
+     * The force codec component
+     */
+    forceCodec: ForceCodec;
 
     constructor(tab: UITab, snackbar: Snackbar) {
         super();
