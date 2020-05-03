@@ -282,7 +282,7 @@ export class LibraryFilter extends Component {
                 SyncStorage.LIBRARY_SORT_DIRECTION,
             ],
             (result: any) => {
-                this.games = result[SyncStorage.LIBRARY_GAMES.tag] !== undefined ? result : {};
+                this.games = result[SyncStorage.LIBRARY_GAMES.tag] !== undefined ? result[SyncStorage.LIBRARY_GAMES.tag] : {};
                 this.order =
                     result[SyncStorage.LIBRARY_GAMES.tag] !== undefined
                         ? result[SyncStorage.LIBRARY_SORT_ORDER.tag]
@@ -309,6 +309,8 @@ export class LibraryFilter extends Component {
             callback();
             return;
         }
+
+        console.log('set');
 
         SyncStorage.set(
             {
