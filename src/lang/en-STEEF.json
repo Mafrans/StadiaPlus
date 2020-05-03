@@ -41,7 +41,8 @@
         "name": "Clock"
     },
     "force-codec": {
-        "name": "Force Codec"
+        "name": "Force Codec",
+        "4k-tooltip": "Forced Codec is not available when running in 4K"
     },
     "force-resolution": {
         "name": "Force Resolution",

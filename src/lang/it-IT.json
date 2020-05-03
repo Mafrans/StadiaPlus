@@ -41,7 +41,8 @@
         "name": "Orologio"
     },
     "force-codec": {
-        "name": "Forza Codec"
+        "name": "Forza Codec",
+        "4k-tooltip": "Forced Codec is not available when running in 4K"
     },
     "force-resolution": {
         "name": "Forza Risoluzione",

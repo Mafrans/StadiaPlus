@@ -41,7 +41,8 @@
         "name": "Horloge"
     },
     "force-codec": {
-        "name": "Forcer le codec"
+        "name": "Forcer le codec",
+        "4k-tooltip": "Forced Codec is not available when running in 4K"
     },
     "force-resolution": {
         "name": "Forcer la résolution",
