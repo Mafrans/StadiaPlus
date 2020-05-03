@@ -14,16 +14,16 @@
         "settings-page": {
             "title": "Ezarpenak",
             "language": "Hizkuntza",
-            "components": "Components",
-            "edit-components": "Edit Components"
+            "components": "Osagarriak",
+            "edit-components": "Editatu osagarriak"
         },
 	    "developer-page": {
             "title": "Aurreratuak",
-            "clear-cache-button": "Cache ezabatu",
+            "clear-cache-button": "Cachea ezabatu",
             "storage": "Biltegia"
         },
         "component-page": {
-            "title": "Components"
+            "title": "Osagarriak"
         }
     },
     "component": {
@@ -31,10 +31,10 @@
         "disabled": "{{name}} desgaitu egin da."
     },
     "allow-windowed-mode": {
-        "name": "Allow Windowed Mode",
+        "name": "Onartu lehio-modua",
         "button-label": {
-            "windowed": "Windowed",
-            "fullscreen": "Fullscreen"
+            "windowed": "Lehioan",
+            "fullscreen": "Pantaila osoa"
         }
     },
     "clock": {
@@ -67,7 +67,7 @@
         "name": "Denda-iragazkia"
     },
     "ui-tab": {
-        "name": "Stadia+ UI Tab",
+        "name": "Stadia+ UI Fitxa",
         "button-label": "Stadia+"
     },
     "snackbar": {
