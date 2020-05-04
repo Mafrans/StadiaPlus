@@ -41,7 +41,7 @@
         "name": "Reloxo"
     },
     "force-codec": {
-        "name": "Forza códec"
+        "name": "Forza códec",
         "4k-tooltip": "O códec seleccionado non está disponíbel ao seleccionar 4K"
     },
     "force-resolution": {
