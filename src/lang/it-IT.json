@@ -14,8 +14,8 @@
         "settings-page": {
             "title": "Impostazioni",
             "language": "Lingua",
-            "components": "Components",
-            "edit-components": "Edit Components"
+            "components": "Componenti",
+            "edit-components": "Modifica Componenti"
         },
         "developer-page": {
             "title": "Sviluppatore",
@@ -23,7 +23,7 @@
             "storage": "Archiviazione"
         },
         "component-page": {
-            "title": "Components"
+            "title": "Componenti"
         }
     },
     "component": {
@@ -31,10 +31,10 @@
         "disabled": "Il componente {{name}} è stato disattivato."
     },
     "allow-windowed-mode": {
-        "name": "Allow Windowed Mode",
+        "name": "Consentire la Modalità Finestra",
         "button-label": {
-            "windowed": "Windowed",
-            "fullscreen": "Fullscreen"
+            "windowed": "Finestra",
+            "fullscreen": "Schermo Intero"
         }
     },
     "clock": {
@@ -42,7 +42,7 @@
     },
     "force-codec": {
         "name": "Forza Codec",
-        "4k-tooltip": "Forced Codec is not available when running in 4K"
+        "4k-tooltip": "Non è possibile forzare il codec quando si è in 4K"
     },
     "force-resolution": {
         "name": "Forza Risoluzione",
