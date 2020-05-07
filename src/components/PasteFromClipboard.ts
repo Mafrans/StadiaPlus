@@ -38,10 +38,10 @@ export class PasteFromClipboard extends Component
 
             if (input != this.target) {
                 if (undefined != this.target) {
-                    this.target.removeEventListener('keydown', this.eventListener.bind(this));
+                    this.target.removeEventListener('keydown', this.keydownEventListener);
                 }
                 this.target = input;
-                this.target.addEventListener('keydown', this.eventListener.bind(this));
+                this.target.addEventListener('keydown', this.keydownEventListener);
             }
         }
     }
@@ -49,7 +49,7 @@ export class PasteFromClipboard extends Component
     /**
      *  @param event
      */
-    public eventListener(event: KeyboardEvent): void {
+    keydownEventListener(event: KeyboardEvent): void {
         let ctrlKey: boolean;
         switch(navigator.platform) {
             case Platform.WINDOWS:
@@ -81,7 +81,7 @@ export class PasteFromClipboard extends Component
                     cancelable: false,
                     composed: true,
                 }));
-            }.bind(this));
+            });
         }
     }
 }
