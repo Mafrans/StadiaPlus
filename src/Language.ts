@@ -11,6 +11,7 @@ import lang_enSTEEF_data from './lang/en-STEEF.json';
 import lang_euES_data from './lang/eu-ES.json';
 import lang_glES_data from './lang/gl-ES.json';
 import lang_ruRU_data from './lang/ru-RU.json';
+import lang_nlBE_data from './lang/nl-BE.json';
 
 const { chrome } = window as any;
 
@@ -119,6 +120,9 @@ export class Language {
 
         const lang_ruRU = new Language('русский (RU)', 'ru-RU', lang_ruRU_data);
         lang_ruRU.register();
+
+        const lang_nlBE = new Language('Nederlands (BE)', 'nl-BE', lang_nlBE_data);
+        lang_nlBE.register();
     }
 
     static get(name: string, vars?: { [key: string]: any }): string {
