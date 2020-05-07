@@ -42,7 +42,7 @@
     },
     "force-codec": {
         "name": "Behartu codec",
-        "4k-tooltip": "Forced Codec is not available when running in 4K"
+        "4k-tooltip": "Codec hori ezin da gaitu 4K aukerarekin"
     },
     "force-resolution": {
         "name": "Behartu bereizmena",
