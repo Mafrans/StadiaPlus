@@ -60,6 +60,9 @@
         "heading-visible": "Estatísticas",
         "button-label": "Monitor"
     },
+    "paste-from-clipboard": {
+        "name": "Pegar do portapapeis"
+    },
     "ratings": {
         "name": "Valoracións",
         "source-name": "Metacritic"

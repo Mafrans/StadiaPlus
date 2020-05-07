@@ -60,6 +60,9 @@
         "heading-visible": "Visible Stats",
         "button-label": "Monitor"
     },
+    "paste-from-clipboard": {
+        "name": "Paste from Clipboard"
+    },
     "ratings": {
         "name": "Ratings",
         "source-name": "Metacritic"

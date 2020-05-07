@@ -60,6 +60,9 @@
         "heading-visible": "Ikusteko estatistikak",
         "button-label": "Monitorea"
     },
+    "paste-from-clipboard": {
+        "name": "Itsatsi arbelean"
+    },
     "ratings": {
         "name": "Balorazioak",
         "source-name": "Metacritic"

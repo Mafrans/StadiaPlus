@@ -60,6 +60,9 @@
         "heading-visible": "Statistiche Visibili",
         "button-label": "Monitor"
     },
+    "paste-from-clipboard": {
+        "name": "Incolla dagli Appunti"
+    },
     "ratings": {
         "name": "Valutazioni",
         "source-name": "Metacritic"

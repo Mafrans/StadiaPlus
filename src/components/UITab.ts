@@ -73,6 +73,7 @@ export class UITab extends Component {
         'So did the person that made the stadia+ extension give up on stadia?',
         'It\'s like GFN, but without any pulled games.',
         'Long live Geforce Now+',
+        'Spend your money before it runs out.',
     ];
 
     constructor() {
