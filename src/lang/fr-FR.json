@@ -60,6 +60,9 @@
         "heading-visible": "Statistiques visibles",
         "button-label": "Moniteur"
     },
+    "paste-from-clipboard": {
+        "name": "Coller depuis le presse-papiers"
+    },
     "ratings": {
         "name": "Évaluations",
         "source-name": "Métacritique"
