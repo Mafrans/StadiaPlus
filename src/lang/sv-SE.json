@@ -60,6 +60,9 @@
         "heading-visible": "Synlig Statistik",
         "button-label": "Övervakning"
     },
+    "paste-from-clipboard": {
+        "name": "Klistra in från Urklipp"
+    },
     "ratings": {
         "name": "Recensioner",
         "source-name": "Metacritic"

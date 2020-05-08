@@ -15,6 +15,7 @@ import { StoreFilter } from './components/StoreFilter';
 import { Ratings } from './components/Ratings';
 import { Language } from './Language';
 import { AllowWindowedMode } from './components/AllowWindowedMode';
+import { PasteFromClipboard } from './components/PasteFromClipboard'
 
 // Always load languages first
 Language.init();
@@ -38,6 +39,7 @@ loader.register(new NetworkMonitor());
 loader.register(new StoreFilter(database, uuidMap));
 loader.register(new Ratings(database, uuidMap));
 loader.register(new AllowWindowedMode());
+loader.register(new PasteFromClipboard());
 
 window.addEventListener('load', () => {
     Util.load();

@@ -60,6 +60,9 @@
         "heading-visible": "The Visible Stats",
         "button-label": "The Monitor"
     },
+    "paste-from-clipboard": {
+        "name": "The Paste from Clipboard"
+    },
     "ratings": {
         "name": "Ratings",
         "source-name": "The Metacritic"

@@ -60,6 +60,9 @@
         "heading-visible": "Видимая статистика",
         "button-label": "Монитор"
     },
+    "paste-from-clipboard": {
+        "name": "Вставить из буфера обмена"
+    },
     "ratings": {
         "name": "Рейтинги",
         "source-name": "Metacritic"

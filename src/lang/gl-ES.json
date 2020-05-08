@@ -14,16 +14,16 @@
         "settings-page": {
             "title": "Configuración",
             "language": "Idioma",
-            "components": "Components",
-            "edit-components": "Edit Components"
+            "components": "Compoñentes",
+            "edit-components": "Edita os compoñentes"
         },
         "developer-page": {
             "title": "Avanzadas",
-            "clear-cache-button": "Limpar a caché",
+            "clear-cache-button": "Limpa a caché",
             "storage": "Almacenamento"
         },
         "component-page": {
-            "title": "Components"
+            "title": "Compoñentes"
         }
     },
     "component": {
@@ -31,21 +31,21 @@
         "disabled": "Desactivouse {{name}}."
     },
     "allow-windowed-mode": {
-        "name": "Allow Windowed Mode",
+        "name": "Permite o modo fiestra",
         "button-label": {
-            "windowed": "Windowed",
-            "fullscreen": "Fullscreen"
+            "windowed": "En fiestra",
+            "fullscreen": "Pantalla completa"
         }
     },
     "clock": {
         "name": "Reloxo"
     },
     "force-codec": {
-        "name": "Forzar códec",
-        "4k-tooltip": "Forced Codec is not available when running in 4K"
+        "name": "Forza códec",
+        "4k-tooltip": "O códec seleccionado non está disponíbel ao seleccionar 4K"
     },
     "force-resolution": {
-        "name": "Forzar resolución",
+        "name": "Forza resolución",
         "note": "Aviso: o valor indicado será o máximo que Stadia intentará acadar. Se o teu computador non é compatíbel coa resolución ou esta supera o uso de datos que teñas configurado na conta, non se activará."
     },
     "library-filter": {
@@ -59,6 +59,9 @@
         "name": "Monitor de rede",
         "heading-visible": "Estatísticas",
         "button-label": "Monitor"
+    },
+    "paste-from-clipboard": {
+        "name": "Pegar do portapapeis"
     },
     "ratings": {
         "name": "Valoracións",

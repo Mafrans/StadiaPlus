@@ -60,6 +60,9 @@
         "heading-visible": "Sichtbare Statistiken",
         "button-label": "Monitor"
     },
+    "paste-from-clipboard": {
+        "name": "Einfügen aus der Zwischenablage"
+    },
     "ratings": {
         "name": "Bewertungen",
         "source-name": "Metacritic"

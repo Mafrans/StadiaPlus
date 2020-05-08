@@ -60,6 +60,9 @@
         "heading-visible": "Estadísticas visibles",
         "button-label": "Monitor"
     },
+    "paste-from-clipboard": {
+        "name": "Pegar desde el portapapeles"
+    },
     "ratings": {
         "name": "Calificaciones",
         "source-name": "Metacrítico"

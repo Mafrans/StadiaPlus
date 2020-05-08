@@ -1,0 +1,85 @@
+{
+    "popup": {
+        "footer": {
+            "credit": "Ontwikkeld door {{name}}"
+        },
+        "main-page": {
+            "title": "Stadia+",
+            "ready-text": "De extentie is klaar. Je kan nu Stadia openen en beginnen spelen! 🎮",
+            "launch-button": "Stadia starten",
+            "help-button": "Help & FAQ",
+            "discord": "Discord",
+            "reddit": "Reddit"
+        },
+        "settings-page": {
+            "title": "Instellingen",
+            "language": "Taal",
+            "components": "Componenten",
+            "edit-components": "Componenten aanpassen"
+        },
+        "developer-page": {
+            "title": "Ontwikkelaar",
+            "clear-cache-button": "Cache wissen",
+            "storage": "Opslag"
+        },
+        "component-page": {
+            "title": "Componenten"
+        }
+    },
+    "component": {
+        "enabled": "Component {{name}} werd ingeschakeld.",
+        "disabled": "Component {{name}} werd uitgeschakeld."
+    },
+    "allow-windowed-mode": {
+        "name": "Spelen in venster toestaan",
+        "button-label": {
+            "windowed": "In venster",
+            "fullscreen": "Fullscreen"
+        }
+    },
+    "clock": {
+        "name": "Klok"
+    },
+    "force-codec": {
+        "name": "Codec forceren",
+        "4k-tooltip": "Codec kan niet geforceerd worden wanneer je in 4K speelt"
+    },
+    "force-resolution": {
+        "name": "Resolutie forceren",
+        "note": "Merk op: Deze waarde is de maximale resolutie dat Stadia zal proberen te halen. Dit zal niet werken als je computer deze resolutie niet kan afspelen of als de resolutie niet beschikbaar is voor de dataverbruik selectie."
+    },
+    "library-filter": {
+        "name": "Bibliotheek Filter",
+        "recent": "Recent",
+        "alphabetical": "Alfabetisch",
+        "random": "Willekeurig",
+        "show-hidden": "Verborgen weergeven"
+    },
+    "network-monitor": {
+        "name": "Netwerk Monitor",
+        "heading-visible": "Zichtbare Stats",
+        "button-label": "Monitor"
+    },
+    "ratings": {
+        "name": "Scores",
+        "source-name": "Metacritic"
+    },
+    "store-filter": {
+        "name": "Filter bewaren"
+    },
+    "ui-tab": {
+        "name": "Stadia+ UI Tab",
+        "button-label": "Stadia+"
+    },
+    "snackbar": {
+        "reload-to-update": "Herlaad de pagina om je aanpassingen te zien.",
+        "hide-game": "Een spel werd verborgen.",
+        "show-game": "Een spel is niet langer verborgen."
+    },
+    "automatic": "Automatisch",
+    "vp9": "VP9",
+    "h264": "H264",
+    "apply": "Toepassen",
+    "4k": "4K",
+    "1080p": "1080p"
+}
