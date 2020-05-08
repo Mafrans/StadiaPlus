@@ -58,7 +58,24 @@
     "network-monitor": {
         "name": "Monitor di Rete",
         "heading-visible": "Statistiche Visibili",
-        "button-label": "Monitor"
+        "button-label": "Monitor",
+        "toggle-button": {
+            "show": "Show Network Monitor",
+            "hide": "Hide Network Monitor"
+        },
+        "stats": {
+            "time": "Time",
+            "resolution": "Resolution",
+            "fps": "FPS",
+            "latency": "Latency",
+            "codec": "Codec",
+            "traffic": "Traffic",
+            "current-traffic": "Current Traffic",
+            "average-traffic": "Average Traffic",
+            "packets-lost": "Packets Lost",
+            "average-packet-loss": "Average Packet Loss",
+            "jitter-buffer": "Jitter Buffer"
+        }
     },
     "paste-from-clipboard": {
         "name": "Incolla dagli Appunti"

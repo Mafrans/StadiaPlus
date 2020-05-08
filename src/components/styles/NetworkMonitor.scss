@@ -36,16 +36,3 @@
 .stadiaplus_networkmonitor-checkbox {
     margin: 0.4rem 0;
 }
-
-.stadiaplus_networkmonitor-toggle-button {
-    &::before {
-        margin-right: 4px;
-        content: 'Show';
-    }
-
-    &.shown {
-        &::before {
-            content: 'Hide';
-        }
-    }
-}

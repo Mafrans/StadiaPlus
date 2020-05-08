@@ -58,7 +58,24 @@
     "network-monitor": {
         "name": "Network Monitor",
         "heading-visible": "The Visible Stats",
-        "button-label": "The Monitor"
+        "button-label": "The Monitor",
+        "toggle-button": {
+            "show": "Show The Network Monitor",
+            "hide": "Hide The Network Monitor"
+        },
+        "stats": {
+            "time": "The Time",
+            "resolution": "The Resolution",
+            "fps": "The FPS",
+            "latency": "The Latency",
+            "codec": "The Codec",
+            "traffic": "The Traffic",
+            "current-traffic": "The Current Traffic",
+            "average-traffic": "The Average Traffic",
+            "packets-lost": "The Packets Lost",
+            "average-packet-loss": "The Average Packet Loss",
+            "jitter-buffer": "The Jitter Buffer"
+        }
     },
     "paste-from-clipboard": {
         "name": "The Paste from Clipboard"

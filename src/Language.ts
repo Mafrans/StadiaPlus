@@ -31,10 +31,11 @@ export class Language {
     }
 
     get(name: string, vars?: { [key: string]: any }): string {
-        let keys = name.split('.');
+        let keys = name.split(/\./g);
         let val = this.data;
         for (const key of keys) {
             val = val[key];
+            console.log(keys, val)
         }
 
         if (vars !== undefined) {

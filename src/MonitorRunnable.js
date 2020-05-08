@@ -141,7 +141,7 @@ const MonitorRunnable = function () {
     };
 
     this.setVisible = function (visible) {
-        this.visible = visible;
+        visible.forEach(e => this.visible[e.id] = e);
     };
 
     this.stop = function () {
@@ -153,19 +153,7 @@ const MonitorRunnable = function () {
         peerConnections = [];
     };
 
-    this.visible = {
-        time: true,
-        resolution: true,
-        FPS: true,
-        latency: true,
-        codec: true,
-        traffic: true,
-        'current-traffic': true,
-        'average-traffic': true,
-        'packets-lost': true,
-        'average-packet-loss': true,
-        'jitter-buffer': true,
-    };
+    this.visible = {};
 
     this.stats = [];
     this.update = function () {
@@ -221,43 +209,43 @@ const MonitorRunnable = function () {
 
                 html += '<ul>';
                 if (this.visible['resolution']) {
-                    html += `<li>Resolution: ${resolution.width}x${resolution.height}</li>`;
+                    html += `<li>${this.visible['resolution'].name}: ${resolution.width}x${resolution.height}</li>`;
                 }
 
-                if (this.visible['FPS']) {
-                    html += `<li>FPS: ${fps}</li>`;
+                if (this.visible['fps']) {
+                    html += `<li>${this.visible['fps'].name}: ${fps}</li>`;
                 }
 
                 if (this.visible['latency']) {
-                    html += `<li>Latency: ${latency}</li>`;
+                    html += `<li>${this.visible['latency'].name}: ${latency}</li>`;
                 }
 
                 if (this.visible['codec']) {
-                    html += `<li>Codec: ${codec}</li>`;
+                    html += `<li>${this.visible['codec'].name}: ${codec}</li>`;
                 }
 
                 if (this.visible['traffic']) {
-                    html += `<li>Total Traffic: ${totalTraffic}</li>`;
+                    html += `<li>${this.visible['traffic'].name}: ${totalTraffic}</li>`;
                 }
 
                 if (this.visible['current-traffic']) {
-                    html += `<li>Current Traffic: ${currentTraffic}</li>`;
+                    html += `<li>${this.visible['current-traffic'].name}: ${currentTraffic}</li>`;
                 }
 
                 if (this.visible['average-traffic']) {
-                    html += `<li>Average Traffic: ${averageTraffic}</li>`;
+                    html += `<li>${this.visible['average-traffic'].name}: ${averageTraffic}</li>`;
                 }
 
                 if (this.visible['packets-lost']) {
-                    html += `<li>Packets Lost: ${packetsLost}</li>`;
+                    html += `<li>${this.visible['packets-lost'].name}: ${packetsLost}</li>`;
                 }
 
                 if (this.visible['average-packet-loss']) {
-                    html += `<li>Average Packet Loss: ${averagePacketLoss}</li>`;
+                    html += `<li>${this.visible['average-packet-loss'].name}: ${averagePacketLoss}</li>`;
                 }
 
                 if (this.visible['jitter-buffer']) {
-                    html += `<li>Jitter Buffer: ${jitterBuffer}</li>`;
+                    html += `<li>${this.visible['jitter-buffer'].name}: ${jitterBuffer}</li>`;
                 }
 
                 html += '</ul>';

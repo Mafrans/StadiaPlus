@@ -71,36 +71,7 @@ export class NetworkMonitor extends Component {
     /**
      * Visible network statistics.
      */
-    visible: any = {
-        'time': true,
-        'resolution': true,
-        'FPS': true,
-        'latency': true,
-        'codec': true,
-        'traffic': true,
-        'current-traffic': true,
-        'average-traffic': true,
-        'packets-lost': true,
-        'average-packet-loss': true,
-        'jitter-buffer': true,
-    };
-
-    /**
-     * Which order the network statistics show up in.
-     */
-    orderMap: any = [
-        'time',
-        'resolution',
-        'FPS',
-        'latency',
-        'codec',
-        'traffic',
-        'current-traffic',
-        'average-traffic',
-        'packets-lost',
-        'average-packet-loss',
-        'jitter-buffer'
-    ]
+    visible: any = [];
 
     /**
      * Creates a [[UIComponent]] and a [[UIButton]].
@@ -111,14 +82,14 @@ export class NetworkMonitor extends Component {
         this.component = new UIComponent(
             Language.get('network-monitor.name'),
             `
-            <div class='CTvDXd QAAyWd Fjy05d ivWUhc QSDHyc rpgZzc RkyH1e stadiaplus_button stadiaplus_networkmonitor-toggle-button' id='${this.id}-togglebutton'>Network Monitor</div>
+            <div class='CTvDXd QAAyWd Fjy05d ivWUhc QSDHyc rpgZzc RkyH1e stadiaplus_button stadiaplus_networkmonitor-toggle-button' id='${this.id}-togglebutton'>${Language.get('network-monitor.toggle-button.show')}</div>
             <hr>
             <h6>${Language.get('network-monitor.heading-visible')}</h6>
             <ul id='${this.id}-visiblelist'></ul>
             <hr>
             <p class='stadiaplus_muted'>
                 <strong>Why is my network speed so much lower than normal?</strong></br></br>
-                The statistics shown in the network monitor have changed units from bits (b) to bytes (B). This means the statistics in 2.2 and later will be around 1/8 of what they were in 2.1.
+                Some of the statistics shown in the network monitor have changed units from bits (b) to bytes (B). This means the statistics in 2.2 and later will be around 1/8 of what they were in 2.1.
             </p>
             `,
             this.id,
@@ -195,7 +166,66 @@ export class NetworkMonitor extends Component {
         this.startRunnable();
         this.createUI();
 
+        this.visible = [
+            {
+                id: 'time',
+                enabled: true,
+                name: Language.get('network-monitor.stats.time'),
+            },
+            {
+                id: 'resolution',
+                enabled: true,
+                name: Language.get('network-monitor.stats.resolution'),
+            },
+            {
+                id: 'fps',
+                enabled: true,
+                name: Language.get('network-monitor.stats.fps'),
+            },
+            {
+                id: 'latency',
+                enabled: true,
+                name: Language.get('network-monitor.stats.latency'),
+            },
+            {
+                id: 'codec',
+                enabled: true,
+                name: Language.get('network-monitor.stats.codec'),
+            },
+            {
+                id: 'traffic',
+                enabled: true,
+                name: Language.get('network-monitor.stats.traffic'),
+            },
+            {
+                id: 'current-traffic',
+                enabled: true,
+                name: Language.get('network-monitor.stats.current-traffic'),
+            },
+            {
+                id: 'average-traffic',
+                enabled: true,
+                name: Language.get('network-monitor.stats.average-traffic'),
+            },
+            {
+                id: 'packets-lost',
+                enabled: true,
+                name: Language.get('network-monitor.stats.packets-lost'),
+            },
+            {
+                id: 'average-packet-loss',
+                enabled: true,
+                name: Language.get('network-monitor.stats.average-packet-loss'),
+            },
+            {
+                id: 'jitter-buffer',
+                enabled: true,
+                name: Language.get('network-monitor.stats.jitter-buffer'),
+            },
+        ];
+        
         Logger.component(Language.get('component.enabled', { name: this.name }));
+    
     }
 
     /**
@@ -246,23 +276,26 @@ export class NetworkMonitor extends Component {
                 });
                 
                 const list = document.getElementById(this.id + '-visiblelist');            
-                for(const key of this.orderMap) {
-                    const name: string = key.replace(/-/g, ' ').split(' ').map((name:string) => name.substring(0, 1).toUpperCase() + name.substring(1)).join(' ');
-                    const value: boolean = this.visible[key];
+                let i = 0;
+                console.log(this.visible);
+                for(const stat of this.visible) {
+                    console.log(stat, i);
                     const item = document.createElement('li');
 
-                    const {pretty, checkbox} = new Checkbox(name).setBigger(true).setAnimation(CheckboxAnimation.SMOOTH).build();
+                    const {pretty, checkbox} = new Checkbox(stat.name).setBigger(true).setAnimation(CheckboxAnimation.SMOOTH).build();
                     pretty.classList.add('stadiaplus_networkmonitor-checkbox');
-
+                    
                     item.appendChild(pretty);
                     list.appendChild(item);
                     
-                    checkbox.checked = value;
+                    checkbox.checked = stat.enabled;
                     checkbox.addEventListener('click', () => {
-                        this.visible[key] = checkbox.checked;
+                        this.visible[i].enabled = checkbox.checked;
                         this.updateVisible();
                         this.setStorage();
                     });
+
+                    i++;
                 }
 
                 const toggleButton = document.getElementById(this.id + '-togglebutton');
@@ -271,9 +304,11 @@ export class NetworkMonitor extends Component {
                 toggleButton.addEventListener('click', () => {
                     if(!this.monitorOpen) {
                         this.openMonitor();
+                        toggleButton.innerHTML = Language.get('network-monitor.toggle-button.hide');
                     }
                     else {
                         this.closeMonitor();
+                        toggleButton.innerHTML = Language.get('network-monitor.toggle-button.hide');
                     }
                     toggleButton.classList.toggle('shown', this.monitorOpen);
                 });

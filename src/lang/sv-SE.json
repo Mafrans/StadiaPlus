@@ -58,7 +58,24 @@
     "network-monitor": {
         "name": "Nätverksövervakning",
         "heading-visible": "Synlig Statistik",
-        "button-label": "Övervakning"
+        "button-label": "Övervakning",
+        "toggle-button": {
+            "show": "Visa Nätverksövervakning",
+            "hide": "Göm Nätverksövervakning"
+        },
+        "stats": {
+            "time": "Tid",
+            "resolution": "Upplösning",
+            "fps": "FPS",
+            "latency": "Latens",
+            "codec": "Codec",
+            "traffic": "Nätverkstrafik",
+            "current-traffic": "Nuvarande Trafik",
+            "average-traffic": "Genomsnittlig Trafik",
+            "packets-lost": "Paket Tappade",
+            "average-packet-loss": "Pakettappning",
+            "jitter-buffer": "Jitter Buffer"
+        }
     },
     "paste-from-clipboard": {
         "name": "Klistra in från Urklipp"
