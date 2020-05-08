@@ -275,10 +275,11 @@ export class NetworkMonitor extends Component {
                     Util.desandbox('StadiaPlusMonitor.setEditable(false)');
                 });
                 
-                const list = document.getElementById(this.id + '-visiblelist');            
-                let i = 0;
+                const list = document.getElementById(this.id + '-visiblelist');          
                 console.log(this.visible);
-                for(const stat of this.visible) {
+                for(let i = 0; i < this.visible.length; i++) {
+                    const stat = this.visible[i];
+
                     console.log(stat, i);
                     const item = document.createElement('li');
 
@@ -289,13 +290,11 @@ export class NetworkMonitor extends Component {
                     list.appendChild(item);
                     
                     checkbox.checked = stat.enabled;
-                    checkbox.addEventListener('click', () => {
+                    checkbox.addEventListener('click', (() => {
                         this.visible[i].enabled = checkbox.checked;
                         this.updateVisible();
                         this.setStorage();
-                    });
-
-                    i++;
+                    }).bind(this));
                 }
 
                 const toggleButton = document.getElementById(this.id + '-togglebutton');
