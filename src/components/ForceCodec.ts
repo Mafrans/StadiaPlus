@@ -153,16 +153,17 @@ export class ForceCodec extends Component {
      */
     static setCodec(codec: number) {
         const script = document.createElement('script');
+
         switch (codec) {
         case Codec.VP9:
             script.innerHTML = `
-                localStorage.setItem("video_codec_implementation_by_codec_key", '{"vp9":"ExternalDecoder"}');
+                localStorage.setItem("video_codec_implementation_by_codec_key", '{"vp9":"libvpx"}');
             `;
             break;
 
         case Codec.H264:
             script.innerHTML = `
-                localStorage.setItem("video_codec_implementation_by_codec_key", '{"h264":"ExternalDecoder", "vp9":"libvpx"}');
+                localStorage.setItem("video_codec_implementation_by_codec_key", '{"vp9":"libvpx","h264":"FFmpeg"}');
             `;
             break;
             
