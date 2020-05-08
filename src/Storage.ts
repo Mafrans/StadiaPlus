@@ -75,14 +75,11 @@ export class StorageManager {
     appdata: any;
     constructor(appdata: any) {
         this.appdata = appdata;
-        console.log(this.appdata);
     }
     
     checkCacheVersion(callback: () => any): void {
         LocalStorage.CACHE_VERSION.get(result => {
             const cacheVersion = result[LocalStorage.CACHE_VERSION.tag];
-            console.log("current version", this.appdata['cache-version']);
-            console.log("cache version", cacheVersion);
 
             if(cacheVersion === undefined || this.appdata['cache-version'] > cacheVersion) {
                 this.appdata['clear-keys'].local.forEach((key: string) => {

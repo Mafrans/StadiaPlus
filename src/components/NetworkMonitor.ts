@@ -275,12 +275,10 @@ export class NetworkMonitor extends Component {
                     Util.desandbox('StadiaPlusMonitor.setEditable(false)');
                 });
                 
-                const list = document.getElementById(this.id + '-visiblelist');          
-                console.log(this.visible);
+                const list = document.getElementById(this.id + '-visiblelist');
                 for(let i = 0; i < this.visible.length; i++) {
                     const stat = this.visible[i];
 
-                    console.log(stat, i);
                     const item = document.createElement('li');
 
                     const {pretty, checkbox} = new Checkbox(stat.name).setBigger(true).setAnimation(CheckboxAnimation.SMOOTH).build();

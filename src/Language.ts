@@ -35,7 +35,6 @@ export class Language {
         let val = this.data;
         for (const key of keys) {
             val = val[key];
-            console.log(keys, val)
         }
 
         if (vars !== undefined) {
