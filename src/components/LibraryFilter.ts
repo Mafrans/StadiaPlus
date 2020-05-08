@@ -356,12 +356,12 @@ export class LibraryFilter extends Component {
         );
         // Toggle the sort direction
         dir.addEventListener('click', () => {
-            this.updateSortDirection();
+            this.reveseSortDirection();
             event.stopPropagation();
         });
     }
 
-    updateSortDirection() {
+    reveseSortDirection() {
         const element: Element = this.renderer.querySelector(
             '#' + this.filterBar.id + '-direction'
         );
@@ -369,13 +369,23 @@ export class LibraryFilter extends Component {
         if (element) {
             if (this.direction === OrderDirection.ASCENDING) {
                 this.direction = OrderDirection.DESCENDING;
-                element.classList.add('descending');
-                element.classList.remove('ascending');
             } else {
                 this.direction = OrderDirection.ASCENDING;
-                element.classList.add('ascending');
-                element.classList.remove('descending');
             }
+        }
+
+        this.updateSortDirection();
+    }
+
+
+    updateSortDirection() {
+        const element: Element = this.renderer.querySelector(
+            '#' + this.filterBar.id + '-direction'
+        );
+
+        if (element) {
+            element.classList.toggle('descending', this.direction === OrderDirection.DESCENDING);
+            element.classList.toggle('ascending', this.direction === OrderDirection.ASCENDING);
         }
 
         this.sortGames();
