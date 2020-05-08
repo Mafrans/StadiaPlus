@@ -74,6 +74,7 @@ export class UITab extends Component {
         'It\'s like GFN, but without any pulled games.',
         'Long live Geforce Now+',
         'Spend your money before it runs out.',
+        'When does Stadia 2 come out?',
     ];
 
     constructor() {
