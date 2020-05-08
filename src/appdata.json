@@ -1,0 +1,9 @@
+{
+    "cache-version": 0.1,
+    "clear-keys": {
+        "local": [
+            "monitor-stats"
+        ],
+        "sync": []
+    }
+}

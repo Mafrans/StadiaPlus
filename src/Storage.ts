@@ -4,6 +4,7 @@ export class LocalStorage {
     static CODEC = new LocalStorage('Codec', 'codec');
     static RESOLUTION = new LocalStorage('Resolution', 'resolution');
     static MONITOR_STATS = new LocalStorage('Monitor Stats', 'monitor-stats');
+    static CACHE_VERSION = new LocalStorage('Cache Version', 'cache-version');
 
     name: string;
     tag: string;
@@ -26,7 +27,7 @@ export class LocalStorage {
     }
 
     static set(storages: {[key: string]: any}, callback: (() => any) = (() => {})) {
-        chrome.storage.local.get(storages, callback);
+        chrome.storage.local.set(storages, callback);
     }
 
     static clear() {
@@ -67,5 +68,33 @@ export class SyncStorage {
     
     static clear() {
         chrome.storage.sync.clear();
+    }
+}
+
+export class StorageManager {
+    appdata: any;
+    constructor(appdata: any) {
+        this.appdata = appdata;
+        console.log(this.appdata);
+    }
+    
+    checkCacheVersion(callback: () => any): void {
+        LocalStorage.CACHE_VERSION.get(result => {
+            const cacheVersion = result[LocalStorage.CACHE_VERSION.tag];
+            console.log("current version", this.appdata['cache-version']);
+            console.log("cache version", cacheVersion);
+
+            if(cacheVersion === undefined || this.appdata['cache-version'] > cacheVersion) {
+                this.appdata['clear-keys'].local.forEach((key: string) => {
+                    LocalStorage.set({[key]: undefined});
+                })
+
+                this.appdata['clear-keys'].sync.forEach((key: string) => {
+                    SyncStorage.set({[key]: undefined});
+                })
+            }
+
+            LocalStorage.CACHE_VERSION.set(this.appdata['cache-version']);
+        })
     }
 }

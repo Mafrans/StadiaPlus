@@ -15,11 +15,16 @@ import { StoreFilter } from './components/StoreFilter';
 import { Ratings } from './components/Ratings';
 import { Language } from './Language';
 import { AllowWindowedMode } from './components/AllowWindowedMode';
-import { PasteFromClipboard } from './components/PasteFromClipboard'
+import { PasteFromClipboard } from './components/PasteFromClipboard';
+import { StorageManager } from './Storage';
+import appdata from './appdata.json';
 
 // Always load languages first
 Language.init();
 Language.load();
+
+const storageManager = new StorageManager(appdata);
+storageManager.checkCacheVersion();
 
 const loader = new ComponentLoader();
 const snackbar = new Snackbar();
