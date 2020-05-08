@@ -181,7 +181,7 @@ const MonitorRunnable = function () {
                 const fps = this.getFPS(RTCInboundRTPVideoStream);
                 const latency = this.getLatency(RTCIceCandidatePair) + ' ms';
                 const codec = this.getCodec(RTCInboundRTPVideoStream);
-                const totalTraffic = this.translateBitUnits(
+                const totalTraffic = this.translateByteUnits(
                     this.getTotalDownload(RTCIceCandidatePair),
                 );
                 const currentTraffic =
@@ -279,6 +279,20 @@ const MonitorRunnable = function () {
     };
 
     this.translateBitUnits = function (value) {
+        const units = ['bit', 'kbit', 'Mbit', 'Gbit'];
+
+        let i = 0;
+        while (value / 1000 >= 1) {
+            i++;
+            value /= 1000;
+        }
+
+        return (
+            value.toPrecision(4) + ' ' + units[Math.min(units.length - 1, i)]
+        );
+    };
+
+    this.translateByteUnits = function (value) {
         const units = ['B', 'kB', 'MB', 'GB'];
 
         let i = 0;
@@ -321,12 +335,12 @@ const MonitorRunnable = function () {
         const download = this.getTotalDownload(RTCIceCandidatePair);
         const speed = download - this.lastDownload;
         this.lastDownload = download;
-        return speed;
+        return speed * 8;
     };
 
     this.getAverageDownloadSpeed = function (RTCIceCandidatePair) {
         return (
-            this.getTotalDownload(RTCIceCandidatePair) /
+            this.getTotalDownload(RTCIceCandidatePair) * 8 /
             (this.timeSinceStart() / 1000)
         );
     };
