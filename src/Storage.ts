@@ -83,11 +83,11 @@ export class StorageManager {
 
             if(cacheVersion === undefined || this.appdata['cache-version'] > cacheVersion) {
                 this.appdata['clear-keys'].local.forEach((key: string) => {
-                    LocalStorage.set({[key]: undefined});
+                    LocalStorage.set({[key]: null});
                 })
 
                 this.appdata['clear-keys'].sync.forEach((key: string) => {
-                    SyncStorage.set({[key]: undefined});
+                    SyncStorage.set({[key]: null});
                 })
             }
 
