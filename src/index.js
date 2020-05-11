@@ -18,6 +18,7 @@ import { AllowWindowedMode } from './components/AllowWindowedMode';
 import { PasteFromClipboard } from './components/PasteFromClipboard';
 import { StorageManager } from './Storage';
 import appdata from './appdata.json';
+import { Modal } from './ui/Modal';
 
 // Always load languages first
 Language.init();
@@ -28,6 +29,7 @@ storageManager.checkCacheVersion();
 
 const loader = new ComponentLoader();
 const snackbar = new Snackbar();
+const modal = new Modal();
 const tab = new UITab();
 
 const database = new WebDatabase('https://stadiagamedb.com/data/gamedb.json');
@@ -49,5 +51,6 @@ loader.register(new PasteFromClipboard());
 window.addEventListener('load', () => {
     Util.load();
     snackbar.create();
+    modal.create();
     loader.start();
 })
