@@ -158,5 +158,8 @@ export class AllowWindowedMode extends Component {
                 this.button.container.create();
             }
         }
+        else if(this.exists()) {
+            this.button.destroy();
+        }
     }
 }

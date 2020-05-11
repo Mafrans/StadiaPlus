@@ -31,7 +31,7 @@ export class UIComponent {
     }
 
     create(): void {
-        const container = document.querySelector('.hxhAyf.fi8Jxd');
+        const container = document.querySelector('.hxhAyf');
         if(!container) return;
 
         this.element.innerHTML = this.html;

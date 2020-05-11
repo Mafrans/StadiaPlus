@@ -319,6 +319,10 @@ export class NetworkMonitor extends Component {
         else if(this.component.open) {
             this.component.closeTab();
         }
+        else if(this.exists()) {
+            this.button.destroy();
+            this.component.element.remove();
+        }
         
         if(!Util.isInGame() && document.querySelector('body>.stadiaplus_networkmonitor')) {
             this.closeMonitor();

@@ -195,7 +195,7 @@ export class UITab extends Component {
      */
     onUpdate(): void {
         // Only create components if the menu is open already.
-        if (Util.isMenuOpen() && Util.isInGame()) {
+        if (Util.isMenuOpen()) {
             if (!this.exists()) {
                 this.updateRenderer();
                 this.component.create();
