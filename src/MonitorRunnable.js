@@ -208,43 +208,43 @@ const MonitorRunnable = function () {
                 }
 
                 html += '<ul>';
-                if (this.visible['resolution']) {
+                if (this.visible['resolution'].enabled) {
                     html += `<li>${this.visible['resolution'].name}: ${resolution.width}x${resolution.height}</li>`;
                 }
 
-                if (this.visible['fps']) {
+                if (this.visible['fps'].enabled) {
                     html += `<li>${this.visible['fps'].name}: ${fps}</li>`;
                 }
 
-                if (this.visible['latency']) {
+                if (this.visible['latency'].enabled) {
                     html += `<li>${this.visible['latency'].name}: ${latency}</li>`;
                 }
 
-                if (this.visible['codec']) {
+                if (this.visible['codec'].enabled) {
                     html += `<li>${this.visible['codec'].name}: ${codec}</li>`;
                 }
 
-                if (this.visible['traffic']) {
+                if (this.visible['traffic'].enabled) {
                     html += `<li>${this.visible['traffic'].name}: ${totalTraffic}</li>`;
                 }
 
-                if (this.visible['current-traffic']) {
+                if (this.visible['current-traffic'].enabled) {
                     html += `<li>${this.visible['current-traffic'].name}: ${currentTraffic}</li>`;
                 }
 
-                if (this.visible['average-traffic']) {
+                if (this.visible['average-traffic'].enabled) {
                     html += `<li>${this.visible['average-traffic'].name}: ${averageTraffic}</li>`;
                 }
 
-                if (this.visible['packets-lost']) {
+                if (this.visible['packets-lost'].enabled) {
                     html += `<li>${this.visible['packets-lost'].name}: ${packetsLost}</li>`;
                 }
 
-                if (this.visible['average-packet-loss']) {
+                if (this.visible['average-packet-loss'].enabled) {
                     html += `<li>${this.visible['average-packet-loss'].name}: ${averagePacketLoss}</li>`;
                 }
 
-                if (this.visible['jitter-buffer']) {
+                if (this.visible['jitter-buffer'].enabled) {
                     html += `<li>${this.visible['jitter-buffer'].name}: ${jitterBuffer}</li>`;
                 }
 
