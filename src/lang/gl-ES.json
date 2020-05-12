@@ -9,7 +9,8 @@
             "launch-button": "Inicia Stadia",
             "help-button": "Axuda & FAQ",
             "discord": "Discord",
-            "reddit": "Reddit"
+            "reddit": "Reddit",
+            "github": "Github"
         },
         "settings-page": {
             "title": "Configuración",

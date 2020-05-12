@@ -9,7 +9,8 @@
             "launch-button": "Запустити Stadia",
             "help-button": "Довідка та поширені запитання",
             "discord": "Discord",
-            "reddit": "Reddit"
+            "reddit": "Reddit",
+            "github": "Github"
         },
         "settings-page": {
             "title": "Налаштування",

@@ -44,11 +44,11 @@
                     <btn
                         v-on:click="
                             open(
-                                'https://www.reddit.com/r/Stadia/comments/fz7xgm/stadia_20_what_youve_all_been_waiting_for/'
+                                'https://github.com/Mafrans/StadiaPlus'
                             )
                         "
                     >
-                        {{ Language.get('popup.main-page.reddit') }}
+                        {{ Language.get('popup.main-page.github') }}
                     </btn>
                 </div>
             </div>
