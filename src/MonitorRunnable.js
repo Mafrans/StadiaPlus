@@ -201,7 +201,7 @@ const MonitorRunnable = function () {
                     this.getJitterBuffer(RTCMediaStreamTrack_receiver) + ' ms';
 
                 let html = '';
-                if (this.visible['time']) {
+                if (this.visible['time'].enabled) {
                     let time = new Date();
                     let timeString = time.toLocaleString();
                     html += `<h5>${timeString}</h5>`;
