@@ -19,6 +19,7 @@ import { PasteFromClipboard } from './components/PasteFromClipboard';
 import { StorageManager } from './Storage';
 import appdata from './appdata.json';
 import { Modal } from './ui/Modal';
+import { Shortcut } from './Shortcut';
 
 // Always load languages first
 Language.init();
@@ -38,7 +39,7 @@ database.connect();
 uuidMap.connect();
 
 loader.register(new Clock());
-loader.register(new LibraryFilter(snackbar, database, uuidMap));
+loader.register(new LibraryFilter(snackbar, database, uuidMap, modal));
 loader.register(new ForceCodec(tab, snackbar));
 loader.register(new ForceResolution(tab, snackbar));
 loader.register(tab);

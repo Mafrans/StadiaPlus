@@ -13,21 +13,26 @@
         opacity: 0;
     }
 
-    .stadiaplus_libraryfilter-icon {
+    .stadiaplus_libraryfilter-icon-wrapper {
         position: absolute;
+        display: inline-block;
+        z-index: 4;
+        border-top-right-radius: 8px;
+        border-bottom-left-radius: 32px;
+        background-color: #393a3c;
+        transition: transform .23s cubic-bezier(0.35,0,0.15,1);
+    }
+
+    .stadiaplus_libraryfilter-icon {
         font-family: 'Material Icons Extended';
         font-size: 32px;
         z-index: 4;
         padding: 16px;
-        border-top-right-radius: 8px;
-        border-bottom-left-radius: 32px;
-        background-color: #393a3c;
         cursor: pointer;
-        transition: transform .23s cubic-bezier(0.35,0,0.15,1);
     }
 
     &:hover {
-        .stadiaplus_libraryfilter-icon {
+        .stadiaplus_libraryfilter-icon-wrapper {
             transform: scale(1.015);
 
             // Scale back to normal size if the icon itself is hovered over

@@ -8,6 +8,9 @@ import { WebDatabase } from '../WebDatabase';
 import { Checkbox, CheckboxShape } from '../ui/Checkbox';
 import { Language } from '../Language';
 import { SyncStorage } from '../Storage';
+import { Shortcut } from '../Shortcut';
+import { Modal } from '../ui/Modal';
+import '../ui/styles/Button.scss';
 
 const { chrome, Array } = window as any;
 
@@ -79,7 +82,12 @@ export class LibraryFilter extends Component {
      */
     uuidMap: WebDatabase;
 
-    constructor(snackbar: Snackbar, database: WebDatabase, uuidMap: WebDatabase) {
+    /**
+     * UI Modal
+     */
+    modal: Modal;
+
+    constructor(snackbar: Snackbar, database: WebDatabase, uuidMap: WebDatabase, modal: Modal) {
         super();
 
         // Import database & uuidMap from index.js
@@ -88,6 +96,8 @@ export class LibraryFilter extends Component {
 
         // Import snackbar from index.js
         this.snackbar = snackbar;
+
+        this.modal = modal;
 
         // Create new filter bar element
         this.filterBar = document.createElement('div');
@@ -154,14 +164,24 @@ export class LibraryFilter extends Component {
         wrapper.classList.add('stadiaplus_libraryfilter-wrapper');
         wrapper.id = this.id + '-' + uuid;
 
-        // Create the icon
-        const icon = document.createElement('div');
-        icon.classList.add('stadiaplus_libraryfilter-icon');
-        icon.innerHTML = 'visibility';
+        const iconWrapper = document.createElement('div');
+        iconWrapper.classList.add('stadiaplus_libraryfilter-icon-wrapper');
+
+        // Create the visibility icon
+        const visibility = document.createElement('div');
+        visibility.classList.add('stadiaplus_libraryfilter-icon');
+        visibility.innerHTML = 'visibility';
+
+        // Create the visibility icon
+        const shortcut = document.createElement('div');
+        shortcut.classList.add('stadiaplus_libraryfilter-icon');
+        shortcut.innerHTML = 'add_to_queue';
 
         // Wrap the wrapper around the element and add the icon before it
         element.parentNode.insertBefore(wrapper, element);
-        wrapper.appendChild(icon);
+        iconWrapper.appendChild(visibility);
+        iconWrapper.appendChild(shortcut);
+        wrapper.appendChild(iconWrapper);
         wrapper.appendChild(element);
 
         // Check the storage for visibility, hide the game if both 'visible' and 'showAll' is false
@@ -173,12 +193,12 @@ export class LibraryFilter extends Component {
 
         // Position the icon in the top right corner rather than the top left using
         // a margin (using the 'left' css attribute is not possible)
-        icon.style.marginLeft = element.clientWidth - icon.clientWidth + 'px';
-        icon.style.transformOrigin = `calc(100% - ${element.clientWidth /
+        iconWrapper.style.marginLeft = element.clientWidth - visibility.clientWidth + 'px';
+        iconWrapper.style.transformOrigin = `calc(100% - ${element.clientWidth /
             2}px) ${element.clientHeight / 2}px`;
 
         // When the icon is clicked on
-        icon.addEventListener('click', () => {
+        visibility.addEventListener('click', () => {
             const visible = this.games[uuid].visible;
 
             // If the game is visible, set it to hidden
@@ -194,6 +214,20 @@ export class LibraryFilter extends Component {
             // Update the game's visibility
             this.updateGame(wrapper, element, true);
             this.setStorage();
+        });
+        
+        shortcut.addEventListener('click', () => {
+            const short = new Shortcut('https://stadia.google.com/player/' + uuid, entry[1]);
+
+            this.modal.activate(`
+                <h4>Create a Desktop Shortcut</h4>
+                <p>Press the button below to create a desktop shortcut for ${entry[1]}.</p>
+                <div class="CTvDXd QAAyWd Fjy05d ivWUhc QSDHyc rpgZzc RkyH1e stadiaplus_button" id="shortcut-button">Save Shortcut</div>
+            `);
+
+            this.modal.element.querySelector('#shortcut-button').addEventListener('click', () => {
+                short.save();
+            })
         });
     }
 

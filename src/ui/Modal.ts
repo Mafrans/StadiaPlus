@@ -31,10 +31,17 @@ export class Modal {
        this.element.appendChild(this.wrapper);
        this.wrapper.appendChild(this.closeButton);
        this.wrapper.appendChild(this.content);
+
+       this.element.addEventListener('click', () => this.close());
+       this.wrapper.addEventListener('click', event => event.stopPropagation());
     }
 
     activate(content: string) {
         this.content.innerHTML = content;
         this.element.classList.add('active');
+    }
+
+    close() {
+        this.element.classList.remove('active');
     }
 }
