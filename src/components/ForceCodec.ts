@@ -9,6 +9,7 @@ import { Snackbar } from '../ui/Snackbar';
 import { Language } from '../Language';
 import { LocalStorage } from '../Storage';
 import { Resolution } from './ForceResolution';
+import { Browser } from '../Browser';
 
 const chrome = (window as any).chrome;
 
@@ -153,17 +154,19 @@ export class ForceCodec extends Component {
      */
     static setCodec(codec: number) {
         const script = document.createElement('script');
+        const vp9data = Browser.getVersion() >= 84414402 ? '{"vp9": "libvpx"}' : '{"vp9":"ExternalDecoder"}';
+        const h264data = Browser.getVersion() >= 84414402 ? '{"vp9":"libvpx","h264":"FFmpeg"}' : '{"h264":"ExternalDecoder", "vp9":"libvpx"}';
 
         switch (codec) {
         case Codec.VP9:
             script.innerHTML = `
-                localStorage.setItem("video_codec_implementation_by_codec_key", '{"vp9":"libvpx"}');
+                localStorage.setItem("video_codec_implementation_by_codec_key", '${vp9data}');
             `;
             break;
 
         case Codec.H264:
             script.innerHTML = `
-                localStorage.setItem("video_codec_implementation_by_codec_key", '{"vp9":"libvpx","h264":"FFmpeg"}');
+                localStorage.setItem("video_codec_implementation_by_codec_key", '${h264data}');
             `;
             break;
             
