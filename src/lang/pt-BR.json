@@ -1,0 +1,99 @@
+{
+    "popup": {
+        "footer": {
+            "credit": "Desenvolvido por {{name}}"
+        },
+        "main-page": {
+            "title": "Stadia+",
+            "ready-text": "A extensão está nos conformes! Inicie o Stadia e comece a jogar! 🎮",
+            "launch-button": "Abrir Stadia",
+            "help-button": "Ajuda & Perguntas Frequentas",
+            "discord": "Discord",
+            "reddit": "Reddit",
+            "github": "Github"
+        },
+        "settings-page": {
+            "title": "Opções",
+            "language": "Idioma",
+            "components": "Componentes",
+            "edit-components": "Editar Componentes"
+        },
+        "developer-page": {
+            "title": "Desenvolvedor",
+            "clear-cache-button": "Limpar Cache",
+            "storage": "Armazenamento"
+        },
+        "component-page": {
+            "title": "Componentes"
+        }
+    },
+    "component": {
+        "enabled": "O componente {{name}} foi habilitado.",
+        "disabled": "O component {{name}} foi desabilitado."
+    },
+    "allow-windowed-mode": {
+        "name": "Permitir modo janela",
+        "button-label": {
+            "windowed": "Janela",
+            "fullscreen": "Tela Cheia"
+        }
+    },
+    "clock": {
+        "name": "Relógio"
+    },
+    "force-codec": {
+        "name": "Forçar Codec",
+        "4k-tooltip": "A opção de forçar codec não está disponível ao rodar jogos em 4K"
+    },
+    "force-resolution": {
+        "name": "Forçar Resolução",
+        "note": "Atenção: o valor selecionado é a resolução máxima que o Stadia tentará alcançar. Se o seu computador não for capaz de renderizar a resolução ou a opção não estiver disponível no plano de consumo de dados atual, a resolução não será aplicada."
+    },
+    "library-filter": {
+        "name": "Biblioteca de Filtros",
+        "recent": "Recente",
+        "alphabetical": "Alfábetica",
+        "random": "Aleatório",
+        "show-hidden": "Mostrar ocultos"
+    },
+    "network-monitor": {
+        "name": "Monitoramento de Rede",
+        "heading-visible": "Status Visíveis",
+        "button-label": "Monitorar",
+        "stats": {
+            "time": "Time",
+            "resolution": "Resolution",
+            "fps": "FPS",
+            "latency": "Latency",
+            "codec": "Codec",
+            "traffic": "Traffic",
+            "current-traffic": "Current Traffic",
+            "average-traffic": "Average Traffic",
+            "packets-lost": "Packets Lost",
+            "average-packet-loss": "Average Packet Loss",
+            "jitter-buffer": "Jitter Buffer"
+        }
+    },
+    "ratings": {
+        "name": "Avaliação",
+        "source-name": "Metacritic"
+    },
+    "store-filter": {
+        "name": "Filtro da Loja"
+    },
+    "ui-tab": {
+        "name": "Aba Stadia+ UI",
+        "button-label": "Stadia+"
+    },
+    "snackbar": {
+        "reload-to-update": "Recarregue a página para aplicar as mudanças.",
+        "hide-game": "O jogo foi oculto.",
+        "show-game": "O jogo não se encontra mais oculto."
+    },
+    "automatic": "Automático",
+    "vp9": "VP9",
+    "h264": "H264",
+    "apply": "Aplicar",
+    "4k": "4K",
+    "1080p": "1080p"
+}

@@ -12,6 +12,7 @@ import lang_euES_data from './lang/eu-ES.json';
 import lang_glES_data from './lang/gl-ES.json';
 import lang_ruRU_data from './lang/ru-RU.json';
 import lang_nlBE_data from './lang/nl-BE.json';
+import lang_ptBR_data from './lang/pt-BR.json';
 
 const { chrome } = window as any;
 
@@ -123,6 +124,9 @@ export class Language {
 
         const lang_nlBE = new Language('Nederlands (BE)', 'nl-BE', lang_nlBE_data);
         lang_nlBE.register();
+
+        const lang_ptBR = new Language('Português (BR)', 'pt-BR', lang_ptBR_data);
+        lang_ptBR.register();
     }
 
     static get(name: string, vars?: { [key: string]: any }): string {
