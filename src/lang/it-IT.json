@@ -61,20 +61,20 @@
         "heading-visible": "Statistiche Visibili",
         "button-label": "Monitor",
         "toggle-button": {
-            "show": "Show Network Monitor",
-            "hide": "Hide Network Monitor"
+            "show": "Mostra Monitor di Rete",
+            "hide": "Nascondi Monitor di Rete"
         },
         "stats": {
-            "time": "Time",
-            "resolution": "Resolution",
+            "time": "Orario",
+            "resolution": "Risoluzione",
             "fps": "FPS",
-            "latency": "Latency",
+            "latency": "Latenza",
             "codec": "Codec",
-            "traffic": "Traffic",
-            "current-traffic": "Current Traffic",
-            "average-traffic": "Average Traffic",
-            "packets-lost": "Packets Lost",
-            "average-packet-loss": "Average Packet Loss",
+            "traffic": "Traffico",
+            "current-traffic": "Traffico Attuale",
+            "average-traffic": "Traffico Medio",
+            "packets-lost": "Pacchetti Persi",
+            "average-packet-loss": "Perdita Media di Pacchetti",
             "jitter-buffer": "Jitter Buffer"
         }
     },
