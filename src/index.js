@@ -20,10 +20,13 @@ import { StorageManager } from './Storage';
 import appdata from './appdata.json';
 import { Modal } from './ui/Modal';
 import { Shortcut } from './Shortcut';
+import { Browser } from './Browser';
 
 // Always load languages first
 Language.init();
 Language.load();
+
+Browser.init();
 
 const storageManager = new StorageManager(appdata);
 storageManager.checkCacheVersion();
