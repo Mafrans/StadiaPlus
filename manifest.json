@@ -7,7 +7,6 @@
     "permissions": [
         "declarativeContent",
         "storage",
-        "downloads",
         "https://stadiagamedb.com/data/gamedb.json"
     ],
     "background": {
