@@ -39,7 +39,6 @@ export class PopupFix extends Component {
     onStart(): void {
         this.active = true;
         this.popup = document.querySelector('.zLoQpb');
-        console.log(this.popup);
         
         if(!Util.isInGame()) {
             this.popup.classList.add('offset');

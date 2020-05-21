@@ -168,8 +168,6 @@ export class ForceResolution extends Component {
             Object.defineProperty(window.screen, 'width', { value: ${width} });
             Object.defineProperty(window.screen, 'height', { value: ${height} });
         `;
-        
-        console.log({height, width, script})
 
         document.body.appendChild(script);
     }

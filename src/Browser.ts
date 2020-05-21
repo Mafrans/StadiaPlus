@@ -5,11 +5,9 @@ export class Browser {
 
         let accumulator = 0;
         for(let i = 0; i < version.length; i++) {
-            console.log(version[i] * Math.pow(10, (version.length - i - 1) * 2));
             accumulator += version[i] * Math.pow(10, (version.length - i - 1) * 2);
         }
 
-        console.log(accumulator);
         this.version = accumulator;
     }
 
