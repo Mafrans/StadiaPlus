@@ -141,7 +141,7 @@ export class AllowWindowedMode extends Component {
                 this.button.create(() => {
                     // If events are already added, don't add them again
                     if (!this.eventsAdded) {
-                        self.button.button.addEventListener('click', () => {
+                        self.button.onPressed(() => {
                             if (self.windowed) {
                                 self.exitWindowed();
                             } else {

@@ -203,7 +203,7 @@ export class UITab extends Component {
 
                 const self = this;
                 this.button.create(() => {
-                    self.button.button.addEventListener('click', () => {
+                    self.button.onPressed(() => {
                         this.createRows(true);
                         self.component.openTab();
                     });

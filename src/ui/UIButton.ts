@@ -6,7 +6,7 @@ export class UIButton {
     html: string;
     element: Element;
     container: UIButtonContainer;
-    button: Element;
+    button: HTMLElement;
 
     static buttonContainers: UIButtonContainer[] = [];
 
@@ -71,5 +71,14 @@ export class UIButton {
     destroy() {
         this.element.remove();
         this.container.removeButton(this);
+    }
+
+    onPressed(func: (event: Event) => any) {
+        this.button.addEventListener('click', func);
+        this.button.addEventListener('keyup', (event: KeyboardEvent) => {
+            if(event.keyCode === 13) {
+                this.button.click();
+            }
+        })
     }
 }

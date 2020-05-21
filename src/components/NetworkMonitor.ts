@@ -306,7 +306,7 @@ export class NetworkMonitor extends Component {
                 });
 
                 this.button.create(() => {
-                    self.button.button.addEventListener('click', () => {
+                    self.button.onPressed(() => {
                         self.component.openTab();
                     });
                 });
