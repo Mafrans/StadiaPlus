@@ -244,8 +244,12 @@ export class LibraryFilter extends Component {
         const uuid = this.getUUID(tile);
 
         // Get the game icon
-        const icon = wrapper.querySelector(
+        const visibility = wrapper.querySelector(
             '.stadiaplus_libraryfilter-icon'
+        ) as HTMLElement;
+
+        const iconwrapper = wrapper.querySelector(
+            '.stadiaplus_libraryfilter-icon-wrapper'
         ) as HTMLElement;
 
         // If the game isn't visible...
@@ -253,7 +257,8 @@ export class LibraryFilter extends Component {
             // ...but all games should still be shown
             if (this.showAll) {
                 // Set the icon to display that it's not visible but shown anyways
-                icon.innerHTML = 'visibility_off';
+                visibility.innerHTML = 'visibility_off';
+                iconwrapper.style.marginLeft = tile.clientWidth - visibility.clientWidth + 'px';
 
                 // Make sure the element isn't hidden
                 wrapper.classList.remove('closing', 'closed');
@@ -277,10 +282,10 @@ export class LibraryFilter extends Component {
         } else {
             // If the game is visible
             // Make sure the icon stays in place and doesn't get reset back to the top left corner
-            icon.style.marginLeft = tile.clientWidth - icon.clientWidth + 'px';
+            iconwrapper.style.marginLeft = tile.clientWidth - visibility.clientWidth + 'px';
 
             // Make sure the icon shows that it is visible
-            icon.innerHTML = 'visibility';
+            visibility.innerHTML = 'visibility';
         }
     }
 
