@@ -51,6 +51,7 @@ export class ForceResolution extends Component {
         this.snackbar = snackbar;
         
         this.getStorage();
+        window.addEventListener('DOMContentLoaded', () => ForceResolution.setResolution(this.resolution));
     }
 
     /**
@@ -81,8 +82,6 @@ export class ForceResolution extends Component {
      */
     onStart(): void {
         this.active = true;
-
-        ForceResolution.setResolution(this.resolution);
         
         const self = this;
         this.tab.addRow(
@@ -169,6 +168,8 @@ export class ForceResolution extends Component {
             Object.defineProperty(window.screen, 'width', { value: ${width} });
             Object.defineProperty(window.screen, 'height', { value: ${height} });
         `;
+        
+        console.log({height, width, script})
 
         document.body.appendChild(script);
     }
