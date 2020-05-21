@@ -85,6 +85,9 @@
         "name": "Aba Stadia+ UI",
         "button-label": "Stadia+"
     },
+    "popup-fix": {
+        "name": "Popup Fix"
+    },
     "snackbar": {
         "reload-to-update": "Recarregue a página para aplicar as mudanças.",
         "hide-game": "O jogo foi oculto.",

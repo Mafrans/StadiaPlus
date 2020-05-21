@@ -21,6 +21,7 @@ import appdata from './appdata.json';
 import { Modal } from './ui/Modal';
 import { Shortcut } from './Shortcut';
 import { Browser } from './Browser';
+import { PopupFix } from './components/PopupFix';
 
 // Always load languages first
 Language.init();
@@ -42,6 +43,7 @@ database.connect();
 uuidMap.connect();
 
 loader.register(new Clock());
+loader.register(new PopupFix());
 loader.register(new LibraryFilter(snackbar, database, uuidMap, modal));
 loader.register(new ForceCodec(tab, snackbar));
 loader.register(new ForceResolution(tab, snackbar));

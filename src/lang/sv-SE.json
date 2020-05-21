@@ -92,6 +92,9 @@
         "name": "Stadia+ Gränssnittstabb",
         "button-label": "Stadia+"
     },
+    "popup-fix": {
+        "name": "Popup Fix"
+    },
     "snackbar": {
         "reload-to-update": "Uppdatera sidan för att se dina ändringar.",
         "hide-game": "Ett spel har gömts.",

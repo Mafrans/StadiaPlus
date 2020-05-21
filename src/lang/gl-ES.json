@@ -92,6 +92,9 @@
         "name": "Pestaña UI de Stadia+",
         "button-label": "Stadia+"
     },
+    "popup-fix": {
+        "name": "Popup Fix"
+    },
     "snackbar": {
         "reload-to-update": "Recarga a páxina para activar os cambios.",
         "hide-game": "Agochóuse un xogo.",

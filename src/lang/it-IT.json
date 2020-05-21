@@ -92,11 +92,14 @@
         "name": "Stadia+ UI Tab",
         "button-label": "Stadia+"
     },
+    "popup-fix": {
+        "name": "Popup Fix"
+    },
     "snackbar": {
         "reload-to-update": "Ricarica la pagina per vedere i cambiamenti.",
         "hide-game": "Un gioco è stato nascosto.",
         "show-game": "Un gioco non è più nascosto."
-        },
+    },
     "automatic": "Automatico",
     "vp9": "VP9",
     "h264": "H264",

@@ -89,6 +89,9 @@
         "name": "Stadia+ UI Tab",
         "button-label": "Stadia+"
     },
+    "popup-fix": {
+        "name": "Popup Fix"
+    },
     "snackbar": {
         "reload-to-update": "Herlaad de pagina om je aanpassingen te zien.",
         "hide-game": "Een spel werd verborgen.",

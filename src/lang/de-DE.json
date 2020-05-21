@@ -92,6 +92,9 @@
         "name": "Stadia+ UI Tab",
         "button-label": "Stadia+"
     },
+    "popup-fix": {
+        "name": "Popup Fix"
+    },
     "snackbar": {
         "reload-to-update": "Seite neu laden um die Änderung anzuzeigen.",
         "hide-game": "Ein Spiel wurde versteckt.",

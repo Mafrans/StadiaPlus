@@ -92,6 +92,9 @@
         "name": "Stadia+ UI Вкладка",
         "button-label": "Stadia+"
     },
+    "popup-fix": {
+        "name": "Popup Fix"
+    },
     "snackbar": {
         "reload-to-update": "Перезагрузите страницу, чтобы увидеть изменения.",
         "hide-game": "Игра скрыта.",

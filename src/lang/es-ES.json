@@ -92,6 +92,9 @@
         "name": "Stadia+ UI Tab",
         "button-label": "Stadia+"
     },
+    "popup-fix": {
+        "name": "Popup Fix"
+    },
     "snackbar": {
         "reload-to-update": "Vuelva a cargar la página para ver sus cambios.",
         "hide-game": "Un juego ha sido escondido.",
@@ -103,4 +106,4 @@
     "apply": "Aplicar",
     "4k": "4K",
     "1080p": "1080p"
-    }
+}

@@ -92,6 +92,9 @@
         "name": "The Stadia+ UI Tab",
         "button-label": "The Stadia+"
     },
+    "popup-fix": {
+        "name": "Popup Fix"
+    },
     "snackbar": {
         "reload-to-update": "Reload the page to see the changes.",
         "hide-game": "The game has been hidden.",

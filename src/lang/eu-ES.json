@@ -2,7 +2,7 @@
     "popup": {
         "footer": {
             "credit": "Egilea: {{name}}"
-	   },
+        },
         "main-page": {
             "title": "Stadia+",
             "ready-text": "Luzapena prest dago. Ireki Stadia eta hasi jolasten! Egurra! 🎮",
@@ -18,7 +18,7 @@
             "components": "Osagarriak",
             "edit-components": "Editatu osagarriak"
         },
-	    "developer-page": {
+        "developer-page": {
             "title": "Aurreratuak",
             "clear-cache-button": "Cachea ezabatu",
             "storage": "Biltegia"
@@ -91,6 +91,9 @@
     "ui-tab": {
         "name": "Stadia+ UI Fitxa",
         "button-label": "Stadia+"
+    },
+    "popup-fix": {
+        "name": "Popup Fix"
     },
     "snackbar": {
         "reload-to-update": "Orria birkargatu ezarritako aldaketak abiarazteko.",
