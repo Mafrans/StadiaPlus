@@ -158,9 +158,9 @@ const MonitorRunnable = function () {
     this.stats = [];
     this.update = function () {
         if (this.peerConnections.length > 1) {
-            const index = this.peerConnections.length - 1;
-
-            this.peerConnections[index].getStats().then((_stats) => {
+          const removedClosed = this.peerConnections.filter(x => x.connectionState == "connected");
+          
+          removedClosed[1].getStats().then((_stats) => {
                 this.stats = Array.from(_stats);
 
                 const RTCInboundRTPVideoStream = this.getStat((stat) =>
