@@ -5,7 +5,7 @@
         </transition>
 
         <footer>
-            <span>Stadia+ 2.3.3</span>
+            <span>Stadia+ 2.3.4</span>
             <span v-html="credit"></span>
         </footer>
     </div>
