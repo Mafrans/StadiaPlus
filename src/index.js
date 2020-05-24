@@ -43,7 +43,7 @@ database.connect();
 uuidMap.connect();
 
 loader.register(new Clock());
-loader.register(new PopupFix());
+// loader.register(new PopupFix());
 loader.register(new LibraryFilter(snackbar, database, uuidMap, modal));
 loader.register(new ForceCodec(tab, snackbar));
 loader.register(new ForceResolution(tab, snackbar));
