@@ -93,6 +93,7 @@ export class ForceResolution extends Component {
                             <select name="resolution">
                                 <option value="${Resolution.AUTOMATIC}">${Language.get('automatic')}</option>
                                 <option value="${Resolution.UHD_4K}">${Language.get('4k')}</option>
+                                <option value="${Resolution.WQHD}">${Language.get('1440p')}</option>
                                 <option value="${Resolution.FHD}">${Language.get('1080p')}</option>
                             </select>
                         </div>
@@ -149,12 +150,17 @@ export class ForceResolution extends Component {
                 width = 3840;
                 height = 2160;
                 break;
-            
+
+            case Resolution.WQHD:
+                width = 2560;
+                height = 1440;
+                break;
+
             case Resolution.FHD:
                 width = 1920;
                 height = 1080;
                 break;
-                
+
             case Resolution.AUTOMATIC:
                 return;
 
@@ -203,9 +209,14 @@ export class Resolution {
      * 4K, or 3840x2160
      */
     static UHD_4K = 1;
-    
+
+    /**
+     * WQHD, or 2560x1440
+     */
+    static WQHD = 3;
+
     /**
      * Full HD, or 1920x1080
      */
-    static FHD = 2;
+    static FHD = 3;
 }
