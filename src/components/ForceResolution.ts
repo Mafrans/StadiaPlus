@@ -213,7 +213,7 @@ export class Resolution {
     /**
      * WQHD, or 2560x1440
      */
-    static WQHD = 3;
+    static WQHD = 2;
 
     /**
      * Full HD, or 1920x1080
