@@ -119,7 +119,7 @@ export class ForceCodec extends Component {
                             LocalStorage.RESOLUTION.get(result => {
                                 self.select.enable();
                                 
-                                if(result.resolution === Resolution.UHD_4K) {
+                                if(result.resolution === Resolution.UHD_4K || result.resolution === Resolution.WQHD) {
                                     self.codec = Codec.VP9;
                                     self.select.disable();
 
