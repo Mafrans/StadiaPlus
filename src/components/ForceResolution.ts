@@ -49,7 +49,7 @@ export class ForceResolution extends Component {
 
         this.tab = tab;
         this.snackbar = snackbar;
-        
+
         this.getStorage();
         window.addEventListener('DOMContentLoaded', () => ForceResolution.setResolution(this.resolution));
     }
@@ -82,7 +82,7 @@ export class ForceResolution extends Component {
      */
     onStart(): void {
         this.active = true;
-        
+
         const self = this;
         this.tab.addRow(
             new UIRow(
@@ -93,6 +93,7 @@ export class ForceResolution extends Component {
                             <select name="resolution">
                                 <option value="${Resolution.AUTOMATIC}">${Language.get('automatic')}</option>
                                 <option value="${Resolution.UHD_4K}">${Language.get('4k')}</option>
+                                <option value="${Resolution.QHD}">${Language.get('1440p')}</option>
                                 <option value="${Resolution.FHD}">${Language.get('1080p')}</option>
                             </select>
                         </div>
@@ -128,7 +129,7 @@ export class ForceResolution extends Component {
                 }
             ),
         );
-        
+
         Logger.component(Language.get('component.enabled', { name: this.name }));
     }
 
@@ -149,12 +150,17 @@ export class ForceResolution extends Component {
                 width = 3840;
                 height = 2160;
                 break;
-            
+
+            case Resolution.QHD:
+                width = 2_560
+                height = 1_440;
+                break;
+
             case Resolution.FHD:
                 width = 1920;
                 height = 1080;
                 break;
-                
+
             case Resolution.AUTOMATIC:
                 return;
 
@@ -203,9 +209,14 @@ export class Resolution {
      * 4K, or 3840x2160
      */
     static UHD_4K = 1;
-    
+
     /**
      * Full HD, or 1920x1080
      */
     static FHD = 2;
+
+    /**
+     * QuadHD, or 2,560 x 1,440
+     */
+    static QHD = 3;
 }
