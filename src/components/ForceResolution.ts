@@ -95,6 +95,7 @@ export class ForceResolution extends Component {
                                 <option value="${Resolution.UHD_4K}">${Language.get('4k')}</option>
                                 <option value="${Resolution.WQHD}">${Language.get('1440p')}</option>
                                 <option value="${Resolution.FHD}">${Language.get('1080p')}</option>
+                                <option value="${Resolution.HD}">${Language.get('720p')} (${Language.get('experimental')})</option>
                             </select>
                         </div>
                         <a class="stadiaplus_button-small">${Language.get('apply')}</a>
@@ -161,6 +162,11 @@ export class ForceResolution extends Component {
                 height = 1080;
                 break;
 
+            case Resolution.HD:
+                width = 1280;
+                height = 720;
+                break;
+
             case Resolution.AUTOMATIC:
                 return;
 
@@ -219,4 +225,9 @@ export class Resolution {
      * Full HD, or 1920x1080
      */
     static FHD = 3;
+
+    /**
+     * HD, or 1280x720
+     */
+    static HD = 4;
 }
