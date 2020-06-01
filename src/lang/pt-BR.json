@@ -60,6 +60,10 @@
         "name": "Monitoramento de Rede",
         "heading-visible": "Status Visíveis",
         "button-label": "Monitorar",
+        "toggle-button": {
+            "show": "Show Network Monitor",
+            "hide": "Hide Network Monitor"
+        },
         "stats": {
             "time": "Time",
             "resolution": "Resolution",
