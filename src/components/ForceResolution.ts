@@ -8,7 +8,6 @@ import { Select } from '../ui/Select';
 import { Snackbar } from '../ui/Snackbar';
 import { Language } from '../Language';
 import { LocalStorage } from '../Storage';
-import { map } from '../../docs/assets/js/main';
 
 const chrome = (window as any).chrome;
 
