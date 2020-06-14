@@ -190,14 +190,14 @@ export class ForceResolution extends Component {
         /** Create localStorage compatible value string from params with date
          * Date is included as milisecond unix timestamp in value by Stadia, some values have safeguard expiration so refresh to be safe
          * */ 
-        const perf = JSON.stringify({"data":`[${performanceInject},2]`,"creation": Date.now()});
+        const performanceValue = JSON.stringify({"data":`[${performanceInject},2]`,"creation": Date.now()});
 
         script.innerHTML = `
             Object.defineProperty(window.screen, 'availWidth', { value: ${width} });
             Object.defineProperty(window.screen, 'availHeight', { value: ${height} });
             Object.defineProperty(window.screen, 'width', { value: ${width} });
             Object.defineProperty(window.screen, 'height', { value: ${height} });
-            localStorage.setItem("_bl3", '${perf}');
+            localStorage.setItem("_bl3", '${performanceValue}');
         `;
 
         document.body.appendChild(script);
