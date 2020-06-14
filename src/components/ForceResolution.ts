@@ -146,7 +146,7 @@ export class ForceResolution extends Component {
         const script = document.createElement('script');
 
         // Rudimentary mapping of stadia localStorage variables for performance setting
-        const stadiaPerormance = {HD: 2, FHD: 3, WQHD: 4, UHD_4K: 4}
+        const stadiaPerformance = {HD: 2, FHD: 3, WQHD: 4, UHD_4K: 4}
 
         // Number based on performance to be injected in localStorage for Stadia settings. Defaulting to FHD.
         let performanceInject = 3;
@@ -157,29 +157,29 @@ export class ForceResolution extends Component {
             case Resolution.UHD_4K:
                 width = 3840;
                 height = 2160;
-                performanceInject = stadiaPerormance.UHD_4K;
+                performanceInject = stadiaPerformance.UHD_4K;
                 break;
 
             case Resolution.WQHD:
                 width = 2560;
                 height = 1440;
-                performanceInject = stadiaPerormance.UHD_4K;
+                performanceInject = stadiaPerformance.UHD_4K;
                 break;
 
             case Resolution.FHD:
                 width = 1920;
                 height = 1080;
-                performanceInject = stadiaPerormance.FHD;
+                performanceInject = stadiaPerformance.FHD;
                 break;
 
             case Resolution.HD:
                 width = 1280;
                 height = 720;
-                performanceInject = stadiaPerormance.HD;
+                performanceInject = stadiaPerformance.HD;
                 break;
 
             case Resolution.AUTOMATIC:
-                performanceInject = stadiaPerormance.FHD;
+                performanceInject = stadiaPerformance.FHD;
                 return;
 
             default:
