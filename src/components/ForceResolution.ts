@@ -8,6 +8,7 @@ import { Select } from '../ui/Select';
 import { Snackbar } from '../ui/Snackbar';
 import { Language } from '../Language';
 import { LocalStorage } from '../Storage';
+import { map } from '../../docs/assets/js/main';
 
 const chrome = (window as any).chrome;
 
@@ -43,6 +44,7 @@ export class ForceResolution extends Component {
      * The global Snackbar
      */
     snackbar: Snackbar;
+
 
     constructor(tab: UITab, snackbar: Snackbar) {
         super();
@@ -144,41 +146,58 @@ export class ForceResolution extends Component {
     static setResolution(resolution: number): void {
         const script = document.createElement('script');
 
+        // Rudimentary mapping of stadia localStorage variables for performance setting
+        const stadiaPerormance = {HD: 2, FHD: 3, WQHD: 4, UHD_4K: 4}
+
+        // Number based on performance to be injected in localStorage for Stadia settings. Defaulting to FHD.
+        let performanceInject = 3;
+
         let height;
         let width;
         switch (resolution) {
             case Resolution.UHD_4K:
                 width = 3840;
                 height = 2160;
+                performanceInject = stadiaPerormance.UHD_4K;
                 break;
 
             case Resolution.WQHD:
                 width = 2560;
                 height = 1440;
+                performanceInject = stadiaPerormance.UHD_4K;
                 break;
 
             case Resolution.FHD:
                 width = 1920;
                 height = 1080;
+                performanceInject = stadiaPerormance.FHD;
                 break;
 
             case Resolution.HD:
                 width = 1280;
                 height = 720;
+                performanceInject = stadiaPerormance.HD;
                 break;
 
             case Resolution.AUTOMATIC:
+                performanceInject = stadiaPerormance.FHD;
                 return;
 
             default:
                 return;
         }
 
+        /** Create localStorage compatible value string from params with date
+         * Date is included as milisecond unix timestamp in value by Stadia, some values have safeguard expiration so refresh to be safe
+         * */ 
+        const perf = JSON.stringify({"data":`[${performanceInject},2]`,"creation": Date.now()});
+
         script.innerHTML = `
             Object.defineProperty(window.screen, 'availWidth', { value: ${width} });
             Object.defineProperty(window.screen, 'availHeight', { value: ${height} });
             Object.defineProperty(window.screen, 'width', { value: ${width} });
             Object.defineProperty(window.screen, 'height', { value: ${height} });
+            localStorage.setItem("_bl3", '${perf}');
         `;
 
         document.body.appendChild(script);
