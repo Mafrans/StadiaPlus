@@ -55,7 +55,7 @@ export default {
     font-size: 16px;
     font-family: 'Roboto', sans-serif;
     width: 340px;
-    height: 425px;
+    height: 500px;
     color: #585858;
 }
 
