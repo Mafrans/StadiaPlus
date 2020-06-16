@@ -116,7 +116,7 @@ export class Ratings extends Component {
     /**
      * Called on startup, initializes important variables.
      * 
-     * @memberof ForceCodec
+     * @memberof Ratings
      */
     onStart(): void {
         this.active = true;
@@ -129,7 +129,7 @@ export class Ratings extends Component {
     /**
      * Called on stop, makes sure to dispose of elements and variables.
      * 
-     * @memberof Clock
+     * @memberof Ratings
      */
     onStop(): void {
         this.active = false;
@@ -140,7 +140,7 @@ export class Ratings extends Component {
     /**
      * Called every second, updates the rating element to make sure it always displays the correct value.
      * 
-     * @memberof Clock
+     * @memberof Ratings
      */
     onUpdate() {
         if(Util.isInStoreDetail()) {

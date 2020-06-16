@@ -8,6 +8,7 @@ import { Select } from '../ui/Select';
 import { Snackbar } from '../ui/Snackbar';
 import { Language } from '../Language';
 import { LocalStorage } from '../Storage';
+import { ForceCodec, Codec } from './ForceCodec';
 
 const chrome = (window as any).chrome;
 
@@ -110,6 +111,10 @@ export class ForceResolution extends Component {
                         const button = row.element.querySelector('.stadiaplus_button-small');
                         button.addEventListener('click', () => {
                             self.resolution = parseInt(self.select.get()[0]);
+
+                            if(self.resolution === Resolution.UHD_4K) {
+                                ForceCodec.setCodec(Codec.VP9);
+                            }
 
                             self.setStorage(() => {
                                 self.snackbar.activate(Language.get('snackbar.reload-to-update'));
