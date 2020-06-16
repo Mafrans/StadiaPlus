@@ -148,8 +148,10 @@ export class ForceResolution extends Component {
         // Rudimentary mapping of stadia localStorage variables for performance setting
         const stadiaPerformance = {HD: 2, FHD: 3, WQHD: 4, UHD_4K: 4}
 
-        // Number based on performance to be injected in localStorage for Stadia settings. Defaulting to FHD.
-        let performanceInject = 3;
+        /**  Number based on performance to be injected in localStorage for Stadia settings.
+         *   Defaulting to FHD, due to us not having access to the HW checks google does through chrome://gpu
+         * */ 
+        let performanceInject = stadiaPerformance.FHD;
 
         let height;
         let width;
@@ -179,7 +181,10 @@ export class ForceResolution extends Component {
                 break;
 
             case Resolution.AUTOMATIC:
-                performanceInject = stadiaPerformance.FHD;
+                script.innerHTML = `
+                localStorage.removeItem("_bl3");
+                `;
+                document.body.appendChild(script);
                 return;
 
             default:
