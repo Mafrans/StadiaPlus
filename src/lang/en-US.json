@@ -95,10 +95,20 @@
     "popup-fix": {
         "name": "Popup Fix"
     },
+    "looking-for-group": {
+        "name": "Looking For Group",
+        "toggle-button": {
+            "start": "Look for a Group",
+            "stop": "Stop Looking for Groups"
+        }
+    },
     "snackbar": {
         "reload-to-update": "Reload the page to see your changes.",
         "hide-game": "A game has been hidden.",
         "show-game": "A game is no longer hidden."
+    },
+    "profile": {
+        "name": "Profile"
     },
     "automatic": "Automatic",
     "vp9": "VP9",
