@@ -5,6 +5,7 @@ export class LocalStorage {
     static RESOLUTION = new LocalStorage('Resolution', 'resolution');
     static MONITOR_STATS = new LocalStorage('Monitor Stats', 'monitor-stats');
     static CACHE_VERSION = new LocalStorage('Cache Version', 'cache-version');
+    static AUTH_TOKEN = new LocalStorage('Authentication Token', 'auth-token');
 
     name: string;
     tag: string;
