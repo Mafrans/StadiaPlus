@@ -77,6 +77,7 @@ import logo from './assets/logo.png';
 import { Language } from '../../Language';
 import axios from 'axios';
 import { LocalStorage } from '../../Storage';
+import { StadiaPlusDB } from '../../StadiaPlusDB';
 export default {
     data() {
         return {
@@ -97,35 +98,18 @@ export default {
             window.open(url, '_blank');
         },
         testAuth() {
-            chrome.identity.launchWebAuthFlow(
-                {
-                    url:
-                        'http://localhost:3000/auth/google?redirect=' +
-                        chrome.identity.getRedirectURL('database'),
-                    interactive: true,
-                },
-                (responseUrl) => {
-                    const url = new URL(responseUrl);
-                    console.log(url);
-                    LocalStorage.AUTH_TOKEN.set(url.hash.substring(1), () => {
-                        LocalStorage.AUTH_TOKEN.get(console.log);
-                    });
-                }
-            );
+            StadiaPlusDB.authenticate()
+            .then(() => {
+                StadiaPlusDB.getProfile().then(console.log);
+            });
         },
         testLFG() {
-            LocalStorage.AUTH_TOKEN.get((result) => {
-                axios({
-                    method: 'post',
-                    url: 'http://localhost:3000/lfg',
-                    data: {
-                        authToken: result[LocalStorage.AUTH_TOKEN.tag],
-                        game: "gameString"
-                    },
-                }).then(console.log);
-            })
+            StadiaPlusDB.LFGConnector.post('test');
         },
     },
+    mounted() {
+        StadiaPlusDB.connect('http://localhost:3000').then(console.log).catch(console.error);
+    }
 };
 </script>
 

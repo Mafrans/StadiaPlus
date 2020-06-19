@@ -3,6 +3,11 @@
     padding: .5rem;
     margin-top: 1rem;
     border-radius: .25rem;
+    display: none;
+
+    &.visible {
+        display: block;
+    }
 
     >h6 {
         display: inline-block;

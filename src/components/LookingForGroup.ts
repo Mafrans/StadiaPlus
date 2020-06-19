@@ -9,6 +9,7 @@ import axios from 'axios';
 import { LocalStorage } from '../dist/Storage';
 import 'slim-select/dist/slimselect.min.css';
 import '../ui/styles/Select.scss';
+import { StadiaPlusDB } from '../StadiaPlusDB';
 
 const { chrome, RTCPeerConnection } = (window as any);
 
@@ -55,6 +56,8 @@ export class LookingForGroup extends Component {
      */
     lookingForGroup: boolean = false;
 
+    gameUUID: string = "";
+
     constructor() {
         super();
     }
@@ -75,11 +78,11 @@ export class LookingForGroup extends Component {
             `
             <div class='CTvDXd QAAyWd Fjy05d ivWUhc QSDHyc rpgZzc RkyH1e stadiaplus_button stadiaplus_lookingforgroup-toggle-button' id='${this.id}-togglebutton'>${Language.get('looking-for-group.toggle-button.start')}</div>
             
-            <div class='stadiaplus_lookingforgroup-groups'>
+            <div id='${this.id}-groups' class='stadiaplus_lookingforgroup-groups'>
                 <h6>Groups</h6>
                 <span id='${this.id}-refresh' class='material-icons-extended refresh'>refresh</span>
 
-                <div class='group-list'></div>
+                <div id='${this.id}-group-list' class='group-list'></div>
             </div>
             `,
             this.id,
@@ -142,6 +145,22 @@ export class LookingForGroup extends Component {
         Logger.component(Language.get('component.disabled', { name: this.name }));
     }
 
+    updateGroups(): void {
+        StadiaPlusDB.LFGConnector.get(this.gameUUID).then(res => {
+            let html = '';
+            for(const user of res.data) {
+                html += `
+                    <div class='stadiaplus_lookingforgroup-group'>
+                        <span class='email'>${user}</span>
+                    </div>
+                    `;
+            }
+
+            this.component.element.querySelector(`#${this.id}-group-list`).innerHTML = html;
+        })
+        .catch((err: any) => Logger.error(err.error));
+    }
+
     /**
      * Called every second, makes sure to create components if they don't already exist.
      * 
@@ -155,23 +174,18 @@ export class LookingForGroup extends Component {
                 this.updateRenderer();
                 this.component.create();
 
+                this.gameUUID = location.href.split('/')[location.href.split('/').length-1];
+
                 const toggleButton = document.getElementById(this.id + '-togglebutton');
                 
                 toggleButton.addEventListener('click', () => {
                     this.lookingForGroup = !this.lookingForGroup;
-                    const splitLoc = location.href.split('/');
-                    const uuid = splitLoc[splitLoc.length-1];
+                    this.component.element.querySelector(`#${this.id}-groups`).classList.toggle('visible', this.lookingForGroup);
 
-                    LocalStorage.AUTH_TOKEN.get((result: any) => {
-                        axios({
-                            method: 'post',
-                            url: 'http://localhost:3000/lfg',
-                            data: {
-                                authToken: result[LocalStorage.AUTH_TOKEN.tag],
-                                game: this.lookingForGroup ? uuid : null
-                            },
-                        }).then(console.log);
+                    StadiaPlusDB.LFGConnector.post(this.gameUUID).then(() => {
+                        this.updateGroups();
                     })
+                    .catch((err: any) => Logger.error(err.error));
 
                     toggleButton.innerHTML = Language.get('looking-for-group.toggle-button.' + (this.lookingForGroup ? 'stop' : 'start'))
                 });
