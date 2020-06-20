@@ -34,7 +34,7 @@ export class StadiaPlusDB {
 
     static getProfile(): Promise<boolean> {
         return new Promise((resolve, reject) => { 
-            axios.get(`${StadiaPlusDB.url}/profile?authToken=${StadiaPlusDB.authToken}`)
+            axios.get(`${StadiaPlusDB.url}/user?authToken=${StadiaPlusDB.authToken}`)
             .then(res => {
                 if(res.data.hasOwnProperty('error')) {
                     reject(res.data);

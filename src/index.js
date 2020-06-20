@@ -16,12 +16,13 @@ import { Ratings } from './components/Ratings';
 import { Language } from './Language';
 import { AllowWindowedMode } from './components/AllowWindowedMode';
 import { PasteFromClipboard } from './components/PasteFromClipboard';
-import { StorageManager } from './Storage';
+import { LocalStorage, StorageManager } from './Storage';
 import appdata from './appdata.json';
 import { Modal } from './ui/Modal';
 import { Shortcut } from './Shortcut';
 import { Browser } from './Browser';
-import { PopupFix } from './components/PopupFix';
+import { LookingForGroup } from './components/LookingForGroup';
+import { StadiaPlusDB } from './StadiaPlusDB';
 
 // Always load languages first
 Language.init();
@@ -53,6 +54,26 @@ loader.register(new StoreFilter(database, uuidMap));
 loader.register(new Ratings(database, uuidMap));
 loader.register(new AllowWindowedMode());
 loader.register(new PasteFromClipboard());
+loader.register(new LookingForGroup());
+
+StadiaPlusDB.connect('http://localhost:3000')
+.then(connected => {
+    if(!connected) {
+        Logger.error('StadiaPlusDB was unable to connect, is the server down?');
+        return;
+    }
+
+    LocalStorage.AUTH_TOKEN.get(response => {
+        StadiaPlusDB.authToken = response[LocalStorage.AUTH_TOKEN.tag];
+
+        StadiaPlusDB.getProfile()
+        .then(console.log)
+        .catch(() => {
+            StadiaPlusDB.authToken = null;
+            Logger.error('dsajdosajdsaiojdao')
+        });
+    })
+});
 
 window.addEventListener('load', () => {
     Util.load();

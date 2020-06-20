@@ -12,6 +12,11 @@
             "reddit": "Reddit",
             "github": "Github"
         },
+        "user-page": {
+            "title": "Profile",
+            "motd": "Hello {{name}}!",
+            "login-with-google": "Login with Google"
+        },
         "settings-page": {
             "title": "Settings",
             "language": "Language",
@@ -114,6 +119,7 @@
     "vp9": "VP9",
     "h264": "H264",
     "apply": "Apply",
+    "loading": "Loading...",
     "4k": "4K",
     "1440p": "1440p",
     "1080p": "1080p"

@@ -55,13 +55,8 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <btn v-on:click="testAuth">
-                        Test Auth
-                    </btn>
-                </div>
-                <div class="col">
-                    <btn v-on:click="testLFG">
-                        Test LFG
+                    <btn v-on:click="userPage">
+                        Stadia+ DB
                     </btn>
                 </div>
             </div>
@@ -93,6 +88,9 @@ export default {
     methods: {
         settings() {
             this.$router.push('settings');
+        },
+        userPage() {
+            this.$router.push('user');
         },
         open(url) {
             window.open(url, '_blank');

@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import App from './App.vue';
 import MainPage from './MainPage.vue';
+import UserPage from './UserPage.vue';
 import SettingsPage from './SettingsPage.vue';
 import DeveloperPage from './DeveloperPage.vue';
 import ComponentPage from './ComponentPage.vue';
@@ -12,6 +13,7 @@ Vue.use(VueRouter);
     
 const routes = [
     { path: '/', component: MainPage },
+    { path: '/user/', component: UserPage },
     { path: '/settings/', component: SettingsPage },
     { path: '/settings/developer', component: DeveloperPage },
     { path: '/settings/components', component: ComponentPage },
