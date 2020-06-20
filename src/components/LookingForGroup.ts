@@ -6,7 +6,7 @@ import { UIComponent } from '../ui/UIComponent';
 import './styles/LookingForGroup.scss';
 import { Language } from '../Language';
 import axios from 'axios';
-import { LocalStorage } from '../dist/Storage';
+import { LocalStorage } from '../Storage';
 import 'slim-select/dist/slimselect.min.css';
 import '../ui/styles/Select.scss';
 import { StadiaPlusDB } from '../StadiaPlusDB';
@@ -73,18 +73,27 @@ export class LookingForGroup extends Component {
      * @memberof NetworkMonitor
      */
     createUI() {
+        let html = `
+        <div class='CTvDXd QAAyWd Fjy05d ivWUhc QSDHyc rpgZzc RkyH1e stadiaplus_button stadiaplus_lookingforgroup-toggle-button' id='${this.id}-togglebutton'>${Language.get('looking-for-group.toggle-button.start')}</div>
+        
+        <div id='${this.id}-groups' class='stadiaplus_lookingforgroup-groups'>
+            <h6>Groups</h6>
+            <span id='${this.id}-refresh' class='material-icons-extended refresh'>refresh</span>
+
+            <div id='${this.id}-group-list' class='group-list'></div>
+        </div>
+        `;
+
+        if(!StadiaPlusDB.isAuthenticated()) {
+            html = `
+                <h6>Not authenticated</h6>
+                <p>Seems like you've found a Stadia+ DB feature, this is not available at the moment since you aren't logged in. Sign in in the Stadia+ popup to access it.</p>
+            `
+        }
+
         this.component = new UIComponent(
             Language.get('looking-for-group.name'),
-            `
-            <div class='CTvDXd QAAyWd Fjy05d ivWUhc QSDHyc rpgZzc RkyH1e stadiaplus_button stadiaplus_lookingforgroup-toggle-button' id='${this.id}-togglebutton'>${Language.get('looking-for-group.toggle-button.start')}</div>
-            
-            <div id='${this.id}-groups' class='stadiaplus_lookingforgroup-groups'>
-                <h6>Groups</h6>
-                <span id='${this.id}-refresh' class='material-icons-extended refresh'>refresh</span>
-
-                <div id='${this.id}-group-list' class='group-list'></div>
-            </div>
-            `,
+            html,
             this.id,
         );
         this.component.element.classList.add('stadiaplus_lookingforgroup-tab');
@@ -174,27 +183,29 @@ export class LookingForGroup extends Component {
                 this.updateRenderer();
                 this.component.create();
 
-                this.gameUUID = location.href.split('/')[location.href.split('/').length-1];
-
-                const toggleButton = document.getElementById(this.id + '-togglebutton');
-                
-                toggleButton.addEventListener('click', () => {
-                    this.lookingForGroup = !this.lookingForGroup;
-                    this.component.element.querySelector(`#${this.id}-groups`).classList.toggle('visible', this.lookingForGroup);
-
-                    StadiaPlusDB.LFGConnector.post(this.gameUUID).then(() => {
-                        this.updateGroups();
-                    })
-                    .catch((err: any) => Logger.error(err.error));
-
-                    toggleButton.innerHTML = Language.get('looking-for-group.toggle-button.' + (this.lookingForGroup ? 'stop' : 'start'))
-                });
-
                 this.button.create(() => {
                     self.button.onPressed(() => {
                         self.component.openTab();
                     });
                 });
+
+                if(StadiaPlusDB.isAuthenticated()) {
+                    this.gameUUID = location.href.split('/')[location.href.split('/').length-1];
+
+                    const toggleButton = document.getElementById(this.id + '-togglebutton');
+                    
+                    toggleButton.addEventListener('click', () => {
+                        this.lookingForGroup = !this.lookingForGroup;
+                        this.component.element.querySelector(`#${this.id}-groups`).classList.toggle('visible', this.lookingForGroup);
+
+                        StadiaPlusDB.LFGConnector.post(this.gameUUID).then(() => {
+                            this.updateGroups();
+                        })
+                        .catch((err: any) => Logger.error(err.error));
+
+                        toggleButton.innerHTML = Language.get('looking-for-group.toggle-button.' + (this.lookingForGroup ? 'stop' : 'start'))
+                    });
+                }
             }
 
             if(!this.button.container.exists()) {

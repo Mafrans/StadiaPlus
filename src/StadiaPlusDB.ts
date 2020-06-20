@@ -35,7 +35,13 @@ export class StadiaPlusDB {
     static getProfile(): Promise<boolean> {
         return new Promise((resolve, reject) => { 
             axios.get(`${StadiaPlusDB.url}/profile?authToken=${StadiaPlusDB.authToken}`)
-            .then(res => resolve(res.data))
+            .then(res => {
+                if(res.data.hasOwnProperty('error')) {
+                    reject(res.data);
+                    return;
+                }
+                resolve(res.data)
+            })
             .catch(() => reject({ error: 'Could not connect to profile server' }));
         })
     }
