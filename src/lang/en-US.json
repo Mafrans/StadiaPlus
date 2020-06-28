@@ -107,6 +107,9 @@
             "stop": "Stop Looking for Groups"
         }
     },
+    "web-scraper": {
+        "name": "Web Scraper"
+    },
     "snackbar": {
         "reload-to-update": "Reload the page to see your changes.",
         "hide-game": "A game has been hidden.",

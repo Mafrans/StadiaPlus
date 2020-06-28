@@ -5,6 +5,7 @@ const chrome = (window as any).chrome;
 
 export class StadiaPlusDB {
     static LFGConnector: LFGConnector;
+    static ProfileConnector: ProfileConnector;
     
     static url: string;
     static authToken: string;
@@ -13,6 +14,7 @@ export class StadiaPlusDB {
     static connect(url: string): Promise<boolean> {
         StadiaPlusDB.url = url;
         StadiaPlusDB.LFGConnector = new LFGConnector();
+        StadiaPlusDB.ProfileConnector = new ProfileConnector();
 
         return new Promise((resolve, reject) => {
             this.testConnection()
@@ -102,6 +104,42 @@ export class LFGConnector {
             data: {
                 authToken: StadiaPlusDB.authToken,
                 game: game
+            },
+        })
+    }
+}
+
+export class ProfileConnector {
+    setAchievements(achievements: any[]): Promise<any> {
+        if(!StadiaPlusDB.isConnected()) {
+            return new Promise((resolve, reject) => reject({ error: 'Not connected to the StadiaPlusDB database' }));
+        }
+        if(!StadiaPlusDB.isAuthenticated()) {
+            return new Promise((resolve, reject) => reject({ error: 'Not authenticated with StadiaPlusDB' }));
+        }
+        return axios({
+            method: 'post',
+            url: `${StadiaPlusDB.url}/profile/achievements`,
+            data: {
+                authToken: StadiaPlusDB.authToken,
+                achievements: achievements
+            },
+        })
+    }
+
+    setUserData(user: any) {
+        if(!StadiaPlusDB.isConnected()) {
+            return new Promise((resolve, reject) => reject({ error: 'Not connected to the StadiaPlusDB database' }));
+        }
+        if(!StadiaPlusDB.isAuthenticated()) {
+            return new Promise((resolve, reject) => reject({ error: 'Not authenticated with StadiaPlusDB' }));
+        }
+        return axios({
+            method: 'post',
+            url: `${StadiaPlusDB.url}/profile/userdata`,
+            data: {
+                authToken: StadiaPlusDB.authToken,
+                user: user
             },
         })
     }
