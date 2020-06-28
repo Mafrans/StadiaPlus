@@ -95,6 +95,16 @@
     "popup-fix": {
         "name": "Popup Fix"
     },
+    "looking-for-group": {
+        "name": "Looking For Group",
+        "toggle-button": {
+            "start": "Look for a Group",
+            "stop": "Stop Looking for Groups"
+        }
+    },
+    "web-scraper": {
+        "name": "Web Scraper"
+    },
     "snackbar": {
         "reload-to-update": "Seite neu laden um die Änderung anzuzeigen.",
         "hide-game": "Ein Spiel wurde versteckt.",
@@ -104,6 +114,7 @@
     "vp9": "VP9",
     "h264": "H264",
     "apply": "Anwenden",
+    "loading": "Loading...",
     "experimental": "Experimental",
     "4k": "4K",
     "1440p": "1440p",

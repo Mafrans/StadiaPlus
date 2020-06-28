@@ -79,7 +79,7 @@
         }
     },
     "paste-from-clipboard": {
-        "name": "The Paste from Clipboard"
+        "name": "Paste from Clipboard"
     },
     "ratings": {
         "name": "Ratings",
@@ -95,6 +95,16 @@
     "popup-fix": {
         "name": "Popup Fix"
     },
+    "looking-for-group": {
+        "name": "Looking For Group",
+        "toggle-button": {
+            "start": "Look for a Group",
+            "stop": "Stop Looking for Groups"
+        }
+    },
+    "web-scraper": {
+        "name": "Web Scraper"
+    },
     "snackbar": {
         "reload-to-update": "Reload the page to see the changes.",
         "hide-game": "The game has been hidden.",
@@ -104,6 +114,7 @@
     "vp9": "VP9",
     "h264": "H264",
     "apply": "Apply",
+    "loading": "Loading...",
     "experimental": "Experimental",
     "4k": "4K",
     "1440p": "1440p",

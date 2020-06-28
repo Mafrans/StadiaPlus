@@ -95,6 +95,16 @@
     "popup-fix": {
         "name": "Popup Fix"
     },
+    "looking-for-group": {
+        "name": "Looking For Group",
+        "toggle-button": {
+            "start": "Look for a Group",
+            "stop": "Stop Looking for Groups"
+        }
+    },
+    "web-scraper": {
+        "name": "Web Scraper"
+    },
     "snackbar": {
         "reload-to-update": "Uppdatera sidan för att se dina ändringar.",
         "hide-game": "Ett spel har gömts.",
@@ -104,6 +114,7 @@
     "vp9": "VP9",
     "h264": "H264",
     "apply": "Tillämpa",
+    "loading": "Laddar...",
     "experimental": "Experimentellt",
     "4k": "4K",
     "1440p": "1440p",
