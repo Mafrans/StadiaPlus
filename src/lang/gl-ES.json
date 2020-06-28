@@ -104,7 +104,9 @@
     "vp9": "VP9",
     "h264": "H264",
     "apply": "Aplicar",
+    "experimental": "Experimental",
     "4k": "4K",
     "1440p": "1440p",
-    "1080p": "1080p"
+    "1080p": "1080p",
+    "720p": "720p"
 }

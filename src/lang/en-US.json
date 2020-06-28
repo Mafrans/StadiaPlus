@@ -123,7 +123,9 @@
     "h264": "H264",
     "apply": "Apply",
     "loading": "Loading...",
+    "experimental": "Experimental",
     "4k": "4K",
     "1440p": "1440p",
-    "1080p": "1080p"
+    "1080p": "1080p",
+    "720p": "720p"
 }
