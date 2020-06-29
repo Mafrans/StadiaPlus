@@ -23,6 +23,7 @@ import { Shortcut } from './Shortcut';
 import { Browser } from './Browser';
 import { LookingForGroup } from './components/LookingForGroup';
 import { StadiaPlusDB } from './StadiaPlusDB';
+import { WebScraper } from './components/WebScraper';
 
 // Always load languages first
 Language.init();
@@ -55,6 +56,7 @@ loader.register(new Ratings(database, uuidMap));
 loader.register(new AllowWindowedMode());
 loader.register(new PasteFromClipboard());
 loader.register(new LookingForGroup());
+loader.register(new WebScraper());
 
 StadiaPlusDB.connect('http://localhost:3000')
 .then(connected => {
