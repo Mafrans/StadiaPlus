@@ -4,6 +4,10 @@ import Util from '../Util';
 import { Language } from '../Language';
 import { StadiaPlusDB } from '../StadiaPlusDB';
 
+// Import the runnable as a raw string
+// @ts-ignore
+import runnable from '!raw-loader!../util/WebScraperRunnable';
+
 const chrome = (window as any).chrome;
 
 /**
@@ -40,6 +44,7 @@ export class WebScraper extends Component {
             sandboxer.addEventListener('click', () => {
                 const achievements = sandboxer.getAttribute('data-achievements');
                 const user = sandboxer.getAttribute('data-user');
+                const time = sandboxer.getAttribute('data-time');
 
                 if(achievements != null) {
                     StadiaPlusDB.ProfileConnector.setAchievements(JSON.parse(achievements));
@@ -48,69 +53,15 @@ export class WebScraper extends Component {
                 if(user != null) {
                     StadiaPlusDB.ProfileConnector.setUserData(JSON.parse(user));
                 }
+
+                if(time != null) {
+                    const playTime = JSON.parse(time);
+                    StadiaPlusDB.ProfileConnector.setPlayTime(playTime.game, playTime.time);
+                }
             })
 
             const script = document.createElement('script');
-            script.innerHTML = `
-                (function() {
-                    var origOpen = XMLHttpRequest.prototype.open;
-                    XMLHttpRequest.prototype.open = function() {
-                        this.addEventListener('load', function() {
-                            if(this.responseURL.includes('sis9oc')) {
-                                // Achievements
-
-                                const lines = this.responseText.split('\\n');
-                                for(const l of lines) {
-                                    if(l.includes('sis9oc')) { 
-                                        const arr = JSON.parse(JSON.parse(l + ']')[0][2])[0];
-                                        const achievements = [];
-                                        for(const e of arr) {
-                                            if(e[3] > 0) {
-                                                achievements.push({
-                                                    name: e[0],
-                                                    description: e[1],
-                                                    value: e[3],
-                                                    game: e[6]
-                                                });
-                                            }
-                                        }
-
-                                        const sandboxer = document.getElementById('web-scraper-sandboxer');
-
-                                        sandboxer.setAttribute('data-user', null); // Make sure to reset user data so it's not sent repeatedly to the server
-                                        sandboxer.setAttribute('data-achievements', JSON.stringify(achievements));
-                                        sandboxer.click();
-                                    }
-                                }
-                            }
-                            else if(this.responseURL.includes('D0Amud')) {
-                                // Name#XXXX
-                                console.log('Name#XXXX');
-
-                                const lines = this.responseText.split('\\n');
-                                for(const l of lines) {
-                                    if(l.includes('D0Amud')) { 
-                                        const arr = JSON.parse(JSON.parse(l + ']')[0][2])[5];
-                                        console.log(arr);
-                                        const user = {
-                                            name: arr[0][0],
-                                            tag: arr[0][1],
-                                            avatar: arr[1][1]
-                                        };
-
-                                        const sandboxer = document.getElementById('web-scraper-sandboxer');
-                                        
-                                        sandboxer.setAttribute('data-achievements', null); // Make sure to reset achievements so they're not sent repeatedly to the server
-                                        sandboxer.setAttribute('data-user', JSON.stringify(user));
-                                        sandboxer.click();
-                                    }
-                                }
-                            }
-                        });
-                        origOpen.apply(this, arguments);
-                    };
-                })();
-            `
+            script.innerHTML = runnable;
             document.body.appendChild(script);
         })
     }
