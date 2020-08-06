@@ -11,6 +11,8 @@ import { SyncStorage } from '../Storage';
 import { Shortcut } from '../Shortcut';
 import { Modal } from '../ui/Modal';
 import '../ui/styles/Button.scss';
+import { WebScraper } from './WebScraper';
+import { StadiaPlusDB } from '../StadiaPlusDB';
 
 const { chrome, Array } = window as any;
 
@@ -87,7 +89,12 @@ export class LibraryFilter extends Component {
      */
     modal: Modal;
 
-    constructor(snackbar: Snackbar, database: WebDatabase, uuidMap: WebDatabase, modal: Modal) {
+    /**
+     * Web Scraper
+     */
+    webScraper: WebScraper;
+
+    constructor(snackbar: Snackbar, database: WebDatabase, uuidMap: WebDatabase, modal: Modal, webScraper: WebScraper) {
         super();
 
         // Import database & uuidMap from index.js
@@ -98,6 +105,8 @@ export class LibraryFilter extends Component {
         this.snackbar = snackbar;
 
         this.modal = modal;
+
+        this.webScraper = webScraper;
 
         // Create new filter bar element
         this.filterBar = document.createElement('div');
@@ -170,19 +179,33 @@ export class LibraryFilter extends Component {
         // Create the visibility icon
         const visibility = document.createElement('div');
         visibility.classList.add('stadiaplus_libraryfilter-icon');
-        visibility.innerHTML = 'visibility';
+        visibility.textContent = 'visibility';
 
         // Create the visibility icon
         const shortcut = document.createElement('div');
         shortcut.classList.add('stadiaplus_libraryfilter-icon');
-        shortcut.innerHTML = 'add_to_queue';
+        shortcut.textContent = 'add_to_queue';
 
         // Wrap the wrapper around the element and add the icon before it
         element.parentNode.insertBefore(wrapper, element);
         iconWrapper.appendChild(visibility);
         iconWrapper.appendChild(shortcut);
+
+        if(StadiaPlusDB.isConnected()) {
+            const updateDB = document.createElement('div');
+            updateDB.classList.add('stadiaplus_libraryfilter-icon');
+            updateDB.textContent = 'cloud_upload';
+            iconWrapper.appendChild(updateDB);
+
+            updateDB.addEventListener('click', () => {
+                this.webScraper.updateGame(uuid);
+                this.modal.activate(`Updating ${entry[1]} in Stadia+ DB`);
+            });
+        }
+
         wrapper.appendChild(iconWrapper);
         wrapper.appendChild(element);
+
 
         // Check the storage for visibility, hide the game if both 'visible' and 'showAll' is false
         if (!this.games.hasOwnProperty(uuid)) {

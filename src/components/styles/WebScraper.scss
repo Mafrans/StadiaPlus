@@ -1,0 +1,44 @@
+.stadiaplus_web-scraper-popup {
+    width: 300px;
+    height: 90px;
+    position: absolute;
+    top: 0;
+    border-radius: .5rem;
+    align-items: center;
+    justify-content: middle;
+    left: 0;
+    margin: 1rem;
+    background-color: #202124;
+    z-index: 1;
+    display: flex;
+    box-shadow: 0 0.125rem 0.75rem rgba(0,0,0,0.32), 0 0.0625rem 0.375rem rgba(0,0,0,0.18);
+
+    .stadiaplus_web-scraper-icon {
+        font-family: 'Material Icons Extended';
+        font-size: 48px;
+        padding: 1rem;
+
+        &.loading {
+            animation: spinning 1s linear 0s infinite;
+
+            @keyframes spinning {
+                from {
+                    transform: rotate(0deg);
+                }
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+        }
+    }
+
+    .stadiaplus_web-scraper-title {
+        font-size: 1rem;
+        font-weight: 500;
+        margin-bottom: .25rem;
+    }
+
+    .stadiaplus_web-scraper-body {
+        font-size: .75rem;
+    }
+}

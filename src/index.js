@@ -38,6 +38,7 @@ const loader = new ComponentLoader();
 const snackbar = new Snackbar();
 const modal = new Modal();
 const tab = new UITab();
+const webScraper = new WebScraper();
 
 const database = new WebDatabase('https://stadiagamedb.com/data/gamedb.json');
 const uuidMap = new WebDatabase('https://stadiagamedb.com/data/uuidmap.json');
@@ -46,7 +47,7 @@ uuidMap.connect();
 
 loader.register(new Clock());
 // loader.register(new PopupFix());
-loader.register(new LibraryFilter(snackbar, database, uuidMap, modal));
+loader.register(new LibraryFilter(snackbar, database, uuidMap, modal, webScraper));
 loader.register(new ForceCodec(tab, snackbar));
 loader.register(new ForceResolution(tab, snackbar));
 loader.register(tab);
@@ -56,7 +57,7 @@ loader.register(new Ratings(database, uuidMap));
 loader.register(new AllowWindowedMode());
 loader.register(new PasteFromClipboard());
 loader.register(new LookingForGroup());
-loader.register(new WebScraper());
+loader.register(webScraper);
 
 StadiaPlusDB.connect('http://localhost:3000')
 .then(connected => {

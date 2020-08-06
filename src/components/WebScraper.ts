@@ -3,10 +3,12 @@ import Logger from '../Logger';
 import Util from '../Util';
 import { Language } from '../Language';
 import { StadiaPlusDB } from '../StadiaPlusDB';
+import './styles/WebScraper.scss';
 
 // Import the runnable as a raw string
 // @ts-ignore
 import runnable from '!raw-loader!../util/WebScraperRunnable';
+import { create } from '../../docs/assets/js/main';
 
 const chrome = (window as any).chrome;
 
@@ -42,22 +44,10 @@ export class WebScraper extends Component {
             sandboxer.id = 'web-scraper-sandboxer';
             document.body.appendChild(sandboxer);
             sandboxer.addEventListener('click', () => {
-                const achievements = sandboxer.getAttribute('data-achievements');
-                const user = sandboxer.getAttribute('data-user');
-                const time = sandboxer.getAttribute('data-time');
-
-                if(achievements != null) {
-                    StadiaPlusDB.ProfileConnector.setAchievements(JSON.parse(achievements));
-                }
-
-                if(user != null) {
-                    StadiaPlusDB.ProfileConnector.setUserData(JSON.parse(user));
-                }
-
-                if(time != null) {
-                    const playTime = JSON.parse(time);
-                    StadiaPlusDB.ProfileConnector.setPlayTime(playTime.game, playTime.time);
-                }
+                const data = JSON.parse(sandboxer.getAttribute('data'));
+                StadiaPlusDB.ProfileConnector.setAchievements(data.achievements);
+                StadiaPlusDB.ProfileConnector.setUserData(data.user);
+                StadiaPlusDB.ProfileConnector.setPlayTime(data.game.uuid, data.time);
             })
 
             const script = document.createElement('script');
@@ -84,6 +74,11 @@ export class WebScraper extends Component {
     onStop(): void {
         this.active = false;
         Logger.component(Language.get('component.disabled', {'name': this.name}));
+    }
+
+    updateGame(uuid: string) {
+        const userId = document.querySelector('.ksZYgc.VGZcUb').getAttribute('data-player-id');
+        Util.desandbox(`WebScraperRunnable.fetchData('${userId}', '${uuid}')`);
     }
 
     onUpdate() { }
