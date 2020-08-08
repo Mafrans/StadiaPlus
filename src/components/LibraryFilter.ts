@@ -164,7 +164,11 @@ export class LibraryFilter extends Component {
 
         const connection = this.database.getConnection()['data'];
         const map = this.uuidMap.getConnection()['uuidMap'];
-        const entry = connection[map[uuid]];
+        let entry = connection[map[uuid]];
+
+        if(entry === undefined) { // The game isn't part of StadiaGameDB
+            entry = [ null, null ];
+        }
 
         // Create the wrapper
         const wrapper = document.createElement('div');
@@ -199,12 +203,16 @@ export class LibraryFilter extends Component {
 
             updateDB.addEventListener('click', () => {
                 this.webScraper.updateGame(uuid);
-                this.modal.activate(`Updating ${entry[1]} in Stadia+ DB`);
+                this.snackbar.activate(`Updating ${entry[1]} in Stadia+ DB`);
             });
         }
-
-        wrapper.appendChild(iconWrapper);
+        
         wrapper.appendChild(element);
+
+        if(entry[0] == null) {
+            return;
+        }
+        wrapper.appendChild(iconWrapper);
 
 
         // Check the storage for visibility, hide the game if both 'visible' and 'showAll' is false
@@ -525,8 +533,8 @@ export class LibraryFilter extends Component {
                 `;
 
                 const { pretty, checkbox } = new Checkbox(
-                    Language.get('library-filter.show-hidden')
-                )
+                        Language.get('library-filter.show-hidden')
+                    )
                     .setBigger(true)
                     .setShape(CheckboxShape.CURVED)
                     .build();
@@ -632,8 +640,8 @@ export class FilterOrder {
         const nameA = a.getAttribute('game-name');
         const nameB = b.getAttribute('game-name');
 
-        if (nameA === undefined || nameB === undefined) {
-            return 1;
+        if (nameA === null || nameB === null) {
+            return null;
         }
 
         return nameA.localeCompare(nameB);
