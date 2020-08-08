@@ -11,11 +11,9 @@ const WebScraperRunnable = {
                 if(playData == null) return;
                 
                 const data = JSON.parse(achievementData[1])[0];
-                console.log({playData: playData[1], data});
     
                 const achievements = [];
                 for(const e of data[5][0]) {
-                    console.log({e})
                     achievements.push({
                         name: e[0],
                         description: e[1],
@@ -57,5 +55,6 @@ this.addEventListener('popstate', event => {
         const sandboxer = document.getElementById('web-scraper-sandboxer');
         sandboxer.setAttribute('data', JSON.stringify(data));
         sandboxer.click();
-    });
+    })
+    .catch(e => console.log(e))
 });

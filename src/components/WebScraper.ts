@@ -78,7 +78,15 @@ export class WebScraper extends Component {
 
     updateGame(uuid: string) {
         const userId = document.querySelector('.ksZYgc.VGZcUb').getAttribute('data-player-id');
-        Util.desandbox(`WebScraperRunnable.fetchData('${userId}', '${uuid}')`);
+        Util.desandbox(`
+            WebScraperRunnable.fetchData('${userId}', '${uuid}')
+            .then(data => {
+                console.log(data);
+                const sandboxer = document.getElementById('web-scraper-sandboxer');
+                sandboxer.setAttribute('data', JSON.stringify(data));
+                sandboxer.click();
+            })
+        `);
     }
 
     onUpdate() { }
