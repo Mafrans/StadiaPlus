@@ -36,7 +36,7 @@ export class StadiaPlusDB {
 
     static getProfile(): Promise<boolean> {
         return new Promise((resolve, reject) => { 
-            axios.get(`${StadiaPlusDB.url}/api/user?authToken=${StadiaPlusDB.authToken}`)
+            axios.get(`${StadiaPlusDB.url}/api/user?token=${StadiaPlusDB.authToken}`)
             .then(res => {
                 if(res.data.hasOwnProperty('error')) {
                     reject(res.data);
@@ -110,7 +110,7 @@ export class LFGConnector {
 }
 
 export class ProfileConnector {
-    setAchievements(achievements: any[]): Promise<any> {
+    setData(data: any): Promise<any> {
         if(!StadiaPlusDB.isConnected()) {
             return new Promise((resolve, reject) => reject({ error: 'Not connected to the StadiaPlusDB database' }));
         }
@@ -119,45 +119,10 @@ export class ProfileConnector {
         }
         return axios({
             method: 'post',
-            url: `${StadiaPlusDB.url}/api/profile/achievements`,
+            url: `${StadiaPlusDB.url}/api/update`,
             data: {
-                authToken: StadiaPlusDB.authToken,
-                achievements: achievements
-            },
-        })
-    }
-
-    setUserData(user: any) {
-        if(!StadiaPlusDB.isConnected()) {
-            return new Promise((resolve, reject) => reject({ error: 'Not connected to the StadiaPlusDB database' }));
-        }
-        if(!StadiaPlusDB.isAuthenticated()) {
-            return new Promise((resolve, reject) => reject({ error: 'Not authenticated with StadiaPlusDB' }));
-        }
-        return axios({
-            method: 'post',
-            url: `${StadiaPlusDB.url}/api/profile/userdata`,
-            data: {
-                authToken: StadiaPlusDB.authToken,
-                user: user
-            },
-        })
-    }
-
-    setPlayTime(game: string, time: number) {
-        if(!StadiaPlusDB.isConnected()) {
-            return new Promise((resolve, reject) => reject({ error: 'Not connected to the StadiaPlusDB database' }));
-        }
-        if(!StadiaPlusDB.isAuthenticated()) {
-            return new Promise((resolve, reject) => reject({ error: 'Not authenticated with StadiaPlusDB' }));
-        }
-        return axios({
-            method: 'post',
-            url: `${StadiaPlusDB.url}/api/profile/playtime`,
-            data: {
-                authToken: StadiaPlusDB.authToken,
-                game: game,
-                time: time
+                token: StadiaPlusDB.authToken,
+                data: data
             },
         })
     }

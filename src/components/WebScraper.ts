@@ -45,9 +45,7 @@ export class WebScraper extends Component {
             document.body.appendChild(sandboxer);
             sandboxer.addEventListener('click', () => {
                 const data = JSON.parse(sandboxer.getAttribute('data'));
-                StadiaPlusDB.ProfileConnector.setAchievements(data.achievements);
-                StadiaPlusDB.ProfileConnector.setUserData(data.user);
-                StadiaPlusDB.ProfileConnector.setPlayTime(data.game.uuid, data.time);
+                StadiaPlusDB.ProfileConnector.setData(data);
             })
 
             const script = document.createElement('script');
