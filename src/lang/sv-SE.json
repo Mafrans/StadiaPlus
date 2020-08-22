@@ -7,7 +7,8 @@
             "title": "Stadia+",
             "ready-text": "Tillägget är redo att köra. Bara starta Stadia och börja spela! 🎮",
             "launch-button": "Starta Stadia",
-            "help-button": "Hjälp & FAQ",
+            "settings-button": "Inställningar",
+            "help-and-faq": "Hjälp & FAQ",
             "discord": "Discord",
             "reddit": "Reddit",
             "github": "Github"

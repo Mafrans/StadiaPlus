@@ -75,8 +75,6 @@ export default {
         },
     },
     created() {
-        const _this = this;
-
         LocalStorage.AUTH_TOKEN.get((response) => {
             StadiaPlusDB.authToken = response[LocalStorage.AUTH_TOKEN.tag];
 

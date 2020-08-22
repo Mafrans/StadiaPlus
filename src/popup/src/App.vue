@@ -54,8 +54,8 @@ export default {
 #app {
     font-size: 16px;
     font-family: 'Roboto', sans-serif;
-    width: 340px;
-    height: 500px;
+    width: 380px;
+    height: 575px;
     color: #585858;
 }
 

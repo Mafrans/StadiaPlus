@@ -5,12 +5,13 @@
         },
         "main-page": {
             "title": "The Stadia+",
-            "ready-text": "The extension is all ready to go. Just fire up the Stadia and start playing! 🎮",
+            "ready-text": "The extension is all ready to go. Just fire up Stadia and start playing! 🎮",
             "launch-button": "Launch The Stadia",
-            "help-button": "The Help & The FAQ",
+            "settings-button": "The Settings",
+            "help-and-faq": "The Help & FAQ",
             "discord": "The Discord",
             "reddit": "The Reddit",
-            "github": "Github"
+            "github": "The Github"
         },
         "settings-page": {
             "title": "The Settings",

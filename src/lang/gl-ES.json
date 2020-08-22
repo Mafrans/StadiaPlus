@@ -7,7 +7,8 @@
             "title": "Stadia+",
             "ready-text": "A extensión está lista. Inicia Stadia e lume! 🎮",
             "launch-button": "Inicia Stadia",
-            "help-button": "Axuda & FAQ",
+            "settings-button": "Configuración",
+            "help-and-faq": "Axuda & FAQ",
             "discord": "Discord",
             "reddit": "Reddit",
             "github": "Github"

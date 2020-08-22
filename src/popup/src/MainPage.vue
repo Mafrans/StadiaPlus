@@ -17,46 +17,19 @@
                         v-on:click="open('https://stadia.google.com')"
                         :gradient="true"
                     >
-                        <icon>launch</icon>
+                        <icon>play_arrow</icon>
                         {{ Language.get('popup.main-page.launch-button') }}
                     </btn>
                 </div>
             </div>
-            <div class="row">
-                <div class="col">
-                    <btn
-                        v-on:click="
-                            open('https://github.com/Mafrans/StadiaPlus/wiki')
-                        "
-                    >
-                        <icon>help_outline</icon>
-                        {{ Language.get('popup.main-page.help-button') }}
-                    </btn>
-                </div>
-            </div>
 
-            <hr />
+            <profile />
 
             <div class="row">
                 <div class="col">
-                    <btn v-on:click="open('https://discord.gg/2VDbEQ8')">
-                        {{ Language.get('popup.main-page.discord') }}
-                    </btn>
-                </div>
-                <div class="col">
-                    <btn
-                        v-on:click="
-                            open('https://github.com/Mafrans/StadiaPlus')
-                        "
-                    >
-                        {{ Language.get('popup.main-page.github') }}
-                    </btn>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <btn v-on:click="userPage">
-                        Stadia+ DB
+                    <btn v-on:click="settings()">
+                        <icon>settings</icon>
+                        {{ Language.get('popup.main-page.settings-button') }}
                     </btn>
                 </div>
             </div>
@@ -68,6 +41,7 @@
 import Icon from './components/Icon.vue';
 import PageHeader from './components/PageHeader.vue';
 import Button from './components/Button.vue';
+import Profile from './components/Profile.vue';
 import logo from './assets/logo.png';
 import { Language } from '../../Language';
 import axios from 'axios';
@@ -84,6 +58,7 @@ export default {
         Icon,
         PageHeader,
         btn: Button,
+        Profile,
     },
     methods: {
         settings() {
@@ -95,18 +70,15 @@ export default {
         open(url) {
             window.open(url, '_blank');
         },
-        testAuth() {
-            StadiaPlusDB.authenticate()
-            .then(() => {
-                StadiaPlusDB.getProfile().then(console.log);
-            });
+        getUser() {
+            StadiaPlusDB.getProfile().then(console.log);
         },
         testLFG() {
             StadiaPlusDB.LFGConnector.post('test');
         },
     },
     mounted() {
-        StadiaPlusDB.connect('http://localhost:3000').then(console.log).catch(console.error);
+        StadiaPlusDB.connect('http://localhost:3000').catch(console.error);
     }
 };
 </script>

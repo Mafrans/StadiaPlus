@@ -7,7 +7,8 @@
             "title": "Stadia+",
             "ready-text": "Расширение готово к работе. Запускай Stadia и начинай играть! 🎮",
             "launch-button": "Запустить Stadia",
-            "help-button": "Справка и FAQ",
+            "settings-button": "Настройки",
+            "help-and-faq": "Справка и FAQ",
             "discord": "Discord",
             "reddit": "Reddit",
             "github": "Github"
