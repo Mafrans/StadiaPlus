@@ -3,7 +3,7 @@ import Logger from '../Logger';
 import Util from '../Util';
 import { Language } from '../Language';
 import { StadiaPlusDB } from '../StadiaPlusDB';
-import './styles/WebScraper.scss';
+import './styles/StadiaPlusDBHook.scss';
 
 // Import the runnable as a raw string
 // @ts-ignore
@@ -23,7 +23,7 @@ export class WebScraper extends Component {
     /**
      * The component tag, used in language files.
      */
-    tag: string = 'web-scraper';
+    tag: string = 'stadia-plus-db';
 
     /**
      * The popup element.

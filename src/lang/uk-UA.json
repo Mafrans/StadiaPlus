@@ -102,8 +102,8 @@
             "stop": "Stop Looking for Groups"
         }
     },
-    "web-scraper": {
-        "name": "Web Scraper"
+    "stadia-plus-db": {
+        "name": "Stadia+ DB"
     },
     "snackbar": {
         "reload-to-update": "Перезавантажте сторінку, щоб побачити зміни.",

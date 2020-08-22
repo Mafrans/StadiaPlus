@@ -11,6 +11,8 @@ const WebScraperRunnable = {
                 if(playData == null) return;
                 
                 const data = JSON.parse(achievementData[1])[0];
+
+                console.log({data})
     
                 const achievements = [];
                 for(const e of data[5][0]) {
@@ -19,7 +21,8 @@ const WebScraperRunnable = {
                         description: e[1],
                         value: e[3],
                         icon: e[8][0][0][1],
-                        game: e[6]
+                        game: e[6],
+                        id: e[7]
                     });
                 }
     

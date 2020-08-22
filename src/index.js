@@ -23,7 +23,7 @@ import { Shortcut } from './Shortcut';
 import { Browser } from './Browser';
 import { LookingForGroup } from './components/LookingForGroup';
 import { StadiaPlusDB } from './StadiaPlusDB';
-import { WebScraper } from './components/WebScraper';
+import { WebScraper } from './components/StadiaPlusDBHook';
 
 // Always load languages first
 Language.init();

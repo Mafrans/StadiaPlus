@@ -11,7 +11,7 @@ import { SyncStorage } from '../Storage';
 import { Shortcut } from '../Shortcut';
 import { Modal } from '../ui/Modal';
 import '../ui/styles/Button.scss';
-import { WebScraper } from './WebScraper';
+import { WebScraper } from './StadiaPlusDBHook';
 import { StadiaPlusDB } from '../StadiaPlusDB';
 
 const { chrome, Array } = window as any;
@@ -224,7 +224,6 @@ export class LibraryFilter extends Component {
 
         // Position the icon in the top right corner rather than the top left using
         // a margin (using the 'left' css attribute is not possible)
-        iconWrapper.style.marginLeft = element.clientWidth - visibility.clientWidth + 'px';
         iconWrapper.style.transformOrigin = `calc(100% - ${element.clientWidth /
             2}px) ${element.clientHeight / 2}px`;
 
