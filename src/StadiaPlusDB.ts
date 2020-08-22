@@ -69,6 +69,7 @@ export class StadiaPlusDB {
                 })
             }
     
+            console.log(`${StadiaPlusDB.url}/auth/google?redirect=${chrome.identity.getRedirectURL('database')}`);
             chrome.identity.launchWebAuthFlow(
                 {
                     url: `${StadiaPlusDB.url}/auth/google?redirect=${chrome.identity.getRedirectURL('database')}`,
@@ -82,6 +83,16 @@ export class StadiaPlusDB {
                     });
                 }
             );
+        });
+    }
+
+    static signout(): Promise<any> {
+        return axios({
+            method: 'post',
+            url: `${StadiaPlusDB.url}/api/signout`,
+            data: {
+                token: StadiaPlusDB.authToken
+            },
         });
     }
 }
@@ -102,7 +113,7 @@ export class LFGConnector {
             method: 'post',
             url: `${StadiaPlusDB.url}/api/lfg`,
             data: {
-                authToken: StadiaPlusDB.authToken,
+                token: StadiaPlusDB.authToken,
                 game: game
             },
         })

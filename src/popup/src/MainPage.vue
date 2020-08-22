@@ -1,12 +1,7 @@
 <template>
     <div class="main-page">
         <div class="container">
-            <page-header
-                :img="logo"
-                icon="settings"
-                v-on:icon-click="settings"
-                >{{ Language.get('popup.main-page.title') }}</page-header
-            >
+            <page-header :img="logo" >{{ Language.get('popup.main-page.title') }}</page-header >
             <p>
                 {{ Language.get('popup.main-page.ready-text') }}
             </p>
@@ -84,7 +79,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
-    padding: 1rem;
-}
 </style>

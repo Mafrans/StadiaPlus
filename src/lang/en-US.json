@@ -14,9 +14,10 @@
             "github": "Github"
         },
         "user-page": {
-            "title": "Profile",
-            "motd": "Hello {{name}}!",
-            "login-with-google": "Login with Google"
+            "title": "Login",
+            "login-button": "Sign in with Google",
+            "accept-label": "By signing into Stadia+ DB you accept the",
+            "privacy-policy": "privacy policy"
         },
         "settings-page": {
             "title": "Settings",

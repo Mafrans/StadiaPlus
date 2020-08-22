@@ -79,10 +79,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
-    padding: 1rem;
-}
-
 .components {
     height: 250px;
     overflow-y: scroll;

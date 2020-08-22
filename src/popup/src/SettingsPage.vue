@@ -88,10 +88,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
-    padding: 1rem;
-}
-
 .icon {
     float: left;
     margin-right: 4px;

@@ -83,6 +83,10 @@ hr {
     margin: 0 -0.5rem;
 }
 
+.container {
+    padding: 1rem;
+}
+
 .col {
     margin: 0 0.5rem;
     width: 100%;

@@ -1,34 +1,23 @@
 <template>
     <div class="user-page">
         <div class="container">
-            <page-header :back-button="true">{{
-                Language.get('popup.user-page.title')
-            }}</page-header>
+            <page-header :back-button="true">{{ Language.get('popup.user-page.title') }}</page-header>
 
-            <div v-if="user != null" class="profile">
-                <div class="row">
-                    <div class="col">
-                        <img :src="user.picture" alt="The profile image" />
-                        <h1>
-                            {{
-                                Language.get('popup.user-page.motd', {
-                                    name: user.given_name,
-                                })
-                            }}
-                        </h1>
-                    </div>
-                </div>
-            </div>
-            <div v-else-if="!loading" class="login">
+            <div v-if="!loading" class="login">
                 <div class="row">
                     <div class="col">
                         <btn v-on:click="authenticate">
-                            {{
-                                Language.get(
-                                    'popup.user-page.login-with-google'
-                                )
-                            }}
+                            <icon><img :src="'/dist/' + GoogleG"/></icon>
+                            {{ Language.get( 'popup.user-page.login-button' ) }}
                         </btn>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        {{ Language.get( 'popup.user-page.accept-label' ) }} 
+                        <a :href="StadiaPlusDB.url + '/privacy-policy'" target="_blank">
+                            {{ Language.get('popup.user-page.privacy-policy') }}
+                        </a>
                     </div>
                 </div>
             </div>
@@ -47,6 +36,7 @@
 import Icon from './components/Icon.vue';
 import PageHeader from './components/PageHeader.vue';
 import Button from './components/Button.vue';
+import GoogleG from './assets/Google G.svg';
 import { Language } from '../../Language';
 import { SyncStorage, LocalStorage } from '../../Storage';
 import { StadiaPlusDB } from '../../StadiaPlusDB';
@@ -55,8 +45,10 @@ export default {
     data() {
         return {
             Language: Language,
+            StadiaPlusDB: StadiaPlusDB,
             user: null,
-            loading: true,
+            loading: false,
+            GoogleG,
         };
     },
     components: {
@@ -69,45 +61,19 @@ export default {
             this.loading = true;
             StadiaPlusDB.authenticate().then(() => {
                 StadiaPlusDB.getProfile().then((profile) => {
-                    (this.user = profile), (this.loading = false);
+                    this.user = profile;
+                    this.loading = false;
+                    this.$router.go(-1);
                 });
             });
         },
-    },
-    created() {
-        LocalStorage.AUTH_TOKEN.get((response) => {
-            StadiaPlusDB.authToken = response[LocalStorage.AUTH_TOKEN.tag];
-
-            StadiaPlusDB.getProfile()
-                .then((profile) => {
-                    this.user = profile;
-                    this.loading = false;
-                    console.log({ profile });
-                })
-                .catch(() => {
-                    StadiaPlusDB.authToken = null;
-                    this.loading = false;
-                    Logger.error('Authentication failed, was it cancelled?');
-                });
-        });
-    },
+    }
 };
 </script>
 
 <style lang="scss" scoped>
-.container {
-    padding: 1rem;
-}
-
-h3 {
+.row {
     margin-bottom: 0.5rem;
 }
 
-.profile img {
-    margin-bottom: 0.25rem;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    border: 2px solid #eaeaea;
-}
 </style>

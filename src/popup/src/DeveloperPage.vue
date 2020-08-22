@@ -49,10 +49,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
-    padding: 1rem;
-}
-
 h3 {
     margin-bottom: 0.5rem;
 }
