@@ -7,7 +7,10 @@
                     <p class="name">{{ user.name }}</p>
                     <p class="tag">#{{ user.tag }}</p>
                 </div>
-                <icon class="icon">more_vert</icon>
+                <icon id="more" style="cursor: pointer" class="icon">more_vert</icon>
+                <dropdown root="#more">
+                    <div class="delete-data" @click="goToDataWipe()">Delete user data</div>
+                </dropdown>
             </div>
             <btn v-if="user.avatar != undefined" v-on:click="openProfile()">
                 <icon>person</icon> Stadia+ DB profile 
@@ -68,6 +71,12 @@
     }
 }
 
+.delete-data {
+    color: red;
+    font-weight: 500;
+    cursor: pointer;
+}
+
 .button {
     margin-top: 0.75rem;
     margin-bottom: 0;
@@ -100,6 +109,7 @@ import { SyncStorage, LocalStorage } from '../../../Storage';
 import GoogleG from '../assets/Google G.svg';
 import Button from './Button.vue';
 import Icon from './Icon.vue';
+import Dropdown from './Dropdown.vue';
 export default {
     data() {
         return {
@@ -119,10 +129,14 @@ export default {
                 location.reload();
             });
         },
+        goToDataWipe() {
+            this.$router.push('./user/wipedata');
+        },
     },
     components: {
         btn: Button,
         Icon,
+        Dropdown,
     },
     created() {
         LocalStorage.AUTH_TOKEN.get((response) => {

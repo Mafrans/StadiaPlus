@@ -95,6 +95,16 @@ export class StadiaPlusDB {
             },
         });
     }
+
+    static wipedata(): Promise<any> {
+        return axios({
+            method: 'post',
+            url: `${StadiaPlusDB.url}/api/wipedata`,
+            data: {
+                token: StadiaPlusDB.authToken
+            },
+        });
+    }
 }
 
 export class LFGConnector {
@@ -128,6 +138,8 @@ export class ProfileConnector {
         if(!StadiaPlusDB.isAuthenticated()) {
             return new Promise((resolve, reject) => reject({ error: 'Not authenticated with StadiaPlusDB' }));
         }
+        console.log({authToken: StadiaPlusDB.authToken});
+
         return axios({
             method: 'post',
             url: `${StadiaPlusDB.url}/api/update`,

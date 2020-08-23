@@ -9,6 +9,8 @@
         "declarativeContent",
         "storage",
         "identity",
+        "tabs",
+        "https://stadia.google.com/*",
         "https://stadiagamedb.com/data/gamedb.json",
         "http://localhost:3000/*"
     ],
