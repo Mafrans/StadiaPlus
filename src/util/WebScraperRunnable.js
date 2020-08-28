@@ -6,13 +6,11 @@ const WebScraperRunnable = {
             .then(response => response.text())
             .then(text => {
                 const playData = text.match(new RegExp("\\[\\[\\[\"" + gameid + "\",.+\\n.+\\n,\\[([0-9]+)"));
-                const achievementData = text.match(new RegExp("AF_initDataCallback\\(\\{ *key: *'ds:2'.*?data: *((.|\\n)*?)\\}\\)"));
+                const achievementData = text.match(new RegExp("AF_initDataCallback\\(\\{ *key: *'ds:2'.*?data: *((.|\\n)*?), *sideChannel: *\\{\\}\\}\\)"));
                 
                 if(playData == null) return;
                 
                 const data = JSON.parse(achievementData[1])[0];
-
-                console.log({data})
     
                 const achievements = [];
                 for(const e of data[5][0]) {
@@ -54,7 +52,6 @@ this.addEventListener('popstate', event => {
     const userId = document.querySelector('.ksZYgc.VGZcUb').getAttribute('data-player-id');
     WebScraperRunnable.fetchData(userId, uuid)
     .then(data => {
-        console.log(data);
         const sandboxer = document.getElementById('web-scraper-sandboxer');
         sandboxer.setAttribute('data', JSON.stringify(data));
         sandboxer.click();
