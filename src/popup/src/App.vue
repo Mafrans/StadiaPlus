@@ -6,7 +6,13 @@
 
         <footer>
             <span>Stadia+ 2.3-C1</span>
-            <span v-html="credit"></span>
+            <span>
+                <a href="https://github.com/Mafrans/StadiaPlus/wiki">{{ Language.get('popup.main-page.help-and-faq') }}</a>
+                 • 
+                <a href="https://discord.gg/2VDbEQ8">{{ Language.get('popup.main-page.discord') }}</a>
+                 • 
+                <a href="https://github.com/Mafrans/StadiaPlus">{{ Language.get('popup.main-page.github') }}</a>
+            </span>
         </footer>
     </div>
 </template>
@@ -23,9 +29,7 @@ export default {
     data() {
         return {
             transitionName: 'slide-left',
-            credit: Language.get('popup.footer.credit', {
-                name: '<a href="https://reddit.com/u/Mafrans">Mafrans</a>',
-            }),
+            Language
         };
     },
     watch: {

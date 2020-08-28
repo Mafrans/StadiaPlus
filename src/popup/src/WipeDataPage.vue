@@ -1,16 +1,12 @@
 <template>
     <div class="wipe-data-page">
         <div class="container">
-            <page-header :back-button="true">{{ Language.get('popup.user-page.title') }}</page-header>
+            <page-header :back-button="true">{{ Language.get('popup.wipe-data-page.title') }}</page-header>
 
-            <h3>Really wipe your data?</h3>
-            <p>
-                Wiping your user data from Stadia+ DB means your profile will no longer be available, and your data will be completely gone from the Stadia+ DB database. 
-                <br><br> 
-                This does not effect your Stadia profile, and all your game data will still be available in Stadia.
-            </p>
-            <btn class="warning-button" @click="wipedata()">Yes, wipe my data</btn>
-            <btn @click="back()">No, I changed my mind</btn>
+            <h3>{{ Language.get('popup.wipe-data-page.heading') }}</h3>
+            <p v-html="Language.get('popup.wipe-data-page.text')"></p>
+            <btn class="warning-button" @click="wipedata()">{{ Language.get('popup.wipe-data-page.confirm') }}</btn>
+            <btn @click="back()">{{ Language.get('popup.wipe-data-page.cancel') }}</btn>
         </div>
     </div>
 </template>
@@ -41,8 +37,7 @@ export default {
         wipedata() {
             StadiaPlusDB.wipedata()
                 .then(() => {
-                    this.$router.push('/')
-                        .then(() => location.reload());
+                    window.close();
                 })
         },
         back() {

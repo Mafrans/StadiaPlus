@@ -9,25 +9,25 @@
                 </div>
                 <icon id="more" style="cursor: pointer" class="icon">more_vert</icon>
                 <dropdown root="#more">
-                    <div class="delete-data" @click="goToDataWipe()">Delete user data</div>
+                    <div class="delete-data" @click="goToDataWipe()">{{ Language.get('popup.main-page.profile.wipe-data') }}</div>
                 </dropdown>
             </div>
             <btn v-if="user.avatar != undefined" v-on:click="openProfile()">
-                <icon>person</icon> Stadia+ DB profile 
+                <icon>person</icon> {{ Language.get('popup.main-page.profile.stadia+db-button') }}
             </btn>
             <p v-else>
-                Your profile is not yet available, please check back again after you've played a game or two.
+                {{ Language.get('popup.main-page.profile.not-available') }}
             </p>
             <btn style="color: #B9166A" v-on:click="signOut()"> <icon>exit_to_app</icon> Sign out </btn>
         </div>
         <div v-else>
-            <h3>Keep track of your progress</h3>
-            <p>Sign in to Stadia+ DB to automagically sync all your achievements and stats to your profile.</p>
+            <h3>{{ Language.get('popup.main-page.profile.heading') }}</h3>
+            <p>{{ Language.get('popup.main-page.profile.text') }}</p>
             <a href="">
-                More about Stadia+ DB<icon type="inline" style="margin-left: 4px">arrow_forward</icon>
+                {{ Language.get('popup.main-page.profile.more') }}<icon type="inline" style="margin-left: 4px">arrow_forward</icon>
             </a>
             <btn style="margin-top: 1.5rem" v-on:click="login()">
-                <icon><img :src="GoogleG"/></icon> Sign in with Google
+                <icon><img :src="GoogleG"/></icon> {{ Language.get('popup.main-page.profile.login-button') }}
             </btn>
         </div>
     </div>
@@ -110,11 +110,13 @@ import GoogleG from '../assets/Google G.svg';
 import Button from './Button.vue';
 import Icon from './Icon.vue';
 import Dropdown from './Dropdown.vue';
+import { Language } from '../../../Language.ts'
 export default {
     data() {
         return {
             user: null,
             GoogleG,
+            Language
         };
     },
     methods: {

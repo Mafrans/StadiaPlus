@@ -27,7 +27,7 @@ export default {
 
         console.log(rootElement.getBoundingClientRect());
         element.style.top = (rootElement.offsetTop + 24) + 'px';
-        element.style.left = (rootElement.offsetLeft) + 'px';
+        element.style.left = (rootElement.offsetLeft - element.offsetWidth + 32) + 'px';
 
         rootElement.addEventListener('click', () => {
             if(!element.classList.contains('open')) {

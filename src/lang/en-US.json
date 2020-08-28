@@ -11,13 +11,29 @@
             "help-and-faq": "Help & FAQ",
             "discord": "Discord",
             "reddit": "Reddit",
-            "github": "Github"
+            "github": "Github",
+            "profile": {
+                "wipe-data": "Delete user data",
+                "stadia+db-button": "Stadia+ DB profile",
+                "not-available": "Your profile is not yet available, please check back again after you've played a game or two.",
+                "heading": "Keep track of your progress",
+                "text": "Sign in to Stadia+ DB to automagically sync all your achievements and stats to your profile.",
+                "more": "More about Stadia+ DB",
+                "login-button":"Sign in with Google"
+            }
         },
         "user-page": {
             "title": "Login",
             "login-button": "Sign in with Google",
             "accept-label": "By signing into Stadia+ DB you accept the",
             "privacy-policy": "privacy policy"
+        },
+        "wipe-data-page": {
+            "title": "Wipe Data",
+            "heading": "Really wipe your data?",
+            "text": "Wiping your user data from Stadia+ DB means your profile will no longer be available, and your data will be completely gone from the Stadia+ DB database. <br><br> This does not effect your Stadia profile, and all your game data will still be available in Stadia.",
+            "confirm": "Yes, wipe my data",
+            "cancel": "No, I changed my mind"
         },
         "settings-page": {
             "title": "Settings",
