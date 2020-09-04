@@ -12,13 +12,13 @@
         "tabs",
         "https://stadia.google.com/*",
         "https://stadiagamedb.com/data/gamedb.json",
-        "http://localhost:3000/*"
+        "https://stadiaplus.dev/*"
     ],
     "oauth2": {
         "client_id": "401608975485-29rkti0stvi4odvnn6hlomkjs0lrtqbj.apps.googleusercontent.com",
         "scopes": [
-            "http://localhost:3000/auth/google",
-            "http://localhost:3000/auth/google/callback"
+            "https://stadiaplus.dev/auth/google",
+            "https://stadiaplus.dev/auth/google/callback"
         ]
     },
     "background": {

@@ -1,5 +1,6 @@
 import { LocalStorage } from './Storage';
 import axios from 'axios';
+import Logger from './Logger';
 
 const chrome = (window as any).chrome;
 
@@ -12,6 +13,7 @@ export class StadiaPlusDB {
     static connected: boolean;
 
     static connect(url: string): Promise<boolean> {
+        Logger.info('Connecting to StadiaPlus via ' + url)
         StadiaPlusDB.url = url;
         StadiaPlusDB.LFGConnector = new LFGConnector();
         StadiaPlusDB.ProfileConnector = new ProfileConnector();
@@ -76,6 +78,7 @@ export class StadiaPlusDB {
                     interactive: true,
                 },
                 (responseUrl: string) => {
+                    console.log({responseUrl});
                     const url = new URL(responseUrl);
                     StadiaPlusDB.authToken = url.hash.substring(1);
                     LocalStorage.AUTH_TOKEN.set(StadiaPlusDB.authToken, () => {

@@ -73,7 +73,7 @@ export default {
         },
     },
     mounted() {
-        StadiaPlusDB.connect('http://localhost:3000').catch(console.error);
+        StadiaPlusDB.connect('https://stadiaplus.dev').catch(console.error);
     }
 };
 </script>

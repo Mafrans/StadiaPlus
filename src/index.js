@@ -59,7 +59,7 @@ loader.register(new PasteFromClipboard());
 loader.register(new LookingForGroup());
 loader.register(webScraper);
 
-StadiaPlusDB.connect('http://localhost:3000')
+StadiaPlusDB.connect('https://stadiaplus.dev')
 .then(connected => {
     if(!connected) {
         Logger.error('StadiaPlusDB was unable to connect, is the server down?');
