@@ -222,10 +222,6 @@ export class LibraryFilter extends Component {
             wrapper.classList.add('closed');
         }
 
-        // Position the icon in the top right corner rather than the top left using
-        // a margin (using the 'left' css attribute is not possible)
-        iconWrapper.style.transformOrigin = `calc(100% - ${element.clientWidth /
-            2}px) ${element.clientHeight / 2}px`;
 
         // When the icon is clicked on
         visibility.addEventListener('click', () => {
@@ -291,7 +287,6 @@ export class LibraryFilter extends Component {
 
                 // Make sure the element isn't hidden
                 wrapper.classList.remove('closing', 'closed');
-                iconwrapper.style.marginLeft = tile.clientWidth - iconwrapper.clientWidth + 'px';
             } else {
                 // Otherwise...
                 // ...if the hiding should be animated
@@ -310,10 +305,6 @@ export class LibraryFilter extends Component {
                 }
             }
         } else {
-            // If the game is visible
-            // Make sure the icon stays in place and doesn't get reset back to the top left corner
-            iconwrapper.style.marginLeft = wrapper.clientWidth - iconwrapper.clientWidth + 'px';
-
             // Make sure the icon shows that it is visible
             visibility.innerHTML = 'visibility';
         }
