@@ -1,6 +1,7 @@
+import Logger from "../Logger";
+
 const WebScraperRunnable = {
     fetchData(userid, gameid) {
-        console.log({ userid, gameid })
         return new Promise((resolve, reject) => {
             fetch("https://stadia.google.com/profile/" + userid + "/detail/" + gameid)
             .then(response => response.text())
@@ -56,5 +57,5 @@ this.addEventListener('popstate', event => {
         sandboxer.setAttribute('data', JSON.stringify(data));
         sandboxer.click();
     })
-    .catch(e => console.log(e))
+    .catch(e => Logger.error(e));
 });

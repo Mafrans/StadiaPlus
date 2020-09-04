@@ -70,7 +70,7 @@ StadiaPlusDB.connect('https://stadiaplus.dev')
         StadiaPlusDB.authToken = response[LocalStorage.AUTH_TOKEN.tag];
 
         StadiaPlusDB.getProfile()
-        .then(console.log)
+        .then(profile => Logger.info(`Logged into Stadia+DB as ${profile.name}${profile.tag == 0000 ? "✨" : '#' + profile.tag}`))
         .catch(() => {
             StadiaPlusDB.authToken = null;
             Logger.error('dsajdosajdsaiojdao')

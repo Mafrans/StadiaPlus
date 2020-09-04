@@ -148,7 +148,6 @@ export default {
                 .then((profile) => {
                     this.user = profile;
                     this.loading = false;
-                    console.log({ profile });
                 })
                 .catch(() => {
                     StadiaPlusDB.authToken = null;

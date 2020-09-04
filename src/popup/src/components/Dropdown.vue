@@ -25,7 +25,6 @@ export default {
         const rootElement = document.querySelector(this.root);
         const element = document.getElementById(this.id);
 
-        console.log(rootElement.getBoundingClientRect());
         element.style.top = (rootElement.offsetTop + 24) + 'px';
         element.style.left = (rootElement.offsetLeft - element.offsetWidth + 32) + 'px';
 

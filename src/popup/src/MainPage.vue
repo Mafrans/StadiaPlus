@@ -65,9 +65,6 @@ export default {
         open(url) {
             window.open(url, '_blank');
         },
-        getUser() {
-            StadiaPlusDB.getProfile().then(console.log);
-        },
         testLFG() {
             StadiaPlusDB.LFGConnector.post('test');
         },

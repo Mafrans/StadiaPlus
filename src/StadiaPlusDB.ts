@@ -71,14 +71,12 @@ export class StadiaPlusDB {
                 })
             }
     
-            console.log(`${StadiaPlusDB.url}/auth/google?redirect=${chrome.identity.getRedirectURL('database')}`);
             chrome.identity.launchWebAuthFlow(
                 {
                     url: `${StadiaPlusDB.url}/auth/google?redirect=${chrome.identity.getRedirectURL('database')}`,
                     interactive: true,
                 },
                 (responseUrl: string) => {
-                    console.log({responseUrl});
                     const url = new URL(responseUrl);
                     StadiaPlusDB.authToken = url.hash.substring(1);
                     LocalStorage.AUTH_TOKEN.set(StadiaPlusDB.authToken, () => {
@@ -141,7 +139,6 @@ export class ProfileConnector {
         if(!StadiaPlusDB.isAuthenticated()) {
             return new Promise((resolve, reject) => reject({ error: 'Not authenticated with StadiaPlusDB' }));
         }
-        console.log({authToken: StadiaPlusDB.authToken});
 
         return axios({
             method: 'post',

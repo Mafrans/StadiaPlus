@@ -79,7 +79,6 @@ export class WebScraper extends Component {
         Util.desandbox(`
             WebScraperRunnable.fetchData('${userId}', '${uuid}')
             .then(data => {
-                console.log(data);
                 const sandboxer = document.getElementById('web-scraper-sandboxer');
                 sandboxer.setAttribute('data', JSON.stringify(data));
                 sandboxer.click();
