@@ -24,7 +24,7 @@
         <div v-else>
             <h3>{{ Language.get('popup.main-page.profile.heading') }}</h3>
             <p>{{ Language.get('popup.main-page.profile.text') }}</p>
-            <a href="">
+            <a href="https://github.com/Mafrans/StadiaPlus/wiki/StadiaPlusDB" target="_blank">
                 {{ Language.get('popup.main-page.profile.more') }}<icon type="inline" style="margin-left: 4px">arrow_forward</icon>
             </a>
             <btn style="margin-top: 1.5rem" v-on:click="login()">
