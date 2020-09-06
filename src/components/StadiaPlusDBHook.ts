@@ -19,11 +19,11 @@ const chrome = (window as any).chrome;
  * @class WebScraper
  * @extends {Component}
  */
-export class WebScraper extends Component {
+export class StadiaPlusDBHook extends Component {
     /**
      * The component tag, used in language files.
      */
-    tag: string = 'stadia-plus-db';
+    tag: string = 'stadiaplusdb';
 
     /**
      * The popup element.
@@ -45,46 +45,53 @@ export class WebScraper extends Component {
             document.body.appendChild(sandboxer);
             sandboxer.addEventListener('click', () => {
                 const data = JSON.parse(sandboxer.getAttribute('data'));
-                StadiaPlusDB.ProfileConnector.setData(data);
-            })
+                Logger.info(Language.get('stadiaplusdb.updating', { game: data.game.name }));
+                StadiaPlusDB.ProfileConnector.setData(data)
+                    .then(console.log)
+                    .catch(console.error);
+            });
 
             const script = document.createElement('script');
             script.innerHTML = runnable;
             document.body.appendChild(script);
-        })
+        });
     }
 
     /**
      * Called on startup, logs to the console.
-     * 
+     *
      * @memberof WebScraper
      */
     onStart(): void {
         this.active = true;
-        Logger.component(Language.get('component.enabled', {'name': this.name}));
+        Logger.component(Language.get('component.enabled', { name: this.name }));
     }
 
     /**
      * Called on stop, logs to the console.
-     * 
+     *
      * @memberof WebScraper
      */
     onStop(): void {
         this.active = false;
-        Logger.component(Language.get('component.disabled', {'name': this.name}));
+        Logger.component(Language.get('component.disabled', { name: this.name }));
     }
 
     updateGame(uuid: string) {
-        const userId = document.querySelector('.ksZYgc.VGZcUb').getAttribute('data-player-id');
-        Util.desandbox(`
-            WebScraperRunnable.fetchData('${userId}', '${uuid}')
-            .then(data => {
-                const sandboxer = document.getElementById('web-scraper-sandboxer');
-                sandboxer.setAttribute('data', JSON.stringify(data));
-                sandboxer.click();
-            })
-        `);
+        Util.desandbox(`WebScraperRunnable.update('${uuid}')`);
     }
 
-    onUpdate() { }
+    oldURL: string = '';
+    onUpdate() {
+        if (StadiaPlusDB.isAuthenticated()) {
+            if (location.href != this.oldURL) {
+                if (location.href.includes('player')) {
+                    Util.desandbox(`WebScraperRunnable.update('${location.href.split('/').pop()}')`);
+                } else if (this.oldURL.includes('player')) {
+                    Util.desandbox(`WebScraperRunnable.update('${this.oldURL.split('/').pop()}')`);
+                }
+                this.oldURL = location.href;
+            }
+        }
+    }
 }

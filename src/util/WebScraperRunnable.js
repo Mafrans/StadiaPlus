@@ -1,5 +1,3 @@
-import Logger from "../Logger";
-
 const WebScraperRunnable = {
     fetchData(userid, gameid) {
         return new Promise((resolve, reject) => {
@@ -43,19 +41,18 @@ const WebScraperRunnable = {
             })
             .catch(reject);
         });
+    },
+
+    update(uuid) {
+        if(uuid == null) return;
+    
+        const userId = document.querySelector('.ksZYgc.VGZcUb').getAttribute('data-player-id');
+        WebScraperRunnable.fetchData(userId, uuid)
+        .then(data => {
+            const sandboxer = document.getElementById('web-scraper-sandboxer');
+            sandboxer.setAttribute('data', JSON.stringify(data));
+            sandboxer.click();
+        })
+        .catch(e => console.error(e));
     }
 }
-
-this.addEventListener('popstate', event => {
-    const uuid = event.srcElement.dataLayer.find(e => e.event === "engagement_sessions").app_id;
-    if(uuid == null) return;
-
-    const userId = document.querySelector('.ksZYgc.VGZcUb').getAttribute('data-player-id');
-    WebScraperRunnable.fetchData(userId, uuid)
-    .then(data => {
-        const sandboxer = document.getElementById('web-scraper-sandboxer');
-        sandboxer.setAttribute('data', JSON.stringify(data));
-        sandboxer.click();
-    })
-    .catch(e => Logger.error(e));
-});

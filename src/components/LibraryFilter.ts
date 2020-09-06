@@ -11,7 +11,7 @@ import { SyncStorage } from '../Storage';
 import { Shortcut } from '../Shortcut';
 import { Modal } from '../ui/Modal';
 import '../ui/styles/Button.scss';
-import { WebScraper } from './StadiaPlusDBHook';
+import { StadiaPlusDBHook } from './StadiaPlusDBHook';
 import { StadiaPlusDB } from '../StadiaPlusDB';
 
 const { chrome, Array } = window as any;
@@ -92,9 +92,9 @@ export class LibraryFilter extends Component {
     /**
      * Web Scraper
      */
-    webScraper: WebScraper;
+    webScraper: StadiaPlusDBHook;
 
-    constructor(snackbar: Snackbar, database: WebDatabase, uuidMap: WebDatabase, modal: Modal, webScraper: WebScraper) {
+    constructor(snackbar: Snackbar, database: WebDatabase, uuidMap: WebDatabase, modal: Modal, webScraper: StadiaPlusDBHook) {
         super();
 
         // Import database & uuidMap from index.js
@@ -195,7 +195,7 @@ export class LibraryFilter extends Component {
         iconWrapper.appendChild(visibility);
         iconWrapper.appendChild(shortcut);
 
-        if(StadiaPlusDB.isConnected()) {
+        if(StadiaPlusDB.isAuthenticated()) {
             const updateDB = document.createElement('div');
             updateDB.classList.add('stadiaplus_libraryfilter-icon');
             updateDB.textContent = 'cloud_upload';
@@ -203,7 +203,7 @@ export class LibraryFilter extends Component {
 
             updateDB.addEventListener('click', () => {
                 this.webScraper.updateGame(uuid);
-                this.snackbar.activate(`Updating ${entry[1]} in Stadia+ DB`);
+                this.snackbar.activate(Language.get('stadiaplusdb.updating', {game:entry[1]}));
             });
         }
         

@@ -103,8 +103,11 @@
             "stop": "Stop Looking for Groups"
         }
     },
-    "stadia-plus-db": {
-        "name": "Stadia+ DB"
+    "stadiaplusdb": {
+        "name": "Stadia+ DB",
+        "updating": "Updaterar {{game}} i Stadia+ DB",
+        "connecting": "Ansluter till Stadia+ DB via {{url}}",
+        "signed-in": "Inloggad hos Stadia+ DB som {{user}}"
     },
     "snackbar": {
         "reload-to-update": "Uppdatera sidan för att se dina ändringar.",
@@ -120,5 +123,6 @@
     "4k": "4K",
     "1440p": "1440p",
     "1080p": "1080p",
-    "720p": "720p"
+    "720p": "720p",
+    "lang-config": "Använder språkkonfigurationen {{language}}"
 }

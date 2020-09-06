@@ -23,7 +23,7 @@ import { Shortcut } from './Shortcut';
 import { Browser } from './Browser';
 import { LookingForGroup } from './components/LookingForGroup';
 import { StadiaPlusDB } from './StadiaPlusDB';
-import { WebScraper } from './components/StadiaPlusDBHook';
+import { StadiaPlusDBHook } from './components/StadiaPlusDBHook';
 
 // Always load languages first
 Language.init();
@@ -38,7 +38,7 @@ const loader = new ComponentLoader();
 const snackbar = new Snackbar();
 const modal = new Modal();
 const tab = new UITab();
-const webScraper = new WebScraper();
+const webScraper = new StadiaPlusDBHook();
 
 const database = new WebDatabase('https://stadiagamedb.com/data/gamedb.json');
 const uuidMap = new WebDatabase('https://stadiagamedb.com/data/uuidmap.json');
@@ -70,10 +70,10 @@ StadiaPlusDB.connect('https://stadiaplus.dev')
         StadiaPlusDB.authToken = response[LocalStorage.AUTH_TOKEN.tag];
 
         StadiaPlusDB.getProfile()
-        .then(profile => Logger.info(`Logged into Stadia+DB as ${profile.name}${profile.tag === "0000" ? "✨" : '#' + profile.tag}`))
+        .then(profile => Logger.info(Language.get('stadiaplusdb.signed-in', {user: profile.name + profile.tag === "0000" ? "✨" : '#' + profile.tag})))
         .catch(() => {
             StadiaPlusDB.authToken = null;
-            Logger.error('Not logged into Stadia+')
+            Logger.error('Not logged into Stadia+');
         });
     })
 });

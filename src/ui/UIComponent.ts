@@ -57,7 +57,7 @@ export class UIComponent {
     }
 
     closeTab(): void {
-        Logger.info('Closing', this.id);
+        // Logger.info('Closing', this.id);
         this.element.classList.remove('open');
         this.open = false;
 

@@ -62,7 +62,7 @@ export class Language {
                 language = this.automatic();
             }
 
-            Logger.info('Using language configuration ' + language);
+            Logger.info(Language.get('lang-config', {language}));
             this.languages.forEach((lang, index) => {
                 if (lang.tag === language) {
                     this.current = lang;

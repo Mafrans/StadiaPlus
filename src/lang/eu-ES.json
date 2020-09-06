@@ -103,8 +103,11 @@
             "stop": "Stop Looking for Groups"
         }
     },
-    "stadia-plus-db": {
-        "name": "Stadia+ DB"
+    "stadiaplusdb": {
+        "name": "Stadia+ DB",
+        "updating": "Updating {{game}} in Stadia+ DB",
+        "connecting": "Connecting to Stadia+ DB via {{url}}",
+        "signed-in": "Logged into Stadia+ DB as {{user}}"
     },
     "snackbar": {
         "reload-to-update": "Orria birkargatu ezarritako aldaketak abiarazteko.",
@@ -120,5 +123,6 @@
     "4k": "4K",
     "1440p": "1440p",
     "1080p": "1080p",
-    "720p": "720p"
+    "720p": "720p",
+    "lang-config": "Using language configuration {{language}}"
 }

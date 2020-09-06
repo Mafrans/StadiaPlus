@@ -1,6 +1,7 @@
 import { LocalStorage } from './Storage';
 import axios from 'axios';
 import Logger from './Logger';
+import { Language } from './Language';
 
 const chrome = (window as any).chrome;
 
@@ -13,7 +14,7 @@ export class StadiaPlusDB {
     static connected: boolean;
 
     static connect(url: string): Promise<boolean> {
-        Logger.info('Connecting to StadiaPlus via ' + url)
+        Logger.info(Language.get('stadiaplusdb.connecting', {url}));
         StadiaPlusDB.url = url;
         StadiaPlusDB.LFGConnector = new LFGConnector();
         StadiaPlusDB.ProfileConnector = new ProfileConnector();
@@ -55,7 +56,7 @@ export class StadiaPlusDB {
     }
 
     static isAuthenticated(): boolean {
-        return StadiaPlusDB.authToken != null;
+        return StadiaPlusDB.isConnected() && StadiaPlusDB.authToken != null;
     }
 
     static authenticate(): Promise<any> {
