@@ -114,10 +114,10 @@
         "name": "Popup Fix"
     },
     "looking-for-group": {
-        "name": "Looking For Group",
+        "name": "In Cerca di Gruppo",
         "toggle-button": {
-            "start": "Look for a Group",
-            "stop": "Stop Looking for Groups"
+            "start": "Cerca un Gruppo",
+            "stop": "Smetti di Cercare Gruppi"
         }
     },
     "stadiaplusdb": {
@@ -135,8 +135,8 @@
     "vp9": "VP9",
     "h264": "H264",
     "apply": "Applica",
-    "loading": "Loading...",
-    "experimental": "Experimental",
+    "loading": "Caricamento...",
+    "experimental": "Sperimentale",
     "4k": "4K",
     "1440p": "1440p",
     "1080p": "1080p",
