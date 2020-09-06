@@ -8,10 +8,27 @@
             "ready-text": "Tillägget är redo att köra. Bara starta Stadia och börja spela! 🎮",
             "launch-button": "Starta Stadia",
             "settings-button": "Inställningar",
+            "patreon-button": "Stöd på Patreon",
             "help-and-faq": "Hjälp & FAQ",
             "discord": "Discord",
             "reddit": "Reddit",
-            "github": "Github"
+            "github": "Github",
+            "profile": {
+                "wipe-data": "Radera användardata",
+                "view-profile": "Visa profil",
+                "not-available": "Din profil är inte tillgänglig än, titta tillbaka efter du har spelat ett par spel.",
+                "heading": "Håll koll på dina prestationer",
+                "text": "Logga in med Stadia+ DB för att automagiskt synca alla dina prestationer och din statistik till din profil.",
+                "more": "Lär mer om Stadia+ DB",
+                "login-button":"Logga in med Google",
+                "sign-out":"Logga ut"
+            }
+        },
+        "user-page": {
+            "title": "Logga in",
+            "login-button": "Logga in with Google",
+            "accept-label": "Genom att logga in med Stadia+ DB accepterar du våran",
+            "privacy-policy": "privacy policy"
         },
         "settings-page": {
             "title": "Inställningar",

@@ -8,18 +8,20 @@
             "ready-text": "The extension is all ready to go. Just fire up Stadia and start playing! 🎮",
             "launch-button": "Launch Stadia",
             "settings-button": "Settings",
+            "patreon-button": "Support on Patreon",
             "help-and-faq": "Help & FAQ",
             "discord": "Discord",
             "reddit": "Reddit",
             "github": "Github",
             "profile": {
                 "wipe-data": "Delete user data",
-                "stadia+db-button": "Stadia+ DB profile",
+                "view-profile": "View profile",
                 "not-available": "Your profile is not yet available, please check back again after you've played a game or two.",
                 "heading": "Keep track of your progress",
                 "text": "Sign in to Stadia+ DB to automagically sync all your achievements and stats to your profile.",
                 "more": "More about Stadia+ DB",
-                "login-button":"Sign in with Google"
+                "login-button":"Sign in with Google",
+                "sign-out":"Sign out"
             }
         },
         "user-page": {

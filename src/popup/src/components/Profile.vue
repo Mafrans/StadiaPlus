@@ -9,16 +9,17 @@
                 </div>
                 <icon id="more" style="cursor: pointer" class="icon">more_vert</icon>
                 <dropdown root="#more">
+                    <div class="sign-out" @click="signOut()">{{ Language.get('popup.main-page.profile.sign-out') }}</div>
                     <div class="delete-data" @click="goToDataWipe()">{{ Language.get('popup.main-page.profile.wipe-data') }}</div>
                 </dropdown>
             </div>
-            <btn v-if="user.avatar != undefined" v-on:click="openProfile()">
-                <icon>person</icon> {{ Language.get('popup.main-page.profile.stadia+db-button') }}
+            <btn v-if="user.avatar != undefined" v-on:click="openProfile()" style="margin-top: 1rem">
+                <icon>person</icon> {{ Language.get('popup.main-page.profile.view-profile') }}
             </btn>
             <p v-else>
                 {{ Language.get('popup.main-page.profile.not-available') }}
             </p>
-            <btn style="color: #B9166A" v-on:click="signOut()"> <icon>exit_to_app</icon> Sign out </btn>
+            <btn style="color: #B9166A" v-on:click="signOut()"> <icon>exit_to_app</icon>{{ Language.get('popup.main-page.profile.sign-out') }}</btn>
         </div>
         <div v-else>
             <h3>{{ Language.get('popup.main-page.profile.heading') }}</h3>
@@ -35,7 +36,7 @@
 
 <style lang="scss" scoped>
 .profile {
-    margin: 1.5rem 0;
+    margin: 1rem 0;
     padding: 1rem 0.75rem;
     border: solid 2px #f0f0f0;
     border-radius: 0.5rem;
@@ -71,10 +72,14 @@
     }
 }
 
+.delete-data,
+.sign-out {
+    cursor: pointer;
+}
+
 .delete-data {
     color: red;
     font-weight: 500;
-    cursor: pointer;
 }
 
 .button {
@@ -130,6 +135,15 @@ export default {
             StadiaPlusDB.signout().then(() => {
                 location.reload();
             });
+        },
+        copyProfileURL() {
+            const listener = function(ev) {
+                ev.preventDefault();
+                ev.clipboardData.setData('text/plain', `${StadiaPlusDB.url}/profile/${this.user.name}/${this.user.tag}`);
+            };
+            document.addEventListener('copy', listener);
+            document.execCommand('copy');
+            document.removeEventListener('copy', listener);
         },
         goToDataWipe() {
             this.$router.push('./user/wipedata');

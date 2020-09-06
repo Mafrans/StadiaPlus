@@ -8,10 +8,27 @@
             "ready-text": "Розширення готове до роботи. Просто запустіть Stadia і почніть грати! 🎮",
             "launch-button": "Запустити Stadia",
             "settings-button": "Налаштування",
+            "patreon-button": "Support on Patreon",
             "help-and-faq": "Довідка та поширені запитання",
             "discord": "Discord",
             "reddit": "Reddit",
-            "github": "Github"
+            "github": "Github",
+            "profile": {
+                "wipe-data": "Delete user data",
+                "view-profile": "View profile",
+                "not-available": "Your profile is not yet available, please check back again after you've played a game or two.",
+                "heading": "Keep track of your progress",
+                "text": "Sign in to Stadia+ DB to automagically sync all your achievements and stats to your profile.",
+                "more": "More about Stadia+ DB",
+                "login-button":"Sign in with Google",
+                "sign-out":"Sign out"
+            }
+        },
+        "user-page": {
+            "title": "Login",
+            "login-button": "Sign in with Google",
+            "accept-label": "By signing into Stadia+ DB you accept the",
+            "privacy-policy": "privacy policy"
         },
         "settings-page": {
             "title": "Налаштування",

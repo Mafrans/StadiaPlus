@@ -7,11 +7,11 @@
         <footer>
             <span>Stadia+ 2.3-C1</span>
             <span>
-                <a href="https://github.com/Mafrans/StadiaPlus/wiki">{{ Language.get('popup.main-page.help-and-faq') }}</a>
+                <a href="https://github.com/Mafrans/StadiaPlus/wiki" target="_blank">{{ Language.get('popup.main-page.help-and-faq') }}</a>
                  • 
-                <a href="https://discord.gg/2VDbEQ8">{{ Language.get('popup.main-page.discord') }}</a>
+                <a href="https://discord.gg/2VDbEQ8" target="_blank">{{ Language.get('popup.main-page.discord') }}</a>
                  • 
-                <a href="https://github.com/Mafrans/StadiaPlus">{{ Language.get('popup.main-page.github') }}</a>
+                <a href="https://github.com/Mafrans/StadiaPlus" target="_blank">{{ Language.get('popup.main-page.github') }}</a>
             </span>
         </footer>
     </div>
@@ -59,7 +59,7 @@ export default {
     font-size: 16px;
     font-family: 'Roboto', sans-serif;
     width: 380px;
-    height: 575px;
+    height: 570px;
     color: #585858;
 }
 

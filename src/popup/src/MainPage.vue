@@ -1,7 +1,7 @@
 <template>
     <div class="main-page">
         <div class="container">
-            <page-header :img="logo" >{{ Language.get('popup.main-page.title') }}</page-header >
+            <page-header :img="logo" icon="settings" v-on:icon-click="settings">{{ Language.get('popup.main-page.title') }}</page-header >
             <p>
                 {{ Language.get('popup.main-page.ready-text') }}
             </p>
@@ -22,12 +22,23 @@
 
             <div class="row">
                 <div class="col">
+                    <btn v-on:click="openPatreon()">
+                        <icon>redeem</icon>
+                        {{ Language.get('popup.main-page.patreon-button') }}
+                    </btn>
+                </div>
+            </div>
+
+            <!-- 
+            <div class="row">
+                <div class="col">
                     <btn v-on:click="settings()">
                         <icon>settings</icon>
                         {{ Language.get('popup.main-page.settings-button') }}
                     </btn>
                 </div>
             </div>
+             -->
         </div>
     </div>
 </template>
@@ -58,6 +69,9 @@ export default {
     methods: {
         settings() {
             this.$router.push('settings');
+        },
+        openPatreon() {
+            window.open('https://www.patreon.com/bePatron?u=15722081', '_blank')
         },
         userPage() {
             this.$router.push('user');
