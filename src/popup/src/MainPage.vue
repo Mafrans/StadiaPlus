@@ -22,7 +22,7 @@
 
             <div class="row">
                 <div class="col">
-                    <btn v-on:click="openPatreon()">
+                    <btn style="color: #FA4821" v-on:click="openPatreon()">
                         <icon>redeem</icon>
                         {{ Language.get('popup.main-page.patreon-button') }}
                     </btn>

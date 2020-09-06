@@ -26,7 +26,7 @@ export default {
     border-radius: 8px;
     background: #F0F0F0;
     color: #505050;
-    font-weight: 400;
+    font-weight: 500;
     text-align: center;
     display: block;
     text-decoration: none;
