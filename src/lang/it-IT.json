@@ -8,26 +8,26 @@
             "ready-text": "L'estensione è pronta per l'uso. Avvia Stadia e inizia a giocare! 🎮",
             "launch-button": "Avvia Stadia",
             "settings-button": "Impostazioni",
-            "patreon-button": "Support on Patreon",
+            "patreon-button": "Supporto su Patreon",
             "help-and-faq": "Aiuto & FAQ",
             "discord": "Discord",
             "reddit": "Reddit",
             "github": "Github",
             "profile": {
-                "wipe-data": "Delete user data",
-                "view-profile": "View profile",
-                "not-available": "Your profile is not yet available, please check back again after you've played a game or two.",
-                "heading": "Keep track of your progress",
-                "text": "Sign in to Stadia+ DB to automagically sync all your achievements and stats to your profile.",
-                "more": "More about Stadia+ DB",
-                "login-button":"Sign in with Google",
-                "sign-out":"Sign out"
+                "wipe-data": "Cancella user data",
+                "view-profile": "Vedi profilo",
+                "not-available": "Il tuo profilo non è ancora disponibile, per favore controlla di nuovo dopo aver giocato un gioco o due.",
+                "heading": "Tieni traccia dei tuoi progressi",
+                "text": "Registrati su Stadia+ DB per sincronizzare automaticamente tutte le tue statistiche e achievements sul tuo profilo.",
+                "more": "Di più su Stadia+ DB",
+                "login-button":"Registrati con Google",
+                "sign-out":"Disconnetti"
             }
         },
         "user-page": {
             "title": "Login",
-            "login-button": "Sign in with Google",
-            "accept-label": "By signing into Stadia+ DB you accept the",
+            "login-button": "Registrati con Google",
+            "accept-label": "Registrandoti a Stadia+ DB accetti le",
             "privacy-policy": "privacy policy"
         },
         "settings-page": {
@@ -122,9 +122,9 @@
     },
     "stadiaplusdb": {
         "name": "Stadia+ DB",
-        "updating": "Updating {{game}} in Stadia+ DB",
-        "connecting": "Connecting to Stadia+ DB via {{url}}",
-        "signed-in": "Logged into Stadia+ DB as {{user}}"
+        "updating": "Aggiornamento {{game}} su Stadia+ DB",
+        "connecting": "Connessione a Stadia+ DB via {{url}}",
+        "signed-in": "Connesso a Stadia+ DB come {{user}}"
     },
     "snackbar": {
         "reload-to-update": "Ricarica la pagina per vedere i cambiamenti.",
@@ -141,5 +141,5 @@
     "1440p": "1440p",
     "1080p": "1080p",
     "720p": "720p",
-    "lang-config": "Using language configuration {{language}}"
+    "lang-config": "Linguaggio di configurazione usato {{language}}"
 }
