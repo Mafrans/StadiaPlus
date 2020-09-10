@@ -55,7 +55,9 @@
         "images/icons/stadiaplus.svg",
         "images/icons/network-monitor.svg",
         "images/icons/windowed.svg",
-        "images/icons/windowed_exit.svg"
+        "images/icons/windowed_exit.svg",
+        "images/PlayButton.png",
+        "images/PlayButtonBackground.png"
     ],
     "manifest_version": 2
 }

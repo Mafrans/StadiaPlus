@@ -43,7 +43,7 @@ export namespace StadiaGameDB {
                 const entry = games[uuids[uuid]];
                 let game: StadiaGameDB.Game = {
                     uuid: uuid,
-                    img: 'https://stadiagamedb.com/' + entry[0].match(/(images\/posters\/[a-z0-9_.-]+.png)/g),
+                    img: 'https://stadiagamedb.com/images/posters/webp/' + /images\/posters\/([a-z0-9_.-]+).png/g.exec(entry[0])[1] + '.webp',
                     name: entry[1],
                     tags: entry[2].split(', ').map((e: string) => StadiaGameDB.Tag.fromId(e.toLowerCase())),
                     date: entry[3],

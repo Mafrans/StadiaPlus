@@ -1,21 +1,77 @@
 .stadiaplus_libraryfilter {
+    pointer-events: initial;
     display: flex;
+    margin-top: 2rem;
 
     .stadiaplus_libraryfilter-searchcolumn {
         width: 300px;
-        background: rgba(255, 255, 255, 0.06);
+        border-radius: 0.5rem;
+        background: #2D2E31;
+        padding: .5rem;
+        box-sizing: border-box;
+
+        .stadiaplus_libraryfilter-searchcolumn-bar {
+            display: flex;
+            align-content: center;
+            width: 100%;
+            height: 45px;
+            border-radius: .5rem;
+            padding: .5rem;
+            box-sizing: border-box;
+            background: rgba(255, 255, 255, 0.06);
+
+            input {
+                height: 100%;
+                width: 100%;
+                color: #FFFFFF;
+                font-size: 18px;
+                background: none;
+                border: none;
+                outline: none;
+                box-sizing: border-box;
+                padding-left: 0.5rem;
+            }
+        }
+
+        .stadiaplus_libraryfilter-listgame {
+            cursor: pointer;
+
+            h6 {
+                color: rgba(255, 255, 255, 0.5);
+                margin-left: 0.5rem;
+                transition: color 0.2s ease-out;
+
+                .material-icons-extended {
+                    vertical-align: sub;
+                    transition: opacity 0.3s ease-out, margin-left 0.3s ease-out;
+                    margin-left: -0.25rem;
+                    opacity: 0;
+                }
+            }
+
+            &:hover {
+                h6 {
+                    color: #FFFFFF;
+
+                    .material-icons-extended {
+                        margin-left: 0rem;
+                        opacity: 1;
+                    }
+                }
+            }
+        }
     }
     
     .stadiaplus_libraryfilter-gamecontainer {
         width: calc(100% - 300px);
+        height: max-content;
         
         .stadiaplus_libraryfilter-game {
             display: inline-flex;
             position: relative;
-            pointer-events: initial;
 
             width: calc(25% - 1.5rem);
-            height: 300px;
+            height: 32vh;
             
             margin-left: 1.5rem;
             margin-bottom: 1.5rem;
@@ -23,17 +79,53 @@
 
             background-color: rgba(255, 255, 255, 0.06);
             background-position: center center;
-            background-size: 250%;
+            background-size: 210%;
             transition: background-size 0.5s cubic-bezier(0, 0, 0.2, 1), transform 0.2s ease-out;
             transform: scale(1);
+            cursor: pointer;
+
+            .play-button {
+                position: fixed;
+                left: 50%;
+                top: 50%;
+                width: 100px;
+                height: 100px;
+                background-size: cover;
+                transition: transform 0.5s ease-out, opacity 1.0s cubic-bezier(0, 0, 0, 1);
+                transform: translate(-50%, -50%) rotate(-500deg);
+                opacity: 0;
+            }
+
+            .play-icon {
+                position: fixed;
+                left: 50%;
+                top: 50%;
+                width: 90px;
+                height: 90px;
+                transform: translate(-50%, -50%);
+                transition: transform 0.5s ease-out, opacity 2.0s cubic-bezier(0, 0, 0, 1);
+                opacity: 0;
+            }
 
             &:hover {
-                background-size: 300%;
-                transition: background-size 1.5s cubic-bezier(0, 0, 0.2, 1), transform 0.3s ease-out;
+                background-size: 260%;
+                transition: background-size 2.0s cubic-bezier(0, 0, 0.2, 1), transform 0.3s ease-out;
                 transform: scale(1.05);
                 
-                &::before {
+                &::before,
+                .content {
                     opacity: 0;
+                }
+
+                .play-button {
+                    transition: transform 10.0s ease-out, opacity 1.0s cubic-bezier(0, 0, 0, 1);
+                    transform: translate(-50%, -50%) rotate(0) scale(1.2);
+                    opacity: 1;
+                }
+
+                .play-icon {
+                    transform: translate(-50%, -50%) scale(1.2);
+                    opacity: 1;
                 }
             }
 
@@ -50,9 +142,22 @@
                 border-radius: inherit;
             }
 
-            * {
-                position: relative;
+            .content {
+                transition: opacity 0.5s cubic-bezier(0, 0, 0.2, 1);
                 z-index: 1;
+                padding: 0.5rem;
+                display: flex;
+                justify-content: flex-end;
+                flex-direction: column;
+
+                white-space: nowrap;
+                overflow: hidden;
+
+                h6 {
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
             }
         }
     }
