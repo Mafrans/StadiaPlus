@@ -1,6 +1,7 @@
 import Logger from "./Logger";
 import { SyncStorage } from "./Storage";
 import { Language } from "./Language";
+import { StadiaGameDB } from "./StadiaGameDB";
 
 /**
  * A generic component of Stadia+

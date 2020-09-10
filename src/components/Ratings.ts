@@ -4,6 +4,7 @@ import Util from '../Util';
 import { WebDatabase } from '../WebDatabase';
 import './styles/Ratings.scss';
 import { Language } from '../Language';
+import { StadiaGameDB } from '../StadiaGameDB';
 
 /**
  * A component adding Metacritic ratings to every Stadia game.
@@ -24,16 +25,6 @@ export class Ratings extends Component {
     element: HTMLElement;
 
     /**
-     * The StadiaGameDB database.
-     */
-    database: WebDatabase;
-
-    /**
-     * The StadiaGameDB UUID Map.
-     */
-    uuidMap: WebDatabase;
-
-    /**
      * The value from each bound in which a game will get 0 or 5 stars.
      */
     graceAmount: number = 10;
@@ -45,9 +36,6 @@ export class Ratings extends Component {
 
     constructor(database: WebDatabase, uuidMap: WebDatabase) {
         super();
-
-        this.database = database;
-        this.uuidMap = uuidMap;
     }
 
     /**
@@ -77,12 +65,8 @@ export class Ratings extends Component {
      */
     updateRating(): void {
         const uuid = this.getUUID();
-        const connection = this.database.getConnection()['data'];
-        const map = this.uuidMap.getConnection()['uuidMap'];
-        
-        const entry = connection[map[uuid]];
 
-        this.element.setAttribute('data-rating', entry[6]);
+        this.element.setAttribute('data-rating', StadiaGameDB.get(uuid).rating.toString());
     }
 
 

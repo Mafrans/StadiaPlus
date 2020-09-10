@@ -4,6 +4,7 @@ import Util from '../Util';
 import './styles/StoreFilter.scss';
 import { WebDatabase } from '../WebDatabase';
 import { Language } from '../Language';
+import { StadiaGameDB } from '../StadiaGameDB';
 
 /**
  * A search bar displayed on the store page of Stadia.
@@ -29,16 +30,6 @@ export class StoreFilter extends Component {
     gameTemplate: HTMLElement;
 
     /**
-     * The StadiaGameDB database.
-     */
-    database: WebDatabase;
-
-    /**
-     * The StadiaGameDB UUID Map.
-     */
-    uuidMap: WebDatabase;
-
-    /**
      * An array of all game elements.
      */
     games: HTMLElement[] = [];
@@ -48,10 +39,8 @@ export class StoreFilter extends Component {
      */
     searchField: HTMLElement;
 
-    constructor(database: WebDatabase, uuidMap: WebDatabase) {
+    constructor() {
         super();
-        this.database = database;
-        this.uuidMap = uuidMap;
     }
 
     /**
@@ -60,23 +49,20 @@ export class StoreFilter extends Component {
      * @memberof StoreFilter
      */
     createElement(): void {
-        const connection = this.database.getConnection()['data'];
-        const map = this.uuidMap.getConnection()['uuidMap'];
-
         this.element = document.createElement('div');
         this.element.classList.add('stadiaplus_storefilter');
         this.element.id = this.id;
         this.element.innerHTML = `
             <div class='bar'>
-                <input type='text' placeholder="${connection[Math.floor(Math.random() * connection.length)][1]}..." id='${this.id}-search'>
+                <input type='text' placeholder="${StadiaGameDB.random()}..." id='${this.id}-search'>
             </div>
             <div class='games' id='${this.id}-games'>
 
             </div>
         `;
 
-        Object.keys(map).forEach((key: string) => {
-            const entry = connection[map[key]];
+        Object.keys(StadiaGameDB.getGames()).forEach((uuid: string) => {
+            const entry = StadiaGameDB.get(uuid);
 
             const element: HTMLElement = document.createElement('a');
             element.classList.add('stadiaplus_storefilter-game');
@@ -88,9 +74,9 @@ export class StoreFilter extends Component {
                 </div>
             `
             
-            element.setAttribute('data-uuid', key);
-            element.setAttribute('data-name', entry[1]);
-            element.setAttribute('data-tags', entry[2]);
+            element.setAttribute('data-uuid', uuid);
+            element.setAttribute('data-name', entry.name);
+            element.setAttribute('data-tags', entry.tags.map(tag => tag.name).join(','));
 
             let url = "https://stadia.google.com" as any;
             const locArr = location.href.split('/');
@@ -98,9 +84,9 @@ export class StoreFilter extends Component {
                 url = locArr.slice(0, 5).join('/') + '/';
                 url = url.substring(0, url.length + (url.endsWith('/') ? -1 : 0));
             }
-            const storeId = entry[0].match(/https:\/\/stadia.google.com\/store\/details\/([0-9a-z/]+)/)[1];
+            const storeId = entry.uuid.match(/https:\/\/stadia.google.com\/store\/details\/([0-9a-z/]+)/)[1];
             element.setAttribute('href', url + '/store/details/' + storeId);
-            element.setAttribute('data-img', 'https://stadiagamedb.com/' + entry[0].match(/(images\/posters\/[a-z0-9_.-]+.png)/g));
+            element.setAttribute('data-img', 'https://stadiagamedb.com/' + entry.uuid.match(/(images\/posters\/[a-z0-9_.-]+.png)/g));
 
             this.games.push(element);
         });

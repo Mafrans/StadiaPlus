@@ -2,41 +2,44 @@ import Logger from "./Logger";
 
 export class WebDatabase {
     url: string;
-    connected: boolean;
+    connected: boolean = false;
     connection: any;
     
     constructor(url: string) {
         this.url = url;
     }
 
-    connect(callback?: (connection:any) => {}) {
-        if(this.connected) {
-            Logger.error('Error: Already connected to the database.');
-            return;
-        }
-
-        const self = this;
-        const xhr = new XMLHttpRequest();
-        xhr.open("GET", this.url, true);
-        xhr.onload = function (e) {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    self.connected = true;
-                    self.connection = JSON.parse(xhr.responseText);
-                    if(callback)
-                        callback(self.connection);
-                }
-                else {
-                    self.connected = false;
-                    Logger.error('Error when connecting to database:', xhr.statusText);
-                }
+    connect(): Promise<any> {
+        return new Promise((resolve, reject) => {
+            if(this.connected) {
+                Logger.error('Error: Already connected to the database.');
+                return;
             }
-        };
-        xhr.onerror = function (e) {
-            self.connected = false;
-            Logger.error('Error when connecting to database:', xhr.statusText);
-        };
-        xhr.send(null); 
+    
+            const self = this;
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", this.url, true);
+            xhr.onload = function (e) {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        self.connected = true;
+                        self.connection = JSON.parse(xhr.responseText);
+                        resolve(self.connection);
+                    }
+                    else {
+                        self.connected = false;
+                        reject();
+                        Logger.error('Error when connecting to database:', xhr.statusText);
+                    }
+                }
+            };
+            xhr.onerror = function (e) {
+                self.connected = false;
+                reject();
+                Logger.error('Error when connecting to database:', xhr.statusText);
+            };
+            xhr.send(null); 
+        })
     }
 
     getConnection(): any {
@@ -52,8 +55,8 @@ export class WebDatabase {
         this.connected = false;
     }
 
-    reconnect(callback?: (connection:object) => {}) {
+    async reconnect(): Promise<any> {
         this.disconnect();
-        this.connect(callback);
+        return this.connect();
     }
 }

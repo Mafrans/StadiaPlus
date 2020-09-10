@@ -24,12 +24,15 @@ import { Browser } from './Browser';
 import { LookingForGroup } from './components/LookingForGroup';
 import { StadiaPlusDB } from './StadiaPlusDB';
 import { StadiaPlusDBHook } from './components/StadiaPlusDBHook';
+import { StadiaGameDB } from './StadiaGameDB';
 
 // Always load languages first
 Language.init();
 Language.load();
 
 Browser.init();
+
+StadiaGameDB.update();
 
 const storageManager = new StorageManager(appdata);
 storageManager.checkCacheVersion();
@@ -40,20 +43,15 @@ const modal = new Modal();
 const tab = new UITab();
 const webScraper = new StadiaPlusDBHook();
 
-const database = new WebDatabase('https://stadiagamedb.com/data/gamedb.json');
-const uuidMap = new WebDatabase('https://stadiagamedb.com/data/uuidmap.json');
-database.connect();
-uuidMap.connect();
-
 loader.register(new Clock());
 // loader.register(new PopupFix());
-loader.register(new LibraryFilter(snackbar, database, uuidMap, modal, webScraper));
+loader.register(new LibraryFilter(snackbar, modal, webScraper));
 loader.register(new ForceCodec(tab, snackbar));
 loader.register(new ForceResolution(tab, snackbar));
 loader.register(tab);
 loader.register(new NetworkMonitor());
-loader.register(new StoreFilter(database, uuidMap));
-loader.register(new Ratings(database, uuidMap));
+loader.register(new StoreFilter());
+loader.register(new Ratings());
 loader.register(new AllowWindowedMode());
 loader.register(new PasteFromClipboard());
 loader.register(new LookingForGroup());
