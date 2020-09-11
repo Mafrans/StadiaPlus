@@ -80,9 +80,8 @@ export class StadiaPlusDB {
                 (responseUrl: string) => {
                     const url = new URL(responseUrl);
                     StadiaPlusDB.authToken = url.hash.substring(1);
-                    LocalStorage.AUTH_TOKEN.set(StadiaPlusDB.authToken, () => {
-                        resolve(StadiaPlusDB.authToken);
-                    });
+                    LocalStorage.AUTH_TOKEN.set(StadiaPlusDB.authToken)
+                        .then(() => resolve(StadiaPlusDB.authToken));
                 }
             );
         });

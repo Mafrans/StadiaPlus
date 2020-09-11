@@ -59,11 +59,8 @@ export class ForceCodec extends Component {
      * @param {(() => any)} [callback=(() => {})] callback called after storage update.
      * @memberof ForceCodec
      */
-    getStorage(callback: (() => any) = (() => {})) {
-        LocalStorage.CODEC.get((result: any) => {
-            this.codec = result.codec;
-            callback();
-        });
+    async getStorage() {
+        this.codec = await LocalStorage.CODEC.get();
     }
 
     /**
@@ -73,7 +70,7 @@ export class ForceCodec extends Component {
      * @memberof ForceCodec
      */
     setStorage(callback: (() => any) = (() => {})) {
-        LocalStorage.CODEC.set(this.codec, callback);
+        LocalStorage.CODEC.set(this.codec);
     }
 
     /**
@@ -103,7 +100,7 @@ export class ForceCodec extends Component {
                 `,
                 this.id + '-row',
                 {
-                    onCreate: (row:UIRow) => {
+                    onCreate: async (row:UIRow) => {
                         self.select = new Select(row.element.querySelector('select'), { placeholder: Codec.AUTOMATIC });
     
                         const button = row.element.querySelector('.stadiaplus_button-small');
@@ -115,22 +112,21 @@ export class ForceCodec extends Component {
                             });
                         });
     
-                        self.getStorage(() => {
-                            LocalStorage.RESOLUTION.get(result => {
-                                self.select.enable();
-                                
-                                if(result.resolution === Resolution.UHD_4K || result.resolution === Resolution.WQHD) {
-                                    self.codec = Codec.VP9;
-                                    self.select.disable();
+                        await self.getStorage();
+                        const resolution = await LocalStorage.RESOLUTION.get();
 
-                                    const tooltip = document.getElementById(this.id + '-4k-tooltip') as HTMLElement; 
-                                    tooltip.style.display = 'block';
-                                }
+                        self.select.enable();
+                        
+                        if(resolution === Resolution.UHD_4K || resolution === Resolution.WQHD) {
+                            self.codec = Codec.VP9;
+                            self.select.disable();
 
-                                self.select.set(self.codec);
-                                ForceCodec.setCodec(self.codec);
-                            })
-                        });            
+                            const tooltip = document.getElementById(this.id + '-4k-tooltip') as HTMLElement; 
+                            tooltip.style.display = 'block';
+                        }
+
+                        self.select.set(self.codec);
+                        ForceCodec.setCodec(self.codec);
                     },
 
                     onReload: (row:UIRow) => {

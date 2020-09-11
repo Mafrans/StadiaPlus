@@ -10,6 +10,11 @@ class ElGen {
         }
     }
 
+    id(id: string): ElGen {
+        this.element.id = id;
+        return this;
+    }
+
     css(css: {[key: string]: string}): ElGen {
         for(const key in css) {
             this.element.style[key as any] = css[key];
@@ -52,6 +57,13 @@ class ElGen {
 
     text(text: string): ElGen {
         this.element.textContent = text;
+        return this;
+    }
+
+    event(events: {[name: string]: (event: Event) => void}) {
+        for(const name in events) {
+            this.element.addEventListener(name, events[name]);
+        }
         return this;
     }
 }

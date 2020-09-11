@@ -15,12 +15,12 @@ export class LocalStorage {
         this.tag = tag;
     }
 
-    get(callback: ((result: any) => any) = (() => {})) {
-        chrome.storage.local.get([ this.tag ], callback);
+    get(): Promise<any> {
+        return new Promise(resolve => chrome.storage.local.get([ this.tag ], (result: {[tag: string]: any}) => resolve(result[this.tag])));
     }
 
-    set(value: any, callback: (() => any) = (() => {})) {
-        chrome.storage.local.set({ [this.tag]: value }, callback);
+    set(value: any): Promise<void> {
+        return new Promise(resolve => chrome.storage.local.set({ [this.tag]: value }, () => resolve()));
     }
 
     static get(storages: LocalStorage[], callback: ((result: any) => any) = (() => {})) {
@@ -51,12 +51,12 @@ export class SyncStorage {
         this.tag = tag;
     }
 
-    get(callback: ((result: any) => any) = (() => {})) {
-        chrome.storage.sync.get([ this.tag ], callback);
+    get(): Promise<any> {
+        return new Promise(resolve => chrome.storage.sync.get([ this.tag ], (result: {[tag: string]: any}) => resolve(result[this.tag])));
     }
 
-    set(value: any, callback: (() => any) = (() => {})) {
-        chrome.storage.sync.set({ [this.tag]: value }, callback);
+    set(value: any): Promise<void> {
+        return new Promise(resolve => chrome.storage.sync.set({ [this.tag]: value }, () => resolve()));
     }
 
     static get(storages: SyncStorage[], callback: ((result: any) => any) = (() => {})) {
@@ -78,21 +78,19 @@ export class StorageManager {
         this.appdata = appdata;
     }
     
-    checkCacheVersion(callback: () => any): void {
-        LocalStorage.CACHE_VERSION.get(result => {
-            const cacheVersion = result[LocalStorage.CACHE_VERSION.tag];
+    async checkCacheVersion(callback: () => any) {
+        const cacheVersion = await LocalStorage.CACHE_VERSION.get();
 
-            if(cacheVersion === undefined || this.appdata['cache-version'] > cacheVersion) {
-                this.appdata['clear-keys'].local.forEach((key: string) => {
-                    LocalStorage.set({[key]: null});
-                })
+        if(cacheVersion === undefined || this.appdata['cache-version'] > cacheVersion) {
+            this.appdata['clear-keys'].local.forEach((key: string) => {
+                LocalStorage.set({[key]: null});
+            })
 
-                this.appdata['clear-keys'].sync.forEach((key: string) => {
-                    SyncStorage.set({[key]: null});
-                })
-            }
+            this.appdata['clear-keys'].sync.forEach((key: string) => {
+                SyncStorage.set({[key]: null});
+            })
+        }
 
-            LocalStorage.CACHE_VERSION.set(this.appdata['cache-version']);
-        })
+        LocalStorage.CACHE_VERSION.set(this.appdata['cache-version']);
     }
 }

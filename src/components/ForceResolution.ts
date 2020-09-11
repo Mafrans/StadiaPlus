@@ -62,11 +62,8 @@ export class ForceResolution extends Component {
      * @param {(() => any)} [callback=(() => {})] callback called after storage update.
      * @memberof ForceResolution
      */
-    getStorage(callback: (() => any) = (() => {})) {
-        LocalStorage.RESOLUTION.get((result: any) => {
-            this.resolution = result.resolution;
-            callback();
-        })
+    async getStorage(callback: (() => any) = (() => {})) {
+        this.resolution = await LocalStorage.RESOLUTION.get();
     }
 
     /**
@@ -75,8 +72,8 @@ export class ForceResolution extends Component {
      * @param {(() => any)} [callback=(() => {})] callback called after storage update.
      * @memberof ForceResolution
      */
-    setStorage(callback: (() => any) = (() => {})) {
-        LocalStorage.RESOLUTION.set(this.resolution, callback);
+    async setStorage() {
+        await LocalStorage.RESOLUTION.set(this.resolution);
     }
 
     /**
@@ -111,16 +108,15 @@ export class ForceResolution extends Component {
                         self.select = new Select(row.element.querySelector('select'), { placeholder: Resolution.AUTOMATIC });
 
                         const button = row.element.querySelector('.stadiaplus_button-small');
-                        button.addEventListener('click', () => {
+                        button.addEventListener('click', async () => {
                             self.resolution = parseInt(self.select.get()[0]);
 
                             if(self.resolution === Resolution.UHD_4K) {
                                 ForceCodec.setCodec(Codec.VP9);
                             }
 
-                            self.setStorage(() => {
-                                self.snackbar.activate(Language.get('snackbar.reload-to-update'));
-                            });
+                            await self.setStorage();
+                            self.snackbar.activate(Language.get('snackbar.reload-to-update'));
                         });
 
                         self.getStorage(() => {

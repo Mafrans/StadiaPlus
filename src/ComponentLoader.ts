@@ -40,29 +40,28 @@ export class ComponentLoader {
     /**
      * Starts the component loader.
      */
-    start() {
-        SyncStorage.COMPONENTS.get((result) => {
-            let storage = result.components;
-            if(storage === undefined) {
-                storage = {};
+    async start() {
+        let storage = await SyncStorage.COMPONENTS.get();
+
+        if(storage === undefined) {
+            storage = {};
+        }
+
+        for(const component of this.components) {
+            if(storage[component.tag] === undefined) {
+                storage[component.tag] = {};
             }
 
-            for(const component of this.components) {
-                if(storage[component.tag] === undefined) {
-                    storage[component.tag] = {};
-                }
+            if(storage[component.tag].enabled === undefined) {
+                storage[component.tag].enabled = true;
+            }
 
-                if(storage[component.tag].enabled === undefined) {
-                    storage[component.tag].enabled = true;
-                }
+            component.enabled = storage[component.tag].enabled;
+            if (component.enabled && !component.active) component.load();
+        };
 
-                component.enabled = storage[component.tag].enabled;
-                if (component.enabled && !component.active) component.load();
-            };
-
-            SyncStorage.COMPONENTS.set(storage);
-            this.startTimer();
-        })
+        SyncStorage.COMPONENTS.set(storage);
+        this.startTimer();
     }
 
     /**

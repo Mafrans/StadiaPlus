@@ -132,13 +132,8 @@ export class NetworkMonitor extends Component {
      * @param {(() => any)} [callback=(() => {})] callback called after storage update.
      * @memberof NetworkMonitor
      */
-    getStorage(callback: (() => any) = (() => {})) {
-        LocalStorage.MONITOR_STATS.get((result: any) => {
-            if(result[LocalStorage.MONITOR_STATS.tag]) {
-                this.visible = result[LocalStorage.MONITOR_STATS.tag];
-            }
-            callback();
-        })
+    async getStorage(callback: (() => any) = (() => {})) {
+        this.visible = await LocalStorage.MONITOR_STATS.get();
     }
 
     /**
@@ -147,8 +142,8 @@ export class NetworkMonitor extends Component {
      * @param {(() => any)} [callback=(() => {})] callback called after storage update.
      * @memberof NetworkMonitor
      */
-    setStorage(callback: (() => any) = (() => {})) {
-        LocalStorage.MONITOR_STATS.set(this.visible, callback);
+    async setStorage() {
+        await LocalStorage.MONITOR_STATS.set(this.visible);
     }
 
     /**

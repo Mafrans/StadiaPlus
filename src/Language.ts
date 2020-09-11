@@ -54,24 +54,23 @@ export class Language {
     static languages: Language[] = [];
     static default: Language;
     static current: Language;
-    static load(callback: (() => any) = (() => {})): void {
+    static async load(callback: (() => any) = (() => {})) {
         // Check for the first language that isn't equal to the default
-        SyncStorage.LANGUAGE.get((result: any) => {
-            let language = result[SyncStorage.LANGUAGE.tag];
-            if (language === undefined || language === 'automatic') {
-                language = this.automatic();
+        let language = await SyncStorage.LANGUAGE.get();
+        
+        if (language === undefined || language === 'automatic') {
+            language = this.automatic();
+        }
+
+        Logger.info(Language.get('lang-config', {language}));
+        this.languages.forEach((lang, index) => {
+            if (lang.tag === language) {
+                this.current = lang;
             }
 
-            Logger.info(Language.get('lang-config', {language}));
-            this.languages.forEach((lang, index) => {
-                if (lang.tag === language) {
-                    this.current = lang;
-                }
-
-                if(index === this.languages.length - 1) {
-                    callback();
-                }
-            });
+            if(index === this.languages.length - 1) {
+                callback();
+            }
         });
     }
 
