@@ -1,6 +1,6 @@
 import { Component } from '../Component';
 import Logger from '../Logger';
-import Util from '../Util';
+import Util from '../util/Util';
 import { UIButton } from '../ui/UIButton';
 import { UIComponent } from '../ui/UIComponent';
 import './styles/LookingForGroup.scss';

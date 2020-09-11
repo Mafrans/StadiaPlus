@@ -1,6 +1,6 @@
 import { Component } from '../Component';
 import Logger from '../Logger';
-import Util from '../Util';
+import Util from '../util/Util';
 import { UIButton } from '../ui/UIButton';
 import { UIRow } from '../ui/UIRow';
 import { UIComponent } from '../ui/UIComponent';

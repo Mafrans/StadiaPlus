@@ -1,7 +1,54 @@
+.stadiaplus_libraryfilter-bar {
+    margin-top: 2rem;
+    height: 100px;
+    display: flex;
+    align-items: center;
+
+    >div {
+        margin-right: 2rem;
+        position: relative;
+        cursor: pointer;
+        pointer-events: all;    
+
+        >h6 {
+            display: inline-block;
+            pointer-events: none;
+            
+            ~.material-icons-extended {
+                display: inline-block;
+                vertical-align: text-bottom;
+            }
+        }
+    }
+}
+
+.stadiaplus_libraryfilter-dropdown {
+    background: #2D2E31;
+    box-shadow: 0 0.25rem 2.5rem rgba(0,0,0,0.30), 0 0.125rem 0.75rem rgba(0,0,0,0.4);
+    padding: .5rem 1rem;
+    border-radius: 0.5rem;
+    margin-left: -0.5rem;
+    position: absolute;
+    transform: translateY(-0.5rem);
+    opacity: 0;
+    transition: opacity 0.2s cubic-bezier(0, 0, 0.2, 1), transform 0.2s cubic-bezier(0, 0, 0.2, 1);
+    pointer-events: none;
+    z-index: 1;
+
+    &.selected {
+        pointer-events: all;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    * {
+        padding: 0.5rem 0;
+    }
+}
+
 .stadiaplus_libraryfilter {
     pointer-events: initial;
     display: flex;
-    margin-top: 2rem;
 
     .stadiaplus_libraryfilter-searchcolumn {
         width: 300px;
@@ -9,6 +56,10 @@
         background: #2D2E31;
         padding: .5rem;
         box-sizing: border-box;
+        box-shadow: 0 0.125rem 0.75rem rgba(0,0,0,0.32), 0 0.0625rem 0.375rem rgba(0,0,0,0.18);
+
+        white-space: nowrap;
+        overflow: hidden;
 
         .stadiaplus_libraryfilter-searchcolumn-bar {
             display: flex;
@@ -40,6 +91,8 @@
                 color: rgba(255, 255, 255, 0.5);
                 margin-left: 0.5rem;
                 transition: color 0.2s ease-out;
+                overflow: hidden;
+                text-overflow: ellipsis;
 
                 .material-icons-extended {
                     vertical-align: sub;
@@ -76,6 +129,8 @@
             margin-left: 1.5rem;
             margin-bottom: 1.5rem;
             border-radius: 0.5rem;
+
+            box-shadow: 0 0.125rem 0.75rem rgba(0,0,0,0.32), 0 0.0625rem 0.375rem rgba(0,0,0,0.18);
 
             background-color: rgba(255, 255, 255, 0.06);
             background-position: center center;

@@ -1,6 +1,6 @@
 import { Component } from '../Component';
 import Logger from '../Logger';
-import Util from '../Util';
+import Util from '../util/Util';
 import './styles/Clock.scss';
 import { Language } from '../Language';
 

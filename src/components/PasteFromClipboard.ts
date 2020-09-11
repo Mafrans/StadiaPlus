@@ -1,5 +1,5 @@
 import {Component} from "../Component";
-import Util from '../Util';
+import Util from '../util/Util';
 
 export class Platform {
     static WINDOWS: string = "Win32";

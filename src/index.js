@@ -1,5 +1,5 @@
 import Logger from './Logger';
-import Util from './Util';
+import Util from './util/Util';
 import './styles/Global.scss'
 
 import { ComponentLoader } from './ComponentLoader';

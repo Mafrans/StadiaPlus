@@ -1,6 +1,6 @@
 import { Component } from '../Component';
 import Logger from '../Logger';
-import Util from '../Util';
+import Util from '../util/Util';
 import './styles/LibraryFilter.scss';
 import { Snackbar } from '../ui/Snackbar';
 import { Select } from '../ui/Select';
@@ -35,6 +35,7 @@ export class LibraryFilter extends Component {
      * List of games and game data imported from the DOM
      */
     games: LibraryGame[] = [];
+    sorted: LibraryGame[] = [];
 
     /**
      * Snackbar used to display messages when hiding and showing games
@@ -122,104 +123,121 @@ export class LibraryFilter extends Component {
     async onStart() {
         this.active = true;
         this.updateRenderer();
+
+        if(await SyncStorage.LIBRARY_SORT_ORDER.get() == null) await SyncStorage.LIBRARY_SORT_ORDER.set(FilterOrder.RECENT.id);
+
         Logger.component(Language.get('component.enabled', { name: this.name }));
 
-        const gameTiles = document.querySelectorAll('.GqLi4d');
-        this.games = await new Promise((resolve) => {
-            SyncStorage.LIBRARY_GAMES.get((e) => resolve(e[SyncStorage.LIBRARY_GAMES.tag]));
-        });
+        const gameTiles = this.renderer.querySelectorAll('.GqLi4d');
+        this.games = await SyncStorage.LIBRARY_GAMES.get();
 
         if (!(this.games instanceof Array)) {
             this.games = [];
         }
 
-        (document.querySelector('.fJrLJb') as HTMLElement).style['display'] = 'none';
+        (this.renderer.querySelector('.fJrLJb') as HTMLElement).style['display'] = 'none';
 
-        this.createContainer();
+        await this.createContainer();
 
-        this.updateGames();
-        gameTiles.forEach((gameTile) => {
+        for (const gameTile of gameTiles) {
             const uuid = this.getUUID(gameTile);
             const game: LibraryGame = new LibraryGame(uuid);
+
             game.create().then(() => {
                 if (this.games.find((e) => e.uuid === uuid) == null) {
                     this.games.push(game);
-
-                    this.updateGames();
                 }
             });
-        });
+        }
+
+        this.resortGames();
     }
 
-    updateGames() {
-        this.games.forEach((game) => {
-            if (document.querySelector('.stadiaplus_libraryfilter-game[data-uuid="' + game.uuid + '"]') == null) {
+    updateGames(sorted: LibraryGame[]) {
+        for (const game of sorted) {
+            if (
+                this.gameContainer.querySelector('.stadiaplus_libraryfilter-game[data-uuid="' + game.uuid + '"]') ==
+                null
+            ) {
                 const tile = game.createTile();
 
                 let playerURL: any = location.href.split('/');
-                playerURL[playerURL.length-1] = 'player/' + game.uuid;
+                playerURL[playerURL.length - 1] = 'player/' + game.uuid;
                 playerURL = playerURL.join('/');
 
                 tile.addEventListener('click', () => {
                     location.href = playerURL;
-                })
+                });
 
                 this.gameContainer.appendChild(tile);
-                
+                tile.style.backgroundSize = `auto ${tile.offsetHeight + 16}px`; // Add arbitrary magic number to make sure there aren't visible borders
+
                 const listGame = $el('div')
-                    .class({'stadiaplus_libraryfilter-listgame': true})
+                    .class({ 'stadiaplus_libraryfilter-listgame': true })
                     .child($el('hr'))
                     .child(
                         $el('h6')
                             .text(game.name)
                             .child(
                                 $el('i')
-                                    .class({'material-icons-extended': true})
+                                    .class({ 'material-icons-extended': true })
                                     .text('keyboard_arrow_right')
                             )
                     ).element;
 
                 listGame.addEventListener('click', () => {
                     location.href = playerURL;
-                })
+                });
 
                 this.searchColumn.appendChild(listGame);
             }
-        });
+        }
     }
 
-    createContainer() {
+    async resortGames() {
+        for (const game of this.renderer.querySelectorAll(
+            '.stadiaplus_libraryfilter-game, .stadiaplus_libraryfilter-listgame'
+        )) {
+            game.setAttribute('old', '');
+            game.setAttribute('data-uuid', '');
+        }
+
+        (this.renderer.querySelector('.stadiaplus_libraryfilter-searchcolumn-bar>input') as any).value = "";
+
+        this.renderer.querySelector('.stadiaplus_libraryfilter-sortorderindicator').textContent = (
+            FilterOrder.from(await SyncStorage.LIBRARY_SORT_ORDER.get())
+        ).name;
+        await this.updateGames(await this.getSortedGames());
+        this.renderer.querySelectorAll('.stadiaplus_libraryfilter-game[old], .stadiaplus_libraryfilter-listgame[old]').forEach(e => e.remove());
+    }
+
+    async createContainer() {
         const root = this.renderer.querySelector('.z1P2me');
 
         const search = $el('input').element;
         search.addEventListener('input', () => {
             const val = (search as any).value;
-            console.log(val);
-            
-            document.querySelectorAll('.stadiaplus_libraryfilter-game')
-                .forEach((element: HTMLElement) => {
-                    const name = StadiaGameDB.get(element.getAttribute('data-uuid')).name;
 
-                    if(!name.toLowerCase().includes(val.toLowerCase())) {
-                        element.style['display'] = 'none';
-                    }
-                    else {
-                        element.style['display'] = null;
-                    }
-                })
-            
-            document.querySelectorAll('.stadiaplus_libraryfilter-listgame')
-                .forEach((element: HTMLElement) => {
-                    const name = element.querySelector('h6').textContent;
+            this.renderer.querySelectorAll('.stadiaplus_libraryfilter-game').forEach((element: HTMLElement) => {
+                const name = StadiaGameDB.get(element.getAttribute('data-uuid')).name;
 
-                    if(!name.toLowerCase().includes(val.toLowerCase())) {
-                        element.style['display'] = 'none';
-                    }
-                    else {
-                        element.style['display'] = null;
-                    }
-                })
-        })
+                if (!name.toLowerCase().includes(val.toLowerCase())) {
+                    element.style['display'] = 'none';
+                } else {
+                    element.style['display'] = null;
+                }
+            });
+
+            this.renderer.querySelectorAll('.stadiaplus_libraryfilter-listgame').forEach((element: HTMLElement) => {
+                const name = element.querySelector('h6').textContent;
+
+                if (!name.toLowerCase().includes(val.toLowerCase())) {
+                    element.style['display'] = 'none';
+                } else {
+                    element.style['display'] = null;
+                }
+            });
+        });
 
         this.searchColumn = $el('div')
             .class({ 'stadiaplus_libraryfilter-searchcolumn': true })
@@ -238,14 +256,101 @@ export class LibraryFilter extends Component {
 
         $el('h2')
             .text('Your Games')
-            .css({'margin-top': '8rem'})
+            .css({ 'margin-top': '8rem' })
             .appendTo(root);
-            
+
+        window.addEventListener('click', () => {
+            this.renderer.querySelectorAll('.stadiaplus_libraryfilter-dropdown').forEach((e) => {
+                e.classList.remove('selected');
+            });
+        });
+
+        $el('div')
+            .class({ 'stadiaplus_libraryfilter-bar': true })
+            .child(
+                $el('div')
+                    .event({
+                        click: (event) => {
+                            const dropdown = (event.srcElement as HTMLElement).parentElement.querySelector(
+                                '.stadiaplus_libraryfilter-dropdown'
+                            );
+                            dropdown.classList.add('selected');
+                            event.stopPropagation();
+                        },
+                    })
+                    .child(
+                        $el('h6')
+                            .class({ 'stadiaplus_libraryfilter-sortorderindicator': true })
+                            .text(FilterOrder.from(await SyncStorage.LIBRARY_SORT_ORDER.get()).name)
+                    )
+                    .child(
+                        $el('i')
+                            .class({ 'material-icons-extended': true })
+                            .text('keyboard_arrow_down')
+                    )
+                    .child(
+                        $el('div')
+                            .class({ 'stadiaplus_libraryfilter-dropdown': true })
+                            .child(
+                                $el('h6')
+                                    .text('Recent')
+                                    .css({ cursor: 'pointer' })
+                                    .event({
+                                        click: async () => {
+                                            await SyncStorage.LIBRARY_SORT_ORDER.set(FilterOrder.RECENT.id);
+                                            this.resortGames();
+                                        },
+                                    })
+                            )
+                            .child(
+                                $el('h6')
+                                    .text('Alphabetical')
+                                    .css({ cursor: 'pointer' })
+                                    .event({
+                                        click: async () => {
+                                            await SyncStorage.LIBRARY_SORT_ORDER.set(FilterOrder.ALPHABETICAL.id);
+                                            this.resortGames();
+                                        },
+                                    })
+                            )
+                            .child(
+                                $el('h6')
+                                    .text('Random')
+                                    .css({ cursor: 'pointer' })
+                                    .event({
+                                        click: async () => {
+                                            await SyncStorage.LIBRARY_SORT_ORDER.set(FilterOrder.RANDOM.id);
+                                            this.resortGames();
+                                        },
+                                    })
+                            )
+                    )
+            )
+            .child(
+                $el('div').child(
+                    $el('h6').text('All')
+                )
+                .child(
+                    $el('i')
+                        .class({ 'material-icons-extended': true })
+                        .text('keyboard_arrow_down')
+                )
+            )
+            .appendTo(root);
+
         $el('div')
             .class({ stadiaplus_libraryfilter: true })
             .child(this.searchColumn)
             .child(this.gameContainer)
             .appendTo(root);
+    }
+
+    async getSortedGames(): Promise<LibraryGame[]> {
+        const filter: FilterOrder = FilterOrder.from(await SyncStorage.LIBRARY_SORT_ORDER.get());
+        const games = [...this.games]; // Shallow array clone
+        const sorted = filter.sort(games);
+
+        return sorted;
     }
 
     /**
@@ -280,13 +385,13 @@ class LibraryGame {
 
     constructor(uuid: string) {
         this.uuid = uuid;
-        SyncStorage.LIBRARY_GAMES.get((result) => {
-            let librarygames = result[SyncStorage.LIBRARY_GAMES.tag];
-            if (librarygames == null) librarygames = [];
+        SyncStorage.LIBRARY_GAMES.get().then((libraryGames) => {
+            if (libraryGames == null) libraryGames = [];
 
-            if ((librarygames as LibraryGame[]).find((a) => a.uuid === uuid)) {
-                this.name = result.name;
-                this.visible = result.visible;
+            const game = (libraryGames as LibraryGame[]).find((a) => a.uuid === uuid);
+            if (game != null) {
+                this.name = game.name;
+                this.visible = game.visible;
             }
         });
     }
@@ -304,7 +409,7 @@ class LibraryGame {
     }
 
     createTile(): HTMLElement {
-        return $el('div')
+        const element = $el('div')
             .class({ 'stadiaplus_libraryfilter-game': true })
             .attr({ 'data-uuid': this.uuid })
             .child(
@@ -326,6 +431,8 @@ class LibraryGame {
                 display: this.visible ? null : 'none',
                 'background-image': this.img !== null ? `url(${this.img})` : null,
             }).element;
+
+        return element;
     }
 }
 
@@ -336,13 +443,21 @@ class LibraryGame {
  * @class FilterOrder
  */
 export class FilterOrder {
+    public id: number;
+    public name: string;
+    public sort: (games: LibraryGame[]) => LibraryGame[];
+
     /**
      * Default Stadia sorting, recent/new games.
      *
      * @static
      * @memberof FilterOrder
      */
-    static RECENT = 0;
+    static RECENT: FilterOrder = {
+        id: 0,
+        name: 'Recent',
+        sort: FilterOrder.sortRecent
+    };
 
     /**
      * Alphabetical order.
@@ -350,7 +465,11 @@ export class FilterOrder {
      * @static
      * @memberof FilterOrder
      */
-    static ALPHABETICAL = 1;
+    static ALPHABETICAL: FilterOrder = {
+        id: 1,
+        name: 'Alphabetical',
+        sort: FilterOrder.sortAlphabetical
+    };
 
     /**
      * Random order.
@@ -358,7 +477,15 @@ export class FilterOrder {
      * @static
      * @memberof FilterOrder
      */
-    static RANDOM = 2;
+    static RANDOM: FilterOrder = {
+        id: 2,
+        name: 'Random',
+        sort: FilterOrder.sortRandom
+    };
+
+    static from(id: number): FilterOrder {
+        return [FilterOrder.RECENT, FilterOrder.ALPHABETICAL, FilterOrder.RANDOM].find((e) => e.id === id);
+    }
 
     /**
      * Get the sorting method of the inputed order.
@@ -391,8 +518,8 @@ export class FilterOrder {
      * @returns number representing which parameter is where.
      * @memberof FilterOrder
      */
-    private static sortRecent(a: any, b: any): number {
-        return 1;
+    private static sortRecent(games: LibraryGame[]): LibraryGame[] {
+        return games;
     }
 
     /**
@@ -405,19 +532,12 @@ export class FilterOrder {
      * @returns number representing which parameter is where.
      * @memberof FilterOrder
      */
-    private static sortAlphabetical(a: any, b: any): number {
-        const nameA = a.getAttribute('game-name');
-        const nameB = b.getAttribute('game-name');
-
-        if (nameA === null || nameB === null) {
-            return null;
-        }
-
-        return nameA.localeCompare(nameB);
+    private static sortAlphabetical(games: LibraryGame[]): LibraryGame[] {
+        return games.sort((a, b) => a.name.localeCompare(b.name));
     }
 
-    private static sortRandom(a: any, b: any) {
-        return Math.round(Math.random() * 2) - 1;
+    private static sortRandom(games: LibraryGame[]): LibraryGame[] {
+        return Util.shuffle(games);
     }
 }
 

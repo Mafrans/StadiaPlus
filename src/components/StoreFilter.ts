@@ -1,6 +1,6 @@
 import { Component } from '../Component';
 import Logger from '../Logger';
-import Util from '../Util';
+import Util from '../util/Util';
 import './styles/StoreFilter.scss';
 import { WebDatabase } from '../WebDatabase';
 import { Language } from '../Language';

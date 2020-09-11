@@ -1,6 +1,6 @@
 import { Component } from '../Component';
 import Logger from '../Logger';
-import Util from '../Util';
+import Util from '../util/Util';
 import './styles/ForceResolution.scss';
 import { UITab } from './UITab';
 import { UIRow, UIRowOptions } from '../ui/UIRow';

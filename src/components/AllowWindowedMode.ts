@@ -2,7 +2,7 @@ import { Component } from '../Component';
 import Logger from '../Logger';
 import { Language } from '../Language';
 import { UIButton } from '../ui/UIButton';
-import Util from '../Util';
+import Util from '../util/Util';
 
 const { chrome } = window as any;
 
