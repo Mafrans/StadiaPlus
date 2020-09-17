@@ -14,7 +14,7 @@ export class Select {
         options.beforeChange = options.beforeChange !== undefined ? options.beforeChange : () => {};
 
         this.element.classList.add(
-            'stadiaplus_dropdown',
+            'stadiaplus_select',
             options.style
         );
 
@@ -66,7 +66,7 @@ export class Select {
         if (this.slimselect !== undefined) {
             this.slimselect.destroy();
         }
-        this.element.classList.remove('stadiaplus_dropdown');
+        this.element.classList.remove('stadiaplus_select');
         this.element = null;
     }
 }

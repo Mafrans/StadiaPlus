@@ -1,4 +1,7 @@
-.stadiaplus_dropdown {
+.stadiaplus_select {
+    font-family: 'Google Sans', sans-serif;
+    font-size: 18px;
+
     &.disabled {
         opacity: 0.6;
         pointer-events: none;
@@ -33,14 +36,38 @@
                 width: 180px;
 
                 .placeholder {
-                    color: rgba(255, 255, 255, 0.8)
+                    color: rgba(255, 255, 255, 0.8);
+                    font-size: 16px;
                 }
 
                 .ss-plus span,
                 .ss-arrow span {
                     border-color: #93959F;
                 }
-            }
+
+                .ss-option {
+                    font-size: 18px;
+                    padding: 4px 8px;
+                }
+
+                .ss-value {
+                    margin: 0px 4px 4px 0;
+                    background-color: rgba(255, 255, 255, 0.12);
+                    font-size: 16px;
+                    border-radius: 999px;
+                    padding: 0.25rem 0.5rem;
+
+                    .ss-value-delete {
+                        font-family: 'Material Icons Extended';
+                        margin-left: -5px;
+                        font-size: 13px;
+    
+                        &::after {
+                            content: 'close';
+                        }
+                    }
+                }
+                }
         }
     }
 
