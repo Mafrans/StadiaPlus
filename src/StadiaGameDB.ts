@@ -45,10 +45,10 @@ export namespace StadiaGameDB {
                     uuid: uuid,
                     img: 'https://stadiagamedb.com/images/posters/webp/' + /images\/posters\/([a-z0-9_.-]+).png/g.exec(entry[0])[1] + '.webp',
                     name: entry[1],
-                    tags: entry[2].split(', ').map((e: string) => StadiaGameDB.Tag.fromId(e.toLowerCase())),
+                    tags: entry[2].split(', ').map((e: string) => StadiaGameDB.Tag.fromId(e.toLowerCase())).filter((e: any) => e != null),
                     date: entry[3],
                     resolution: entry[4],
-                    onlineTypes: entry[5].split(', ').map((e: string) => StadiaGameDB.OnlineType.fromId(e.toLowerCase())),
+                    onlineTypes: entry[5].split(', ').map((e: string) => StadiaGameDB.OnlineType.fromId(e.toLowerCase())).filter((e: any) => e != null),
                     rating: parseInt(entry[6]) === NaN ? null : parseInt(entry[6])
                 }
 

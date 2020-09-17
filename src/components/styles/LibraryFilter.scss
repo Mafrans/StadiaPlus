@@ -87,6 +87,10 @@
         .stadiaplus_libraryfilter-listgame {
             cursor: pointer;
 
+            &.hidden {
+                display: none;
+            }
+
             h6 {
                 color: rgba(255, 255, 255, 0.5);
                 margin-left: 0.5rem;
@@ -138,6 +142,10 @@
             transition: background-size 0.5s cubic-bezier(0, 0, 0.2, 1), transform 0.2s ease-out;
             transform: scale(1);
             cursor: pointer;
+
+            &.hidden {
+                display: none;
+            }
 
             .play-button {
                 position: fixed;
