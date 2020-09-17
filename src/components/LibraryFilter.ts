@@ -3,7 +3,7 @@ import Logger from '../Logger';
 import Util from '../util/Util';
 import './styles/LibraryFilter.scss';
 import { Snackbar } from '../ui/Snackbar';
-import { Select } from '../ui/Select';
+import { Select, SelectStyle } from '../ui/Select';
 import { WebDatabase } from '../WebDatabase';
 import { Checkbox, CheckboxShape } from '../ui/Checkbox';
 import { Language } from '../Language';
@@ -15,6 +15,7 @@ import { StadiaPlusDBHook } from './StadiaPlusDBHook';
 import { StadiaPlusDB } from '../StadiaPlusDB';
 import { StadiaGameDB } from '../StadiaGameDB';
 import { $el } from '../util/ElGen';
+import { drop } from '../../docs/assets/js/main';
 
 const { chrome, Array } = window as any;
 
@@ -124,7 +125,8 @@ export class LibraryFilter extends Component {
         this.active = true;
         this.updateRenderer();
 
-        if(await SyncStorage.LIBRARY_SORT_ORDER.get() == null) await SyncStorage.LIBRARY_SORT_ORDER.set(FilterOrder.RECENT.id);
+        if ((await SyncStorage.LIBRARY_SORT_ORDER.get()) == null)
+            await SyncStorage.LIBRARY_SORT_ORDER.set(FilterOrder.RECENT.id);
 
         Logger.component(Language.get('component.enabled', { name: this.name }));
 
@@ -202,13 +204,15 @@ export class LibraryFilter extends Component {
             game.setAttribute('data-uuid', '');
         }
 
-        (this.renderer.querySelector('.stadiaplus_libraryfilter-searchcolumn-bar>input') as any).value = "";
+        (this.renderer.querySelector('.stadiaplus_libraryfilter-searchcolumn-bar>input') as any).value = '';
 
-        this.renderer.querySelector('.stadiaplus_libraryfilter-sortorderindicator').textContent = (
-            FilterOrder.from(await SyncStorage.LIBRARY_SORT_ORDER.get())
+        this.renderer.querySelector('.stadiaplus_libraryfilter-sortorderindicator').textContent = FilterOrder.from(
+            await SyncStorage.LIBRARY_SORT_ORDER.get()
         ).name;
         await this.updateGames(await this.getSortedGames());
-        this.renderer.querySelectorAll('.stadiaplus_libraryfilter-game[old], .stadiaplus_libraryfilter-listgame[old]').forEach(e => e.remove());
+        this.renderer
+            .querySelectorAll('.stadiaplus_libraryfilter-game[old], .stadiaplus_libraryfilter-listgame[old]')
+            .forEach((e) => e.remove());
     }
 
     async createContainer() {
@@ -265,16 +269,18 @@ export class LibraryFilter extends Component {
             });
         });
 
+        const orderDropdown = this.getOrderDropdown();
+        const visibleDropdown = this.getVisibleDropdown();
         $el('div')
             .class({ 'stadiaplus_libraryfilter-bar': true })
             .child(
                 $el('div')
                     .event({
                         click: (event) => {
-                            const dropdown = (event.srcElement as HTMLElement).parentElement.querySelector(
-                                '.stadiaplus_libraryfilter-dropdown'
-                            );
-                            dropdown.classList.add('selected');
+                            for (const e of this.renderer.querySelectorAll('.stadiaplus_libraryfilter-dropdown')) {
+                                e.classList.remove('selected');
+                            }
+                            orderDropdown.classList.add('selected');
                             event.stopPropagation();
                         },
                     })
@@ -288,61 +294,96 @@ export class LibraryFilter extends Component {
                             .class({ 'material-icons-extended': true })
                             .text('keyboard_arrow_down')
                     )
-                    .child(
-                        $el('div')
-                            .class({ 'stadiaplus_libraryfilter-dropdown': true })
-                            .child(
-                                $el('h6')
-                                    .text('Recent')
-                                    .css({ cursor: 'pointer' })
-                                    .event({
-                                        click: async () => {
-                                            await SyncStorage.LIBRARY_SORT_ORDER.set(FilterOrder.RECENT.id);
-                                            this.resortGames();
-                                        },
-                                    })
-                            )
-                            .child(
-                                $el('h6')
-                                    .text('Alphabetical')
-                                    .css({ cursor: 'pointer' })
-                                    .event({
-                                        click: async () => {
-                                            await SyncStorage.LIBRARY_SORT_ORDER.set(FilterOrder.ALPHABETICAL.id);
-                                            this.resortGames();
-                                        },
-                                    })
-                            )
-                            .child(
-                                $el('h6')
-                                    .text('Random')
-                                    .css({ cursor: 'pointer' })
-                                    .event({
-                                        click: async () => {
-                                            await SyncStorage.LIBRARY_SORT_ORDER.set(FilterOrder.RANDOM.id);
-                                            this.resortGames();
-                                        },
-                                    })
-                            )
-                    )
+                    .child(orderDropdown)
             )
             .child(
-                $el('div').child(
-                    $el('h6').text('All')
-                )
-                .child(
-                    $el('i')
-                        .class({ 'material-icons-extended': true })
-                        .text('keyboard_arrow_down')
-                )
+                $el('div')
+                    .event({
+                        click: (event) => {
+                            for (const e of this.renderer.querySelectorAll('.stadiaplus_libraryfilter-dropdown')) {
+                                e.classList.remove('selected');
+                            }
+                            visibleDropdown.classList.add('selected');
+                            event.stopPropagation();
+                        },
+                    })
+                    .child($el('h6').text('All'))
+                    .child(
+                        $el('i')
+                            .class({ 'material-icons-extended': true })
+                            .text('keyboard_arrow_down')
+                    )
+                    .child(visibleDropdown)
             )
             .appendTo(root);
+
+        new Select(visibleDropdown.querySelector('select[name="tags"]'), {
+            placeholder: 'Tags...',
+            style: SelectStyle.DARK,
+        });
+
+        new Select(visibleDropdown.querySelector('select[name="online-types"]'), {
+            placeholder: 'Playstyles...',
+            style: SelectStyle.DARK,
+        });
 
         $el('div')
             .class({ stadiaplus_libraryfilter: true })
             .child(this.searchColumn)
             .child(this.gameContainer)
             .appendTo(root);
+    }
+
+    getOrderDropdown(): HTMLElement {
+        const dropdown = $el('div')
+            .id(this.id + "-dropdown-" + Math.floor(Math.random() * 999999))
+            .class({ 'stadiaplus_libraryfilter-dropdown': true })
+
+        for(const order of FilterOrder.values()) {
+            dropdown.child(
+                $el('h6')
+                    .text(order.name)
+                    .css({ cursor: 'pointer', 'font-weight': '400' })
+                    .event({
+                        click: async () => {
+                            await SyncStorage.LIBRARY_SORT_ORDER.set(order.id);
+                            dropdown.class({selected: false})
+                            this.resortGames();
+                        },
+                    })
+            )
+        }
+
+        return dropdown.element;
+    }
+
+    getVisibleDropdown(): HTMLElement {
+        const tags = $el('select').attr({ name: 'tags', multiple: 'true' });
+
+        for (const tag of StadiaGameDB.Tag.values()) {
+            tags.child(
+                $el('option')
+                    .attr({ value: tag.id })
+                    .text(tag.name)
+            );
+        }
+
+        const onlineTypes = $el('select').attr({ name: 'online-types', multiple: 'true' });
+
+        for (const type of StadiaGameDB.OnlineType.values()) {
+            onlineTypes.child(
+                $el('option')
+                    .attr({ value: type.id })
+                    .text(type.name)
+            );
+        }
+
+        return $el('div')
+            .id(this.id + "-dropdown-" + Math.floor(Math.random() * 999999))
+            .class({ 'stadiaplus_libraryfilter-dropdown': true })
+            .event({ click: (event) => event.stopPropagation() })
+            .child(tags)
+            .child(onlineTypes).element;
     }
 
     async getSortedGames(): Promise<LibraryGame[]> {
@@ -456,7 +497,7 @@ export class FilterOrder {
     static RECENT: FilterOrder = {
         id: 0,
         name: 'Recent',
-        sort: FilterOrder.sortRecent
+        sort: FilterOrder.sortRecent,
     };
 
     /**
@@ -468,7 +509,7 @@ export class FilterOrder {
     static ALPHABETICAL: FilterOrder = {
         id: 1,
         name: 'Alphabetical',
-        sort: FilterOrder.sortAlphabetical
+        sort: FilterOrder.sortAlphabetical,
     };
 
     /**
@@ -480,11 +521,15 @@ export class FilterOrder {
     static RANDOM: FilterOrder = {
         id: 2,
         name: 'Random',
-        sort: FilterOrder.sortRandom
+        sort: FilterOrder.sortRandom,
     };
 
     static from(id: number): FilterOrder {
-        return [FilterOrder.RECENT, FilterOrder.ALPHABETICAL, FilterOrder.RANDOM].find((e) => e.id === id);
+        return this.values().find((e) => e.id === id);
+    }
+
+    static values() {
+        return [FilterOrder.RECENT, FilterOrder.ALPHABETICAL, FilterOrder.RANDOM]
     }
 
     /**

@@ -41,7 +41,7 @@
         transform: translateY(0);
     }
 
-    * {
+    >* {
         padding: 0.5rem 0;
     }
 }
@@ -146,7 +146,7 @@
                 width: 100px;
                 height: 100px;
                 background-size: cover;
-                transition: transform 0.5s ease-out, opacity 1.0s cubic-bezier(0, 0, 0, 1);
+                transition: width 0.5s ease-out, height 0.5s ease-out, opacity 1.0s cubic-bezier(0, 0, 0, 1);
                 transform: translate(-50%, -50%) rotate(-500deg);
                 opacity: 0;
             }
@@ -163,7 +163,7 @@
             }
 
             &:hover {
-                background-size: 260%;
+                background-size: auto 130% !important;
                 transition: background-size 2.0s cubic-bezier(0, 0, 0.2, 1), transform 0.3s ease-out;
                 transform: scale(1.05);
                 
@@ -173,8 +173,10 @@
                 }
 
                 .play-button {
-                    transition: transform 10.0s ease-out, opacity 1.0s cubic-bezier(0, 0, 0, 1);
-                    transform: translate(-50%, -50%) rotate(0) scale(1.2);
+                    transition: width 0.5s ease-out, height 0.5s ease-out, transform 10.0s ease-out, opacity 1.0s cubic-bezier(0, 0, 0, 1);
+                    width: 110px;
+                    height: 110px;
+                    transform: translate(-50%, -50%) rotate(0);
                     opacity: 1;
                 }
 

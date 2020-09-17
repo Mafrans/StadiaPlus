@@ -103,6 +103,10 @@ export namespace StadiaGameDB {
         static fromId(id: string) {
             return OnlineType.types.find(e => e.id === id.toLowerCase());
         }
+
+        static values() {
+            return OnlineType.types;
+        }
     }
 
     export class Tag {
@@ -143,6 +147,10 @@ export namespace StadiaGameDB {
 
         static fromId(id: string) {
             return Tag.tags.find(e => e.id === id.toLowerCase());
+        }
+
+        static values() {
+            return this.tags;
         }
     }
 }
