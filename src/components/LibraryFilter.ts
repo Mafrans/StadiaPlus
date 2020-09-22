@@ -94,7 +94,11 @@ export class LibraryFilter extends Component {
     tagSelect: Select;
     onlineTypeSelect: Select;
 
-    constructor(snackbar: Snackbar, modal: Modal, webScraper: StadiaPlusDBHook) {
+    constructor(
+        snackbar: Snackbar,
+        modal: Modal,
+        webScraper: StadiaPlusDBHook
+    ) {
         super();
 
         // Import snackbar from index.js
@@ -131,7 +135,9 @@ export class LibraryFilter extends Component {
         if ((await SyncStorage.LIBRARY_SORT_ORDER.get()) == null)
             await SyncStorage.LIBRARY_SORT_ORDER.set(FilterOrder.RECENT.id);
 
-        Logger.component(Language.get('component.enabled', { name: this.name }));
+        Logger.component(
+            Language.get('component.enabled', { name: this.name })
+        );
 
         const gameTiles = this.renderer.querySelectorAll('.GqLi4d');
         this.games = await SyncStorage.LIBRARY_GAMES.get();
@@ -140,7 +146,9 @@ export class LibraryFilter extends Component {
             this.games = [];
         }
 
-        (this.renderer.querySelector('.fJrLJb') as HTMLElement).style['display'] = 'none';
+        (this.renderer.querySelector('.fJrLJb') as HTMLElement).style[
+            'display'
+        ] = 'none';
 
         await this.createContainer();
 
@@ -149,20 +157,34 @@ export class LibraryFilter extends Component {
             const game: LibraryGame = new LibraryGame(uuid);
 
             game.create().then(() => {
-                if (this.games.find((e) => e.uuid === uuid) == null) {
+                if (this.games.find(e => e.uuid === uuid) == null) {
                     this.games.push(game);
                 }
             });
         }
 
+        Util.desandbox(
+            `WebScraperRunnable.setAutoUpdate(${
+                StadiaPlusDB.isAuthenticated() && localStorage.getItem('autoUpdate') === 'true' ? 'true' : 'false'
+            })`
+        );
+
         this.resortGames();
     }
 
     updateGames(sorted: LibraryGame[]) {
+        Util.desandbox(
+            `WebScraperRunnable.games = ${JSON.stringify(
+                sorted.map(e => e.uuid)
+            )}`
+        );
         for (const game of sorted) {
             if (
-                this.gameContainer.querySelector('.stadiaplus_libraryfilter-game[data-uuid="' + game.uuid + '"]') ==
-                null
+                this.gameContainer.querySelector(
+                    '.stadiaplus_libraryfilter-game[data-uuid="' +
+                        game.uuid +
+                        '"]'
+                ) == null
             ) {
                 const tile = game.createTile();
 
@@ -208,27 +230,41 @@ export class LibraryFilter extends Component {
             game.setAttribute('data-uuid', '');
         }
 
-        (this.renderer.querySelector('.stadiaplus_libraryfilter-searchcolumn-bar>input') as any).value = '';
+        (this.renderer.querySelector(
+            '.stadiaplus_libraryfilter-searchcolumn-bar>input'
+        ) as any).value = '';
 
-        this.renderer.querySelector('.stadiaplus_libraryfilter-sortorderindicator').textContent = FilterOrder.from(
+        this.renderer.querySelector(
+            '.stadiaplus_libraryfilter-sortorderindicator'
+        ).textContent = FilterOrder.from(
             await SyncStorage.LIBRARY_SORT_ORDER.get()
         ).name;
         await this.updateGames(await this.getSortedGames());
         this.renderer
-            .querySelectorAll('.stadiaplus_libraryfilter-game[old], .stadiaplus_libraryfilter-listgame[old]')
-            .forEach((e) => e.remove());
+            .querySelectorAll(
+                '.stadiaplus_libraryfilter-game[old], .stadiaplus_libraryfilter-listgame[old]'
+            )
+            .forEach(e => e.remove());
 
         this.updateVisibility();
     }
 
     async updateVisibility() {
-        const tags = (this.tagSelect.get() as string[]).map((id) => StadiaGameDB.Tag.fromId(id));
-        const onlineTypes = (this.onlineTypeSelect.get() as string[]).map((id) => StadiaGameDB.OnlineType.fromId(id));
+        const tags = (this.tagSelect.get() as string[]).map(id =>
+            StadiaGameDB.Tag.fromId(id)
+        );
+        const onlineTypes = (this.onlineTypeSelect.get() as string[]).map(id =>
+            StadiaGameDB.OnlineType.fromId(id)
+        );
 
         if (tags.length === 0 && onlineTypes.length === 0) {
-            document.querySelector('.stadiaplus_libraryfilter-visibilityindicator').textContent = 'All';
+            document.querySelector(
+                '.stadiaplus_libraryfilter-visibilityindicator'
+            ).textContent = 'All';
         } else {
-            document.querySelector('.stadiaplus_libraryfilter-visibilityindicator').textContent = 'Custom';
+            document.querySelector(
+                '.stadiaplus_libraryfilter-visibilityindicator'
+            ).textContent = 'Custom';
         }
 
         for (const game of this.games) {
@@ -236,19 +272,23 @@ export class LibraryFilter extends Component {
             let visible = true;
 
             for (const tag of tags) {
-                if (sgdb.tags.find((e) => e.id == tag.id) == null) {
+                if (sgdb.tags.find(e => e.id == tag.id) == null) {
                     visible = false;
                 }
             }
 
             for (const type of onlineTypes) {
-                if (sgdb.onlineTypes.find((e) => e.id == type.id) == null) {
+                if (sgdb.onlineTypes.find(e => e.id == type.id) == null) {
                     visible = false;
                 }
             }
 
-            const tile = document.querySelector(`.stadiaplus_libraryfilter-game[data-uuid="${game.uuid}"]`);
-            const entry = document.querySelector(`.stadiaplus_libraryfilter-listgame[data-uuid="${game.uuid}"]`);
+            const tile = document.querySelector(
+                `.stadiaplus_libraryfilter-game[data-uuid="${game.uuid}"]`
+            );
+            const entry = document.querySelector(
+                `.stadiaplus_libraryfilter-listgame[data-uuid="${game.uuid}"]`
+            );
             if (tile != null) tile.classList.toggle('hidden', !visible);
             if (entry != null) entry.classList.toggle('hidden', !visible);
         }
@@ -261,32 +301,40 @@ export class LibraryFilter extends Component {
         search.addEventListener('input', () => {
             const val = (search as any).value;
 
-            this.renderer.querySelectorAll('.stadiaplus_libraryfilter-game').forEach((element: HTMLElement) => {
-                const name = StadiaGameDB.get(element.getAttribute('data-uuid')).name;
+            this.renderer
+                .querySelectorAll('.stadiaplus_libraryfilter-game')
+                .forEach((element: HTMLElement) => {
+                    const name = StadiaGameDB.get(
+                        element.getAttribute('data-uuid')
+                    ).name;
 
-                if (!name.toLowerCase().includes(val.toLowerCase())) {
-                    element.style['display'] = 'none';
-                } else {
-                    element.style['display'] = null;
-                }
-            });
+                    if (!name.toLowerCase().includes(val.toLowerCase())) {
+                        element.style['display'] = 'none';
+                    } else {
+                        element.style['display'] = null;
+                    }
+                });
 
-            this.renderer.querySelectorAll('.stadiaplus_libraryfilter-listgame').forEach((element: HTMLElement) => {
-                const name = element.querySelector('h6').textContent;
+            this.renderer
+                .querySelectorAll('.stadiaplus_libraryfilter-listgame')
+                .forEach((element: HTMLElement) => {
+                    const name = element.querySelector('h6').textContent;
 
-                if (!name.toLowerCase().includes(val.toLowerCase())) {
-                    element.style['display'] = 'none';
-                } else {
-                    element.style['display'] = null;
-                }
-            });
+                    if (!name.toLowerCase().includes(val.toLowerCase())) {
+                        element.style['display'] = 'none';
+                    } else {
+                        element.style['display'] = null;
+                    }
+                });
         });
 
         this.searchColumn = $el('div')
             .class({ 'stadiaplus_libraryfilter-searchcolumn': true })
             .child(
                 $el('div')
-                    .class({ 'stadiaplus_libraryfilter-searchcolumn-bar': true })
+                    .class({
+                        'stadiaplus_libraryfilter-searchcolumn-bar': true,
+                    })
                     .child(
                         $el('i')
                             .class({ 'material-icons-extended': true })
@@ -295,7 +343,9 @@ export class LibraryFilter extends Component {
                     .child(search)
             ).element;
 
-        this.gameContainer = $el('div').class({ 'stadiaplus_libraryfilter-gamecontainer': true }).element;
+        this.gameContainer = $el('div').class({
+            'stadiaplus_libraryfilter-gamecontainer': true,
+        }).element;
 
         $el('h2')
             .text('Your Games')
@@ -303,9 +353,11 @@ export class LibraryFilter extends Component {
             .appendTo(root);
 
         window.addEventListener('click', () => {
-            this.renderer.querySelectorAll('.stadiaplus_libraryfilter-dropdown').forEach((e) => {
-                e.classList.remove('selected');
-            });
+            this.renderer
+                .querySelectorAll('.stadiaplus_libraryfilter-dropdown')
+                .forEach(e => {
+                    e.classList.remove('selected');
+                });
         });
 
         const orderDropdown = this.getOrderDropdown();
@@ -314,75 +366,197 @@ export class LibraryFilter extends Component {
             .class({ 'stadiaplus_libraryfilter-bar': true })
             .child(
                 $el('div')
-                    .event({
-                        click: (event) => {
-                            for (const e of this.renderer.querySelectorAll('.stadiaplus_libraryfilter-dropdown')) {
-                                e.classList.remove('selected');
-                            }
-                            orderDropdown.classList.add('selected');
-                            event.stopPropagation();
-                        },
-                    })
+                    .css({ display: 'flex', width: '300px' })
                     .child(
-                        $el('h6')
-                            .class({ 'stadiaplus_libraryfilter-sortorderindicator': true })
-                            .text(FilterOrder.from(await SyncStorage.LIBRARY_SORT_ORDER.get()).name)
+                        $el('div')
+                            .class({ 'bar-item': true })
+                            .event({
+                                click: event => {
+                                    for (const e of this.renderer.querySelectorAll(
+                                        '.stadiaplus_libraryfilter-dropdown'
+                                    )) {
+                                        e.classList.remove('selected');
+                                    }
+                                    orderDropdown.classList.add('selected');
+                                    event.stopPropagation();
+                                },
+                            })
+                            .child(
+                                $el('h6')
+                                    .class({
+                                        'stadiaplus_libraryfilter-sortorderindicator': true,
+                                    })
+                                    .text(
+                                        FilterOrder.from(
+                                            await SyncStorage.LIBRARY_SORT_ORDER.get()
+                                        ).name
+                                    )
+                            )
+                            .child(
+                                $el('i')
+                                    .class({ 'material-icons-extended': true })
+                                    .text('keyboard_arrow_down')
+                            )
+                            .child(orderDropdown)
                     )
                     .child(
-                        $el('i')
-                            .class({ 'material-icons-extended': true })
-                            .text('keyboard_arrow_down')
+                        $el('div')
+                            .class({ 'bar-item': true })
+                            .event({
+                                click: event => {
+                                    for (const e of this.renderer.querySelectorAll(
+                                        '.stadiaplus_libraryfilter-dropdown'
+                                    )) {
+                                        e.classList.remove('selected');
+                                    }
+                                    visibleDropdown.classList.add('selected');
+                                    event.stopPropagation();
+                                },
+                            })
+                            .child(
+                                $el('h6')
+                                    .class({
+                                        'stadiaplus_libraryfilter-visibilityindicator': true,
+                                    })
+                                    .text('All')
+                            )
+                            .child(
+                                $el('i')
+                                    .class({ 'material-icons-extended': true })
+                                    .text('keyboard_arrow_down')
+                            )
+                            .child(visibleDropdown)
                     )
-                    .child(orderDropdown)
             )
             .child(
                 $el('div')
-                    .event({
-                        click: (event) => {
-                            for (const e of this.renderer.querySelectorAll('.stadiaplus_libraryfilter-dropdown')) {
-                                e.classList.remove('selected');
-                            }
-                            visibleDropdown.classList.add('selected');
-                            event.stopPropagation();
-                        },
-                    })
-                    .child(
-                        $el('h6')
-                            .class({ 'stadiaplus_libraryfilter-visibilityindicator': true })
-                            .text('All')
-                    )
-                    .child(
-                        $el('i')
-                            .class({ 'material-icons-extended': true })
-                            .text('keyboard_arrow_down')
-                    )
-                    .child(visibleDropdown)
+                    .class({ 'bar-item': true })
+                    .child(this.getAutoUpdateButton())
+                    .child(this.getAutoUpdateTooltip())
             )
             .appendTo(root);
 
         const self = this;
 
-        this.tagSelect = new Select(visibleDropdown.querySelector('select[name="tags"]'), {
-            placeholder: 'Tags...',
-            style: SelectStyle.DARK,
-            onChange() {
-                self.updateVisibility();
-            },
-        });
+        this.tagSelect = new Select(
+            visibleDropdown.querySelector('select[name="tags"]'),
+            {
+                placeholder: 'Tags...',
+                style: SelectStyle.DARK,
+                onChange() {
+                    self.updateVisibility();
+                },
+            }
+        );
 
-        this.onlineTypeSelect = new Select(visibleDropdown.querySelector('select[name="online-types"]'), {
-            placeholder: 'Playstyles...',
-            style: SelectStyle.DARK,
-            onChange() {
-                self.updateVisibility();
-            },
-        });
+        this.onlineTypeSelect = new Select(
+            visibleDropdown.querySelector('select[name="online-types"]'),
+            {
+                placeholder: 'Playstyles...',
+                style: SelectStyle.DARK,
+                onChange() {
+                    self.updateVisibility();
+                },
+            }
+        );
 
         $el('div')
             .class({ stadiaplus_libraryfilter: true })
             .child(this.searchColumn)
             .child(this.gameContainer)
             .appendTo(root);
+    }
+
+    getAutoUpdateTooltip(): HTMLElement {
+        const el = $el('div')
+            .class({
+                'stadiaplus_libraryfilter-tooltip': true,
+                open: localStorage.getItem('autoUpdateTooltip') == null,
+            })
+            .child(
+                $el('h6').html(
+                    `<i class="material-icons-extended" style="margin-right: 0.25rem">new_releases</i> Auto Update`
+                )
+            )
+            .child(
+                $el('p').text(
+                    'Auto Update solves your Stadia+ DB needs by automatically updating your games over time.'
+                )
+            )
+            .child(
+                $el('a')
+                    .attr({
+                        href: 'https://github.com/Mafrans/StadiaPlus/wiki',
+                    })
+                    .css({ 'text-decoration': 'underline' })
+                    .text('Read more')
+                    .child(
+                        $el('i')
+                            .class({
+                                'material-icons-extended': true,
+                            })
+                            .css({
+                                'margin-left': '0.25rem',
+                                'font-size': '1em',
+                            })
+                            .text('arrow_forward')
+                    )
+                    .css({ 'margin-top': '1rem' })
+            )
+            .child(
+                $el('span')
+                    .class({ close: true })
+                    .event({
+                        click: () => {
+                            el.class({ open: false });
+                            localStorage.setItem('autoUpdateTooltip', 'true');
+                        },
+                    })
+            );
+
+        return el.element;
+    }
+
+    getAutoUpdateButton(): HTMLElement {
+        if(!StadiaPlusDB.isAuthenticated()) return $el('div').element;
+
+        const el = $el('button')
+            .class({
+                'stadiaplus_libraryfilter-button': true,
+                active: localStorage.getItem('autoUpdate') === 'true',
+            })
+            .child(
+                $el('i')
+                    .class({ 'material-icons-extended': true })
+                    .text('update')
+            )
+            .child($el('span').text('Auto Update'));
+
+        el.event({
+            mousedown: () => {
+                console.log('down');
+                el.class({ hold: true });
+            },
+            mouseup: () => {
+                console.log('up');
+                el.class({ hold: false });
+            },
+            click: () => {
+                console.log('click');
+                el.element.classList.toggle('active');
+                localStorage.setItem(
+                    'autoUpdate',
+                    el.element.classList.contains('active') ? 'true' : 'false'
+                );
+                Util.desandbox(
+                    `WebScraperRunnable.setAutoUpdate(${el.element.classList.contains(
+                        'active'
+                    )})`
+                );
+            },
+        });
+
+        return el.element;
     }
 
     getOrderDropdown(): HTMLElement {
@@ -419,7 +593,10 @@ export class LibraryFilter extends Component {
             );
         }
 
-        const onlineTypes = $el('select').attr({ name: 'online-types', multiple: 'true' });
+        const onlineTypes = $el('select').attr({
+            name: 'online-types',
+            multiple: 'true',
+        });
 
         for (const type of StadiaGameDB.OnlineType.values()) {
             onlineTypes.child(
@@ -432,13 +609,15 @@ export class LibraryFilter extends Component {
         return $el('div')
             .id(this.id + '-dropdown-' + Math.floor(Math.random() * 999999))
             .class({ 'stadiaplus_libraryfilter-dropdown': true })
-            .event({ click: (event) => event.stopPropagation() })
+            .event({ click: event => event.stopPropagation() })
             .child(tags)
             .child(onlineTypes).element;
     }
 
     async getSortedGames(): Promise<LibraryGame[]> {
-        const filter: FilterOrder = FilterOrder.from(await SyncStorage.LIBRARY_SORT_ORDER.get());
+        const filter: FilterOrder = FilterOrder.from(
+            await SyncStorage.LIBRARY_SORT_ORDER.get()
+        );
         const games = [...this.games]; // Shallow array clone
         const sorted = filter.sort(games);
 
@@ -452,7 +631,9 @@ export class LibraryFilter extends Component {
      */
     onStop(): void {
         this.active = false;
-        Logger.component(Language.get('component.disabled', { name: this.name }));
+        Logger.component(
+            Language.get('component.disabled', { name: this.name })
+        );
     }
 
     /**
@@ -477,10 +658,12 @@ class LibraryGame {
 
     constructor(uuid: string) {
         this.uuid = uuid;
-        SyncStorage.LIBRARY_GAMES.get().then((libraryGames) => {
+        SyncStorage.LIBRARY_GAMES.get().then(libraryGames => {
             if (libraryGames == null) libraryGames = [];
 
-            const game = (libraryGames as LibraryGame[]).find((a) => a.uuid === uuid);
+            const game = (libraryGames as LibraryGame[]).find(
+                a => a.uuid === uuid
+            );
             if (game != null) {
                 this.name = game.name;
                 this.visible = game.visible;
@@ -507,12 +690,18 @@ class LibraryGame {
             .child(
                 $el('img')
                     .class({ 'play-button': true })
-                    .attr({ src: chrome.runtime.getURL('images/PlayButtonBackground.png') })
+                    .attr({
+                        src: chrome.runtime.getURL(
+                            'images/PlayButtonBackground.png'
+                        ),
+                    })
             )
             .child(
                 $el('img')
                     .class({ 'play-icon': true })
-                    .attr({ src: chrome.runtime.getURL('images/PlayButton.png') })
+                    .attr({
+                        src: chrome.runtime.getURL('images/PlayButton.png'),
+                    })
             )
             .child(
                 $el('div')
@@ -521,7 +710,8 @@ class LibraryGame {
             )
             .css({
                 display: this.visible ? null : 'none',
-                'background-image': this.img !== null ? `url(${this.img})` : null,
+                'background-image':
+                    this.img !== null ? `url(${this.img})` : null,
             }).element;
 
         return element;
@@ -576,11 +766,15 @@ export class FilterOrder {
     };
 
     static from(id: number): FilterOrder {
-        return this.values().find((e) => e.id === id);
+        return this.values().find(e => e.id === id);
     }
 
     static values() {
-        return [FilterOrder.RECENT, FilterOrder.ALPHABETICAL, FilterOrder.RANDOM];
+        return [
+            FilterOrder.RECENT,
+            FilterOrder.ALPHABETICAL,
+            FilterOrder.RANDOM,
+        ];
     }
 
     /**

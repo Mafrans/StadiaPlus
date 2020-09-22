@@ -4,7 +4,7 @@
     display: flex;
     align-items: center;
 
-    >div {
+    .bar-item {
         margin-right: 2rem;
         position: relative;
         cursor: pointer;
@@ -21,6 +21,86 @@
         }
     }
 }
+
+.stadiaplus_libraryfilter-button {
+    display: flex;
+    cursor: pointer;
+    pointer-events: all;
+    align-items: center;
+    background: #2D2E31;
+    border-radius: 999px;
+    border: none;
+    font-size: 18px;
+    padding: 0.75rem 1.5rem;
+    margin-left: 1.5rem;
+    color: #ffffff;
+
+    &.hold {
+        transition: transition 0.1s ease-out;
+        transform: scale(0.95);
+    }
+
+    &.active {
+        transition: background 0.06s ease-out;
+        background: #FA4821;
+    }
+
+    .material-icons-extended {
+        font-size: 20px;
+        padding-right: 0.5rem;
+    }
+}
+
+.stadiaplus_libraryfilter-tooltip {
+    background: #2D2E31;
+    box-shadow: 0 0.25rem 2.5rem rgba(0,0,0,0.30), 0 0.125rem 0.75rem rgba(0,0,0,0.4);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-left: -0.5rem;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(calc(-50% - 0.5rem)) translateX(calc(100% + 1rem));
+    opacity: 0;
+    transition: opacity 0.2s cubic-bezier(0, 0, 0.2, 1), transform 0.2s cubic-bezier(0, 0, 0.2, 1);
+    pointer-events: none;
+    cursor: initial;
+    z-index: 1;
+
+    &.open {
+        pointer-events: all;
+        opacity: 1;
+        transform: translateY(-50%) translateX(calc(100% + 1rem));
+    }
+    
+    .material-icons-extended {
+        vertical-align: text-bottom;
+    }
+
+    .close::after {
+        content: 'close';
+        cursor: pointer;
+        position: absolute;
+        right: 0;
+        top: 0;
+        font-family: "Material Icons Extended";
+        opacity: 0.5;
+        padding: 1rem;
+    }
+
+    &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        width: 1rem;
+        height: 1rem;
+        z-index: 0;
+        transform: translate(-50%, -50%) rotate(45deg);
+        background: inherit;
+    }
+}
+
 
 .stadiaplus_libraryfilter-dropdown {
     background: #2D2E31;
@@ -172,7 +252,7 @@
 
             &:hover {
                 background-size: auto 130% !important;
-                transition: background-size 2.0s cubic-bezier(0, 0, 0.2, 1), transform 0.3s ease-out;
+                transition: background-size 4.0s cubic-bezier(0, 0, 0.2, 1), transform 0.3s ease-out;
                 transform: scale(1.05);
                 
                 &::before,
