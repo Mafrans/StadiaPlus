@@ -123,6 +123,11 @@ export class LibraryFilter extends Component {
             .substring(3);
     }
 
+    getImage(tile: Element) {
+        const src = (tile.querySelector('.YXkCBb') as HTMLElement).style.backgroundImage;
+        return src.substring(5, src.length-3);
+    }
+
     /**
      * Runs when the component has loaded
      *
@@ -154,13 +159,12 @@ export class LibraryFilter extends Component {
 
         for (const gameTile of gameTiles) {
             const uuid = this.getUUID(gameTile);
-            const game: LibraryGame = new LibraryGame(uuid);
+            const game: LibraryGame = await new LibraryGame(uuid);
+            await game.create(this.getImage(gameTile));
 
-            game.create().then(() => {
-                if (this.games.find(e => e.uuid === uuid) == null) {
-                    this.games.push(game);
-                }
-            });
+            if (this.games.find(e => e.uuid === uuid) == null) {
+                this.games.push(game);
+            }
         }
 
         Util.desandbox(
@@ -205,12 +209,7 @@ export class LibraryFilter extends Component {
                     .child($el('hr'))
                     .child(
                         $el('h6')
-                            .text(game.name)
-                            .child(
-                                $el('i')
-                                    .class({ 'material-icons-extended': true })
-                                    .text('keyboard_arrow_right')
-                            )
+                            .html(`<i class="material-icons-extended">play_circle_outline</i> ${game.name}`)
                     ).element;
 
                 listGame.addEventListener('click', () => {
@@ -671,10 +670,10 @@ class LibraryGame {
         });
     }
 
-    async create() {
+    async create(fallbackImage?: string) {
         this.visible = true;
         this.name = this.uuid;
-        this.img = null;
+        this.img = fallbackImage;
 
         const game = StadiaGameDB.get(this.uuid);
         if (game !== undefined) {

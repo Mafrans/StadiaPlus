@@ -179,9 +179,10 @@
                 text-overflow: ellipsis;
 
                 .material-icons-extended {
-                    vertical-align: sub;
-                    transition: opacity 0.3s ease-out, margin-left 0.3s ease-out;
-                    margin-left: -0.25rem;
+                    vertical-align: text-bottom;
+                    transition: opacity 0.3s cubic-bezier(0.47, 0, 0.75, 0.72), margin-left 0.3s ease-out;
+                    margin-left: -1rem;
+                    margin-right: 0.25rem;
                     opacity: 0;
                 }
             }
