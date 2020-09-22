@@ -180,8 +180,9 @@
 
                 .material-icons-extended {
                     vertical-align: text-bottom;
-                    transition: opacity 0.3s cubic-bezier(0.47, 0, 0.75, 0.72), margin-left 0.3s ease-out;
+                    transition: opacity 0.3s ease-out, margin-left 0.2s ease-out, transform 0.2s ease-out;
                     margin-left: -1rem;
+                    transform: scale(0.5);
                     margin-right: 0.25rem;
                     opacity: 0;
                 }
@@ -194,6 +195,7 @@
                     .material-icons-extended {
                         margin-left: 0rem;
                         opacity: 1;
+                        transform: scale(1);
                     }
                 }
             }

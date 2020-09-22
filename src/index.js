@@ -66,13 +66,11 @@ StadiaPlusDB.connect('https://stadiaplus.dev')
 
     LocalStorage.AUTH_TOKEN.get()
         .then(token => {
-            console.log({token});
             StadiaPlusDB.authToken = token;
 
             StadiaPlusDB.getProfile()
             .then(profile => {
                 Logger.info(Language.get('stadiaplusdb.signed-in', {user: profile.name + (profile.tag === "0000" ? "✨" : '#' + profile.tag)}))
-                console.log({profile});
             })
             .catch(() => {
                 StadiaPlusDB.authToken = null;

@@ -10,8 +10,6 @@ const WebScraperRunnable = {
                 const achievementData = text.match(new RegExp("AF_initDataCallback\\(\\{ *key: *'ds:3'.*?data: *((.|\\n)*?), *sideChannel: *\\{\\}\\}\\)"));
                 
                 if(playData == null) return;
-
-                console.log({playData, achievementData})
                 
                 const data = JSON.parse(achievementData[1])[0];
     
@@ -49,8 +47,7 @@ const WebScraperRunnable = {
 
     update(uuid) {
         if(uuid == null) return;
-    
-        console.log("updating", uuid);
+
         const userId = document.querySelector('.ksZYgc.VGZcUb').getAttribute('data-player-id');
         WebScraperRunnable.fetchData(userId, uuid)
         .then(data => {
@@ -77,7 +74,6 @@ const WebScraperRunnable = {
         this.autoUpdate = value;
         if(this.autoUpdate) {
             const loop = () => {
-                console.log('autoupdate loop')
                 let updated = localStorage.getItem('updatedGames');
                 if(updated != null) {
                     updated = JSON.parse(updated);
@@ -86,13 +82,10 @@ const WebScraperRunnable = {
                     updated = {};
                 }
 
-                console.log(updated);
-
                 try {
                     if(this.games.length > 0) {
                         let hasUpdated = false;
                         for(let uuid of this.games) {
-                            console.log(uuid);
                             if(!updated.hasOwnProperty(uuid) || !updated[uuid]) {
                                 this.update(uuid);
                                 hasUpdated = true;

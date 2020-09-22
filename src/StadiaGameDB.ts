@@ -37,8 +37,6 @@ export namespace StadiaGameDB {
             const uuids = DB.uuidMap.getConnection().uuidMap;
             const games = DB.gameDB.getConnection().data;
 
-            console.log({uuids, games});
-
             for(const uuid in uuids) {
                 const entry = games[uuids[uuid]];
                 let game: StadiaGameDB.Game = {

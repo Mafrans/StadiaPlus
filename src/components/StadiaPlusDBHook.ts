@@ -47,7 +47,6 @@ export class StadiaPlusDBHook extends Component {
                 const data = JSON.parse(sandboxer.getAttribute('data'));
                 Logger.info(Language.get('stadiaplusdb.updating', { game: data.game.name }));
                 StadiaPlusDB.ProfileConnector.setData(data)
-                    .then(console.log)
                     .catch(console.error);
             });
 

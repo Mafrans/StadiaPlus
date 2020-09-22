@@ -533,15 +533,12 @@ export class LibraryFilter extends Component {
 
         el.event({
             mousedown: () => {
-                console.log('down');
                 el.class({ hold: true });
             },
             mouseup: () => {
-                console.log('up');
                 el.class({ hold: false });
             },
             click: () => {
-                console.log('click');
                 el.element.classList.toggle('active');
                 localStorage.setItem(
                     'autoUpdate',
