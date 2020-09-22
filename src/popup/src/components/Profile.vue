@@ -155,8 +155,9 @@ export default {
         Dropdown,
     },
     created() {
-        LocalStorage.AUTH_TOKEN.get((response) => {
-            StadiaPlusDB.authToken = response[LocalStorage.AUTH_TOKEN.tag];
+        LocalStorage.AUTH_TOKEN.get()
+        .then(token => {
+            StadiaPlusDB.authToken = token;
 
             StadiaPlusDB.getProfile()
                 .then((profile) => {

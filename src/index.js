@@ -64,16 +64,21 @@ StadiaPlusDB.connect('https://stadiaplus.dev')
         return;
     }
 
-    LocalStorage.AUTH_TOKEN.get(response => {
-        StadiaPlusDB.authToken = response[LocalStorage.AUTH_TOKEN.tag];
+    LocalStorage.AUTH_TOKEN.get()
+        .then(token => {
+            console.log({token});
+            StadiaPlusDB.authToken = token;
 
-        StadiaPlusDB.getProfile()
-        .then(profile => Logger.info(Language.get('stadiaplusdb.signed-in', {user: profile.name + profile.tag === "0000" ? "✨" : '#' + profile.tag})))
-        .catch(() => {
-            StadiaPlusDB.authToken = null;
-            Logger.error('Not logged into Stadia+');
-        });
-    })
+            StadiaPlusDB.getProfile()
+            .then(profile => {
+                Logger.info(Language.get('stadiaplusdb.signed-in', {user: profile.name + (profile.tag === "0000" ? "✨" : '#' + profile.tag)}))
+                console.log({profile});
+            })
+            .catch(() => {
+                StadiaPlusDB.authToken = null;
+                Logger.error('Not logged into Stadia+');
+            });
+        })
 });
 
 window.addEventListener('load', () => {
