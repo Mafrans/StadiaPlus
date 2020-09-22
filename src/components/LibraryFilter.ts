@@ -137,12 +137,16 @@ export class LibraryFilter extends Component {
         this.active = true;
         this.updateRenderer();
 
-        if ((await SyncStorage.LIBRARY_SORT_ORDER.get()) == null)
-            await SyncStorage.LIBRARY_SORT_ORDER.set(FilterOrder.RECENT.id);
-
         Logger.component(
             Language.get('component.enabled', { name: this.name })
         );
+    }
+
+    async reloadLibrary() {
+        Logger.info('Reloading Library');
+
+        if ((await SyncStorage.LIBRARY_SORT_ORDER.get()) == null)
+            await SyncStorage.LIBRARY_SORT_ORDER.set(FilterOrder.RECENT.id);
 
         const gameTiles = this.renderer.querySelectorAll('.GqLi4d');
         this.games = await SyncStorage.LIBRARY_GAMES.get();
@@ -362,6 +366,7 @@ export class LibraryFilter extends Component {
         const orderDropdown = this.getOrderDropdown();
         const visibleDropdown = this.getVisibleDropdown();
         $el('div')
+            .id(this.id)
             .class({ 'stadiaplus_libraryfilter-bar': true })
             .child(
                 $el('div')
@@ -632,6 +637,7 @@ export class LibraryFilter extends Component {
         );
     }
 
+
     /**
      * Runs every second, creates and updates elements.
      *
@@ -639,8 +645,9 @@ export class LibraryFilter extends Component {
      */
     onUpdate(): void {
         if (Util.isInHome()) {
-            if (!this.exists()) {
-                this.updateRenderer();
+            this.updateRenderer();
+            if (!this.exists() && this.renderer.querySelector('.fJrLJb') != null) {
+                this.reloadLibrary();
             }
         }
     }
