@@ -132,7 +132,7 @@ export class LFGConnector {
 }
 
 export class ProfileConnector {
-    setData(data: any): Promise<any> {
+    async setData(data: any): Promise<any> {
         if(!StadiaPlusDB.isConnected()) {
             return new Promise((resolve, reject) => reject({ error: 'Not connected to the StadiaPlusDB database' }));
         }
@@ -140,13 +140,12 @@ export class ProfileConnector {
             return new Promise((resolve, reject) => reject({ error: 'Not authenticated with StadiaPlusDB' }));
         }
 
-        return axios({
-            method: 'post',
-            url: `${StadiaPlusDB.url}/api/update`,
-            data: {
+        return await fetch(`${StadiaPlusDB.url}/api/update`, {
+            method: 'POST',
+            body: JSON.stringify({
                 token: StadiaPlusDB.authToken,
                 data: data
-            },
-        })
+            })
+        });
     }
 }
