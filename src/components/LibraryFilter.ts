@@ -136,6 +136,7 @@ export class LibraryFilter extends Component {
     async onStart() {
         this.active = true;
         this.updateRenderer();
+        this.reloadLibrary();
 
         Logger.component(
             Language.get('component.enabled', { name: this.name })
