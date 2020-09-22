@@ -1,6 +1,7 @@
 import { Component } from './Component';
 import { SyncStorage } from './Storage';
 import { Language } from './Language';
+import Logger from './Logger';
 
 /**
  * A utility class responsible for loading [[Component|Components]] and delivering events.
@@ -56,8 +57,13 @@ export class ComponentLoader {
                 storage[component.tag].enabled = true;
             }
 
-            component.enabled = storage[component.tag].enabled;
-            if (component.enabled && !component.active) component.load();
+            try {
+                component.enabled = storage[component.tag].enabled;
+                if (component.enabled && !component.active) component.load();
+            }
+            catch(e) {
+                Logger.error(e);
+            }
         };
 
         SyncStorage.COMPONENTS.set(storage);

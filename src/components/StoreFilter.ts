@@ -54,7 +54,7 @@ export class StoreFilter extends Component {
         this.element.id = this.id;
         this.element.innerHTML = `
             <div class='bar'>
-                <input type='text' placeholder="${StadiaGameDB.random()}..." id='${this.id}-search'>
+                <input type='text' placeholder="${StadiaGameDB.random().name}..." id='${this.id}-search'>
             </div>
             <div class='games' id='${this.id}-games'>
 
@@ -76,7 +76,7 @@ export class StoreFilter extends Component {
             
             element.setAttribute('data-uuid', uuid);
             element.setAttribute('data-name', entry.name);
-            element.setAttribute('data-tags', entry.tags.map(tag => tag.name).join(','));
+            element.setAttribute('data-tags', entry.tags.map(tag => tag.name).join(', '));
 
             let url = "https://stadia.google.com" as any;
             const locArr = location.href.split('/');
@@ -84,9 +84,9 @@ export class StoreFilter extends Component {
                 url = locArr.slice(0, 5).join('/') + '/';
                 url = url.substring(0, url.length + (url.endsWith('/') ? -1 : 0));
             }
-            const storeId = entry.uuid.match(/https:\/\/stadia.google.com\/store\/details\/([0-9a-z/]+)/)[1];
+            const storeId = entry.storeId;
             element.setAttribute('href', url + '/store/details/' + storeId);
-            element.setAttribute('data-img', 'https://stadiagamedb.com/' + entry.uuid.match(/(images\/posters\/[a-z0-9_.-]+.png)/g));
+            element.setAttribute('data-img', entry.img);
 
             this.games.push(element);
         });
@@ -148,7 +148,7 @@ export class StoreFilter extends Component {
         if(Util.isInStore()) {
             if(!this.exists()) {
                 this.updateRenderer();
-                const container = this.renderer.querySelector('.nWmtLd');
+                const container = this.renderer.querySelector('.yUnkH');
 
                 if(container === null) return;
 

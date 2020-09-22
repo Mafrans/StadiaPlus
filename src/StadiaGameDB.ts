@@ -41,6 +41,7 @@ export namespace StadiaGameDB {
                 const entry = games[uuids[uuid]];
                 let game: StadiaGameDB.Game = {
                     uuid: uuid,
+                    storeId: /https:\/\/stadia.google.com\/store\/details\/([0-9a-z/]+)/g.exec(entry[0])[1],
                     img: 'https://stadiagamedb.com/images/posters/webp/' + /images\/posters\/([a-z0-9_.-]+).png/g.exec(entry[0])[1] + '.webp',
                     name: entry[1],
                     tags: entry[2].split(', ').map((e: string) => StadiaGameDB.Tag.fromId(e.toLowerCase())).filter((e: any) => e != null),
@@ -65,6 +66,7 @@ export namespace StadiaGameDB {
 
     export interface Game {
         uuid: string;
+        storeId: string;
         img: string;
         name: string;
         tags: Tag[];
