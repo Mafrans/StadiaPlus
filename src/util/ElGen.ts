@@ -60,6 +60,15 @@ class ElGen {
         return this;
     }
 
+    /**
+     * @deprecated innerHTML is slow and should only be used if no other solution is sufficient.
+     * @param html The html to add to this element.
+     */
+    html(html: string): ElGen {
+        this.element.innerHTML = html;
+        return this;
+    }
+
     event(events: {[name: string]: (event: Event) => void}) {
         for(const name in events) {
             this.element.addEventListener(name, events[name]);
