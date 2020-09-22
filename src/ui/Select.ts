@@ -50,6 +50,7 @@ export class Select {
     }
 
     set(...items: any[]) {
+        if(this.slimselect == null) return;
         if (items.length === 1) {
             // Just in case slimselect.set is faster
             this.slimselect.set(items[0]);

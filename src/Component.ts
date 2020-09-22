@@ -42,7 +42,10 @@ export class Component {
 
     updateRenderer(): void {
         const renderers = document.querySelectorAll('.lhsE4e>c-wiz');
-        this.renderer = (Array as any).from(renderers).find((renderer: HTMLElement) => renderer.style.opacity !== '0');
+        this.renderer = renderers.item(0) as HTMLElement;
+        if(renderers.length > 1) {
+            this.renderer = (Array as any).from(renderers).find((renderer: HTMLElement) => renderer.style.opacity === '1');
+        }
     }
 
     
@@ -53,7 +56,7 @@ export class Component {
      */
     exists(): boolean {
         if(this.renderer.style.opacity === '0') return false;
-        return document.querySelector('#' + this.id) !== null;
+        return this.renderer.querySelector('#' + this.id) !== null;
     }
 
     /**
