@@ -54,7 +54,7 @@ loader.register(new StoreFilter());
 loader.register(new Ratings());
 loader.register(new AllowWindowedMode());
 loader.register(new PasteFromClipboard());
-loader.register(new LookingForGroup());
+// loader.register(new LookingForGroup());
 loader.register(webScraper);
 
 StadiaPlusDB.connect('https://stadiaplus.dev')

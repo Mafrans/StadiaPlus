@@ -1,8 +1,8 @@
 {
-    "cache-version": 0.1,
+    "cache-version": 0.2,
     "clear-keys": {
         "local": [
-            "monitor-stats"
+            "games"
         ],
         "sync": []
     }
