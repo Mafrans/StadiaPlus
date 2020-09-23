@@ -94,7 +94,7 @@ export class NetworkMonitor extends Component {
         const icon = chrome.runtime.getURL('images/icons/network-monitor.svg');
         this.button = new UIButton(icon, Language.get('network-monitor.button-label'), this.id + '-button');
 
-        this.getStorage(() => { this.updateVisible() });
+        this.getStorage().then(() => this.updateVisible());
     }
 
     /**
@@ -132,8 +132,67 @@ export class NetworkMonitor extends Component {
      * @param {(() => any)} [callback=(() => {})] callback called after storage update.
      * @memberof NetworkMonitor
      */
-    async getStorage(callback: (() => any) = (() => {})) {
+    async getStorage() {
         this.visible = await LocalStorage.MONITOR_STATS.get();
+        if(this.visible == null) {
+            this.visible = [
+                {
+                    id: 'time',
+                    enabled: true,
+                    name: Language.get('network-monitor.stats.time'),
+                },
+                {
+                    id: 'resolution',
+                    enabled: true,
+                    name: Language.get('network-monitor.stats.resolution'),
+                },
+                {
+                    id: 'fps',
+                    enabled: true,
+                    name: Language.get('network-monitor.stats.fps'),
+                },
+                {
+                    id: 'latency',
+                    enabled: true,
+                    name: Language.get('network-monitor.stats.latency'),
+                },
+                {
+                    id: 'codec',
+                    enabled: true,
+                    name: Language.get('network-monitor.stats.codec'),
+                },
+                {
+                    id: 'traffic',
+                    enabled: true,
+                    name: Language.get('network-monitor.stats.traffic'),
+                },
+                {
+                    id: 'current-traffic',
+                    enabled: true,
+                    name: Language.get('network-monitor.stats.current-traffic'),
+                },
+                {
+                    id: 'average-traffic',
+                    enabled: true,
+                    name: Language.get('network-monitor.stats.average-traffic'),
+                },
+                {
+                    id: 'packets-lost',
+                    enabled: true,
+                    name: Language.get('network-monitor.stats.packets-lost'),
+                },
+                {
+                    id: 'average-packet-loss',
+                    enabled: true,
+                    name: Language.get('network-monitor.stats.average-packet-loss'),
+                },
+                {
+                    id: 'jitter-buffer',
+                    enabled: true,
+                    name: Language.get('network-monitor.stats.jitter-buffer'),
+                },
+            ];
+        }
     }
 
     /**
@@ -155,64 +214,6 @@ export class NetworkMonitor extends Component {
         this.active = true;
         this.startRunnable();
         this.createUI();
-
-        this.visible = [
-            {
-                id: 'time',
-                enabled: true,
-                name: Language.get('network-monitor.stats.time'),
-            },
-            {
-                id: 'resolution',
-                enabled: true,
-                name: Language.get('network-monitor.stats.resolution'),
-            },
-            {
-                id: 'fps',
-                enabled: true,
-                name: Language.get('network-monitor.stats.fps'),
-            },
-            {
-                id: 'latency',
-                enabled: true,
-                name: Language.get('network-monitor.stats.latency'),
-            },
-            {
-                id: 'codec',
-                enabled: true,
-                name: Language.get('network-monitor.stats.codec'),
-            },
-            {
-                id: 'traffic',
-                enabled: true,
-                name: Language.get('network-monitor.stats.traffic'),
-            },
-            {
-                id: 'current-traffic',
-                enabled: true,
-                name: Language.get('network-monitor.stats.current-traffic'),
-            },
-            {
-                id: 'average-traffic',
-                enabled: true,
-                name: Language.get('network-monitor.stats.average-traffic'),
-            },
-            {
-                id: 'packets-lost',
-                enabled: true,
-                name: Language.get('network-monitor.stats.packets-lost'),
-            },
-            {
-                id: 'average-packet-loss',
-                enabled: true,
-                name: Language.get('network-monitor.stats.average-packet-loss'),
-            },
-            {
-                id: 'jitter-buffer',
-                enabled: true,
-                name: Language.get('network-monitor.stats.jitter-buffer'),
-            },
-        ];
         
         Logger.component(Language.get('component.enabled', { name: this.name }));
     
