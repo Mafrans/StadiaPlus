@@ -253,7 +253,7 @@ export class NetworkMonitor extends Component {
     onUpdate() {
         // Only create components if the menu is open already.
         if (Util.isMenuOpen() && Util.isInGame()) {
-            if (!this.exists()) {
+            if (!this.existsAnywhere()) {
                 const self = this;
                 this.updateRenderer();
                 this.component.create();
