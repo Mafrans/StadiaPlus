@@ -61,7 +61,7 @@
     },
     "force-codec": {
         "name": "Codec erzwingen",
-        "4k-tooltip": "Forced Codec is not available when running in 4K"
+        "4k-tooltip": "Forced Codec is not available when running in 4K or 1440p"
     },
     "force-resolution": {
         "name": "Auflösung erzwingen",

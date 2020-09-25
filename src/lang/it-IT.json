@@ -61,7 +61,7 @@
     },
     "force-codec": {
         "name": "Forza Codec",
-        "4k-tooltip": "Non è possibile forzare il codec quando si è in 4K"
+        "4k-tooltip": "Non è possibile forzare il codec quando si è in 4K o 1440p"
     },
     "force-resolution": {
         "name": "Forza Risoluzione",
