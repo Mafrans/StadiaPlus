@@ -1,7 +1,7 @@
 {
     "name": "Stadia+ Extension",
     "short_name": "Stadia+",
-    "version": "2.5.1",
+    "version": "2.5.2",
     "author": "Malte Klüft (Mafrans)",
     "description": "Extends Google's Stadia gaming platform with additional features, such as custom filters and in game network monitoring.",
     "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAj4rm88698t+T5Pe5jWP8edM6wPBErxwCu0k3Ona/Xc3lt3NJpvW5dabUdcpP3MYBjMQ41V/iq4Q64rObL9csaruxP4Ex3S8SaxBc/sDBxAUjRdYebF76t+APSeTRDs0WiKJgjUoEGBlOtSqffVYO7wpLr/IWUn9z1PfkaV5LY5jrlHJ4o0HUOoVW5v2gTUZV143hdOXQgMH9IFf1MppMzg0m7AVq+8j7L7O5334T0tKzhb2sd9uHp74jv2jTWBK1ykkoDt4ST18ZC6zdXH0/4rI3cJ/r0YlganD6wfNvJTWJ3WMCrvR/7S//qBr9iNrD65BQDFln90JPEeBScjtd8wIDAQAB",

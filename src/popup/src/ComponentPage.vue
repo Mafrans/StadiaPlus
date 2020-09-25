@@ -71,8 +71,8 @@ export default {
         }
     },
     created() {
-        SyncStorage.COMPONENTS.get((result) => {
-            this.components = result.components;
+        SyncStorage.COMPONENTS.get().then(components => {
+            this.components = components;
         });
     }
 };
@@ -80,7 +80,7 @@ export default {
 
 <style lang="scss" scoped>
 .components {
-    height: 250px;
+    height: 350px;
     overflow-y: scroll;
     position: relative;
     padding: 0 4px;

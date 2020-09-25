@@ -44,16 +44,16 @@ export class ComponentLoader {
     async start() {
         let storage = await SyncStorage.COMPONENTS.get();
 
-        if(storage === undefined) {
+        if(storage == null) {
             storage = {};
         }
 
         for(const component of this.components) {
-            if(storage[component.tag] === undefined) {
+            if(storage[component.tag] == null) {
                 storage[component.tag] = {};
             }
 
-            if(storage[component.tag].enabled === undefined) {
+            if(storage[component.tag].enabled == null) {
                 storage[component.tag].enabled = true;
             }
 

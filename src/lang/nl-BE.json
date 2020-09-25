@@ -61,7 +61,7 @@
     },
     "force-codec": {
         "name": "Codec forceren",
-        "4k-tooltip": "Codec kan niet geforceerd worden wanneer je in 4K speelt"
+        "4k-tooltip": "Codec kan niet geforceerd worden wanneer je in 4K of 1440p speelt"
     },
     "force-resolution": {
         "name": "Resolutie forceren",

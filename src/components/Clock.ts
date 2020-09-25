@@ -69,7 +69,7 @@ export class Clock extends Component {
     onUpdate(): void {
         // Only update the clock when it's visible
         if(Util.isMenuOpen()) {
-            if(!this.exists()) {
+            if(!this.existsAnywhere()) {
                 const container = document.querySelector('.hxhAyf');
                 container.prepend(this.element);
             }

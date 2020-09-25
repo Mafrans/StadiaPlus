@@ -50,13 +50,23 @@ export class Component {
 
     
     /**
-     * Returns whether this Component has an element in the DOM
+     * Returns whether this Component has an element in the current renderer
      *
      * @returns {boolean}
      */
     exists(): boolean {
         if(this.renderer.style.opacity === '0') return false;
         return this.renderer.querySelector('#' + this.id) !== null;
+    }
+
+    
+    /**
+     * Returns whether this Component has an element anywhere in the DOM
+     *
+     * @returns {boolean}
+     */
+    existsAnywhere(): boolean {
+        return document.querySelector('#' + this.id) !== null;
     }
 
     /**
