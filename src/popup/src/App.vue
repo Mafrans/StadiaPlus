@@ -5,7 +5,7 @@
         </transition>
 
         <footer>
-            <span>Stadia+ 2.5.2</span>
+            <span>Stadia+ 2.5.3</span>
             <span>
                 <a href="https://github.com/Mafrans/StadiaPlus/wiki" target="_blank">{{ Language.get('popup.main-page.help-and-faq') }}</a>
                  • 
