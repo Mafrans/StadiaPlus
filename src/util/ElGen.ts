@@ -1,4 +1,4 @@
-class ElGen {
+export class ElGen {
     element: HTMLElement;
 
     constructor(element: string | HTMLElement) {
@@ -28,6 +28,15 @@ class ElGen {
         }
         else {
             (element as ElGen).element.appendChild(this.element);
+        }
+    }
+
+    prependTo(element: Element | ElGen) {
+        if(element instanceof Node) {
+            (element as Element).prepend(this.element);
+        }
+        else {
+            (element as ElGen).element.prepend(this.element);
         }
     }
 

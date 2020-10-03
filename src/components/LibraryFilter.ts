@@ -16,6 +16,7 @@ import { StadiaPlusDB } from '../StadiaPlusDB';
 import { StadiaGameDB } from '../StadiaGameDB';
 import { $el } from '../util/ElGen';
 import { drop } from '../../docs/assets/js/main';
+import { NavButton, NavPosition } from '../ui/NavButton';
 
 const { chrome, Array } = window as any;
 
@@ -94,11 +95,7 @@ export class LibraryFilter extends Component {
     tagSelect: Select;
     onlineTypeSelect: Select;
 
-    constructor(
-        snackbar: Snackbar,
-        modal: Modal,
-        webScraper: StadiaPlusDBHook
-    ) {
+    constructor(snackbar: Snackbar, modal: Modal, webScraper: StadiaPlusDBHook) {
         super();
 
         // Import snackbar from index.js
@@ -125,7 +122,7 @@ export class LibraryFilter extends Component {
 
     getImage(tile: Element) {
         const src = (tile.querySelector('.YXkCBb') as HTMLElement).style.backgroundImage;
-        return src.substring(5, src.length-3);
+        return src.substring(5, src.length - 3);
     }
 
     /**
@@ -135,12 +132,8 @@ export class LibraryFilter extends Component {
      */
     async onStart() {
         this.active = true;
-        this.updateRenderer();
-        this.reloadLibrary();
 
-        Logger.component(
-            Language.get('component.enabled', { name: this.name })
-        );
+        Logger.component(Language.get('component.enabled', { name: this.name }));
     }
 
     async reloadLibrary() {
@@ -156,9 +149,10 @@ export class LibraryFilter extends Component {
             this.games = [];
         }
 
-        (this.renderer.querySelector('.fJrLJb') as HTMLElement).style[
-            'display'
-        ] = 'none';
+        (this.renderer.querySelector('.fJrLJb') as HTMLElement).style['display'] = 'none';
+        if(document.getElementById(this.id) != null) {
+            document.getElementById(this.id).remove(); // Remove any existing libraries, just to be sure.
+        }
 
         await this.createContainer();
 
@@ -167,7 +161,7 @@ export class LibraryFilter extends Component {
             const game: LibraryGame = await new LibraryGame(uuid);
             await game.create(this.getImage(gameTile));
 
-            if (this.games.find(e => e.uuid === uuid) == null) {
+            if (this.games.find((e) => e.uuid === uuid) == null) {
                 this.games.push(game);
             }
         }
@@ -182,18 +176,11 @@ export class LibraryFilter extends Component {
     }
 
     updateGames(sorted: LibraryGame[]) {
-        Util.desandbox(
-            `WebScraperRunnable.games = ${JSON.stringify(
-                sorted.map(e => e.uuid)
-            )}`
-        );
+        Util.desandbox(`WebScraperRunnable.games = ${JSON.stringify(sorted.map((e) => e.uuid))}`);
         for (const game of sorted) {
             if (
-                this.gameContainer.querySelector(
-                    '.stadiaplus_libraryfilter-game[data-uuid="' +
-                        game.uuid +
-                        '"]'
-                ) == null
+                this.gameContainer.querySelector('.stadiaplus_libraryfilter-game[data-uuid="' + game.uuid + '"]') ==
+                null
             ) {
                 const tile = game.createTile();
 
@@ -212,10 +199,8 @@ export class LibraryFilter extends Component {
                     .class({ 'stadiaplus_libraryfilter-listgame': true })
                     .attr({ 'data-uuid': game.uuid })
                     .child($el('hr'))
-                    .child(
-                        $el('h6')
-                            .html(`<i class="material-icons-extended">play_circle_outline</i> ${game.name}`)
-                    ).element;
+                    .child($el('h6').html(`<i class="material-icons-extended">play_circle_outline</i> ${game.name}`))
+                    .element;
 
                 listGame.addEventListener('click', () => {
                     location.href = playerURL;
@@ -234,41 +219,27 @@ export class LibraryFilter extends Component {
             game.setAttribute('data-uuid', '');
         }
 
-        (this.renderer.querySelector(
-            '.stadiaplus_libraryfilter-searchcolumn-bar>input'
-        ) as any).value = '';
+        (this.renderer.querySelector('.stadiaplus_libraryfilter-searchcolumn-bar>input') as any).value = '';
 
-        this.renderer.querySelector(
-            '.stadiaplus_libraryfilter-sortorderindicator'
-        ).textContent = FilterOrder.from(
+        this.renderer.querySelector('.stadiaplus_libraryfilter-sortorderindicator').textContent = FilterOrder.from(
             await SyncStorage.LIBRARY_SORT_ORDER.get()
         ).name;
         await this.updateGames(await this.getSortedGames());
         this.renderer
-            .querySelectorAll(
-                '.stadiaplus_libraryfilter-game[old], .stadiaplus_libraryfilter-listgame[old]'
-            )
-            .forEach(e => e.remove());
+            .querySelectorAll('.stadiaplus_libraryfilter-game[old], .stadiaplus_libraryfilter-listgame[old]')
+            .forEach((e) => e.remove());
 
         this.updateVisibility();
     }
 
     async updateVisibility() {
-        const tags = (this.tagSelect.get() as string[]).map(id =>
-            StadiaGameDB.Tag.fromId(id)
-        );
-        const onlineTypes = (this.onlineTypeSelect.get() as string[]).map(id =>
-            StadiaGameDB.OnlineType.fromId(id)
-        );
+        const tags = (this.tagSelect.get() as string[]).map((id) => StadiaGameDB.Tag.fromId(id));
+        const onlineTypes = (this.onlineTypeSelect.get() as string[]).map((id) => StadiaGameDB.OnlineType.fromId(id));
 
         if (tags.length === 0 && onlineTypes.length === 0) {
-            document.querySelector(
-                '.stadiaplus_libraryfilter-visibilityindicator'
-            ).textContent = 'All';
+            document.querySelector('.stadiaplus_libraryfilter-visibilityindicator').textContent = 'All';
         } else {
-            document.querySelector(
-                '.stadiaplus_libraryfilter-visibilityindicator'
-            ).textContent = 'Custom';
+            document.querySelector('.stadiaplus_libraryfilter-visibilityindicator').textContent = 'Custom';
         }
 
         for (const game of this.games) {
@@ -276,60 +247,119 @@ export class LibraryFilter extends Component {
             let visible = true;
 
             for (const tag of tags) {
-                if (sgdb.tags.find(e => e.id == tag.id) == null) {
+                if (sgdb.tags.find((e) => e.id == tag.id) == null) {
                     visible = false;
                 }
             }
 
             for (const type of onlineTypes) {
-                if (sgdb.onlineTypes.find(e => e.id == type.id) == null) {
+                if (sgdb.onlineTypes.find((e) => e.id == type.id) == null) {
                     visible = false;
                 }
             }
 
-            const tile = document.querySelector(
-                `.stadiaplus_libraryfilter-game[data-uuid="${game.uuid}"]`
-            );
-            const entry = document.querySelector(
-                `.stadiaplus_libraryfilter-listgame[data-uuid="${game.uuid}"]`
-            );
+            const tile = document.querySelector(`.stadiaplus_libraryfilter-game[data-uuid="${game.uuid}"]`);
+            const entry = document.querySelector(`.stadiaplus_libraryfilter-listgame[data-uuid="${game.uuid}"]`);
             if (tile != null) tile.classList.toggle('hidden', !visible);
             if (entry != null) entry.classList.toggle('hidden', !visible);
         }
     }
 
+    capturesButton: NavButton;
+    async createCaptures() {
+        const captures: CaptureItem[] = Array.from(this.renderer.querySelectorAll('.R8zRIf')).map(
+            (e: HTMLElement) => new CaptureItem(e)
+        ).slice(0, 3); // Slice so only the first three captures are shown
+
+        console.log(Array.from(this.renderer.querySelectorAll('.R8zRIf')));
+
+        const popup = $el('div').child(
+            $el('h2').text('Your captures')
+        )
+
+        this.capturesButton = new NavButton('photo_camera', null, NavPosition.LEFT);
+        this.capturesButton.onClick(event => {
+            this.capturesButton.setActive(true);
+            popup.class({'open': true})
+            document.querySelectorAll('.n4PrVe').forEach((e: HTMLElement) => e.style.opacity = '0');
+            event.stopPropagation();
+        });
+        this.capturesButton.create();
+
+        const previews = $el('div').class({ 'stadiaplus_libraryfilter-captures-previews': true });
+        for (const capture of captures) { 
+            previews.child(
+                $el('div')
+                    .class({ 'stadiaplus_libraryfilter-captures-preview': true, 'video': capture.isVideo })
+                    .css({ 'background-image': `url(${capture.thumbnail})` })
+                    .event({
+                        click: () => {
+                            console.log('open')
+                            capture.open();
+                        },
+                    })
+            );
+        }
+
+        previews.child(
+            $el('div')
+                .class({ 'stadiaplus_libraryfilter-captures-view-all': true })
+                .child(
+                    $el('i').class({'material-icons-extended': true}).text('more_horiz')
+                )
+                .child(
+                    $el('p').text('View all')
+                )
+                .event({
+                    click: () => {
+                        let loc = window.location.href;
+                        let split = loc.split('/');
+                        split[split.length-1] = 'captures';
+                        window.location.href = split.join('/');
+                    },
+                })
+        );
+
+        popup
+            .class({ 'stadiaplus_libraryfilter-captures': true })
+            .child(previews)
+            .event({click: event => event.stopPropagation()})
+            .appendTo(this.capturesButton.element);
+        
+        
+        window.addEventListener('click', () => {
+            popup.class({open: false});
+            this.capturesButton.setActive(false);
+        });
+    }
+
     async createContainer() {
         const root = this.renderer.querySelector('.z1P2me');
+        const wrapper = $el('div').class({'stadiaplus_libraryfilter-wrapper': true}).id(this.id);
 
         const search = $el('input').element;
         search.addEventListener('input', () => {
             const val = (search as any).value;
 
-            this.renderer
-                .querySelectorAll('.stadiaplus_libraryfilter-game')
-                .forEach((element: HTMLElement) => {
-                    const name = StadiaGameDB.get(
-                        element.getAttribute('data-uuid')
-                    ).name;
+            this.renderer.querySelectorAll('.stadiaplus_libraryfilter-game').forEach((element: HTMLElement) => {
+                const name = StadiaGameDB.get(element.getAttribute('data-uuid')).name;
 
-                    if (!name.toLowerCase().includes(val.toLowerCase())) {
-                        element.style['display'] = 'none';
-                    } else {
-                        element.style['display'] = null;
-                    }
-                });
+                if (!name.toLowerCase().includes(val.toLowerCase())) {
+                    element.style['display'] = 'none';
+                } else {
+                    element.style['display'] = null;
+                }
+            });
 
-            this.renderer
-                .querySelectorAll('.stadiaplus_libraryfilter-listgame')
-                .forEach((element: HTMLElement) => {
-                    const name = element.querySelector('h6').textContent;
+            this.renderer.querySelectorAll('.stadiaplus_libraryfilter-listgame').forEach((element: HTMLElement) => {
+                const name = element.querySelector('h6').textContent;
 
-                    if (!name.toLowerCase().includes(val.toLowerCase())) {
-                        element.style['display'] = 'none';
-                    } else {
-                        element.style['display'] = null;
-                    }
-                });
+                if (!name.toLowerCase().includes(val.toLowerCase())) {
+                    element.style['display'] = 'none';
+                } else {
+                    element.style['display'] = null;
+                }
+            });
         });
 
         this.searchColumn = $el('div')
@@ -354,20 +384,17 @@ export class LibraryFilter extends Component {
         $el('h2')
             .text('Your Games')
             .css({ 'margin-top': '8rem' })
-            .appendTo(root);
+            .appendTo(wrapper);
 
         window.addEventListener('click', () => {
-            this.renderer
-                .querySelectorAll('.stadiaplus_libraryfilter-dropdown')
-                .forEach(e => {
-                    e.classList.remove('selected');
-                });
+            this.renderer.querySelectorAll('.stadiaplus_libraryfilter-dropdown').forEach((e) => {
+                e.classList.remove('selected');
+            });
         });
 
         const orderDropdown = this.getOrderDropdown();
         const visibleDropdown = this.getVisibleDropdown();
         $el('div')
-            .id(this.id)
             .class({ 'stadiaplus_libraryfilter-bar': true })
             .child(
                 $el('div')
@@ -376,7 +403,7 @@ export class LibraryFilter extends Component {
                         $el('div')
                             .class({ 'bar-item': true })
                             .event({
-                                click: event => {
+                                click: (event) => {
                                     for (const e of this.renderer.querySelectorAll(
                                         '.stadiaplus_libraryfilter-dropdown'
                                     )) {
@@ -391,11 +418,7 @@ export class LibraryFilter extends Component {
                                     .class({
                                         'stadiaplus_libraryfilter-sortorderindicator': true,
                                     })
-                                    .text(
-                                        FilterOrder.from(
-                                            await SyncStorage.LIBRARY_SORT_ORDER.get()
-                                        ).name
-                                    )
+                                    .text(FilterOrder.from(await SyncStorage.LIBRARY_SORT_ORDER.get()).name)
                             )
                             .child(
                                 $el('i')
@@ -408,7 +431,7 @@ export class LibraryFilter extends Component {
                         $el('div')
                             .class({ 'bar-item': true })
                             .event({
-                                click: event => {
+                                click: (event) => {
                                     for (const e of this.renderer.querySelectorAll(
                                         '.stadiaplus_libraryfilter-dropdown'
                                     )) {
@@ -439,37 +462,45 @@ export class LibraryFilter extends Component {
                     .child(this.getAutoUpdateButton())
                     .child(this.getAutoUpdateTooltip())
             )
-            .appendTo(root);
+            .appendTo(wrapper);
 
         const self = this;
 
-        this.tagSelect = new Select(
-            visibleDropdown.querySelector('select[name="tags"]'),
-            {
-                placeholder: 'Tags...',
-                style: SelectStyle.DARK,
-                onChange() {
-                    self.updateVisibility();
-                },
-            }
-        );
+        this.tagSelect = new Select(visibleDropdown.querySelector('select[name="tags"]'), {
+            placeholder: 'Tags...',
+            style: SelectStyle.DARK,
+            onChange() {
+                self.updateVisibility();
+            },
+        });
 
-        this.onlineTypeSelect = new Select(
-            visibleDropdown.querySelector('select[name="online-types"]'),
-            {
-                placeholder: 'Playstyles...',
-                style: SelectStyle.DARK,
-                onChange() {
-                    self.updateVisibility();
-                },
-            }
-        );
+        this.onlineTypeSelect = new Select(visibleDropdown.querySelector('select[name="online-types"]'), {
+            placeholder: 'Playstyles...',
+            style: SelectStyle.DARK,
+            onChange() {
+                self.updateVisibility();
+            },
+        });
 
         $el('div')
             .class({ stadiaplus_libraryfilter: true })
             .child(this.searchColumn)
             .child(this.gameContainer)
-            .appendTo(root);
+            .appendTo(wrapper);
+
+            
+
+        $el('h2')
+            .text('Captures')
+            .css({ 'margin-top': '8rem' })
+            .appendTo(wrapper);
+
+        $el('p')
+            .html('Your captures are now at the top! Look for the <i class="material-icons-extended" style="vertical-align: bottom">photo_camera</i> icon in the navbar.')
+            .css({ 'margin-bottom': '8rem' })
+            .appendTo(wrapper);
+
+        wrapper.appendTo(root);
     }
 
     getAutoUpdateTooltip(): HTMLElement {
@@ -523,7 +554,7 @@ export class LibraryFilter extends Component {
     }
 
     getAutoUpdateButton(): HTMLElement {
-        if(!StadiaPlusDB.isAuthenticated()) return $el('div').element;
+        if (!StadiaPlusDB.isAuthenticated()) return $el('div').element;
 
         const el = $el('button')
             .class({
@@ -546,15 +577,8 @@ export class LibraryFilter extends Component {
             },
             click: () => {
                 el.element.classList.toggle('active');
-                localStorage.setItem(
-                    'autoUpdate',
-                    el.element.classList.contains('active') ? 'true' : 'false'
-                );
-                Util.desandbox(
-                    `WebScraperRunnable.setAutoUpdate(${el.element.classList.contains(
-                        'active'
-                    )})`
-                );
+                localStorage.setItem('autoUpdate', el.element.classList.contains('active') ? 'true' : 'false');
+                Util.desandbox(`WebScraperRunnable.setAutoUpdate(${el.element.classList.contains('active')})`);
             },
         });
 
@@ -611,15 +635,13 @@ export class LibraryFilter extends Component {
         return $el('div')
             .id(this.id + '-dropdown-' + Math.floor(Math.random() * 999999))
             .class({ 'stadiaplus_libraryfilter-dropdown': true })
-            .event({ click: event => event.stopPropagation() })
+            .event({ click: (event) => event.stopPropagation() })
             .child(tags)
             .child(onlineTypes).element;
     }
 
     async getSortedGames(): Promise<LibraryGame[]> {
-        const filter: FilterOrder = FilterOrder.from(
-            await SyncStorage.LIBRARY_SORT_ORDER.get()
-        );
+        const filter: FilterOrder = FilterOrder.from(await SyncStorage.LIBRARY_SORT_ORDER.get());
         const games = [...this.games]; // Shallow array clone
         const sorted = filter.sort(games);
 
@@ -633,11 +655,8 @@ export class LibraryFilter extends Component {
      */
     onStop(): void {
         this.active = false;
-        Logger.component(
-            Language.get('component.disabled', { name: this.name })
-        );
+        Logger.component(Language.get('component.disabled', { name: this.name }));
     }
-
 
     /**
      * Runs every second, creates and updates elements.
@@ -650,6 +669,13 @@ export class LibraryFilter extends Component {
             if (!this.exists() && this.renderer.querySelector('.fJrLJb') != null) {
                 this.reloadLibrary();
             }
+            if(document.querySelector('.stadiaplus_libraryfilter-captures') == null && this.renderer.querySelector('.R8zRIf') != null) {
+                this.createCaptures();
+            }
+        }
+        else if(this.capturesButton != null) {
+            this.capturesButton.destroy();
+            this.capturesButton = null;
         }
     }
 }
@@ -662,12 +688,10 @@ class LibraryGame {
 
     constructor(uuid: string) {
         this.uuid = uuid;
-        SyncStorage.LIBRARY_GAMES.get().then(libraryGames => {
+        SyncStorage.LIBRARY_GAMES.get().then((libraryGames) => {
             if (libraryGames == null) libraryGames = [];
 
-            const game = (libraryGames as LibraryGame[]).find(
-                a => a.uuid === uuid
-            );
+            const game = (libraryGames as LibraryGame[]).find((a) => a.uuid === uuid);
             if (game != null) {
                 this.name = game.name;
                 this.visible = game.visible;
@@ -695,9 +719,7 @@ class LibraryGame {
                 $el('img')
                     .class({ 'play-button': true })
                     .attr({
-                        src: chrome.runtime.getURL(
-                            'images/PlayButtonBackground.png'
-                        ),
+                        src: chrome.runtime.getURL('images/PlayButtonBackground.png'),
                     })
             )
             .child(
@@ -714,12 +736,36 @@ class LibraryGame {
             )
             .css({
                 display: this.visible ? null : 'none',
-                'background-image':
-                    this.img !== null ? `url(${this.img})` : null,
+                'background-image': this.img !== null ? `url(${this.img})` : null,
             }).element;
 
         return element;
     }
+}
+
+export class CaptureItem {
+    public id: string;
+    public ageString: string;
+    public thumbnail: string;
+    public isVideo: boolean;
+
+    constructor(element: HTMLElement) {
+        this.id = element.getAttribute('data-capture-id');
+        this.ageString = element.childNodes[3].firstChild.firstChild.textContent;
+        this.thumbnail = (element.childNodes[1] as HTMLElement).getAttribute('data-thumbnail');
+        this.isVideo = (element).querySelector('.sZHcec') != null;
+    }
+
+    open(): void {
+        (document.querySelector(`.R8zRIf[data-capture-id="${this.id}"]`) as HTMLElement).click();
+    }
+}
+
+interface CaptureItemButton {
+    jsname: string;
+    jsaction: string;
+    jsdata: string;
+    jscontroller: string;
 }
 
 /**
@@ -770,15 +816,11 @@ export class FilterOrder {
     };
 
     static from(id: number): FilterOrder {
-        return this.values().find(e => e.id === id);
+        return this.values().find((e) => e.id === id);
     }
 
     static values() {
-        return [
-            FilterOrder.RECENT,
-            FilterOrder.ALPHABETICAL,
-            FilterOrder.RANDOM,
-        ];
+        return [FilterOrder.RECENT, FilterOrder.ALPHABETICAL, FilterOrder.RANDOM];
     }
 
     /**

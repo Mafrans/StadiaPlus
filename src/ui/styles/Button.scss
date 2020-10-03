@@ -11,3 +11,27 @@
     margin: 0 0.5rem;
     border-radius: 0.25rem;
 }
+
+.stadiaplus_navbutton {
+    display: flex;
+
+    height: 50px;
+    width: 50px;
+    border-radius: 25px;
+
+    align-items: center;
+    justify-content: center;
+    margin-right: 5px;
+
+    color: #E8EAED;
+    cursor: pointer;
+
+    &.active {
+        color: #ff773d;
+        background-color: rgba(255, 255, 255, 0.06);
+    }
+
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.06);
+    }
+}
