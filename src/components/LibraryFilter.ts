@@ -664,7 +664,7 @@ export class LibraryFilter extends Component {
      * @memberof LibraryFilter
      */
     onUpdate(): void {
-        if (Util.isInHome()) {
+        if (Util.isInHome() || Util.isInStore() || Util.isInStoreDetail()) {
             this.updateRenderer();
             if (!this.exists() && this.renderer.querySelector('.fJrLJb') != null) {
                 this.reloadLibrary();
