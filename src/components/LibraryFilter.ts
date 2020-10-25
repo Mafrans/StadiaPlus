@@ -664,11 +664,15 @@ export class LibraryFilter extends Component {
      * @memberof LibraryFilter
      */
     onUpdate(): void {
-        if (Util.isInHome() || Util.isInStore() || Util.isInStoreDetail()) {
+        if (Util.isInHome()) {
             this.updateRenderer();
             if (!this.exists() && this.renderer.querySelector('.fJrLJb') != null) {
                 this.reloadLibrary();
             }
+        }
+        
+        if(!Util.isInGame()) {
+            this.updateRenderer();
             if(document.querySelector('.stadiaplus_libraryfilter-captures') == null && this.renderer.querySelector('.R8zRIf') != null) {
                 this.createCaptures();
             }
