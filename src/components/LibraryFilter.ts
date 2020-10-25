@@ -667,6 +667,9 @@ export class LibraryFilter extends Component {
         if (Util.isInHome()) {
             this.updateRenderer();
             if (!this.exists() && this.renderer.querySelector('.fJrLJb') != null) {
+                if(this.existsAnywhere()) {
+                    document.getElementById(this.id).remove();
+                }
                 this.reloadLibrary();
             }
         }
