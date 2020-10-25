@@ -355,6 +355,10 @@
             transform: scale(1);
             cursor: pointer;
 
+            &:nth-last-child(-1n+4) {
+                margin-bottom: 0;
+            }
+
             &.hidden {
                 display: none;
             }
