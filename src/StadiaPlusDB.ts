@@ -139,13 +139,14 @@ export class ProfileConnector {
         if(!StadiaPlusDB.isAuthenticated()) {
             return new Promise((resolve, reject) => reject({ error: 'Not authenticated with StadiaPlusDB' }));
         }
-
-        return await fetch(`${StadiaPlusDB.url}/api/update`, {
-            method: 'POST',
-            body: JSON.stringify({
+        
+        return axios({
+            method: 'post',
+            url: `${StadiaPlusDB.url}/api/update`,
+            data: {
                 token: StadiaPlusDB.authToken,
-                data: data
-            })
-        });
+                game: data
+            },
+        })
     }
 }
