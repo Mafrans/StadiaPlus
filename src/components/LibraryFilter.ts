@@ -2,7 +2,6 @@ import { Component } from '../Component';
 import Logger from '../Logger';
 import Util from '../util/Util';
 import './styles/LibraryFilter.scss';
-import { Snackbar } from '../ui/Snackbar';
 import { Select, SelectStyle } from '../ui/Select';
 import { WebDatabase } from '../WebDatabase';
 import { Checkbox, CheckboxShape } from '../ui/Checkbox';
@@ -40,11 +39,6 @@ export class LibraryFilter extends Component {
     sorted: LibraryGame[] = [];
 
     /**
-     * Snackbar used to display messages when hiding and showing games
-     */
-    snackbar: Snackbar;
-
-    /**
      * Filter bar allowing for controls of the library filter
      */
     filterBar: HTMLElement;
@@ -80,11 +74,6 @@ export class LibraryFilter extends Component {
     gameTiles: NodeList;
 
     /**
-     * UI Modal
-     */
-    modal: Modal;
-
-    /**
      * Web Scraper
      */
     db: StadiaPlusDBHook;
@@ -95,13 +84,8 @@ export class LibraryFilter extends Component {
     tagSelect: Select;
     onlineTypeSelect: Select;
 
-    constructor(snackbar: Snackbar, modal: Modal, webScraper: StadiaPlusDBHook) {
+    constructor(webScraper: StadiaPlusDBHook) {
         super();
-
-        // Import snackbar from index.js
-        this.snackbar = snackbar;
-
-        this.modal = modal;
 
         this.db = webScraper;
     }
@@ -150,7 +134,7 @@ export class LibraryFilter extends Component {
         }
 
         (this.renderer.querySelector('.fJrLJb') as HTMLElement).style['display'] = 'none';
-        if(document.getElementById(this.id) != null) {
+        if (document.getElementById(this.id) != null) {
             document.getElementById(this.id).remove(); // Remove any existing libraries, just to be sure.
         }
 
@@ -267,34 +251,32 @@ export class LibraryFilter extends Component {
 
     capturesButton: NavButton;
     async createCaptures() {
-        const captures: CaptureItem[] = Array.from(this.renderer.querySelectorAll('.R8zRIf')).map(
-            (e: HTMLElement) => new CaptureItem(e)
-        ).slice(0, 3); // Slice so only the first three captures are shown
+        const captures: CaptureItem[] = Array.from(this.renderer.querySelectorAll('.R8zRIf'))
+            .map((e: HTMLElement) => new CaptureItem(e))
+            .slice(0, 3); // Slice so only the first three captures are shown
 
         console.log(Array.from(this.renderer.querySelectorAll('.R8zRIf')));
 
-        const popup = $el('div').child(
-            $el('h2').text('Your captures')
-        )
+        const popup = $el('div').child($el('h2').text('Your captures'));
 
         this.capturesButton = new NavButton('photo_camera', null, NavPosition.LEFT);
-        this.capturesButton.onClick(event => {
+        this.capturesButton.onClick((event) => {
             this.capturesButton.setActive(true);
-            popup.class({'open': true})
-            document.querySelectorAll('.n4PrVe').forEach((e: HTMLElement) => e.style.opacity = '0');
+            popup.class({ open: true });
+            document.querySelectorAll('.n4PrVe').forEach((e: HTMLElement) => (e.style.opacity = '0'));
             event.stopPropagation();
         });
         this.capturesButton.create();
 
         const previews = $el('div').class({ 'stadiaplus_libraryfilter-captures-previews': true });
-        for (const capture of captures) { 
+        for (const capture of captures) {
             previews.child(
                 $el('div')
-                    .class({ 'stadiaplus_libraryfilter-captures-preview': true, 'video': capture.isVideo })
+                    .class({ 'stadiaplus_libraryfilter-captures-preview': true, video: capture.isVideo })
                     .css({ 'background-image': `url(${capture.thumbnail})` })
                     .event({
                         click: () => {
-                            console.log('open')
+                            console.log('open');
                             capture.open();
                         },
                     })
@@ -305,16 +287,16 @@ export class LibraryFilter extends Component {
             $el('div')
                 .class({ 'stadiaplus_libraryfilter-captures-view-all': true })
                 .child(
-                    $el('i').class({'material-icons-extended': true}).text('more_horiz')
+                    $el('i')
+                        .class({ 'material-icons-extended': true })
+                        .text('more_horiz')
                 )
-                .child(
-                    $el('p').text('View all')
-                )
+                .child($el('p').text('View all'))
                 .event({
                     click: () => {
                         let loc = window.location.href;
                         let split = loc.split('/');
-                        split[split.length-1] = 'captures';
+                        split[split.length - 1] = 'captures';
                         window.location.href = split.join('/');
                     },
                 })
@@ -323,19 +305,20 @@ export class LibraryFilter extends Component {
         popup
             .class({ 'stadiaplus_libraryfilter-captures': true })
             .child(previews)
-            .event({click: event => event.stopPropagation()})
+            .event({ click: (event) => event.stopPropagation() })
             .appendTo(this.capturesButton.element);
-        
-        
+
         window.addEventListener('click', () => {
-            popup.class({open: false});
+            popup.class({ open: false });
             this.capturesButton.setActive(false);
         });
     }
 
     async createContainer() {
         const root = this.renderer.querySelector('.z1P2me');
-        const wrapper = $el('div').class({'stadiaplus_libraryfilter-wrapper': true}).id(this.id);
+        const wrapper = $el('div')
+            .class({ 'stadiaplus_libraryfilter-wrapper': true })
+            .id(this.id);
 
         const search = $el('input').element;
         search.addEventListener('input', () => {
@@ -388,6 +371,10 @@ export class LibraryFilter extends Component {
 
         window.addEventListener('click', () => {
             this.renderer.querySelectorAll('.stadiaplus_libraryfilter-dropdown').forEach((e) => {
+                e.classList.remove('selected');
+            });
+
+            this.renderer.querySelectorAll('.stadiaplus_libraryfilter-game').forEach((e) => {
                 e.classList.remove('selected');
             });
         });
@@ -488,15 +475,15 @@ export class LibraryFilter extends Component {
             .child(this.gameContainer)
             .appendTo(wrapper);
 
-            
-
         $el('h2')
             .text('Captures')
             .css({ 'margin-top': '8rem' })
             .appendTo(wrapper);
 
         $el('p')
-            .html('Your captures are now at the top! Look for the <i class="material-icons-extended" style="vertical-align: bottom">photo_camera</i> icon in the navbar.')
+            .html(
+                'Your captures are now at the top! Look for the <i class="material-icons-extended" style="vertical-align: bottom">photo_camera</i> icon in the navbar.'
+            )
             .css({ 'margin-bottom': '8rem' })
             .appendTo(wrapper);
 
@@ -667,20 +654,22 @@ export class LibraryFilter extends Component {
         if (Util.isInHome()) {
             this.updateRenderer();
             if (!this.exists() && this.renderer.querySelector('.fJrLJb') != null) {
-                if(this.existsAnywhere()) {
+                if (this.existsAnywhere()) {
                     document.getElementById(this.id).remove();
                 }
                 this.reloadLibrary();
             }
         }
-        
-        if(!Util.isInGame()) {
+
+        if (!Util.isInGame()) {
             this.updateRenderer();
-            if(document.querySelector('.stadiaplus_libraryfilter-captures') == null && this.renderer.querySelector('.R8zRIf') != null) {
+            if (
+                document.querySelector('.stadiaplus_libraryfilter-captures') == null &&
+                this.renderer.querySelector('.R8zRIf') != null
+            ) {
                 this.createCaptures();
             }
-        }
-        else if(this.capturesButton != null) {
+        } else if (this.capturesButton != null) {
             this.capturesButton.destroy();
             this.capturesButton = null;
         }
@@ -719,7 +708,7 @@ class LibraryGame {
     }
 
     createTile(): HTMLElement {
-        const element = $el('div')
+        const el = $el('div')
             .class({ 'stadiaplus_libraryfilter-game': true })
             .attr({ 'data-uuid': this.uuid })
             .child(
@@ -744,7 +733,55 @@ class LibraryGame {
             .css({
                 display: this.visible ? null : 'none',
                 'background-image': this.img !== null ? `url(${this.img})` : null,
-            }).element;
+            });
+
+        const moreDropdown = this.getMoreDropdown();
+        const moreIcon = $el('div')
+            .class({
+                'more-icon': true,
+            })
+            .child(
+                $el('i')
+                    .class({
+                        'material-icons-extended': true,
+                    })
+                    .text('more_vert')
+            )
+            .child(moreDropdown)
+            .event({
+                click: (event) => {
+                    document
+                        .querySelectorAll('.stadiaplus_libraryfilter-dropdown')
+                        .forEach((e) => e.classList.remove('selected'));
+                    document
+                        .querySelectorAll('.stadiaplus_libraryfilter-game')
+                        .forEach((e) => e.classList.remove('selected'));
+
+                    moreDropdown.class({ selected: true });
+                    el.class({ selected: true });
+                    event.stopPropagation();
+                },
+            });
+
+        el.child(moreIcon);
+
+        return el.element;
+    }
+
+    getMoreDropdown() {
+        const element = $el('div')
+            .class({
+                'stadiaplus_libraryfilter-dropdown': true,
+            })
+            .child(
+                $el('div')
+                    .html('<i class="material-icons-extended stadiaplus_icon-inline">open_in_browser</i>Get Desktop Shortcut')
+                    .event({
+                        click: () => {
+                            
+                        }
+                    })
+            );
 
         return element;
     }
@@ -760,7 +797,7 @@ export class CaptureItem {
         this.id = element.getAttribute('data-capture-id');
         this.ageString = element.childNodes[3].firstChild.firstChild.textContent;
         this.thumbnail = (element.childNodes[1] as HTMLElement).getAttribute('data-thumbnail');
-        this.isVideo = (element).querySelector('.sZHcec') != null;
+        this.isVideo = element.querySelector('.sZHcec') != null;
     }
 
     open(): void {

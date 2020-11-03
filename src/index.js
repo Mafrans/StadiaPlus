@@ -38,16 +38,14 @@ const storageManager = new StorageManager(appdata);
 storageManager.checkCacheVersion();
 
 const loader = new ComponentLoader();
-const snackbar = new Snackbar();
-const modal = new Modal();
 const tab = new UITab();
 const webScraper = new StadiaPlusDBHook();
 
 loader.register(new Clock());
 // loader.register(new PopupFix());
-loader.register(new LibraryFilter(snackbar, modal, webScraper));
-loader.register(new ForceCodec(tab, snackbar));
-loader.register(new ForceResolution(tab, snackbar));
+loader.register(new LibraryFilter(webScraper));
+loader.register(new ForceCodec(tab));
+loader.register(new ForceResolution(tab));
 loader.register(tab);
 loader.register(new NetworkMonitor());
 loader.register(new StoreFilter());
@@ -81,7 +79,7 @@ StadiaPlusDB.connect('https://stadiaplus.dev')
 
 window.addEventListener('load', () => {
     Util.load();
-    snackbar.create();
-    modal.create();
+    Snackbar.init();
+    Modal.init();
     loader.start();
 })

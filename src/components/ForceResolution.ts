@@ -40,17 +40,11 @@ export class ForceResolution extends Component {
      */
     tab: UITab;
 
-    /**
-     * The global Snackbar
-     */
-    snackbar: Snackbar;
 
-
-    constructor(tab: UITab, snackbar: Snackbar) {
+    constructor(tab: UITab) {
         super();
 
         this.tab = tab;
-        this.snackbar = snackbar;
         
         this.getStorage();
         window.addEventListener('DOMContentLoaded', () => ForceResolution.setResolution(this.resolution));
@@ -116,7 +110,7 @@ export class ForceResolution extends Component {
                             }
 
                             await self.setStorage();
-                            self.snackbar.activate(Language.get('snackbar.reload-to-update'));
+                            Snackbar.activate(Language.get('snackbar.reload-to-update'));
                         });
 
                         self.getStorage(() => {

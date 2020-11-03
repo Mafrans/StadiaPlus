@@ -1,6 +1,8 @@
 import './styles/Snackbar.scss';
 
 export class Snackbar {
+    static instance: Snackbar;
+
     element: Element;
     label: Element;
     closeButton: Element;
@@ -27,14 +29,20 @@ export class Snackbar {
        this.element.appendChild(this.label);
        this.element.appendChild(this.closeButton);
     }
+    
+    static init() {
+        this.instance = new Snackbar();
+        this.instance.create();
+    }
 
-    activate(label: string) {
-        this.label.innerHTML = label;
-        this.element.classList.add('active');
+    static activate(label: string) {
+        const instance = this.instance;
 
-        const self = this;
+        instance.label.innerHTML = label;
+        instance.element.classList.add('active');
+
         window.setTimeout(()=>{
-            self.element.classList.remove('active');
+            instance.element.classList.remove('active');
         }, 5000)
     }
 }
