@@ -41,16 +41,10 @@ export class ForceCodec extends Component {
      */
     tab: UITab;
 
-    /**
-     * The global snackbar.
-     */
-    snackbar: Snackbar;
-
-    constructor(tab: UITab, snackbar: Snackbar) {
+    constructor(tab: UITab) {
         super();
 
         this.tab = tab;
-        this.snackbar = snackbar;
     }
 
     /**
@@ -108,7 +102,7 @@ export class ForceCodec extends Component {
                             self.codec = parseInt(self.select.get()[0]);
     
                             self.setStorage(() => {
-                                self.snackbar.activate(Language.get('snackbar.reload-to-update'));
+                                Snackbar.activate(Language.get('snackbar.reload-to-update'));
                             });
                         });
     

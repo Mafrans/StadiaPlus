@@ -1,3 +1,4 @@
+import { ElGen } from '../util/ElGen';
 import './styles/Modal.scss';
 
 export class Modal {
@@ -42,8 +43,14 @@ export class Modal {
         this.element.classList.remove('active');
     }
 
-    static activate(content: string) {
-        this.instance.content.innerHTML = content;
+    static activate(content: string | ElGen) {
+        if(content instanceof ElGen) {
+            content.appendTo(this.instance.content);
+        }
+        else {
+            this.instance.content.innerHTML = content;
+        }
+
         this.instance.element.classList.add('active');
     }
 

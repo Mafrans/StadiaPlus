@@ -50,7 +50,7 @@ export class ElGen {
         return this;
     }
     
-    attr(attribute: {[name: string]: string}): ElGen {
+    attr(attribute: {[name: string]: any}): ElGen {
         for(const name in attribute) {
             this.element.setAttribute(name, attribute[name]);
         }

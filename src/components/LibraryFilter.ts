@@ -623,7 +623,11 @@ export class LibraryFilter extends Component {
             .id(this.id + '-dropdown-' + Math.floor(Math.random() * 999999))
             .class({ 'stadiaplus_libraryfilter-dropdown': true })
             .event({ click: (event) => event.stopPropagation() })
-            .child(tags)
+            .child(
+                $el('div')
+                    .css({ display: 'block' })
+                    .child(tags)
+            )
             .child(onlineTypes).element;
     }
 
@@ -710,7 +714,7 @@ class LibraryGame {
     createTile(): HTMLElement {
         const el = $el('div')
             .class({ 'stadiaplus_libraryfilter-game': true })
-            .attr({ 'data-uuid': this.uuid })
+            .attr({ 'data-uuid': this.uuid, 'tab-index': 0 })
             .child(
                 $el('img')
                     .class({ 'play-button': true })
@@ -775,11 +779,17 @@ class LibraryGame {
             })
             .child(
                 $el('div')
-                    .html('<i class="material-icons-extended stadiaplus_icon-inline">open_in_browser</i>Get Desktop Shortcut')
+                    .html(
+                        '<i class="material-icons-extended stadiaplus_icon-inline">open_in_browser</i>Get Desktop Shortcut'
+                    )
                     .event({
                         click: () => {
-                            
-                        }
+                            window.open(
+                                `https://stadiaicons.web.app/${this.uuid}/?fullName=${encodeURIComponent(this.name)}`,
+                                '_blank'
+                            );
+                            element.class({ selected: false });
+                        },
                     })
             );
 

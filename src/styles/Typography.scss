@@ -1,3 +1,13 @@
 .stadiaplus_muted {
     opacity: 0.5;
 }
+
+.stadiaplus_icon-inline {
+    vertical-align: text-bottom;
+    padding-left: 0.25rem;
+    
+    &:first-child {
+        padding-left: initial;
+        padding-right: 0.25rem;
+    }
+}
