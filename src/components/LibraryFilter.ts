@@ -118,6 +118,8 @@ export class LibraryFilter extends Component {
         this.active = true;
 
         Logger.component(Language.get('component.enabled', { name: this.name }));
+
+        FilterOrder.values().forEach(e => e.name = Language.get('library-filter.' + e.name));
     }
 
     async reloadLibrary() {
@@ -251,11 +253,11 @@ export class LibraryFilter extends Component {
 
     capturesButton: NavButton;
     async createCaptures() {
-        const captures: CaptureItem[] = Array.from(this.renderer.querySelectorAll('.R8zRIf'))
+        const captures: CaptureItem[] = Array.from(this.renderer.querySelectorAll('.MykDQe'))
             .map((e: HTMLElement) => new CaptureItem(e))
             .slice(0, 3); // Slice so only the first three captures are shown
 
-        console.log(Array.from(this.renderer.querySelectorAll('.R8zRIf')));
+        console.log({captures});
 
         const popup = $el('div').child($el('h2').text(Language.get('library-filter.your-captures')));
 
@@ -669,7 +671,7 @@ export class LibraryFilter extends Component {
             this.updateRenderer();
             if (
                 document.querySelector('.stadiaplus_libraryfilter-captures') == null &&
-                this.renderer.querySelector('.R8zRIf') != null
+                this.renderer.querySelector('.E3eEyc.lEPylf.sfe1Ff') != null
             ) {
                 this.createCaptures();
             }
@@ -841,7 +843,7 @@ export class FilterOrder {
      */
     static RECENT: FilterOrder = {
         id: 0,
-        name: Language.get('library-filter.recent'),
+        name: 'recent',
         sort: FilterOrder.sortRecent,
     };
 
@@ -853,7 +855,7 @@ export class FilterOrder {
      */
     static ALPHABETICAL: FilterOrder = {
         id: 1,
-        name: Language.get('library-filter.alphabetical'),
+        name: 'alphabetical',
         sort: FilterOrder.sortAlphabetical,
     };
 
@@ -865,7 +867,7 @@ export class FilterOrder {
      */
     static RANDOM: FilterOrder = {
         id: 2,
-        name: Language.get('library-filter.random'),
+        name: 'random',
         sort: FilterOrder.sortRandom,
     };
 
