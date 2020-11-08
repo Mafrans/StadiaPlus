@@ -98,12 +98,10 @@ export class ForceCodec extends Component {
                         self.select = new Select(row.element.querySelector('select'), { placeholder: Codec.AUTOMATIC });
     
                         const button = row.element.querySelector('.stadiaplus_button-small');
-                        button.addEventListener('click', () => {
+                        button.addEventListener('click', async () => {
                             self.codec = parseInt(self.select.get()[0]);
-    
-                            self.setStorage(() => {
-                                Snackbar.activate(Language.get('snackbar.reload-to-update'));
-                            });
+                            await self.setStorage();
+                            Snackbar.activate(Language.get('snackbar.reload-to-update'));
                         });
     
                         await self.getStorage();
