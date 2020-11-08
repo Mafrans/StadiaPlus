@@ -5,9 +5,13 @@
 .stadiaplus_icon-inline {
     vertical-align: text-bottom;
     padding-left: 0.25rem;
+    padding-right: 0.25rem;
     
     &:first-child {
         padding-left: initial;
-        padding-right: 0.25rem;
+    }
+    
+    &:last-child {
+        padding-right: initial;
     }
 }

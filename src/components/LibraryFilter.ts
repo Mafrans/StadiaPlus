@@ -221,9 +221,9 @@ export class LibraryFilter extends Component {
         const onlineTypes = (this.onlineTypeSelect.get() as string[]).map((id) => StadiaGameDB.OnlineType.fromId(id));
 
         if (tags.length === 0 && onlineTypes.length === 0) {
-            document.querySelector('.stadiaplus_libraryfilter-visibilityindicator').textContent = 'All';
+            document.querySelector('.stadiaplus_libraryfilter-visibilityindicator').textContent = Language.get('library-filter.all-visible');
         } else {
-            document.querySelector('.stadiaplus_libraryfilter-visibilityindicator').textContent = 'Custom';
+            document.querySelector('.stadiaplus_libraryfilter-visibilityindicator').textContent = Language.get('library-filter.custom-visible');
         }
 
         for (const game of this.games) {
@@ -257,7 +257,7 @@ export class LibraryFilter extends Component {
 
         console.log(Array.from(this.renderer.querySelectorAll('.R8zRIf')));
 
-        const popup = $el('div').child($el('h2').text('Your captures'));
+        const popup = $el('div').child($el('h2').text(Language.get('library-filter.your-captures')));
 
         this.capturesButton = new NavButton('photo_camera', null, NavPosition.LEFT);
         this.capturesButton.onClick((event) => {
@@ -365,7 +365,7 @@ export class LibraryFilter extends Component {
         }).element;
 
         $el('h2')
-            .text('Your Games')
+            .text(Language.get('library-filter.your-games'))
             .css({ 'margin-top': '8rem' })
             .appendTo(wrapper);
 
@@ -482,7 +482,7 @@ export class LibraryFilter extends Component {
 
         $el('p')
             .html(
-                'Your captures are now at the top! Look for the <i class="material-icons-extended" style="vertical-align: bottom">photo_camera</i> icon in the navbar.'
+                Language.get('library-filter.captures-note')
             )
             .css({ 'margin-bottom': '8rem' })
             .appendTo(wrapper);
@@ -780,7 +780,7 @@ class LibraryGame {
             .child(
                 $el('div')
                     .html(
-                        '<i class="material-icons-extended stadiaplus_icon-inline">open_in_browser</i>Get Desktop Shortcut'
+                        `<i class="material-icons-extended stadiaplus_icon-inline">open_in_browser</i>${Language.get('library-filter.get-shortcut')}`
                     )
                     .event({
                         click: () => {
@@ -841,7 +841,7 @@ export class FilterOrder {
      */
     static RECENT: FilterOrder = {
         id: 0,
-        name: 'Recent',
+        name: Language.get('library-filter.recent'),
         sort: FilterOrder.sortRecent,
     };
 
@@ -853,7 +853,7 @@ export class FilterOrder {
      */
     static ALPHABETICAL: FilterOrder = {
         id: 1,
-        name: 'Alphabetical',
+        name: Language.get('library-filter.alphabetical'),
         sort: FilterOrder.sortAlphabetical,
     };
 
@@ -865,7 +865,7 @@ export class FilterOrder {
      */
     static RANDOM: FilterOrder = {
         id: 2,
-        name: 'Random',
+        name: Language.get('library-filter.random'),
         sort: FilterOrder.sortRandom,
     };
 

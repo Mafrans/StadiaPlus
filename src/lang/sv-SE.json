@@ -72,7 +72,13 @@
         "recent": "Senaste",
         "alphabetical": "Alfabetiskt",
         "random": "Slumpmässigt",
-        "show-hidden": "Visa Gömda"
+        "show-hidden": "Visa Gömda",
+        "get-shortcut": "Hämta Skrivbordsgenväg",
+        "all-visible": "Alla",
+        "custom-visible": "Anpassat",
+        "your-games": "Dina Spel",
+        "your-captures": "Dina Inspelningar",
+        "captures-note": "Dina inspelningar är nu längst upp! Leta efter <i class='material-icons-extended stadiaplus_icon-inline' style='vertical-align: bottom'>photo_camera</i> ikonen i navigationsfältet."
     },
     "network-monitor": {
         "name": "Nätverksövervakning",

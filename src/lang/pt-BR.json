@@ -72,7 +72,13 @@
         "recent": "Recente",
         "alphabetical": "Alfábetica",
         "random": "Aleatório",
-        "show-hidden": "Mostrar ocultos"
+        "show-hidden": "Mostrar ocultos",
+        "get-shortcut": "Get Desktop Shortcut",
+        "all-visible": "All",
+        "custom-visible": "Custom",
+        "your-games": "Your Games",
+        "your-captures": "Your Captures",
+        "captures-note": "Your captures are now at the top! Look for the <i class='material-icons-extended stadiaplus_icon-inline'>photo_camera</i> icon in the navbar."
     },
     "network-monitor": {
         "name": "Monitoramento de Rede",
