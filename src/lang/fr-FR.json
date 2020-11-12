@@ -73,20 +73,20 @@
         "alphabetical": "Alphabétique",
         "random": "Aléatoire",
         "show-hidden": "Montrer caché(s)",
-        "get-shortcut": "Get Desktop Shortcut",
-        "all-visible": "All",
-        "custom-visible": "Custom",
-        "your-games": "Your Games",
-        "your-captures": "Your Captures",
-        "captures-note": "Your captures are now at the top! Look for the <i class='material-icons-extended stadiaplus_icon-inline'>photo_camera</i> icon in the navbar."
+        "get-shortcut": "Installer un raccourcis",
+        "all-visible": "Tous",
+        "custom-visible": "Personalisé",
+        "your-games": "Vos Jeux",
+        "your-captures": "Captures",
+        "captures-note": "Retrouvez vos captures d'écran/vidéo en haut de la page ! Cherchez l'icône <i class='material-icons-extended stadiaplus_icon-inline'>photo_camera</i> dans la barre de navigation."
     },
     "network-monitor": {
         "name": "Moniteur réseau",
         "heading-visible": "Statistiques visibles",
         "button-label": "Moniteur",
         "toggle-button": {
-            "show": "Show Network Monitor",
-            "hide": "Hide Network Monitor"
+            "show": "Afficher le moniteur réseau",
+            "hide": "Masquer le moniteur réseau"
         },
         "stats": {
             "time": "Durée",
@@ -107,7 +107,7 @@
     },
     "ratings": {
         "name": "Évaluations",
-        "source-name": "Métacritique"
+        "source-name": "Métacritic"
     },
     "store-filter": {
         "name": "Filtre du magasin"
