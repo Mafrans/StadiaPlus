@@ -193,10 +193,17 @@ $breakpoint-uhd: 2560px;
         }
 
         &.searchcolumn-toggle {
+            margin: 0.75rem;
+
+            transition: transform 0.2s ease-out;
+
             @media screen and (min-width: $breakpoint-hd) {
                 display: none;
             }
-            transition: transform 0.2s ease-out;
+
+            .material-icons-extended {
+                padding-right: 0;
+            }
         }
     }
 }
