@@ -1,14 +1,43 @@
+$breakpoint-xs: 416px;
+$breakpoint-s: 640px;
+$breakpoint-sd: 768px;
+$breakpoint-hd: 1024px;
+$breakpoint-m: 1200px;
+$breakpoint-l: 1440px;
+$breakpoint-xl: 1600px;
+$breakpoint-xxl: 1800px;
+$breakpoint-fhd: 1920px;
+$breakpoint-uhd: 2560px;
+
 .iadg4b {
     margin: 0 auto;
 
-    @media screen and (min-width: 1200px) {
-        max-width: 1150px;
+    @media screen and (min-width: $breakpoint-s) {
+        max-width: 620px;
     }
-    @media screen and (min-width: 1600px) {
-        max-width: 1500px;
+    @media screen and (min-width: $breakpoint-sd) {
+        max-width: 740px;
     }
-    @media screen and (min-width: 1800px) {
-        max-width: 1650px;
+    @media screen and (min-width: $breakpoint-hd) {
+        max-width: 1000px;
+    }
+    @media screen and (min-width: $breakpoint-m) {
+        max-width: 1160px;
+    }
+    @media screen and (min-width: $breakpoint-l) {
+        max-width: 1360px;
+    }
+    @media screen and (min-width: $breakpoint-xl) {
+        max-width: 1480px;
+    }
+    @media screen and (min-width: $breakpoint-xxl) {
+        max-width: 1660px;
+    }
+    @media screen and (min-width: $breakpoint-fhd) {
+        max-width: 1800px;
+    }
+    @media screen and (min-width: $breakpoint-uhd) {
+        max-width: 2360px;
     }
 }
 
@@ -260,6 +289,8 @@
     pointer-events: initial;
     display: flex;
 
+    overflow-x: hidden;
+
     .stadiaplus_libraryfilter-searchcolumn {
         width: 300px;
         border-radius: 0.5rem;
@@ -270,6 +301,21 @@
 
         white-space: nowrap;
         overflow: hidden;
+
+        @media screen and (max-width: $breakpoint-hd - 1) {
+            position: absolute;
+            z-index: 1;
+            left: calc(-300px - 0.75rem);
+            transition: left 0.2s ease-out;
+        }
+
+        &.searchcolumn-shown {
+            .stadiaplus_libraryfilter-searchcolumn {
+                @media screen and (max-width: $breakpoint-hd - 1) {
+                    left: 0;
+                }
+            }
+        }
 
         .stadiaplus_libraryfilter-searchcolumn-bar {
             display: flex;
@@ -335,6 +381,10 @@
     .stadiaplus_libraryfilter-gamecontainer {
         width: calc(100% - 300px);
         height: max-content;
+
+        @media screen and (max-width: $breakpoint-hd - 1) {
+            width: 100%;
+        }
         
         .stadiaplus_libraryfilter-game {
             display: inline-flex;
@@ -342,6 +392,7 @@
 
             width: calc(25% - 1.5rem);
             height: 32vh;
+            max-height: 20vw;
             
             margin-left: 1.5rem;
             margin-bottom: 1.5rem;
@@ -355,6 +406,21 @@
             transition: background-size 0.5s cubic-bezier(0, 0, 0.2, 1), transform 0.2s ease-out;
             transform: scale(1);
             cursor: pointer;
+
+            @media screen and (max-width: $breakpoint-m - 1) and (min-width: $breakpoint-hd) {
+                width: calc(33.32% - 1.5rem);
+            }
+            @media screen and (min-width: $breakpoint-s) {
+                width: calc(33.32% - 1rem);
+                
+                margin-left: 1rem;
+            }
+            @media screen and (min-width: $breakpoint-fhd) {
+                width: (20% - 1.5rem);
+            }
+            @media screen and (min-width: $breakpoint-uhd) {
+                width: (16.66% - 1.5rem);
+            }
 
             &:nth-last-child(-1n+4) {
                 margin-bottom: 0;
