@@ -12,6 +12,9 @@ $breakpoint-uhd: 2560px;
 .iadg4b {
     margin: 0 auto;
 
+    @media screen and (max-width: $breakpoint-s) {
+        margin: 0 0.75rem;
+    }
     @media screen and (min-width: $breakpoint-s) {
         max-width: 620px;
     }
@@ -162,6 +165,17 @@ $breakpoint-uhd: 2560px;
     display: flex;
     align-items: center;
 
+    overflow-x: hidden;
+    
+    .bar-dropdowns {
+        display: flex;
+        width: 300px;
+
+        @media screen and (max-width: $breakpoint-hd - 1) {
+            margin-left: -300px;
+        }
+    }
+
     .bar-item {
         margin-right: 2rem;
         position: relative;
@@ -176,6 +190,13 @@ $breakpoint-uhd: 2560px;
                 display: inline-block;
                 vertical-align: text-bottom;
             }
+        }
+
+        &.searchcolumn-toggle {
+            @media screen and (min-width: $breakpoint-hd) {
+                display: none;
+            }
+            transition: transform 0.2s ease-out;
         }
     }
 }
@@ -309,14 +330,6 @@ $breakpoint-uhd: 2560px;
             transition: left 0.2s ease-out;
         }
 
-        &.searchcolumn-shown {
-            .stadiaplus_libraryfilter-searchcolumn {
-                @media screen and (max-width: $breakpoint-hd - 1) {
-                    left: 0;
-                }
-            }
-        }
-
         .stadiaplus_libraryfilter-searchcolumn-bar {
             display: flex;
             align-content: center;
@@ -406,14 +419,19 @@ $breakpoint-uhd: 2560px;
             transition: background-size 0.5s cubic-bezier(0, 0, 0.2, 1), transform 0.2s ease-out;
             transform: scale(1);
             cursor: pointer;
-
-            @media screen and (max-width: $breakpoint-m - 1) and (min-width: $breakpoint-hd) {
-                width: calc(33.32% - 1.5rem);
-            }
+            
             @media screen and (min-width: $breakpoint-s) {
                 width: calc(33.32% - 1rem);
                 
                 margin-left: 1rem;
+            }
+            @media screen and (min-width: $breakpoint-xs) {
+                width: calc(33.32% - 0.75rem);
+                
+                margin-left: 0.75rem;
+            }
+            @media screen and (max-width: $breakpoint-m - 1) and (min-width: $breakpoint-hd) {
+                width: calc(33.32% - 1.5rem);
             }
             @media screen and (min-width: $breakpoint-fhd) {
                 width: (20% - 1.5rem);
@@ -525,6 +543,25 @@ $breakpoint-uhd: 2560px;
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
+                }
+            }
+        }
+    }
+}
+
+.stadiaplus_libraryfilter-wrapper {
+    &.searchcolumn-shown {
+        @media screen and (max-width: $breakpoint-hd - 1) {
+            .stadiaplus_libraryfilter-searchcolumn {
+                left: 0;
+            }
+
+            .stadiaplus_libraryfilter-bar {
+                .bar-dropdowns {
+                    margin-left: 0;
+                }
+                .searchcolumn-toggle {
+                    transform: rotateY(180deg);
                 }
             }
         }

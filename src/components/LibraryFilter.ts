@@ -387,7 +387,7 @@ export class LibraryFilter extends Component {
             .class({ 'stadiaplus_libraryfilter-bar': true })
             .child(
                 $el('div')
-                    .css({ display: 'flex', width: '300px' })
+                    .class({ 'bar-dropdowns': true })
                     .child(
                         $el('div')
                             .class({ 'bar-item': true })
@@ -447,7 +447,29 @@ export class LibraryFilter extends Component {
             )
             .child(
                 $el('div')
-                    .class({ 'bar-item': true })
+                    .class({
+                        'bar-item': true,
+                        'searchcolumn-toggle': true
+                    })
+                    .child(
+                        $el('button')
+                            .class({ 'stadiaplus_libraryfilter-button': true })
+                            .event({
+                                click: (event) => {
+                                    for (const e of this.renderer.querySelectorAll(
+                                        '.stadiaplus_libraryfilter-wrapper'
+                                    )) {
+                                        e.classList.toggle('searchcolumn-shown');
+                                    }
+                                    event.stopPropagation();
+                                },
+                            })
+                            .child(
+                                $el('i')
+                                    .class({ 'material-icons-extended': true })
+                                    .text('arrow_forward')
+                            )
+                    )
                     .child(this.getAutoUpdateButton())
                     .child(this.getAutoUpdateTooltip())
             )
