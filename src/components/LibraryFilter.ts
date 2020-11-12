@@ -466,8 +466,19 @@ export class LibraryFilter extends Component {
                             })
                             .child(
                                 $el('i')
-                                    .class({ 'material-icons-extended': true })
-                                    .text('arrow_forward')
+                                    .class({
+                                        'material-icons-extended': true,
+                                        'searchcolumn-toggle-icon-search': true
+                                    })
+                                    .text('search')
+                            )
+                            .child(
+                                $el('i')
+                                    .class({
+                                        'material-icons-extended': true,
+                                        'searchcolumn-toggle-icon-back': true
+                                    })
+                                    .text('arrow_back')
                             )
                     )
             )

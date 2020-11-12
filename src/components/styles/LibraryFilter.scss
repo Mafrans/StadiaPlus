@@ -195,14 +195,21 @@ $breakpoint-uhd: 2560px;
         &.searchcolumn-toggle {
             margin: 0.75rem;
 
-            transition: transform 0.2s ease-out;
-
             @media screen and (min-width: $breakpoint-hd) {
                 display: none;
             }
 
             .material-icons-extended {
                 padding-right: 0;
+
+                transition: transform 0.2s ease-out;
+
+                &.searchcolumn-toggle-icon-back
+                {
+                    margin-left: -1em;
+
+                    transform: rotateY(-90);
+                }
             }
         }
     }
@@ -568,7 +575,17 @@ $breakpoint-uhd: 2560px;
                     margin-left: 0;
                 }
                 .searchcolumn-toggle {
-                    transform: rotateY(180deg);
+                    .material-icons-extended
+                    {
+                        &.searchcolumn-toggle-icon-search
+                        {
+                            transform: rotateY(90deg);
+                        }
+                        &.searchcolumn-toggle-icon-back
+                        {
+                            transform: rotateY(0);
+                        }
+                    }
                 }
             }
         }
