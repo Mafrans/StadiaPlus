@@ -470,6 +470,10 @@ export class LibraryFilter extends Component {
                                     .text('arrow_forward')
                             )
                     )
+            )
+            .child(
+                $el('div')
+                    .class({ 'bar-item': true })
                     .child(this.getAutoUpdateButton())
                     .child(this.getAutoUpdateTooltip())
             )
