@@ -1,8 +1,8 @@
+/* eslint-disable no-restricted-globals */
 import { Component } from '../Component';
 import Logger from '../Logger';
 import Util from '../util/Util';
 import './styles/StoreFilter.scss';
-import { WebDatabase } from '../WebDatabase';
 import { Language } from '../Language';
 import { StadiaGameDB } from '../StadiaGameDB';
 
@@ -17,17 +17,17 @@ export class StoreFilter extends Component {
     /**
      * The component tag, used in language files.
      */
-    tag: string = 'store-filter';
+    tag = 'store-filter';
 
     /**
      * The search bar element.
      */
-    element: HTMLElement;
+    element: HTMLElement | null = null;
 
     /**
      * A template element for individual games in the search box.
      */
-    gameTemplate: HTMLElement;
+    gameTemplate: HTMLElement | null = null;
 
     /**
      * An array of all game elements.
@@ -37,11 +37,7 @@ export class StoreFilter extends Component {
     /**
      * The search input.
      */
-    searchField: HTMLElement;
-
-    constructor() {
-        super();
-    }
+    searchField: HTMLInputElement | null = null;
 
     /**
      * Creates the search bar and necessary elements/variables.
@@ -72,20 +68,20 @@ export class StoreFilter extends Component {
                     <h5 class='name'>Lorem Ipsum</h5>
                     <span class='stadiaplus_muted tags'></span>
                 </div>
-            `
-            
+            `;
+
             element.setAttribute('data-uuid', uuid);
             element.setAttribute('data-name', entry.name);
-            element.setAttribute('data-tags', entry.tags.map(tag => tag.name).join(', '));
+            element.setAttribute('data-tags', entry.tags.map((tag) => tag?.name).join(', '));
 
-            let url = "https://stadia.google.com" as any;
+            let url = 'https://stadia.google.com';
             const locArr = location.href.split('/');
-            if(locArr.length > 5) {
-                url = locArr.slice(0, 5).join('/') + '/';
+            if (locArr.length > 5) {
+                url = `${locArr.slice(0, 5).join('/')}/`;
                 url = url.substring(0, url.length + (url.endsWith('/') ? -1 : 0));
             }
-            const storeId = entry.storeId;
-            element.setAttribute('href', url + '/store/details/' + storeId);
+            const { storeId } = entry;
+            element.setAttribute('href', `${url}/store/details/${storeId !== undefined ? storeId : ''}`);
             element.setAttribute('data-img', entry.img);
 
             this.games.push(element);
@@ -98,8 +94,10 @@ export class StoreFilter extends Component {
      * @memberof StoreFilter
      */
     addEvents(): void {
-        this.searchField.addEventListener('input', () => {
-            this.search((this.searchField as any).value);
+        this.searchField?.addEventListener('input', () => {
+            if (this.searchField !== null) {
+                this.search(this.searchField.value);
+            }
         });
     }
 
@@ -111,14 +109,16 @@ export class StoreFilter extends Component {
      */
     search(query: string): void {
         this.games.forEach((game) => {
-            const name = game.getAttribute('data-name').toLowerCase();
-            game.classList.toggle('shown', query.length > 0 && name.indexOf(query.toLowerCase()) !== -1);
-        })
+            const name = game.getAttribute('data-name');
+            if (name !== null) {
+                game.classList.toggle('shown', query.length > 0 && name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+            }
+        });
     }
 
     /**
      * Called on startup, initializes important variables.
-     * 
+     *
      * @memberof Clock
      */
     onStart(): void {
@@ -130,46 +130,62 @@ export class StoreFilter extends Component {
 
     /**
      * Called on stop, makes sure to dispose of elements and variables.
-     * 
+     *
      * @memberof Clock
      */
     onStop(): void {
         this.active = false;
-        this.element.remove();
+        this.element?.remove();
         Logger.component(Language.get('component.disabled', { name: this.name }));
     }
 
     /**
-     * Called every second, makes sure the search bar only exists when it's supposed to and works properly even if accidentally destroyed.
-     * 
+     * Called every second, makes sure the search bar only exists when
+     * it's supposed to and works properly even if accidentally destroyed.
+     *
      * @memberof Clock
      */
-    onUpdate() {
-        if(Util.isInStore()) {
-            if(!this.exists()) {
+    onUpdate(): void {
+        if (Util.isInStore()) {
+            if (!this.exists()) {
                 this.updateRenderer();
+
+                if (this.renderer === undefined) {
+                    Logger.error('Renderer is undefined');
+                    return;
+                }
+
                 const container = this.renderer.querySelector('.yUnkH');
 
-                if(container === null) return;
+                if (container === null || this.element === null) return;
 
                 container.prepend(this.element);
 
-                const gameContainer = document.getElementById(this.id + '-games');
+                const gameContainer = document.getElementById(`${this.id}-games`);
                 this.games.forEach((game) => {
-                    gameContainer.appendChild(game);
+                    gameContainer?.appendChild(game);
 
-                    const image = game.querySelector('img');
-                    image.src = game.getAttribute('data-img');
-        
-                    const name = game.querySelector('.detail>.name');
-                    name.innerHTML = game.getAttribute('data-name');
-                    
-                    const tags = game.querySelector('.detail>.tags');
-                    tags.innerHTML = game.getAttribute('data-tags');
+                    const imageElement = game.querySelector('img');
+                    const imgData = game.getAttribute('data-img');
+                    if (imageElement !== null && imgData !== null) {
+                        imageElement.src = imgData;
+                    }
+
+                    const nameElement = game.querySelector('.detail>.name');
+                    const nameData = game.getAttribute('data-name');
+                    if (nameElement !== null && nameData !== null) {
+                        nameElement.textContent = nameData;
+                    }
+
+                    const tagsElement = game.querySelector('.detail>.tags');
+                    const tagsData = game.getAttribute('data-tags');
+                    if (tagsElement !== null && tagsData !== null) {
+                        tagsElement.textContent = tagsData;
+                    }
                 });
 
-                this.searchField = this.renderer.querySelector('#' + this.id + '-search');
-            
+                this.searchField = this.renderer.querySelector(`#${this.id}-search`);
+
                 this.addEvents();
             }
         }

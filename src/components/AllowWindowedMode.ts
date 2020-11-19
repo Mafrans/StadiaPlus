@@ -4,8 +4,6 @@ import { Language } from '../Language';
 import { UIButton } from '../ui/UIButton';
 import Util from '../util/Util';
 
-const { chrome } = window as any;
-
 /**
  * A button allowing users to play Stadia in windowed mode.
  *
@@ -17,32 +15,33 @@ export class AllowWindowedMode extends Component {
     /**
      * The component tag, used in language files.
      */
-    tag: string = 'allow-windowed-mode';
+    tag = 'allow-windowed-mode';
 
     /**
      * The [[UIButton]] used to toggle windowed mode.
      */
-    button: UIButton;
+    button!: UIButton;
 
     /**
      * Whether windowed mode is enabled or not
      */
-    windowed: boolean = false;
+    windowed = false;
 
     constructor() {
         super();
 
-        const self = this;
-
-        // Main event, stops built-in fullscreen events from reaching Stadia whenever windowed mode is enabled.
+        /**
+         * Main event, stops built-in fullscreen events from reaching
+         * Stadia whenever windowed mode is enabled.
+         * */
         window.addEventListener(
             'fullscreenchange',
-            function(event: Event) {
-                if (self.windowed) {
+            (event: Event) => {
+                if (this.windowed) {
                     event.stopPropagation();
                 }
             },
-            true
+            true,
         );
     }
 
@@ -53,27 +52,27 @@ export class AllowWindowedMode extends Component {
      */
     enterWindowed(): void {
         this.windowed = true;
-        document.exitFullscreen();
+        void document.exitFullscreen();
     }
 
     /**
      * Exits windowed mode
-     * 
+     *
      * @memberof AllowWindowedMode
      */
     exitWindowed(): void {
         this.windowed = false;
-        document.documentElement.requestFullscreen();
+        void document.documentElement.requestFullscreen();
     }
 
     /**
      * Called on startup, initializes important variables.
-     * 
+     *
      * @memberof AllowWindowedMode
      */
     onStart(): void {
         Logger.component(
-            Language.get('component.enabled', { name: this.name })
+            Language.get('component.enabled', { name: this.name }),
         );
         this.active = true;
 
@@ -81,13 +80,13 @@ export class AllowWindowedMode extends Component {
         this.button = new UIButton(
             icon,
             Language.get('allow-windowed-mode.button-label.windowed'),
-            this.id
+            this.id,
         );
     }
 
     /**
      * Called on stop, makes sure to dispose of elements and variables.
-     * 
+     *
      * @memberof AllowWindowedMode
      */
     onStop(): void {
@@ -97,68 +96,65 @@ export class AllowWindowedMode extends Component {
 
     /**
      * Update button labels and icons to fit current mode.
-     * 
+     *
      * @memberof AllowWindowedMode
      */
     updateButton(): void {
         const icon = chrome.runtime.getURL('images/icons/windowed.svg');
-        const icon_exit = chrome.runtime.getURL(
-            'images/icons/windowed_exit.svg'
+        const exitIcon = chrome.runtime.getURL(
+            'images/icons/windowed_exit.svg',
         );
 
         if (this.windowed) {
-            this.button.setIcon(icon_exit);
+            this.button.setIcon(exitIcon);
             this.button.setTitle(
-                Language.get('allow-windowed-mode.button-label.fullscreen')
+                Language.get('allow-windowed-mode.button-label.fullscreen'),
             );
         } else {
             this.button.setIcon(icon);
             this.button.setTitle(
-                Language.get('allow-windowed-mode.button-label.windowed')
+                Language.get('allow-windowed-mode.button-label.windowed'),
             );
         }
     }
 
     // Whether events have been added already or not.
-    eventsAdded: boolean = false;
+    eventsAdded = false;
 
     /**
      * Called once every second, updates component elements and variables
-     * 
+     *
      * @memberof AllowWindowedMode
      */
     onUpdate(): void {
         // If menu is open and a game is playing.
         if (Util.isMenuOpen() && Util.isInGame()) {
-
             // If the button doesn't already exist in the current renderer
             if (!this.exists()) {
                 // Check for new renderers
                 this.updateRenderer();
 
-                const self = this;
                 // Create the button instance
                 this.button.create(() => {
                     // If events are already added, don't add them again
                     if (!this.eventsAdded) {
-                        self.button.onPressed(() => {
-                            if (self.windowed) {
-                                self.exitWindowed();
+                        this.button.onPressed(() => {
+                            if (this.windowed) {
+                                this.exitWindowed();
                             } else {
-                                self.enterWindowed();
+                                this.enterWindowed();
                             }
-                            self.updateButton();
+                            this.updateButton();
                         });
                         this.eventsAdded = true;
                     }
                 });
             }
 
-            if (!this.button.container.exists()) {
-                this.button.container.create();
+            if (!this.button.container?.exists()) {
+                this.button.container?.create();
             }
-        }
-        else if(this.existsAnywhere()) {
+        } else if (this.existsAnywhere()) {
             this.button.destroy();
         }
     }

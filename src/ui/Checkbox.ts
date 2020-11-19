@@ -1,61 +1,64 @@
 import '../../node_modules/pretty-checkbox/src/pretty-checkbox.scss';
+import { CheckboxShape } from '../models/CheckboxShape';
+import { CheckboxStyle } from '../models/CheckboxStyle';
+import { CheckboxInstance } from '../models/CheckboxInstance';
 
 export class Checkbox {
     private label: string;
     private shape: string = CheckboxShape.DEFAULT;
     private style: string = CheckboxStyle.DEFAULT;
-    private color: string;
-    private animation: string;
-    private border: boolean = true;
-    private icon: string;
-    private disabled: boolean;
-    private bigger: boolean;
+    private color: string | undefined;
+    private animation: string | undefined;
+    private border = true;
+    private icon: string | undefined;
+    private disabled = false;
+    private bigger: boolean | undefined;
 
     constructor(label: string) {
         this.label = label;
     }
 
-    setShape(shape: string) {
+    setShape(shape: string): Checkbox {
         this.shape = shape;
         return this;
     }
-    
-    setStyle(style: string) {
+
+    setStyle(style: string): Checkbox {
         this.style = style;
         return this;
     }
-    
-    setColor(color: string) {
+
+    setColor(color: string): Checkbox {
         this.color = color;
         return this;
     }
-    
-    setAnimation(animation: string) {
+
+    setAnimation(animation: string): Checkbox {
         this.animation = animation;
         return this;
     }
-    
-    setBorder(border: boolean) {
+
+    setBorder(border: boolean): Checkbox {
         this.border = border;
         return this;
     }
-    
-    setIcon(icon: string) {
+
+    setIcon(icon: string): Checkbox {
         this.icon = icon;
         return this;
     }
 
-    setDisabled(disabled: boolean) {
+    setDisabled(disabled: boolean): Checkbox {
         this.disabled = disabled;
         return this;
     }
 
-    setBigger(bigger: boolean) {
+    setBigger(bigger: boolean): Checkbox {
         this.bigger = bigger;
         return this;
     }
 
-    build() {
+    build(): CheckboxInstance {
         // Create element
         const element = document.createElement('div');
 
@@ -63,27 +66,27 @@ export class Checkbox {
         element.classList.add('pretty', 'p-default');
 
         // If style is not default, add style
-        if(this.shape) {
+        if (this.shape) {
             element.classList.add(this.shape);
         }
 
         // If style is not default, add style
-        if(this.style) {
+        if (this.style) {
             element.classList.add(this.style);
         }
 
         // If animated, add animation
-        if(this.animation) {
+        if (this.animation) {
             element.classList.add(this.animation);
         }
 
         // Set bigger
-        if(this.bigger) {
+        if (this.bigger) {
             element.classList.add('p-bigger');
         }
 
         // Set border
-        if(!this.border) {
+        if (!this.border) {
             element.classList.add('p-plain');
         }
 
@@ -98,12 +101,12 @@ export class Checkbox {
         state.classList.add('state');
 
         // If colored, add color
-        if(this.color) {
+        if (this.color) {
             state.classList.add(this.color);
         }
 
         // If has icon, add icon
-        if(this.icon) {
+        if (this.icon) {
             element.classList.add('p-icon');
 
             const icon = document.createElement('span');
@@ -120,34 +123,6 @@ export class Checkbox {
 
         element.appendChild(state);
 
-        return {pretty: element, checkbox};
+        return { pretty: element, checkbox };
     }
-}
-
-export class CheckboxShape {
-    public static DEFAULT: string = null;
-    public static CURVED: string = 'p-curve';
-    public static ROUND: string = 'p-round';
-}
-
-export class CheckboxStyle {
-    public static DEFAULT: string = null;
-    public static FILL: string = 'p-fill';
-    public static THICK: string = 'p-thick';
-}
-
-export class CheckboxColor {
-    public static BLUE: string = 'p-primary';
-    public static GREEN: string = 'p-success';
-    public static YELLOW: string = 'p-warning';
-    public static CYAN: string = 'p-info';
-    public static RED: string = 'p-danger';
-}
-
-export class CheckboxAnimation {
-    public static SMOOTH: string = 'p-smooth';
-    public static JELLY: string = 'p-jelly';
-    public static TADA: string = 'p-tada';
-    public static ROTATE: string = 'p-rotate';
-    public static PULSE: string = 'p-pulse';
 }

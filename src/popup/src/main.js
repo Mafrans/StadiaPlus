@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import VueRouter from 'vue-router';
 import App from './App.vue';
 import MainPage from './MainPage.vue';
 import UserPage from './UserPage.vue';
@@ -6,12 +7,11 @@ import WipeDataPage from './WipeDataPage.vue';
 import SettingsPage from './SettingsPage.vue';
 import DeveloperPage from './DeveloperPage.vue';
 import ComponentPage from './ComponentPage.vue';
-import VueRouter from 'vue-router';
 import { Language } from '../../Language';
 
 Vue.config.productionTip = false;
 Vue.use(VueRouter);
-    
+
 const routes = [
     { path: '/', component: MainPage },
     { path: '/user/', component: UserPage },
@@ -32,6 +32,6 @@ Language.init();
 Language.load(() => {
     new Vue({
         router,
-        render: h => h(App),
+        render: (h) => h(App),
     }).$mount('#app');
 });

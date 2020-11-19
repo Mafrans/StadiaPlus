@@ -1,16 +1,19 @@
-import { UIComponent } from "./UIComponent";
+import { UIComponent } from './UIComponent';
+import { UIRowOptions } from '../models/UIRowOptions';
 
 export class UIRow {
     title: string;
     content: string;
     id: string;
-    options: UIRowOptions;
+    options: UIRowOptions = {};
     element: Element;
 
     constructor(title: string, content: string, id: string, options?: UIRowOptions) {
         this.title = title;
         this.content = content;
-        this.options = options;
+        if (options !== undefined) {
+            this.options = options;
+        }
         this.id = id;
 
         this.element = document.createElement('div');
@@ -24,31 +27,33 @@ export class UIRow {
         this.element.classList.add('stadiaplus_ui-row');
     }
 
-    exists() {
+    exists(): HTMLElement | null {
         return document.getElementById(this.id);
     }
 
-    destroy() {
-        this.options.onDestroy(this);
+    destroy(): void {
+        if (this.options.onDestroy !== undefined) {
+            this.options.onDestroy(this);
+        }
+
         this.element.remove();
     }
 
-    reload() {
-        this.options.onReload(this);
+    reload(): void {
+        if (this.options.onReload !== undefined) {
+            this.options.onReload(this);
+        }
     }
 
-    append(component: UIComponent, useHr: boolean = false) {
-        if(useHr) {
+    append(component: UIComponent, useHr = false): void {
+        if (useHr) {
             component.element.appendChild(document.createElement('hr'));
         }
-        
-        component.element.appendChild(this.element);
-        this.options.onCreate(this);
-    }
-}
 
-export class UIRowOptions {
-    onCreate?: Function;
-    onDestroy?: Function;
-    onReload?: Function;
+        component.element.appendChild(this.element);
+
+        if (this.options.onCreate !== undefined) {
+            this.options.onCreate(this);
+        }
+    }
 }

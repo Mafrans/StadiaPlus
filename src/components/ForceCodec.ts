@@ -1,6 +1,5 @@
 import { Component } from '../Component';
 import Logger from '../Logger';
-import Util from '../util/Util';
 import './styles/ForceCodec.scss';
 import { UITab } from './UITab';
 import { UIRow } from '../ui/UIRow';
@@ -8,10 +7,8 @@ import { Select } from '../ui/Select';
 import { Snackbar } from '../ui/Snackbar';
 import { Language } from '../Language';
 import { LocalStorage } from '../Storage';
-import { Resolution } from './ForceResolution';
-import { Browser } from '../Browser';
-
-const chrome = (window as any).chrome;
+import { Resolution } from '../models/Resolution';
+import { Codec } from '../models/Codec';
 
 /**
  * A dropdown allowing changing of the codec.
@@ -24,19 +21,19 @@ export class ForceCodec extends Component {
     /**
      * The component tag, used in language files.
      */
-    tag: string = 'force-codec';
+    tag = 'force-codec';
 
     /**
      * The current codec.
      */
-    codec: number = Codec.AUTOMATIC;
+    codec: Codec = Codec.AUTOMATIC;
 
-    /** 
+    /**
      * The codec Select box.
      */
-    select: Select;
+    select?: Select;
 
-    /** 
+    /**
      * The Stadia+ UI Tab.
      */
     tab: UITab;
@@ -53,8 +50,8 @@ export class ForceCodec extends Component {
      * @param {(() => any)} [callback=(() => {})] callback called after storage update.
      * @memberof ForceCodec
      */
-    async getStorage() {
-        this.codec = await LocalStorage.CODEC.get();
+    async getStorage(): Promise<void> {
+        this.codec = await LocalStorage.CODEC.get() as Codec;
     }
 
     /**
@@ -63,19 +60,18 @@ export class ForceCodec extends Component {
      * @param {(() => any)} [callback=(() => {})] callback called after storage update.
      * @memberof ForceCodec
      */
-    setStorage(callback: (() => any) = (() => {})) {
-        LocalStorage.CODEC.set(this.codec);
+    async setStorage(): Promise<void> {
+        await LocalStorage.CODEC.set(this.codec);
     }
 
     /**
      * Called on startup, initializes important variables.
-     * 
+     *
      * @memberof ForceCodec
      */
     onStart(): void {
         this.active = true;
 
-        const self = this;
         this.tab.addRow(
             new UIRow(
                 this.name,
@@ -92,45 +88,52 @@ export class ForceCodec extends Component {
                     </div>
                     <p class='stadiaplus_muted' id='${this.id}-4k-tooltip' style='display: none'>${Language.get('force-codec.4k-tooltip')}</p>
                 `,
-                this.id + '-row',
+                `${this.id}-row`,
                 {
                     onCreate: async (row:UIRow) => {
-                        self.select = new Select(row.element.querySelector('select'), { placeholder: Codec.AUTOMATIC });
-    
+                        this.select = new Select(row.element.querySelector('select') as HTMLSelectElement, { placeholder: Codec.AUTOMATIC.toString() });
+
                         const button = row.element.querySelector('.stadiaplus_button-small');
-                        button.addEventListener('click', async () => {
-                            self.codec = parseInt(self.select.get()[0]);
-                            await self.setStorage();
-                            Snackbar.activate(Language.get('snackbar.reload-to-update'));
-                        });
-    
-                        await self.getStorage();
-                        const resolution = await LocalStorage.RESOLUTION.get();
+                        if (button != null) {
+                            button.addEventListener('click', () => {
+                                if (this.select === undefined) return;
 
-                        self.select.enable();
-                        
-                        if(resolution === Resolution.UHD_4K || resolution === Resolution.WQHD) {
-                            self.codec = Codec.VP9;
-                            self.select.disable();
+                                this.codec = parseInt(this.select.get()[0], 10);
+                                void this.setStorage().then(() => {
+                                    Snackbar.activate(Language.get('snackbar.reload-to-update'));
+                                });
+                            });
+                        }
 
-                            const tooltip = document.getElementById(this.id + '-4k-tooltip') as HTMLElement; 
+                        await this.getStorage();
+                        const resolution = await LocalStorage.RESOLUTION.get() as Resolution;
+
+                        this.select.enable();
+
+                        if (resolution === Resolution.UHD_4K || resolution === Resolution.WQHD) {
+                            this.codec = Codec.VP9;
+                            this.select.disable();
+
+                            const tooltip = document.getElementById(`${this.id}-4k-tooltip`) as HTMLElement;
                             tooltip.style.display = 'block';
                         }
 
-                        self.select.set(self.codec);
-                        ForceCodec.setCodec(self.codec);
+                        this.select.set(this.codec as string);
+                        ForceCodec.setCodec(this.codec);
                     },
 
                     onReload: (row:UIRow) => {
-                        self.select.destroy();
-                        self.select = new Select(row.element.querySelector('select'), { placeholder: Codec.AUTOMATIC });
-                        self.select.set(self.codec);
+                        if (this.select === undefined) return;
+
+                        this.select.destroy();
+                        this.select = new Select(row.element.querySelector('select') as HTMLSelectElement, { placeholder: Codec.AUTOMATIC.toString() });
+                        this.select.set(this.codec as string);
                     },
-                }
+                },
             ),
         );
-        
-        Logger.component(Language.get("component.enabled", { name: this.name }));
+
+        Logger.component(Language.get('component.enabled', { name: this.name }));
     }
 
     /**
@@ -140,77 +143,46 @@ export class ForceCodec extends Component {
      * @param {number} codec
      * @memberof ForceCodec
      */
-    static setCodec(codec: number) {
+    static setCodec(codec: Codec): void {
         const script = document.createElement('script');
-        const vp9data = '{"vp9":"ExternalDecoder"}'; // Browser.getVersion() >= 84414402 ? '{"vp9": "libvpx"}' : '{"vp9":"ExternalDecoder"}';
-        const h264data = '{"h264":"ExternalDecoder", "vp9":"libvpx", "vp9-profile0":"libvpx"}'; // Browser.getVersion() >= 84414402 ? '{"vp9":"libvpx","h264":"FFmpeg"}' : '{"h264":"ExternalDecoder", "vp9":"libvpx"}';
+        const vp9data = '{"vp9-profile0":"ExternalDecoder"}'; // Browser.getVersion() >= 84414402 ? '{"vp9": "libvpx"}' : '{"vp9":"ExternalDecoder"}';
+        const h264data = '{"h264":"ExternalDecoder", "vp9-profile0":"libvpx"}'; // Browser.getVersion() >= 84414402 ? '{"vp9":"libvpx","h264":"FFmpeg"}' : '{"h264":"ExternalDecoder", "vp9":"libvpx"}';
 
         switch (codec) {
-        case Codec.VP9:
-            script.innerHTML = `
+            case Codec.VP9:
+                script.innerHTML = `
                 localStorage.setItem("video_codec_implementation_by_codec_key", '${vp9data}');
             `;
-            break;
+                break;
 
-        case Codec.H264:
-            script.innerHTML = `
+            case Codec.H264:
+                script.innerHTML = `
                 localStorage.setItem("video_codec_implementation_by_codec_key", '${h264data}');
             `;
-            break;
-            
-        case Codec.AUTOMATIC:
-            script.innerHTML = `
-                localStorage.removeItem("video_codec_implementation_by_codec_key");
-            `;
-            break;
+                break;
 
-        default:
-            script.innerHTML = `
+            case Codec.AUTOMATIC:
+                script.innerHTML = `
                 localStorage.removeItem("video_codec_implementation_by_codec_key");
             `;
-            break;
+                break;
+
+            default:
+                script.innerHTML = `
+                localStorage.removeItem("video_codec_implementation_by_codec_key");
+            `;
+                break;
         }
         document.body.appendChild(script);
     }
 
     /**
      * Called on stop, makes sure to dispose of elements and variables.
-     * 
+     *
      * @memberof ForceCodec
      */
     onStop(): void {
         this.active = false;
         Logger.component(Language.get('component.disabled', { name: this.name }));
     }
-
-    /**
-     * Called every second, updates the element to match the clock.
-     * 
-     * @memberof ForceCodec
-     */
-    onUpdate() {
-    }
-}
-
-/**
- * The different kinds of codecs, represented as numbers.
- *
- * @export the Codec type
- * @class Codec
- */
-export class Codec {
-    /**
-     * Automatic codec, let Stadia decide on it's own.
-     */
-    static AUTOMATIC = 0;
-
-    /**
-     * VP9 codec, usually works better than H264 but at the cost of lower quality.
-     */
-    static VP9 = 1;
-
-    /**
-     * H264 codec, high quality and Mac-OS compatible codec but with latency issues. 
-     */
-    static H264 = 2;
 }

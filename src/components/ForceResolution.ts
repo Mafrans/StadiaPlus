@@ -1,16 +1,15 @@
 import { Component } from '../Component';
 import Logger from '../Logger';
-import Util from '../util/Util';
 import './styles/ForceResolution.scss';
 import { UITab } from './UITab';
-import { UIRow, UIRowOptions } from '../ui/UIRow';
+import { UIRow } from '../ui/UIRow';
 import { Select } from '../ui/Select';
 import { Snackbar } from '../ui/Snackbar';
 import { Language } from '../Language';
 import { LocalStorage } from '../Storage';
-import { ForceCodec, Codec } from './ForceCodec';
-
-const chrome = (window as any).chrome;
+import { ForceCodec } from './ForceCodec';
+import { Codec } from '../models/Codec';
+import { Resolution } from '../models/Resolution';
 
 /**
  * A dropdown allowing changing of the resolution.
@@ -23,30 +22,29 @@ export class ForceResolution extends Component {
     /**
      * The component tag, used in language files.
      */
-    tag: string = 'force-resolution';
+    tag = 'force-resolution';
 
     /**
      * The current resolution.
      */
-    resolution: number = Resolution.AUTOMATIC;
+    resolution: Resolution = Resolution.AUTOMATIC;
 
     /**
      * The resolution Select box.
      */
-    select: Select;
+    select?: Select;
 
     /**
      * The Stadia+ UI Tab
      */
     tab: UITab;
 
-
     constructor(tab: UITab) {
         super();
 
         this.tab = tab;
-        
-        this.getStorage();
+
+        void this.getStorage();
         window.addEventListener('DOMContentLoaded', () => ForceResolution.setResolution(this.resolution));
     }
 
@@ -56,8 +54,8 @@ export class ForceResolution extends Component {
      * @param {(() => any)} [callback=(() => {})] callback called after storage update.
      * @memberof ForceResolution
      */
-    async getStorage(callback: (() => any) = (() => {})) {
-        this.resolution = await LocalStorage.RESOLUTION.get();
+    async getStorage(): Promise<void> {
+        this.resolution = await LocalStorage.RESOLUTION.get() as Resolution;
     }
 
     /**
@@ -66,7 +64,7 @@ export class ForceResolution extends Component {
      * @param {(() => any)} [callback=(() => {})] callback called after storage update.
      * @memberof ForceResolution
      */
-    async setStorage() {
+    async setStorage(): Promise<void> {
         await LocalStorage.RESOLUTION.set(this.resolution);
     }
 
@@ -75,8 +73,7 @@ export class ForceResolution extends Component {
      */
     onStart(): void {
         this.active = true;
-        
-        const self = this;
+
         this.tab.addRow(
             new UIRow(
                 this.name,
@@ -96,37 +93,51 @@ export class ForceResolution extends Component {
 
                     <p class="stadiaplus_muted">${Language.get('force-resolution.note')}</p>
                 `,
-                this.id + '-row',
+                `${this.id}-row`,
                 {
                     onCreate: (row:UIRow) => {
-                        self.select = new Select(row.element.querySelector('select'), { placeholder: Resolution.AUTOMATIC });
+                        this.select = new Select(row.element.querySelector('select') as HTMLSelectElement, { placeholder: Resolution.AUTOMATIC.toString() });
 
                         const button = row.element.querySelector('.stadiaplus_button-small');
-                        button.addEventListener('click', async () => {
-                            self.resolution = parseInt(self.select.get()[0]);
+                        if (button != null) {
+                            button.addEventListener('click', () => {
+                                if (this.select === undefined) {
+                                    Logger.error('Tried to set the forced resolution, but was unable to.');
+                                    return;
+                                }
 
-                            if(self.resolution === Resolution.UHD_4K) {
-                                ForceCodec.setCodec(Codec.VP9);
-                            }
+                                this.resolution = parseInt(this.select.get()[0], 10);
 
-                            await self.setStorage();
-                            Snackbar.activate(Language.get('snackbar.reload-to-update'));
-                        });
+                                if (this.resolution === Resolution.UHD_4K) {
+                                    ForceCodec.setCodec(Codec.VP9);
+                                }
 
-                        self.getStorage(() => {
-                            this.select.set(self.resolution);
+                                void this.setStorage().then(() => {
+                                    Snackbar.activate(Language.get('snackbar.reload-to-update'));
+                                });
+                            });
+                        }
+
+                        void this.getStorage().then(() => {
+                            if (this.select === undefined) return;
+                            this.select.set(this.resolution as string);
                         });
                     },
 
                     onReload: (row:UIRow) => {
-                        self.select.destroy();
-                        self.select = new Select(row.element.querySelector('select'), { placeholder: Resolution.AUTOMATIC });
-                        self.select.set(self.resolution);
+                        if (this.select === undefined) {
+                            Logger.error('Tried reload the select box, but it didn\'t exist.');
+                            return;
+                        }
+
+                        this.select.destroy();
+                        this.select = new Select(row.element.querySelector('select') as HTMLSelectElement, { placeholder: Resolution.AUTOMATIC.toString() });
+                        this.select.set(this.resolution as string);
                     },
-                }
+                },
             ),
         );
-        
+
         Logger.component(Language.get('component.enabled', { name: this.name }));
     }
 
@@ -137,11 +148,13 @@ export class ForceResolution extends Component {
      * @param {number} resolution the user Resolution
      * @memberof ForceResolution
      */
-    static setResolution(resolution: number): void {
+    static setResolution(resolution: Resolution): void {
         const script = document.createElement('script');
 
         // Rudimentary mapping of stadia localStorage variables for performance setting
-        const stadiaPerformance = {HD: 2, FHD: 3, WQHD: 4, UHD_4K: 4}
+        const stadiaPerformance = {
+            HD: 2, FHD: 3, WQHD: 4, UHD_4K: 4,
+        };
 
         // Number based on performance to be injected in localStorage for Stadia settings.
         let performanceInject;
@@ -184,10 +197,12 @@ export class ForceResolution extends Component {
                 return;
         }
 
-        /** Create localStorage compatible value string from params with date
-         * Date is included as milisecond unix timestamp in value by Stadia, some values have safeguard expiration so refresh to be safe
-         * */ 
-        const performanceValue = JSON.stringify({"data":`[${performanceInject},2]`,"creation": Date.now()});
+        /**
+         * Create localStorage compatible value string from params with date
+         * Date is included as milisecond unix timestamp in value by Stadia,
+         * some values have safeguard expiration so refresh to be safe
+         * */
+        const performanceValue = JSON.stringify({ data: `[${performanceInject},2]`, creation: Date.now() });
 
         script.innerHTML = `
             Object.defineProperty(window.screen, 'availWidth', { value: ${width} });
@@ -207,43 +222,4 @@ export class ForceResolution extends Component {
         this.active = false;
         Logger.component(Language.get('component.disabled', { name: this.name }));
     }
-
-    /**
-     * Called every second, updates the element to match the clock.
-     */
-    onUpdate() {
-    }
-}
-
-/**
- * The different kinds of resolutions, represented as numbers.
- *
- * @export the Resolution type
- * @class Resolution
- */
-export class Resolution {
-    /**
-     * Automatic, let Stadia handle resolutions.
-     */
-    static AUTOMATIC = 0;
-
-    /**
-     * 4K, or 3840x2160
-     */
-    static UHD_4K = 1;
-
-    /**
-     * WQHD, or 2560x1440
-     */
-    static WQHD = 2;
-
-    /**
-     * Full HD, or 1920x1080
-     */
-    static FHD = 3;
-
-    /**
-     * HD, or 1280x720
-     */
-    static HD = 4;
 }

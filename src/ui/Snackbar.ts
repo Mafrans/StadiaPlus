@@ -8,41 +8,40 @@ export class Snackbar {
     closeButton: Element;
 
     constructor() {
-       this.element = document.createElement('div');
-       this.element.classList.add('stadiaplus_snackbar');
+        this.element = document.createElement('div');
+        this.element.classList.add('stadiaplus_snackbar');
 
-       this.label = document.createElement('div');
-       this.label.classList.add('stadiaplus_snackbar-label');
+        this.label = document.createElement('div');
+        this.label.classList.add('stadiaplus_snackbar-label');
 
-       this.closeButton = document.createElement('i');
-       this.closeButton.innerHTML = 'close';
-       this.closeButton.classList.add('material-icons', 'stadiaplus_snackbar-close');
+        this.closeButton = document.createElement('i');
+        this.closeButton.innerHTML = 'close';
+        this.closeButton.classList.add('material-icons', 'stadiaplus_snackbar-close');
 
-       const self = this;
-       this.closeButton.addEventListener('click', () => {
-           self.element.classList.remove('active');
-       })
+        this.closeButton.addEventListener('click', () => {
+            this.element.classList.remove('active');
+        });
     }
 
-    create() {
-       document.body.appendChild(this.element);
-       this.element.appendChild(this.label);
-       this.element.appendChild(this.closeButton);
+    create(): void {
+        document.body.appendChild(this.element);
+        this.element.appendChild(this.label);
+        this.element.appendChild(this.closeButton);
     }
-    
-    static init() {
+
+    static init(): void {
         this.instance = new Snackbar();
         this.instance.create();
     }
 
-    static activate(label: string) {
-        const instance = this.instance;
+    static activate(label: string): void {
+        const { instance } = this;
 
         instance.label.innerHTML = label;
         instance.element.classList.add('active');
 
-        window.setTimeout(()=>{
+        window.setTimeout(() => {
             instance.element.classList.remove('active');
-        }, 5000)
+        }, 5000);
     }
 }
