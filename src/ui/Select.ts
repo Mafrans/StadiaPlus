@@ -1,21 +1,23 @@
 import SlimSelect from 'slim-select';
 import 'slim-select/dist/slimselect.min.css';
-import '../ui/styles/Select.scss';
+import { dataArray } from 'slim-select/dist/data';
+import { SelectStyle } from '../models/SelectStyle';
+import { SelectOptions } from '../models/SelectOptions';
+import './styles/Select.scss';
+import Logger from '../Logger';
 
 export class Select {
-    slimselect: SlimSelect;
-    element: Element;
+    slimselect: SlimSelect | undefined;
+    element: Element | null;
 
     constructor(element: Element, options: SelectOptions) {
         this.element = element;
 
         options.style = options.style !== undefined ? options.style : SelectStyle.DARK;
-        options.onChange = options.onChange !== undefined ? options.onChange : () => {};
-        options.beforeChange = options.beforeChange !== undefined ? options.beforeChange : () => {};
 
         this.element.classList.add(
             'stadiaplus_select',
-            options.style
+            options.style,
         );
 
         /**
@@ -34,54 +36,42 @@ export class Select {
                 onChange: options.onChange,
                 beforeOnChange: options.beforeChange,
             });
-        } catch (error) {}
-    }
-
-    disable() {
-        this.element.classList.add('disabled');
-    }
-    
-    enable() {
-        this.element.classList.remove('disabled');
-    }
-
-    get() {
-        return this.slimselect.selected();
-    }
-
-    set(...items: any[]) {
-        if(this.slimselect == null) return;
-        if (items.length === 1) {
-            // Just in case slimselect.set is faster
-            this.slimselect.set(items[0]);
-        } else {
-            this.slimselect.setData(items);
+        } catch (error) {
+            Logger.error(error);
         }
     }
 
-    search(query: string) {
-        return this.slimselect.search(query);
+    disable(): void {
+        if (this.element == null) return;
+        this.element.classList.add('disabled');
     }
 
-    destroy() {
+    enable(): void {
+        if (this.element == null) return;
+        this.element.classList.remove('disabled');
+    }
+
+    get(): string | string[] {
+        if (this.slimselect == null) return 'undefined';
+        return this.slimselect.selected();
+    }
+
+    set(...items: string[]): void {
+        if (this.slimselect == null) return;
+        this.slimselect.setData(items as unknown as dataArray);
+    }
+
+    search(query: string): void {
+        if (this.slimselect == null) return;
+        this.slimselect.search(query);
+    }
+
+    destroy(): void {
+        if (this.element == null) return;
         if (this.slimselect !== undefined) {
             this.slimselect.destroy();
         }
         this.element.classList.remove('stadiaplus_select');
         this.element = null;
     }
-}
-
-export class SelectStyle {
-    public static SLIMSELECT: string = null;
-    public static SLIMSELECT_LARGE: string = 'style-slimselect-large';
-    public static LIGHT: string = 'style-light';
-    public static DARK: string = 'style-dark';
-}
-
-interface SelectOptions {
-    placeholder?: any;
-    style?: string;
-    onChange?: (info: any) => any;
-    beforeChange?: (info: any) => any;
 }

@@ -10,8 +10,6 @@ import '../styles/Grid.scss';
 import '../styles/Typography.scss';
 import { Language } from '../Language';
 
-const chrome: any = (window as any).chrome;
-
 /**
  * A tab and button displayed in the Stadia Menu.
  *
@@ -23,22 +21,22 @@ export class UITab extends Component {
     /**
      * The name of the Component.
      */
-    tag: string = 'ui-tab';
+    tag = 'ui-tab';
 
     /**
      * The tab element.
      */
-    element: HTMLElement;
+    element: HTMLElement | null = null;
 
     /**
      * The [[UIComponent]] used to display the tab.
      */
-    component: UIComponent;
+    component?: UIComponent;
 
     /**
      * The [[UIButton]] used to open the tab.
      */
-    button: UIButton;
+    button?: UIButton;
 
     /**
      * An amount of rows, each containing content.
@@ -77,10 +75,6 @@ export class UITab extends Component {
         'When does Stadia 2 come out?',
     ];
 
-    constructor() {
-        super();
-    }
-
     /**
      * Creates a [[UIComponent]] and a [[UIButton]]
      *
@@ -95,17 +89,17 @@ export class UITab extends Component {
                     style="margin-top: 1rem; margin-bottom: 5rem; display: block"
                 >
                     ${
-                        this.motdList[
-                            Math.floor(Math.random() * this.motdList.length)
-                        ]
-                    }
+    this.motdList[
+        Math.floor(Math.random() * this.motdList.length)
+    ]
+}
                 </i>
             `,
             this.id,
         );
 
         const icon = chrome.runtime.getURL('images/icons/stadiaplus.svg');
-        this.button = new UIButton(icon, Language.get('ui-tab.button-label'), this.id + '-button');
+        this.button = new UIButton(icon, Language.get('ui-tab.button-label'), `${this.id}-button`);
     }
 
     /**
@@ -116,14 +110,13 @@ export class UITab extends Component {
      */
     createRows(reload?: boolean): void {
         let i = 0;
-        this.rows.forEach(row => {
-            if(!row.exists()) {
+        this.rows.forEach((row) => {
+            if (!row.exists() && this.component !== undefined) {
                 row.append(this.component, i > 0);
-            }
-            else if(reload) {
+            } else if (reload) {
                 row.reload();
             }
-            i++
+            i += 1;
         });
     }
 
@@ -133,7 +126,7 @@ export class UITab extends Component {
      * @memberof UITab
      */
     reloadRows(): void {
-        this.rows.forEach(row => row.reload());
+        this.rows.forEach((row) => row.reload());
     }
 
     /**
@@ -147,20 +140,20 @@ export class UITab extends Component {
 
     /**
      * Clear and unload all rows.
-     * 
+     *
      * @memberof UITab
      */
     clearRows(): void {
-        for(const row of this.rows) {
+        this.rows.forEach((row) => {
             row.element.remove();
-        }
+        });
 
         this.rows = [];
     }
 
     /**
      * Called on startup, initializes important variables.
-     * 
+     *
      * @memberof UITab
      */
     onStart(): void {
@@ -172,16 +165,15 @@ export class UITab extends Component {
 
     /**
      * Called on stop, makes sure to dispose of elements and variables.
-     * 
+     *
      * @memberof UITab
      */
     onStop(): void {
         this.active = false;
-        this.button.element.remove();
-        this.button.destroy();
-        this.component.element.remove();
-
-        this.rows.forEach(row => {
+        this.button?.element.remove();
+        this.button?.destroy();
+        this.component?.element?.remove();
+        this.rows.forEach((row) => {
             row.element.remove();
         });
 
@@ -190,7 +182,7 @@ export class UITab extends Component {
 
     /**
      * Called every second, makes sure to create components if they don't already exist.
-     * 
+     *
      * @memberof UITab
      */
     onUpdate(): void {
@@ -198,23 +190,21 @@ export class UITab extends Component {
         if (Util.isMenuOpen()) {
             if (!this.existsAnywhere()) {
                 this.updateRenderer();
-                this.component.create();
+                this.component?.create();
                 this.createRows(true);
 
-                const self = this;
-                this.button.create(() => {
-                    self.button.onPressed(() => {
+                this.button?.create(() => {
+                    this.button?.onPressed(() => {
                         this.createRows(true);
-                        self.component.openTab();
+                        this.component?.openTab();
                     });
                 });
             }
-            
-            if(!this.button.container.exists()) {
-                this.button.container.create();
+
+            if (!this.button?.container?.exists()) {
+                this.button?.container?.create();
             }
-        }
-        else if(this.component.open) {
+        } else if (this.component?.open) {
             this.component.closeTab();
         }
     }

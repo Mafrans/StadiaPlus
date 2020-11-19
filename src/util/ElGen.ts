@@ -2,10 +2,9 @@ export class ElGen {
     element: HTMLElement;
 
     constructor(element: string | HTMLElement) {
-        if(element instanceof HTMLElement) {
+        if (element instanceof HTMLElement) {
             this.element = element;
-        }
-        else {
+        } else {
             this.element = document.createElement(element);
         }
     }
@@ -16,51 +15,48 @@ export class ElGen {
     }
 
     css(css: {[key: string]: string}): ElGen {
-        for(const key in css) {
-            this.element.style[key as any] = css[key];
-        }
+        Object.keys(css).forEach((key: string) => {
+            this.element.style.setProperty('test', css[key]);
+        });
         return this;
     }
 
-    appendTo(element: Node | ElGen) {
-        if(element instanceof Node) {
-            (element as Node).appendChild(this.element);
-        }
-        else {
-            (element as ElGen).element.appendChild(this.element);
+    appendTo(element: Node | ElGen): void {
+        if (element instanceof Node) {
+            (element).appendChild(this.element);
+        } else {
+            (element).element.appendChild(this.element);
         }
     }
 
-    prependTo(element: Element | ElGen) {
-        if(element instanceof Node) {
-            (element as Element).prepend(this.element);
-        }
-        else {
-            (element as ElGen).element.prepend(this.element);
+    prependTo(element: Element | ElGen): void {
+        if (element instanceof Node) {
+            (element).prepend(this.element);
+        } else {
+            (element).element.prepend(this.element);
         }
     }
 
     child(child: HTMLElement | ElGen): ElGen {
-        if(child instanceof HTMLElement) {
-            this.element.appendChild((child as HTMLElement));
-        }
-        else {
-            this.element.appendChild((child as ElGen).element);
-        }
-        return this;
-    }
-    
-    attr(attribute: {[name: string]: any}): ElGen {
-        for(const name in attribute) {
-            this.element.setAttribute(name, attribute[name]);
+        if (child instanceof HTMLElement) {
+            this.element.appendChild((child));
+        } else {
+            this.element.appendChild((child).element);
         }
         return this;
     }
 
+    attr(attribute: {[name: string]: unknown}): ElGen {
+        Object.keys(attribute).forEach((name) => {
+            this.element.setAttribute(name, attribute[name] as string);
+        });
+        return this;
+    }
+
     class(classes: {[name: string]: boolean}): ElGen {
-        for(const name in classes) {
+        Object.keys(classes).forEach((name) => {
             this.element.classList.toggle(name, classes[name]);
-        }
+        });
         return this;
     }
 
@@ -78,19 +74,19 @@ export class ElGen {
         return this;
     }
 
-    event(events: {[name: string]: (event: Event) => void}) {
-        for(const name in events) {
+    event(events: {[name: string]: (event: Event) => void}): ElGen {
+        Object.keys(events).forEach((name) => {
             this.element.addEventListener(name, events[name]);
-        }
+        });
         return this;
     }
 }
 
-function $el(tag: string) {
+function $el(tag: string): ElGen {
     return new ElGen(tag);
 }
 
-function $sel(selector: string) {
+function $sel(selector: string): ElGen {
     return new ElGen(document.querySelector(selector) as HTMLElement);
 }
 

@@ -1,11 +1,10 @@
-import { UIButtonContainer } from "./UIButtonContainer";
-import Logger from "../Logger";
+import { UIButtonContainer } from './UIButtonContainer';
 
 export class UIButton {
     id: string;
     html: string;
     element: Element;
-    container: UIButtonContainer;
+    container?: UIButtonContainer;
     button: HTMLElement;
 
     static buttonContainers: UIButtonContainer[] = [];
@@ -35,14 +34,14 @@ export class UIButton {
         this.element.appendChild(this.button);
     }
 
-    create(callback?: Function): void {
-        for(const container of UIButton.buttonContainers) {
-            if(container.buttons.length < 3) {
+    create(callback?: () => void): void {
+        UIButton.buttonContainers.forEach((container) => {
+            if (container.buttons.length < 3) {
                 this.container = container;
             }
-        }
+        });
 
-        if(this.container === undefined) {
+        if (this.container === undefined) {
             this.container = new UIButtonContainer();
             UIButton.buttonContainers.push(this.container);
         }
@@ -50,35 +49,43 @@ export class UIButton {
         this.container.create(callback);
     }
 
-    setIcon(icon: string) {
-        this.element.querySelector('.uibutton-icon').setAttribute('src', icon);
+    setIcon(icon: string): void {
+        const iconElement = this.element.querySelector('.uibutton-icon');
+        if (iconElement !== null) {
+            iconElement.setAttribute('src', icon);
+        }
     }
 
-    setTitle(title: string) {
-        this.element.querySelector('.uibutton-title').innerHTML = title;
+    setTitle(title: string): void {
+        const titleElement = this.element.querySelector('.uibutton-title');
+        if (titleElement !== null) {
+            titleElement.textContent = title;
+        }
     }
 
-    update() {
-        if(!this.exists()) {
+    update(): void {
+        if (!this.exists()) {
             this.create();
         }
     }
 
     exists(): boolean {
         return document.getElementById(this.id) !== null;
-    } 
-
-    destroy() {
-        this.element.remove();
-        this.container.removeButton(this);
     }
 
-    onPressed(func: (event: Event) => any) {
+    destroy(): void {
+        this.element.remove();
+        if (this.container !== undefined) {
+            this.container.removeButton(this);
+        }
+    }
+
+    onPressed(func: (event: Event) => void): void {
         this.button.addEventListener('click', func);
         this.button.addEventListener('keyup', (event: KeyboardEvent) => {
-            if(event.keyCode === 13) {
+            if (event.key === 'Enter') {
                 this.button.click();
             }
-        })
+        });
     }
 }

@@ -1,10 +1,8 @@
-import Logger from '../Logger';
-
 export class UIComponent {
     id: string;
     html: string;
-    element: Element;
-    open: boolean;
+    element: Element | null;
+    open = false;
     openListeners: (() => void)[] = [];
     closeListeners: (() => void)[] = [];
 
@@ -32,7 +30,7 @@ export class UIComponent {
 
     create(): void {
         const container = document.querySelector('.hxhAyf');
-        if(!container) return;
+        if (container === null || this.element === null) return;
 
         this.element.innerHTML = this.html;
         container.appendChild(this.element);
@@ -43,34 +41,37 @@ export class UIComponent {
         const backBtn = document.querySelector(
             `#${this.id} > header > .rkvT7c`,
         );
-        const self = this;
-        backBtn.addEventListener('click', () => {
-            self.closeTab();
-        });
+
+        if (backBtn !== null) {
+            backBtn.addEventListener('click', () => {
+                this.closeTab();
+            });
+        }
     }
 
     openTab(): void {
+        if (this.element === null) return;
+
         this.element.classList.add('open');
         this.open = true;
 
-        this.openListeners.forEach(c => c());
+        this.openListeners.forEach((c) => c());
     }
 
     closeTab(): void {
-        // Logger.info('Closing', this.id);
+        if (this.element === null) return;
+
         this.element.classList.remove('open');
         this.open = false;
 
-        this.closeListeners.forEach(c => c());
+        this.closeListeners.forEach((c) => c());
     }
 
-    onOpen(callback?:() => void) {
-        if(callback)
-            this.openListeners.push(callback)
+    onOpen(callback?:() => void): void {
+        if (callback) { this.openListeners.push(callback); }
     }
 
-    onClose(callback?:() => void) {
-        if(callback)
-            this.closeListeners.push(callback)
+    onClose(callback?:() => void): void {
+        if (callback) { this.closeListeners.push(callback); }
     }
 }
