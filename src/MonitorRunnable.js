@@ -188,8 +188,12 @@ const MonitorRunnable = function () {
 
                 let html = '';
                 if (this.visible.time.enabled) {
-                    const time = new Date();
-                    const timeString = time.toLocaleString();
+                    let time = new Date();
+                    let timeString = time.toLocaleString(
+                        window.navigator.languages, {
+                            day: "2-digit", month: "2-digit", year: "numeric",
+                            hour: "2-digit", minute: "2-digit", second: "2-digit"
+                    });
                     html += `<h5>${timeString}</h5>`;
                 }
 
