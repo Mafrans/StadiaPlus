@@ -23,13 +23,12 @@ export class Modal {
         this.closeButton.innerHTML = 'close';
         this.closeButton.classList.add('material-icons', 'stadiaplus_modal-close');
 
-        const self = this;
         this.closeButton.addEventListener('click', () => {
-            self.element.classList.remove('active');
+            this.element.classList.remove('active');
         });
     }
 
-    create() {
+    create(): void {
         document.body.appendChild(this.element);
         this.element.appendChild(this.wrapper);
         this.wrapper.appendChild(this.closeButton);
@@ -39,26 +38,25 @@ export class Modal {
         this.wrapper.addEventListener('click', (event) => event.stopPropagation());
     }
 
-    close() {
+    close(): void {
         this.element.classList.remove('active');
     }
 
-    static activate(content: string | ElGen) {
-        if(content instanceof ElGen) {
+    static activate(content: string | ElGen): void {
+        if (content instanceof ElGen) {
             content.appendTo(this.instance.content);
-        }
-        else {
+        } else {
             this.instance.content.innerHTML = content;
         }
 
         this.instance.element.classList.add('active');
     }
 
-    static close() {
+    static close(): void {
         this.instance.close();
     }
 
-    static init() {
+    static init(): void {
         this.instance = new Modal();
         this.instance.create();
     }

@@ -8,7 +8,7 @@ export class Shortcut {
         this.name = name;
     }
 
-    save() {
-        downloader.download(`<html><body><script>window.location="${this.url}"</script></body></html>`, this.name + ".htm", "text/html");
+    save(): void {
+        downloader.download(`<html><body><script>window.location="${this.url}"</script></body></html>`, `${this.name}.htm`, 'text/html');
     }
 }

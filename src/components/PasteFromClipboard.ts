@@ -1,16 +1,16 @@
-import {Component} from "../Component";
+import { Component } from '../Component';
+import Logger from '../Logger';
 import Util from '../util/Util';
 
 export class Platform {
-    static WINDOWS: string = "Win32";
-    static MACOS: string = "MacIntel";
+    static WINDOWS = 'Win32';
+    static MACOS = 'MacIntel';
 }
 
-export class PasteFromClipboard extends Component
-{
-    tag: string  = 'paste-from-clipboard';
+export class PasteFromClipboard extends Component {
+    tag = 'paste-from-clipboard';
 
-    protected target: HTMLInputElement;
+    protected target: HTMLInputElement | null = null;
 
     /**
      * Called on startup, initializes important variables.
@@ -34,14 +34,20 @@ export class PasteFromClipboard extends Component
 
         if (Util.isInGame()) {
             this.updateRenderer();
+
+            if (this.renderer === undefined) {
+                Logger.error('Renderer is undefined');
+                return;
+            }
+
             const input: HTMLInputElement = this.renderer.getElementsByTagName('input')[0];
 
-            if (input != this.target) {
-                if (undefined != this.target) {
-                    this.target.removeEventListener('keydown', this.keydownEventListener);
+            if (input !== this.target) {
+                if (undefined !== this.target) {
+                    this.target?.removeEventListener('keydown', (...args) => this.keydownEventListener(...args));
                 }
                 this.target = input;
-                this.target.addEventListener('keydown', this.keydownEventListener);
+                this.target.addEventListener('keydown', (...args) => this.keydownEventListener(...args));
             }
         }
     }
@@ -51,7 +57,7 @@ export class PasteFromClipboard extends Component
      */
     keydownEventListener(event: KeyboardEvent): void {
         let ctrlKey: boolean;
-        switch(navigator.platform) {
+        switch (navigator.platform) {
             case Platform.WINDOWS:
                 ctrlKey = event.ctrlKey;
                 break;
@@ -65,12 +71,12 @@ export class PasteFromClipboard extends Component
                 break;
         }
 
-        if (ctrlKey && 'KeyV' == event.code) {
-            navigator.clipboard.readText().then(function(data: string) {
-                event.target.dispatchEvent(new InputEvent('input', {
+        if (ctrlKey && event.code === 'KeyV') {
+            void navigator.clipboard.readText().then((data: string) => {
+                event.target?.dispatchEvent(new InputEvent('input', {
                     // InputEventInit
                     data,
-                    inputType: "insertText",
+                    inputType: 'insertText',
                     isComposing: false,
 
                     // UIEventInit

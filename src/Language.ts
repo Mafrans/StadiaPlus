@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import Logger from './Logger';
 import { SyncStorage } from './Storage';
 import lang_enUS_data from './lang/en-US.json';
@@ -7,21 +8,19 @@ import lang_itIT_data from './lang/it-IT.json';
 import lang_esES_data from './lang/es-ES.json';
 import lang_deDE_data from './lang/de-DE.json';
 import lang_ukUA_data from './lang/uk-UA.json';
-import lang_enSTEEF_data from './lang/en-STEEF.json';
+// import lang_enSTEEF_data from './lang/en-STEEF.json';
 import lang_euES_data from './lang/eu-ES.json';
 import lang_glES_data from './lang/gl-ES.json';
 import lang_ruRU_data from './lang/ru-RU.json';
 import lang_nlBE_data from './lang/nl-BE.json';
 import lang_ptBR_data from './lang/pt-BR.json';
 
-const { chrome } = window as any;
-
 export class Language {
     tag: string;
     name: string;
-    data: { [key: string]: any } = {};
+    data: { [key: string]: unknown } = {};
 
-    constructor(name: string, tag: string, data: any) {
+    constructor(name: string, tag: string, data: { [key: string]: unknown; }) {
         this.tag = tag;
         this.name = name;
         this.data = data;
@@ -31,58 +30,53 @@ export class Language {
         Language.languages.push(this);
     }
 
-    get(name: string, vars?: { [key: string]: any }): string {
-        let keys = name.split(/\./g);
-        let val = this.data;
-        for (const key of keys) {
-            val = val[key];
-        }
+    get(name: string, vars?: { [key: string]: unknown }): string {
+        const keys = name.split(/\./g);
+        let val: unknown = this.data;
+        keys.forEach((key) => {
+            val = (val as { [key: string]: unknown })[key] as ({ [key: string]: unknown } | string);
+        });
 
         if (vars !== undefined) {
-            for (const _var in vars) {
-                val = val.split('{{' + _var + '}}').join(vars[_var]);
-            }
+            Object.keys(vars).forEach((variable) => {
+                val = (val as string).split(`{{${variable}}}`).join(vars[variable] as string);
+            });
         }
 
-        return val as any;
+        return val as string;
     }
 
-    setDefault() {
+    setDefault(): void {
         Language.default = this;
     }
 
     static languages: Language[] = [];
     static default: Language;
     static current: Language;
-    static async load(callback: (() => any) = (() => {})) {
+    static async load(): Promise<void> {
         // Check for the first language that isn't equal to the default
         let language = await SyncStorage.LANGUAGE.get();
-        
+
         if (language === undefined || language === 'automatic') {
             language = this.automatic();
         }
 
-        Logger.info(Language.get('lang-config', {language}));
-        this.languages.forEach((lang, index) => {
+        Logger.info(Language.get('lang-config', { language }));
+        this.languages.forEach((lang) => {
             if (lang.tag === language) {
                 this.current = lang;
-            }
-
-            if(index === this.languages.length - 1) {
-                callback();
             }
         });
     }
 
-    static set(language: Language) {
+    static set(language: Language): void {
         this.current = language;
     }
 
-    static automatic() {
-        return (window.navigator.languages as any).find(
-            (l: string) =>
-                l.length >= 5 &&
-                (this.default === undefined || l !== this.default.tag)
+    static automatic(): string | undefined {
+        return window.navigator.languages.find(
+            (l: string) => l.length >= 5
+                && (this.default === undefined || l !== this.default.tag),
         );
     }
 
@@ -108,10 +102,10 @@ export class Language {
 
         const lang_svSE = new Language('Svenska (SE)', 'sv-SE', lang_svSE_data);
         lang_svSE.register();
-      
+
         const lang_ukUA = new Language('Українська (UA)', 'uk-UA', lang_ukUA_data);
         lang_ukUA.register();
-      
+
         const lang_euES = new Language('Euskara (EU)', 'eu-ES', lang_euES_data);
         lang_euES.register();
 
@@ -128,11 +122,11 @@ export class Language {
         lang_ptBR.register();
     }
 
-    static get(name: string, vars?: { [key: string]: any }): string {
+    static get(name: string, vars?: { [key: string]: unknown }): string {
         if (this.current === undefined) {
             this.current = this.default;
         }
-        let val = this.current.get(name, vars);
+        const val = this.current.get(name, vars);
 
         return val;
     }

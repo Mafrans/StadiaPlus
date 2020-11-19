@@ -30,7 +30,13 @@
     },
     "homepage": "https://github.com/Mafrans/StadiaPlus#readme",
     "devDependencies": {
+        "@types/chrome": "0.0.126",
         "@types/es6-promise": "^3.3.0",
+        "@types/webrtc": "0.0.26",
+        "@typescript-eslint/parser": "^4.6.1",
+        "eslint-config-airbnb-base": "^14.2.1",
+        "eslint-plugin-import": "^2.22.1",
+        "eslint-plugin-vue": "^7.1.0",
         "file-loader": "^5.1.0",
         "sass": "^1.26.3",
         "sass-loader": "^8.0.2",
@@ -42,10 +48,12 @@
         "webpack-cli": "^3.3.11"
     },
     "dependencies": {
+        "@typescript-eslint/eslint-plugin": "^4.6.1",
         "axios": "^0.19.2",
         "bootstrap-vue": "^2.11.0",
         "css-loader": "^3.4.2",
         "deepmerge": "^4.2.2",
+        "eslint": "^7.13.0",
         "fibers": "^4.0.2",
         "material-design-icons": "^3.0.1",
         "pretty-checkbox": "^3.0.3",

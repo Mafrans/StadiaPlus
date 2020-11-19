@@ -1,6 +1,5 @@
 import { Component } from './Component';
 import { SyncStorage } from './Storage';
-import { Language } from './Language';
 import Logger from './Logger';
 
 /**
@@ -14,7 +13,7 @@ export class ComponentLoader {
      * A list of all registered components.
      */
     components: Component[];
-    timer: number;
+    timer = 0;
 
     constructor() {
         this.components = [];
@@ -25,7 +24,7 @@ export class ComponentLoader {
      *
      * @param {Component} component the component to register.
      */
-    register(component:Component) {
+    register(component: Component): void {
         this.components.push(component);
     }
 
@@ -34,58 +33,51 @@ export class ComponentLoader {
      *
      * @param {Component} component
      */
-    unregister(component:Component) {
-        this.components.filter(e => { return e.id !== component.id });
+    unregister(component:Component): void {
+        this.components.filter((e) => e.id !== component.id);
     }
 
     /**
      * Starts the component loader.
      */
-    async start() {
-        let storage = await SyncStorage.COMPONENTS.get();
+    async start(): Promise<void> {
+        let storage = await SyncStorage.COMPONENTS.get() as {[key: string]: { enabled: boolean }};
 
-        if(storage == null) {
+        if (storage == null) {
             storage = {};
         }
 
-        for(const component of this.components) {
-            if(storage[component.tag] == null) {
-                storage[component.tag] = {};
-            }
-
-            if(storage[component.tag].enabled == null) {
-                storage[component.tag].enabled = true;
+        this.components.forEach((component) => {
+            if (storage[component.tag] == null) {
+                storage[component.tag] = { enabled: true };
             }
 
             try {
                 component.enabled = storage[component.tag].enabled;
                 if (component.enabled && !component.active) component.load();
-            }
-            catch(e) {
+            } catch (e) {
                 Logger.error(e);
             }
-        };
+        });
 
-        SyncStorage.COMPONENTS.set(storage);
+        void SyncStorage.COMPONENTS.set(storage);
         this.startTimer();
     }
 
     /**
      * Stops the component loader.
      */
-    stop() {
-        this.components.forEach(component => {
+    stop(): void {
+        this.components.forEach((component) => {
             if (component.active) component.unload();
         });
         this.stopTimer();
     }
 
     private startTimer() {
-        const self = this;
-
         this.timer = setInterval(() => {
-            self.components.forEach(component => {
-                if(component.active) component.onUpdate();
+            this.components.forEach((component) => {
+                if (component.active) component.onUpdate();
             });
         }, 1000);
     }
