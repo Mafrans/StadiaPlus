@@ -164,13 +164,11 @@ $breakpoint-uhd: 2560px;
     height: 100px;
     display: flex;
     align-items: center;
-
     overflow-x: hidden;
-    
+
     .bar-dropdowns {
         display: flex;
         width: 300px;
-
         transition: margin-left 0.2s ease-out;
 
         @media screen and (max-width: $breakpoint-hd - 1) {
@@ -182,13 +180,13 @@ $breakpoint-uhd: 2560px;
         margin-right: 2rem;
         position: relative;
         cursor: pointer;
-        pointer-events: all;    
+        pointer-events: all;
 
-        >h6 {
+        > h6 {
             display: inline-block;
             pointer-events: none;
-            
-            ~.material-icons-extended {
+
+            ~ .material-icons-extended {
                 display: inline-block;
                 vertical-align: text-bottom;
             }
@@ -203,13 +201,14 @@ $breakpoint-uhd: 2560px;
 
             .material-icons-extended {
                 padding-right: 0;
+                transition: transform 0.2s ease-out 0.2s;
 
-                transition: transform 0.2s ease-out;
+                &.searchcolumn-toggle-icon-search {
+                    transition-delay: 0.4s;
+                }
 
-                &.searchcolumn-toggle-icon-back
-                {
+                &.searchcolumn-toggle-icon-back {
                     margin-left: -1em;
-
                     transform: rotateY(-90deg);
                 }
             }
@@ -567,6 +566,7 @@ $breakpoint-uhd: 2560px;
 }
 
 .stadiaplus_libraryfilter-wrapper {
+
     &.searchcolumn-shown {
         @media screen and (max-width: $breakpoint-hd - 1) {
             .stadiaplus_libraryfilter-searchcolumn {
@@ -583,10 +583,12 @@ $breakpoint-uhd: 2560px;
                         &.searchcolumn-toggle-icon-search
                         {
                             transform: rotateY(90deg);
+                            transition-delay: 0.2s;
                         }
                         &.searchcolumn-toggle-icon-back
                         {
                             transform: rotateY(0deg);
+                            transition-delay: 0.4s;
                         }
                     }
                 }
