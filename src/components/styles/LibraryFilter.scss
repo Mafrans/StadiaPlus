@@ -416,6 +416,7 @@ $breakpoint-uhd: 2560px;
         .stadiaplus_libraryfilter-game {
             display: inline-flex;
             position: relative;
+            overflow: hidden;
             width: calc(25% - 1.5rem);
             height: 32vh;
             max-height: 20vw;
@@ -424,9 +425,7 @@ $breakpoint-uhd: 2560px;
             border-radius: 0.5rem;
             box-shadow: 0 0.125rem 0.75rem rgba(0,0,0,0.32), 0 0.0625rem 0.375rem rgba(0,0,0,0.18);
             background-color: rgba(255, 255, 255, 0.06);
-            background-position: center center;
-            background-size: 210%;
-            transition: background-size 0.5s cubic-bezier(0, 0, 0.2, 1), transform 0.2s ease-out;
+            transition: transform 0.2s ease-out;
             transform: scale(1);
             cursor: pointer;
 
@@ -439,7 +438,6 @@ $breakpoint-uhd: 2560px;
                 width: calc(33.32% - 1rem);
                 margin-left: 0.5rem;
                 margin-right: 0.5rem;
-
                 max-height: 30vw;
             }
 
@@ -447,7 +445,6 @@ $breakpoint-uhd: 2560px;
                 width: calc(50% - 0.8rem);
                 margin-left: 0.4rem;
                 margin-right: 0.4rem;
-
                 max-height: 40vw;
             }
 
@@ -469,6 +466,19 @@ $breakpoint-uhd: 2560px;
 
             &.hidden {
                 display: none;
+            }
+
+            .tile-background {
+                position: absolute;
+                top: -1vw;
+                left: -1vw;
+                right: -1vw;
+                bottom: -1vw;
+                background-position: center center;
+                background-size: cover;
+                transform: scale(1);
+                z-index: -1;
+                transition: transform 0.5s cubic-bezier(0, 0, 0.2, 1);
             }
 
             .play-button {
@@ -514,6 +524,10 @@ $breakpoint-uhd: 2560px;
                 &::before,
                 .content {
                     opacity: 0;
+                }
+
+                .tile-background {
+                    transform: scale(1.3);
                 }
 
                 .play-button {
