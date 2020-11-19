@@ -495,11 +495,12 @@ export class LibraryFilter extends Component {
                             .class({ 'stadiaplus_libraryfilter-button': true })
                             .event({
                                 click: (event) => {
-                                    for (const e of this.renderer.querySelectorAll(
+                                    this.renderer?.querySelectorAll(
                                         '.stadiaplus_libraryfilter-wrapper'
-                                    )) {
-                                        e.classList.toggle('searchcolumn-shown');
-                                    }
+                                    ).forEach((element) => {
+                                        element.classList.toggle( 'searchcolumn-shown' );
+                                    });
+
                                     event.stopPropagation();
                                 },
                             })

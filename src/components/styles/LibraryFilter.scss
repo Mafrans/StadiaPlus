@@ -171,6 +171,8 @@ $breakpoint-uhd: 2560px;
         display: flex;
         width: 300px;
 
+        transition: margin-left 0.2s ease-out;
+
         @media screen and (max-width: $breakpoint-hd - 1) {
             margin-left: -300px;
         }
@@ -208,7 +210,7 @@ $breakpoint-uhd: 2560px;
                 {
                     margin-left: -1em;
 
-                    transform: rotateY(-90);
+                    transform: rotateY(-90deg);
                 }
             }
         }
@@ -324,6 +326,7 @@ $breakpoint-uhd: 2560px;
     pointer-events: initial;
     display: flex;
 
+    position: relative;
     overflow-x: hidden;
 
     .stadiaplus_libraryfilter-searchcolumn {
@@ -448,10 +451,10 @@ $breakpoint-uhd: 2560px;
                 width: calc(33.32% - 1.5rem);
             }
             @media screen and (min-width: $breakpoint-fhd) {
-                width: (20% - 1.5rem);
+                width: calc(20% - 1.5rem);
             }
             @media screen and (min-width: $breakpoint-uhd) {
-                width: (16.66% - 1.5rem);
+                width: calc(16.66% - 1.5rem);
             }
 
             &:nth-last-child(-1n+4) {
@@ -583,7 +586,7 @@ $breakpoint-uhd: 2560px;
                         }
                         &.searchcolumn-toggle-icon-back
                         {
-                            transform: rotateY(0);
+                            transform: rotateY(0deg);
                         }
                     }
                 }
