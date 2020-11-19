@@ -122,7 +122,7 @@ export class Language {
         lang_ptBR.register();
     }
 
-    static get(name: string, vars?: { [key: string]: never }): string {
+    static get(name: string, vars?: { [key: string]: unknown }): string {
         if (this.current === undefined) {
             this.current = this.default;
         }

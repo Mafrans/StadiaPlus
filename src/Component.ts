@@ -54,7 +54,7 @@ export class Component {
      * @returns {boolean}
      */
     exists(): boolean {
-        if (this.renderer === null || this.renderer.style.opacity === '0') return false;
+        if (this.renderer == null || this.renderer.style.opacity === '0') return false;
         return this.renderer.querySelector(`#${this.id}`) !== null;
     }
 
