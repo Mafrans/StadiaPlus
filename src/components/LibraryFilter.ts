@@ -422,7 +422,7 @@ export class LibraryFilter extends Component {
             .class({ 'stadiaplus_libraryfilter-bar': true })
             .child(
                 $el('div')
-                    .class({ 'bar-dropdowns': true })
+                    .css({ display: 'flex', width: '300px' })
                     .child(
                         $el('div')
                             .class({ 'bar-item': true })
@@ -484,44 +484,6 @@ export class LibraryFilter extends Component {
                             )
                             .child(visibleDropdown),
                     ),
-            )
-            .child(
-                $el('div')
-                    .class({
-                        'bar-item': true,
-                        'searchcolumn-toggle': true
-                    })
-                    .child(
-                        $el('button')
-                            .class({ 'stadiaplus_libraryfilter-button': true })
-                            .event({
-                                click: (event) => {
-                                    this.renderer?.querySelectorAll(
-                                        '.stadiaplus_libraryfilter-wrapper'
-                                    ).forEach((element) => {
-                                        element.classList.toggle( 'searchcolumn-shown' );
-                                    });
-
-                                    event.stopPropagation();
-                                },
-                            })
-                            .child(
-                                $el('i')
-                                    .class({
-                                        'material-icons-extended': true,
-                                        'searchcolumn-toggle-icon-search': true
-                                    })
-                                    .text('search')
-                            )
-                            .child(
-                                $el('i')
-                                    .class({
-                                        'material-icons-extended': true,
-                                        'searchcolumn-toggle-icon-back': true
-                                    })
-                                    .text('arrow_back')
-                            )
-                    )
             )
             .child(
                 $el('div')
