@@ -57,7 +57,6 @@ export class Select {
 
     set(...items: unknown[]): void {
         if (this.slimselect == null) return;
-        console.log({ items });
 
         this.slimselect.setData(
             items as never[],
