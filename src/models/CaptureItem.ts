@@ -16,11 +16,12 @@ export class CaptureItem {
         this.id = element.getAttribute('data-capture-id');
         this.ageString = element.childNodes[3].firstChild.firstChild.textContent;
         this.thumbnail = (element.childNodes[1] as HTMLElement).getAttribute('data-thumbnail');
-        this.isVideo = element.querySelector('.sZHcec') != null;
+
+        this.isVideo = element.querySelector('.MUpfsb') != null;
     }
 
     open(): void {
         if (this.id === null) return;
-        (document.querySelector(`.R8zRIf[data-capture-id="${this.id}"]`) as HTMLElement).click();
+        (document.querySelector(`.MykDQe[data-capture-id="${this.id}"]`) as HTMLElement).click();
     }
 }

@@ -59,10 +59,14 @@ export class NavButton {
 
         switch (this.position) {
             case NavPosition.LEFT:
-                this.element.appendTo(document.querySelector('.YNlByb') as Node);
+                this.element
+                    .css({ 'margin-left': '1rem' })
+                    .appendTo(document.querySelector('.YNlByb') as Node);
                 break;
             case NavPosition.RIGHT:
-                this.element.prependTo(document.querySelector('.WpnpPe') as Element);
+                this.element
+                    .css({ 'margin-right': '1rem' })
+                    .prependTo(document.querySelector('.WpnpPe') as Element);
                 break;
             default: break;
         }

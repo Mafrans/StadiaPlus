@@ -47,10 +47,10 @@ export class UIRow {
 
     append(component: UIComponent, useHr = false): void {
         if (useHr) {
-            component.element.appendChild(document.createElement('hr'));
+            component.element?.appendChild(document.createElement('hr'));
         }
 
-        component.element.appendChild(this.element);
+        component.element?.appendChild(this.element);
 
         if (this.options.onCreate !== undefined) {
             this.options.onCreate(this);
