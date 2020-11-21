@@ -438,7 +438,6 @@ $breakpoint-uhd: 2560px;
                 width: calc(33.32% - 1rem);
                 margin-left: 0.5rem;
                 margin-right: 0.5rem;
-
                 max-height: 30vw;
             }
 
@@ -446,7 +445,6 @@ $breakpoint-uhd: 2560px;
                 width: calc(50% - 0.8rem);
                 margin-left: 0.4rem;
                 margin-right: 0.4rem;
-
                 max-height: 40vw;
             }
 
@@ -519,8 +517,7 @@ $breakpoint-uhd: 2560px;
             }
 
             &:hover, &:focus, &:focus-within, &.selected {
-                background-size: auto 130% !important;
-                transition: background-size 4.0s cubic-bezier(0, 0, 0.2, 1), transform 0.3s ease-out;
+                transition: transform 0.3s ease-out;
                 transform: scale(1.05);
 
                 &::before,
@@ -530,6 +527,7 @@ $breakpoint-uhd: 2560px;
 
                 .tile-background {
                     transform: scale(1.3);
+                    transition: transform 4.0s cubic-bezier(0, 0, 0.2, 1);
                 }
 
                 .play-button {
