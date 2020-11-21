@@ -1,6 +1,5 @@
 import SlimSelect from 'slim-select';
 import 'slim-select/dist/slimselect.min.css';
-import { dataArray } from 'slim-select/dist/data';
 import { SelectStyle } from '../models/SelectStyle';
 import { SelectOptions } from '../models/SelectOptions';
 import './styles/Select.scss';
@@ -56,9 +55,18 @@ export class Select {
         return this.slimselect.selected();
     }
 
-    set(...items: string[]): void {
+    set(...items: unknown[]): void {
         if (this.slimselect == null) return;
-        this.slimselect.setData(items as unknown as dataArray);
+
+        this.slimselect.setData(
+            items as never[],
+        );
+    }
+
+    select(item: unknown): void {
+        if (this.slimselect == null) return;
+
+        this.slimselect.setSelected(item as never);
     }
 
     search(query: string): void {

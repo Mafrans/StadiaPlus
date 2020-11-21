@@ -52,6 +52,8 @@ export class ForceCodec extends Component {
      */
     async getStorage(): Promise<void> {
         this.codec = await LocalStorage.CODEC.get() as Codec;
+
+        if (this.codec === undefined) this.codec = Codec.AUTOMATIC;
     }
 
     /**
@@ -118,7 +120,7 @@ export class ForceCodec extends Component {
                             tooltip.style.display = 'block';
                         }
 
-                        this.select.set(this.codec as string);
+                        this.select.select(this.codec);
                         ForceCodec.setCodec(this.codec);
                     },
 
@@ -127,7 +129,8 @@ export class ForceCodec extends Component {
 
                         this.select.destroy();
                         this.select = new Select(row.element.querySelector('select') as HTMLSelectElement, { placeholder: Codec.AUTOMATIC.toString() });
-                        this.select.set(this.codec as string);
+
+                        this.select.select(this.codec);
                     },
                 },
             ),
