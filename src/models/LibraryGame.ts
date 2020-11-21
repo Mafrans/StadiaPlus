@@ -42,6 +42,13 @@ export class LibraryGame {
             .class({ 'stadiaplus_libraryfilter-game': true })
             .attr({ 'data-uuid': this.uuid, 'tab-index': 0 })
             .child(
+                $el('div')
+                    .class({ 'tile-background': true })
+                    .css({
+                        'background-image': this.img !== '' ? `url(${this.img})` : '',
+                    }),
+            )
+            .child(
                 $el('img')
                     .class({ 'play-button': true })
                     .attr({
@@ -61,8 +68,7 @@ export class LibraryGame {
                     .child($el('h6').text(this.name)),
             )
             .css({
-                display: this.visible ? '' : 'none',
-                'background-image': this.img !== '' ? `url(${this.img})` : '',
+                display: this.visible ? '' : 'none'
             });
 
         const moreDropdown = this.getMoreDropdown();

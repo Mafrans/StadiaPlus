@@ -185,7 +185,7 @@ export class LibraryFilter extends Component {
                 });
 
                 this.gameContainer?.appendChild(tile);
-                tile.style.backgroundSize = `auto ${tile.offsetHeight + 16}px`; // Add arbitrary magic number to make sure there aren't visible borders
+                //tile.style.backgroundSize = `auto ${tile.offsetHeight + 16}px`; // Removed due to new animation system
 
                 const listGame = $el('div')
                     .class({ 'stadiaplus_libraryfilter-listgame': true })
