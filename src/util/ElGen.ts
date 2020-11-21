@@ -16,7 +16,7 @@ export class ElGen {
 
     css(css: {[key: string]: string}): ElGen {
         Object.keys(css).forEach((key: string) => {
-            this.element.style.setProperty('test', css[key]);
+            this.element.style.setProperty(key, css[key]);
         });
         return this;
     }

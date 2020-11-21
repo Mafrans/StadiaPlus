@@ -294,6 +294,7 @@ export class LibraryFilter extends Component {
 
         const previews = $el('div').class({ 'stadiaplus_libraryfilter-captures-previews': true });
         captures.forEach((capture) => {
+            console.log({thumbnail: capture.thumbnail});
             previews.child(
                 $el('div')
                     .class({ 'stadiaplus_libraryfilter-captures-preview': true, video: capture.isVideo })
