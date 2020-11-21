@@ -638,6 +638,11 @@ export class LibraryFilter extends Component {
             .child(
                 $el('i')
                     .class({ 'material-icons-extended': true })
+                    .text('update_disabled'),
+            )
+            .child(
+                $el('i')
+                    .class({ 'material-icons-extended': true })
                     .text('update'),
             )
             .child($el('span').text('Auto Update'));
