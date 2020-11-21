@@ -25,6 +25,7 @@ export class LocalStorage {
     }
 
     set(value: unknown): Promise<void> {
+        console.log({ name: this.name, value });
         return new Promise((resolve) => {
             chrome.storage.local.set({ [this.tag]: value }, resolve);
         });
@@ -37,6 +38,7 @@ export class LocalStorage {
     }
 
     static set(storages: { [key: string]: unknown }): Promise<void> {
+        console.log({ storages });
         return new Promise((resolve) => {
             chrome.storage.local.set(storages, resolve);
         });

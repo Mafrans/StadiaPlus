@@ -56,6 +56,8 @@ export class ForceResolution extends Component {
      */
     async getStorage(): Promise<void> {
         this.resolution = await LocalStorage.RESOLUTION.get() as Resolution;
+
+        if (this.resolution === undefined) this.resolution = Resolution.AUTOMATIC;
     }
 
     /**
@@ -120,7 +122,7 @@ export class ForceResolution extends Component {
 
                         void this.getStorage().then(() => {
                             if (this.select === undefined) return;
-                            this.select.set(this.resolution as string);
+                            this.select.select(this.resolution);
                         });
                     },
 
@@ -132,7 +134,7 @@ export class ForceResolution extends Component {
 
                         this.select.destroy();
                         this.select = new Select(row.element.querySelector('select') as HTMLSelectElement, { placeholder: Resolution.AUTOMATIC.toString() });
-                        this.select.set(this.resolution as string);
+                        this.select.select(this.resolution);
                     },
                 },
             ),
