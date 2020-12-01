@@ -46,7 +46,7 @@ export namespace StadiaGameDB {
                 const game: StadiaGameDB.Game = {
                     uuid,
                     storeId: /https:\/\/stadia.google.com\/store\/details\/([0-9a-z/]+)/g.exec(entry[0])?.[1],
-                    img: `https://stadiagamedb.com/images/posters/webp/${imgName}.webp`,
+                    img: `https://stadiagamedb.com/images/posters/webp/square/${imgName}.webp`,
                     name: entry[1],
                     tags: entry[2]
                         .split(', ')
