@@ -22,18 +22,18 @@ export class ElGen {
     }
 
     appendTo(element: Node | ElGen): void {
-        if (element instanceof Node) {
-            (element).appendChild(this.element);
-        } else {
+        if (element instanceof ElGen) {
             (element).element.appendChild(this.element);
+        } else {
+            (element).appendChild(this.element);
         }
     }
 
     prependTo(element: Element | ElGen): void {
-        if (element instanceof Node) {
-            (element).prepend(this.element);
-        } else {
+        if (element instanceof ElGen) {
             (element).element.prepend(this.element);
+        } else {
+            (element).prepend(this.element);
         }
     }
 
