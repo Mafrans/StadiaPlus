@@ -49,7 +49,7 @@ export class NavButton {
     }
 
     create(): void {
-        const navbar = document.querySelector('.zM6lsb');
+        const navbar = document.querySelector('.g6eWxd');
         if (navbar === null) {
             Logger.error('The navbar was not found, please report this to the developer of Stadia+');
             return;
