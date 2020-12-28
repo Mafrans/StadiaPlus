@@ -1,118 +1,88 @@
+import { LibraryFilter } from '../components/LibraryFilter';
 import { Language } from '../Language';
 import { SyncStorage } from '../Storage';
-import { StadiaGameDB } from '../StadiaGameDB';
 import { $el, ElGen } from '../util/ElGen';
+import Util from '../util/Util';
 
 export class LibraryGame {
+    private libraryFilter: LibraryFilter;
     public name = 'undefined';
-    public img = 'undefined';
     public uuid = 'undefined';
+    public gameId = 'undefined';
+    public tile?: HTMLDivElement;
+    public listEntry?: HTMLDivElement;
     public visible = true;
 
-    constructor(uuid: string) {
+    constructor(uuid: string, gameId: string, libraryFilter: LibraryFilter) {
+        this.libraryFilter = libraryFilter;
         this.uuid = uuid;
+        this.gameId = gameId;
         void SyncStorage.LIBRARY_GAMES.get().then((libraryGames) => {
             if (libraryGames == null) { libraryGames = []; }
 
             const game = (libraryGames as LibraryGame[]).find((a) => a.uuid === uuid);
             if (game != null) {
-                this.name = game.name;
                 this.visible = game.visible;
             }
         });
-    }
 
-    create(fallbackImage?: string): void {
-        this.visible = true;
-        this.name = this.uuid;
+        if (Util.isInHome()) {
+            this.tile = Array.from(document.querySelectorAll('.GqLi4d')).find((tile) => tile.getAttribute('jsdata')?.includes(this.gameId)) as HTMLDivElement;
+            if (this.tile !== undefined) {
+                this.name = this.tile.querySelector('h3.xmcLFc')?.textContent as string;
+                this.tile.classList.add('stadiaplus_libraryfilter-game');
 
-        if (fallbackImage !== undefined) {
-            this.img = fallbackImage;
+                const dropdown = this.getMoreDropdown();
+                const { element } = $el('div')
+                    .class({ 'more-icon': true })
+                    .child(
+                        $el('i')
+                            .class({ 'material-icons-extended': true })
+                            .text('more_vert'),
+                    )
+                    .child(dropdown);
+
+                element.addEventListener('mousedown', () => {
+                    if (this.tile !== undefined) {
+                        this.tile.style.pointerEvents = 'none';
+                    }
+                });
+
+                window.addEventListener('mouseup', () => {
+                    if (this.tile !== undefined) {
+                        if (this.tile.style.pointerEvents === 'none') {
+                            this.tile.style.pointerEvents = '';
+                            setTimeout(() => {
+                                dropdown.element.classList.add('selected');
+                            }, 100);
+                        }
+                    }
+                });
+
+                this.tile.appendChild(element);
+            }
         }
-
-        const game = StadiaGameDB.get(this.uuid);
-        if (game !== undefined) {
-            this.name = game.name;
-            this.img = game.img;
-        }
-    }
-
-    createTile(): HTMLElement {
-        const el = $el('div')
-            .class({ 'stadiaplus_libraryfilter-game': true })
-            .attr({ 'data-uuid': this.uuid, 'tab-index': 0 })
-            .child(
-                $el('div')
-                    .class({ 'tile-background': true })
-                    .css({
-                        'background-image': this.img !== '' ? `url(${this.img})` : '',
-                    }),
-            )
-            .child(
-                $el('img')
-                    .class({ 'play-button': true })
-                    .attr({
-                        src: chrome.runtime.getURL('images/PlayButtonBackground.png'),
-                    }),
-            )
-            .child(
-                $el('img')
-                    .class({ 'play-icon': true })
-                    .attr({
-                        src: chrome.runtime.getURL('images/PlayButton.png'),
-                    }),
-            )
-            .child(
-                $el('div')
-                    .class({ content: true })
-                    .child($el('h6').text(this.name)),
-            )
-            .css({
-                display: this.visible ? '' : 'none'
-            });
-
-        const moreDropdown = this.getMoreDropdown();
-        const moreIcon = $el('div')
-            .class({
-                'more-icon': true,
-            })
-            .child(
-                $el('i')
-                    .class({
-                        'material-icons-extended': true,
-                    })
-                    .text('more_vert'),
-            )
-            .child(moreDropdown)
-            .event({
-                click: (event) => {
-                    document
-                        .querySelectorAll('.stadiaplus_libraryfilter-dropdown')
-                        .forEach((e) => e.classList.remove('selected'));
-                    document
-                        .querySelectorAll('.stadiaplus_libraryfilter-game')
-                        .forEach((e) => e.classList.remove('selected'));
-
-                    moreDropdown.class({ selected: true });
-                    el.class({ selected: true });
-                    event.stopPropagation();
-                },
-            });
-
-        el.child(moreIcon);
-
-        return el.element;
     }
 
     getMoreDropdown(): ElGen {
         const element = $el('div')
             .class({
                 'stadiaplus_libraryfilter-dropdown': true,
+                flip: true,
             })
             .child(
                 $el('div')
-                    .html(
-                        `<i class="material-icons-extended stadiaplus_icon-inline">open_in_browser</i>${Language.get('library-filter.get-shortcut')}`,
+                    .child(
+                        $el('i')
+                            .class({
+                                'material-icons-extended': true,
+                                'stadiaplus_icon-inline': true,
+                            })
+                            .text('open_in_browser'),
+                    )
+                    .child(
+                        $el('span')
+                            .text(Language.get('library-filter.get-shortcut')),
                     )
                     .event({
                         click: () => {
@@ -120,6 +90,48 @@ export class LibraryGame {
                                 `https://stadiaicons.web.app/${this.uuid}/?fullName=${encodeURIComponent(this.name)}`,
                                 '_blank',
                             );
+                            element.class({ selected: false });
+                        },
+                    }),
+            )
+            .child(
+                $el('div')
+                    .id(`${this.uuid}-hideoption`)
+                    .child(
+                        $el('i')
+                            .class({
+                                'material-icons-extended': true,
+                                'stadiaplus_icon-inline': true,
+                            })
+                            .text(this.visible ? 'visibility_off' : 'visibility'),
+                    )
+                    .child(
+                        $el('span')
+                            .text(Language.get(this.visible ? 'library-filter.hide-game' : 'library-filter.show-game', { name: this.name })),
+                    )
+                    .event({
+                        click: () => {
+                            const self = document.getElementById(`${this.uuid}-hideoption`);
+                            // Always true, but should exist to appease the linting gods
+                            if (self !== null) {
+                                const icon = self.querySelector('i');
+                                const text = self.querySelector('span');
+
+                                // Always true, but should exist to appease the linting gods
+                                if (icon !== null && text != null) {
+                                    if (this.visible) {
+                                        icon.textContent = 'visibility_off';
+                                        text.textContent = Language.get('library-filter.hide-game', { name: this.name });
+                                    } else {
+                                        icon.textContent = 'visibility';
+                                        text.textContent = Language.get('library-filter.show-game', { name: this.name });
+                                    }
+                                }
+                            }
+
+                            this.visible = !this.visible;
+                            void this.libraryFilter.saveGameData();
+                            this.libraryFilter.updateVisibility();
                             element.class({ selected: false });
                         },
                     }),

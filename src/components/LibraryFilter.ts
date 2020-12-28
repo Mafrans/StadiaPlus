@@ -11,13 +11,16 @@ import '../ui/styles/Button.scss';
 import { StadiaPlusDBHook } from './StadiaPlusDBHook';
 import { StadiaPlusDB } from '../StadiaPlusDB';
 import { StadiaGameDB } from '../StadiaGameDB';
-import { $el } from '../util/ElGen';
+import { $el, $sel } from '../util/ElGen';
 import { NavButton } from '../ui/NavButton';
 import { NavPosition } from '../models/NavPosition';
 import { OrderDirection } from '../models/OrderDirection';
 import { LibraryGame } from '../models/LibraryGame';
 import { FilterOrder } from '../models/FilterOrder';
 import { CaptureItem } from '../models/CaptureItem';
+import { AFLibraryData } from '../models/AFLibraryData';
+import { Checkbox } from '../ui/Checkbox';
+import { CheckboxShape } from '../models/CheckboxShape';
 
 const { Array } = window;
 
@@ -93,23 +96,27 @@ export class LibraryFilter extends Component {
         this.db = webScraper;
     }
 
-    /**
-     * Get the game UUID from it's jslog attribute.
-     *
-     * @param {Element} tile
-     * @returns
-     * @memberof LibraryFilter
-     */
-    getUUID(tile: HTMLElement): string {
-        const jslog = tile.getAttribute('jslog');
-        if (jslog === null) return 'undefined';
+    getGames(): LibraryGame[] {
+        const initDataCallback = Array.from(document.querySelectorAll('body>script')).find(
+            (script) => script.attributes
+                && script.attributes.length === 1
+                && script.hasAttribute('nonce')
+                && script.textContent?.substring(0, 19) === 'AF_initDataCallback'
+                && script.textContent?.includes("key: 'ds:6"),
+        )?.textContent;
 
-        return jslog.split('; ')[1].substring(3);
-    }
+        // eslint-disable-next-line no-eval
+        const libraryData = eval(`(() => (${initDataCallback?.substring('AF_initDataCallback('.length, initDataCallback.length - ');'.length) as string}))()`) as AFLibraryData;
+        const games: LibraryGame[] = [];
 
-    getImage(tile: Element): string {
-        const src = (tile.querySelector('.YXkCBb') as HTMLElement).style.backgroundImage;
-        return src.substring(5, src.length - 3);
+        libraryData.data[1].forEach((game) => {
+            const uuid = game[1][0];
+            const gameId = game[1][1];
+
+            games.push(new LibraryGame(uuid, gameId, this));
+        });
+
+        return games;
     }
 
     /**
@@ -120,9 +127,13 @@ export class LibraryFilter extends Component {
     onStart(): void {
         this.active = true;
 
-        Logger.component(Language.get('component.enabled', { name: this.name }));
+        Logger.component(
+            Language.get('component.enabled', { name: this.name }),
+        );
 
-        FilterOrder.values().forEach((e) => { e.name = Language.get(`library-filter.${e.name}`); });
+        FilterOrder.values().forEach((e) => {
+            e.name = Language.get(`library-filter.${e.name}`);
+        });
     }
 
     async reloadLibrary(): Promise<void> {
@@ -132,35 +143,14 @@ export class LibraryFilter extends Component {
             await SyncStorage.LIBRARY_SORT_ORDER.set(FilterOrder.RECENT.id);
         }
 
-        const gameTiles = this.renderer?.querySelectorAll('.GqLi4d');
-        this.games = await SyncStorage.LIBRARY_GAMES.get() as LibraryGame[];
-
-        if (!(this.games instanceof Array)) {
-            this.games = [];
-        }
-
-        (this.renderer?.querySelector('.fJrLJb') as HTMLElement).style.display = 'none';
-        const libraryElement = document.getElementById(this.id);
-        if (libraryElement != null) {
-            // Remove any existing libraries, just to be sure.
-            libraryElement.remove();
-        }
-
-        await this.createContainer();
-
-        gameTiles?.forEach((gameTile) => {
-            const uuid = this.getUUID(gameTile as HTMLElement);
-            const game: LibraryGame = new LibraryGame(uuid);
-            game.create(this.getImage(gameTile));
-
-            if (this.games.find((e) => e.uuid === uuid) == null) {
-                this.games.push(game);
-            }
-        });
+        this.games = this.getGames();
 
         Util.desandbox(
             `WebScraperRunnable.setAutoUpdate(${
-                StadiaPlusDB.isAuthenticated() && localStorage.getItem('autoUpdate') === 'true' ? 'true' : 'false'
+                StadiaPlusDB.isAuthenticated()
+                && localStorage.getItem('autoUpdate') === 'true'
+                    ? 'true'
+                    : 'false'
             })`,
         );
 
@@ -168,85 +158,77 @@ export class LibraryFilter extends Component {
     }
 
     updateGames(sorted: LibraryGame[]): void {
-        Util.desandbox(`WebScraperRunnable.games = ${JSON.stringify(sorted.map((e) => e.uuid))}`);
-        sorted.forEach((game) => {
-            if (
-                this.gameContainer?.querySelector(`.stadiaplus_libraryfilter-game[data-uuid="${game.uuid}"]`)
-                == null
-            ) {
-                const tile = game.createTile();
+        Util.desandbox(
+            `WebScraperRunnable.games = ${JSON.stringify(
+                sorted.map((e) => e.uuid),
+            )}`,
+        );
 
+        sorted.forEach((game) => {
+            game.tile?.parentNode?.append(game.tile);
+
+            if (game.listEntry === undefined && game.tile !== undefined) {
                 const splitPlayerURL = location.href.split('/');
-                splitPlayerURL[splitPlayerURL.length - 1] = `player/${game.uuid}`;
+                splitPlayerURL[
+                    splitPlayerURL.length - 1
+                ] = `player/${game.uuid}`;
                 const playerURL = splitPlayerURL.join('/');
 
-                tile.addEventListener('click', () => {
-                    location.href = playerURL;
-                });
-
-                this.gameContainer?.appendChild(tile);
-                //tile.style.backgroundSize = `auto ${tile.offsetHeight + 16}px`; // Removed due to new animation system
-
-                const listGame = $el('div')
+                game.listEntry = $el('div')
                     .class({ 'stadiaplus_libraryfilter-listgame': true })
                     .attr({ 'data-uuid': game.uuid })
                     .child($el('hr'))
-                    .child($el('h6').html(`<i class="material-icons-extended">play_circle_outline</i> ${game.name}`))
-                    .element;
+                    .child(
+                        $el('h6').html(
+                            `<i class="material-icons-extended">play_circle_outline</i> ${game.name}`,
+                        ),
+                    ).element as HTMLDivElement;
 
-                listGame.addEventListener('click', () => {
+                game.listEntry.addEventListener('click', () => {
                     location.href = playerURL;
                 });
+            }
 
-                this.searchColumn?.appendChild(listGame);
+            if (game.listEntry) {
+                this.searchColumn?.appendChild(game.listEntry);
             }
         });
     }
 
     async resortGames(): Promise<void> {
-        this.renderer?.querySelectorAll(
-            '.stadiaplus_libraryfilter-game, .stadiaplus_libraryfilter-listgame',
-        ).forEach((game) => {
-            game.setAttribute('old', '');
-            game.setAttribute('data-uuid', '');
-        });
-
-        const searchBar = this.renderer?.querySelector('.stadiaplus_libraryfilter-searchcolumn-bar>input') as HTMLInputElement;
+        const searchBar = this.renderer?.querySelector(
+            '.stadiaplus_libraryfilter-searchcolumn-bar>input',
+        ) as HTMLInputElement;
         if (searchBar !== null) {
             searchBar.value = '';
         }
 
-        const orderIndicator = this.renderer?.querySelector('.stadiaplus_libraryfilter-sortorderindicator');
+        this.games.forEach((game) => {
+            if (game.tile !== undefined) {
+                game.tile.style.display = '';
+            }
+        });
+
+        const orderIndicator = this.renderer?.querySelector(
+            '.stadiaplus_libraryfilter-sortorderindicator',
+        );
         if (orderIndicator != null) {
             orderIndicator.textContent = FilterOrder.from(
-                await SyncStorage.LIBRARY_SORT_ORDER.get() as number,
+                (await SyncStorage.LIBRARY_SORT_ORDER.get()) as number,
             ).name;
         }
 
         this.updateGames(await this.getSortedGames());
-
-        this.renderer
-            ?.querySelectorAll('.stadiaplus_libraryfilter-game[old], .stadiaplus_libraryfilter-listgame[old]')
-            .forEach((e) => e.remove());
 
         void this.updateVisibility();
     }
 
     updateVisibility(): void {
         const tags = (this.tagSelect?.get() as string[]).map((id) => StadiaGameDB.Tag.fromId(id));
-        const onlineTypes = (this.onlineTypeSelect?.get() as string[]).map(
-            (id) => StadiaGameDB.OnlineType.fromId(id),
-        );
+        const onlineTypes = (this.onlineTypeSelect?.get() as string[])
+            .map((id) => StadiaGameDB.OnlineType.fromId(id));
 
-        const visibilityIndicator = document.querySelector('.stadiaplus_libraryfilter-visibilityindicator');
-        if (visibilityIndicator !== null) {
-            if (tags.length === 0 && onlineTypes.length === 0) {
-                visibilityIndicator.textContent = Language.get('library-filter.all-visible');
-            } else {
-                visibilityIndicator.textContent = Language.get('library-filter.custom-visible');
-            }
-        }
-
+        let anyGameHidden = false;
         this.games.forEach((game) => {
             const sgdb = StadiaGameDB.get(game.uuid);
             let visible = true;
@@ -263,11 +245,41 @@ export class LibraryFilter extends Component {
                 }
             });
 
-            const tile = document.querySelector(`.stadiaplus_libraryfilter-game[data-uuid="${game.uuid}"]`);
-            const entry = document.querySelector(`.stadiaplus_libraryfilter-listgame[data-uuid="${game.uuid}"]`);
-            if (tile != null) tile.classList.toggle('hidden', !visible);
-            if (entry != null) entry.classList.toggle('hidden', !visible);
+            if (!game.visible && !this.showAll) {
+                visible = false;
+                anyGameHidden = true;
+            }
+
+            if (game.tile !== undefined) {
+                game.tile.classList.toggle('hidden', !game.visible);
+                game.tile.style.display = visible ? '' : 'none';
+            }
+            if (game.listEntry !== undefined) {
+                game.listEntry.classList.toggle('hidden', !game.visible);
+                game.listEntry.style.display = visible ? '' : 'none';
+            }
         });
+
+        const visibilityIndicator = document.querySelector(
+            '.stadiaplus_libraryfilter-visibilityindicator',
+        );
+        if (visibilityIndicator !== null) {
+            if (tags.length === 0 && onlineTypes.length === 0 && !anyGameHidden) {
+                visibilityIndicator.textContent = Language.get(
+                    'library-filter.all-visible',
+                );
+            } else {
+                visibilityIndicator.textContent = Language.get(
+                    'library-filter.custom-visible',
+                );
+            }
+        }
+    }
+
+    async saveGameData(): Promise<void> {
+        await SyncStorage.LIBRARY_GAMES.set(this.games.map((game) => ({
+            uuid: game.uuid, visible: game.visible,
+        })));
     }
 
     capturesButton?: NavButton;
@@ -277,27 +289,44 @@ export class LibraryFilter extends Component {
             return;
         }
 
-        const captures: CaptureItem[] = Array.from(this.renderer.querySelectorAll('.MykDQe'))
+        const captures: CaptureItem[] = Array.from(
+            this.renderer.querySelectorAll('.MykDQe'),
+        )
             .map((e: Element) => new CaptureItem(e as HTMLElement))
             .slice(0, 3); // Slice so only the first three captures are shown
 
-        const popup = $el('div').child($el('h2').text(Language.get('library-filter.your-captures')));
+        const popup = $el('div').child(
+            $el('h2').text(Language.get('library-filter.your-captures')),
+        );
 
-        this.capturesButton = new NavButton('photo_camera', undefined, NavPosition.LEFT);
+        this.capturesButton = new NavButton(
+            'photo_camera',
+            undefined,
+            NavPosition.LEFT,
+        );
         this.capturesButton.onClick((event) => {
             this.capturesButton?.setActive(true);
             popup.class({ open: true });
-            document.querySelectorAll('.n4PrVe').forEach((e: Element) => { ((e as HTMLElement).style.opacity = '0'); });
+            document.querySelectorAll('.n4PrVe').forEach((e: Element) => {
+                (e as HTMLElement).style.opacity = '0';
+            });
             event.stopPropagation();
         });
         this.capturesButton.create();
 
-        const previews = $el('div').class({ 'stadiaplus_libraryfilter-captures-previews': true });
+        const previews = $el('div').class({
+            'stadiaplus_libraryfilter-captures-previews': true,
+        });
         captures.forEach((capture) => {
             previews.child(
                 $el('div')
-                    .class({ 'stadiaplus_libraryfilter-captures-preview': true, video: capture.isVideo })
-                    .css({ 'background-image': `url(${capture.thumbnail as string})` })
+                    .class({
+                        'stadiaplus_libraryfilter-captures-preview': true,
+                        video: capture.isVideo,
+                    })
+                    .css({
+                        'background-image': `url(${capture.thumbnail as string})`,
+                    })
                     .event({
                         click: () => {
                             capture.open();
@@ -343,77 +372,16 @@ export class LibraryFilter extends Component {
             return;
         }
 
-        const root = this.renderer.querySelector('.z1P2me');
-        if (root === null) return;
+        const root = $sel(
+            this.renderer.querySelector('.f2pfBf') as HTMLElement,
+        );
+        root.id(this.id);
+        const barContainer = root.$sel('.lEPylf:first-child');
 
-        const wrapper = $el('div')
-            .class({ 'stadiaplus_libraryfilter-wrapper': true })
-            .id(this.id);
-
-        const search = $el('input').element as HTMLInputElement;
-        search.addEventListener('input', () => {
-            const val = search.value;
-
-            this.renderer?.querySelectorAll('.stadiaplus_libraryfilter-game').forEach((el: Element) => {
-                const element = el as HTMLElement;
-                const uuid = element.getAttribute('data-uuid');
-                if (uuid === null) return;
-
-                const { name } = StadiaGameDB.get(uuid);
-
-                if (!name.toLowerCase().includes(val.toLowerCase())) {
-                    element.style.display = 'none';
-                } else {
-                    element.style.display = '';
-                }
-            });
-
-            this.renderer?.querySelectorAll('.stadiaplus_libraryfilter-listgame').forEach((el: Element) => {
-                const element = el as HTMLElement;
-                const name = element.querySelector('h6')?.textContent;
-                if (name == null) return;
-
-                if (!name.toLowerCase().includes(val.toLowerCase())) {
-                    element.style.display = 'none';
-                } else {
-                    element.style.display = '';
-                }
-            });
-        });
-
-        this.searchColumn = $el('div')
-            .class({ 'stadiaplus_libraryfilter-searchcolumn': true })
-            .child(
-                $el('div')
-                    .class({
-                        'stadiaplus_libraryfilter-searchcolumn-bar': true,
-                    })
-                    .child(
-                        $el('i')
-                            .class({ 'material-icons-extended': true })
-                            .text('search'),
-                    )
-                    .child(search),
-            ).element;
-
-        this.gameContainer = $el('div').class({
-            'stadiaplus_libraryfilter-gamecontainer': true,
-        }).element;
-
-        $el('h2')
-            .text(Language.get('library-filter.your-games'))
-            .css({ 'margin-top': '8rem' })
-            .appendTo(wrapper);
-
-        window.addEventListener('click', () => {
-            this.renderer?.querySelectorAll('.stadiaplus_libraryfilter-dropdown').forEach((e) => {
-                e.classList.remove('selected');
-            });
-
-            this.renderer?.querySelectorAll('.stadiaplus_libraryfilter-game').forEach((e) => {
-                e.classList.remove('selected');
-            });
-        });
+        const gameContainer = root
+            .$sel('.lEPylf:last-child')
+            ?.css({ padding: '0' });
+        if (root === null || barContainer === null) return;
 
         const orderDropdown = this.getOrderDropdown();
         const visibleDropdown = this.getVisibleDropdown();
@@ -427,11 +395,15 @@ export class LibraryFilter extends Component {
                             .class({ 'bar-item': true })
                             .event({
                                 click: (event) => {
-                                    this.renderer?.querySelectorAll(
-                                        '.stadiaplus_libraryfilter-dropdown',
-                                    ).forEach((element) => {
-                                        element.classList.remove('selected');
-                                    });
+                                    this.renderer
+                                        ?.querySelectorAll(
+                                            '.stadiaplus_libraryfilter-dropdown',
+                                        )
+                                        .forEach((element) => {
+                                            element.classList.remove(
+                                                'selected',
+                                            );
+                                        });
                                     orderDropdown.classList.add('selected');
                                     event.stopPropagation();
                                 },
@@ -443,7 +415,7 @@ export class LibraryFilter extends Component {
                                     })
                                     .text(
                                         FilterOrder.from(
-                                            await SyncStorage.LIBRARY_SORT_ORDER.get() as number,
+                                            (await SyncStorage.LIBRARY_SORT_ORDER.get()) as number,
                                         ).name,
                                     ),
                             )
@@ -459,11 +431,15 @@ export class LibraryFilter extends Component {
                             .class({ 'bar-item': true })
                             .event({
                                 click: (event) => {
-                                    this.renderer?.querySelectorAll(
-                                        '.stadiaplus_libraryfilter-dropdown',
-                                    ).forEach((element) => {
-                                        element.classList.remove('selected');
-                                    });
+                                    this.renderer
+                                        ?.querySelectorAll(
+                                            '.stadiaplus_libraryfilter-dropdown',
+                                        )
+                                        .forEach((element) => {
+                                            element.classList.remove(
+                                                'selected',
+                                            );
+                                        });
 
                                     visibleDropdown.classList.add('selected');
                                     event.stopPropagation();
@@ -490,12 +466,163 @@ export class LibraryFilter extends Component {
                     .child(this.getAutoUpdateButton())
                     .child(this.getAutoUpdateTooltip()),
             )
-            .appendTo(wrapper);
+            .appendTo(barContainer);
+
+        const gameWrapper = $el('div')
+            .class({ stadiaplus_libraryfilter: true, lEPylf: true });
+        gameWrapper.appendTo(root);
+        gameContainer?.appendTo(gameWrapper);
+
+        const search = $el('input').element as HTMLInputElement;
+        search.addEventListener('keydown', (event) => {
+            let val = search.value;
+
+            switch (event.code) {
+                // Yes, I'm aware that delete has a different function than
+                // backspace but I literally cannot bother.
+                case 'Delete':
+                case 'Backspace':
+                    if (search.selectionStart !== null
+                            && search.selectionEnd !== null
+                            && search.selectionEnd - search.selectionStart !== 0) {
+                        val = val.substring(0, search.selectionStart)
+                            + val.substring(search.selectionEnd, val.length);
+                    } else if (event.ctrlKey || event.metaKey) {
+                        const split = val.split(/[^A-Za-z0-9]/g);
+
+                        let i = split.length - 1;
+                        while (i > 0 && split[i].length === 0) {
+                            i -= 1;
+                        }
+
+                        val = val.substring(0, Math.min(
+                            search.selectionStart === null
+                                ? val.length - split[i].length
+                                : search.selectionStart,
+
+                            val.length - split[i].length,
+                        ));
+                    } else {
+                        val = val.substring(0, Math.min(
+                            search.selectionStart === null
+                                ? val.length - 1
+                                : search.selectionStart,
+
+                            val.length - 1,
+                        ));
+                    }
+                    break;
+
+                case 'Space':
+                    val += ' ';
+                    break;
+
+                case 'ArrowRight':
+                    if (search.selectionStart !== null && search.selectionEnd !== null) {
+                        search.setSelectionRange(search.selectionStart + 1, search.selectionStart + 1, 'forward');
+                    }
+                    break;
+
+                case 'ArrowLeft':
+                    if (search.selectionStart !== null && search.selectionEnd !== null) {
+                        search.setSelectionRange(search.selectionStart - 1, search.selectionStart - 1, 'backward');
+                    }
+                    break;
+
+                case 'ArrowUp':
+                    search.setSelectionRange(val.length, val.length, 'forward');
+                    break;
+
+                case 'ArrowDown':
+                    search.setSelectionRange(0, 0, 'backward');
+                    break;
+
+                default:
+                    if (!event.ctrlKey && !event.metaKey && !event.altKey) {
+                        if (/(Key|Digit)[A-Z0-9]/.test(event.code)) {
+                            val += event.key;
+                        }
+                    }
+                    break;
+            }
+
+            this.games.forEach((game) => {
+                if (game.name.toLowerCase().includes(val.toLowerCase())) {
+                    if (game.tile !== undefined) {
+                        game.tile.style.display = '';
+                    }
+                    if (game.listEntry !== undefined) {
+                        game.listEntry.style.display = '';
+                    }
+                } else {
+                    if (game.tile !== undefined) {
+                        game.tile.style.display = 'none';
+                    }
+                    if (game.listEntry !== undefined) {
+                        game.listEntry.style.display = 'none';
+                    }
+                }
+            });
+
+            search.focus();
+
+            // event.stopPropagation();
+            // event.stopImmediatePropagation();
+
+            // for (let i = 0; i < 999; i += 1) {
+            //     console.log('s');
+            // }
+
+            // this.renderer
+            //     ?.querySelectorAll('.stadiaplus_libraryfilter-listgame')
+            //     .forEach((el: Element) => {
+            //         const element = el as HTMLElement;
+            //         const name = element.querySelector('h6')?.textContent;
+            //         if (name == null) return;
+
+            //         if (!name.toLowerCase().includes(val.toLowerCase())) {
+            //             element.style.display = 'none';
+            //         } else {
+            //             element.style.display = '';
+            //         }
+            //     });
+        });
+
+        this.searchColumn = $el('div')
+            .class({ 'stadiaplus_libraryfilter-searchcolumn': true })
+            .child(
+                $el('div')
+                    .class({
+                        'stadiaplus_libraryfilter-searchcolumn-bar': true,
+                    })
+                    .child(
+                        $el('i')
+                            .class({ 'material-icons-extended': true })
+                            .text('search'),
+                    )
+                    .child(search),
+            ).element;
+
+        window.addEventListener('click', () => {
+            this.renderer
+                ?.querySelectorAll('.stadiaplus_libraryfilter-dropdown')
+                .forEach((e) => {
+                    e.classList.remove('selected');
+                });
+
+            this.renderer
+                ?.querySelectorAll('.stadiaplus_libraryfilter-game')
+                .forEach((e) => {
+                    e.classList.remove('selected');
+                });
+        });
 
         // eslint-disable-next-line @typescript-eslint/no-this-alias
         const self = this;
 
-        const tagSelectElement = visibleDropdown.querySelector('select[name="tags"]');
+        const tagSelectElement = visibleDropdown.querySelector(
+            'select[name="tags"]',
+        );
         if (tagSelectElement !== null) {
             this.tagSelect = new Select(tagSelectElement, {
                 placeholder: 'Tags...',
@@ -506,7 +633,9 @@ export class LibraryFilter extends Component {
             });
         }
 
-        const typeSelectElement = visibleDropdown.querySelector('select[name="online-types"]');
+        const typeSelectElement = visibleDropdown.querySelector(
+            'select[name="online-types"]',
+        );
         if (typeSelectElement !== null) {
             this.onlineTypeSelect = new Select(typeSelectElement, {
                 placeholder: 'Playstyles...',
@@ -520,22 +649,17 @@ export class LibraryFilter extends Component {
         $el('div')
             .class({ stadiaplus_libraryfilter: true })
             .child(this.searchColumn)
-            .child(this.gameContainer)
-            .appendTo(wrapper);
+            .prependTo(gameWrapper);
 
         $el('h2')
             .text('Captures')
             .css({ 'margin-top': '8rem' })
-            .appendTo(wrapper);
+            .appendTo(root);
 
         $el('p')
-            .html(
-                Language.get('library-filter.captures-note'),
-            )
+            .html(Language.get('library-filter.captures-note'))
             .css({ 'margin-bottom': '8rem' })
-            .appendTo(wrapper);
-
-        wrapper.appendTo(root);
+            .appendTo(root);
     }
 
     getAutoUpdateTooltip(): HTMLElement {
@@ -612,8 +736,15 @@ export class LibraryFilter extends Component {
             },
             click: () => {
                 el.element.classList.toggle('active');
-                localStorage.setItem('autoUpdate', el.element.classList.contains('active') ? 'true' : 'false');
-                Util.desandbox(`WebScraperRunnable.setAutoUpdate(${el.element.classList.contains('active').toString()})`);
+                localStorage.setItem(
+                    'autoUpdate',
+                    el.element.classList.contains('active') ? 'true' : 'false',
+                );
+                Util.desandbox(
+                    `WebScraperRunnable.setAutoUpdate(${el.element.classList
+                        .contains('active')
+                        .toString()})`,
+                );
             },
         });
 
@@ -667,10 +798,23 @@ export class LibraryFilter extends Component {
             );
         });
 
+        const showAllCheckbox = new Checkbox(Language.get('library-filter.show-hidden')).setShape(CheckboxShape.CURVED).build();
+
         return $el('div')
             .id(`${this.id}-dropdown-${Math.floor(Math.random() * 999999)}`)
             .class({ 'stadiaplus_libraryfilter-dropdown': true })
             .event({ click: (event) => event.stopPropagation() })
+            .child(
+                $el('div')
+                    .css({ display: 'block' })
+                    .child(showAllCheckbox.pretty)
+                    .event({
+                        click: () => {
+                            this.showAll = showAllCheckbox.checkbox.checked;
+                            this.updateVisibility();
+                        },
+                    }),
+            )
             .child(
                 $el('div')
                     .css({ display: 'block' })
@@ -681,7 +825,7 @@ export class LibraryFilter extends Component {
 
     async getSortedGames(): Promise<LibraryGame[]> {
         const filter: FilterOrder = FilterOrder.from(
-            await SyncStorage.LIBRARY_SORT_ORDER.get() as number,
+            (await SyncStorage.LIBRARY_SORT_ORDER.get()) as number,
         );
         const games = [...this.games]; // Shallow array clone
         const sorted = filter.sort(games);
@@ -696,7 +840,9 @@ export class LibraryFilter extends Component {
      */
     onStop(): void {
         this.active = false;
-        Logger.component(Language.get('component.disabled', { name: this.name }));
+        Logger.component(
+            Language.get('component.disabled', { name: this.name }),
+        );
     }
 
     /**
@@ -707,10 +853,11 @@ export class LibraryFilter extends Component {
     onUpdate(): void {
         if (Util.isInHome()) {
             this.updateRenderer();
-            if (!this.exists() && this.renderer?.querySelector('.fJrLJb') != null) {
-                if (this.existsAnywhere()) {
-                    document.getElementById(this.id)?.remove();
-                }
+            if (
+                !this.exists()
+                && this.renderer?.querySelector('.f2pfBf') != null
+            ) {
+                void this.createContainer();
                 void this.reloadLibrary();
             }
         }
@@ -718,7 +865,8 @@ export class LibraryFilter extends Component {
         if (!Util.isInGame()) {
             this.updateRenderer();
             if (
-                document.querySelector('.stadiaplus_libraryfilter-captures') == null
+                document.querySelector('.stadiaplus_libraryfilter-captures')
+                    == null
                 && this.renderer?.querySelector('.E3eEyc.lEPylf.sfe1Ff') != null
             ) {
                 this.createCaptures();

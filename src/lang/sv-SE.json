@@ -78,7 +78,9 @@
         "custom-visible": "Anpassat",
         "your-games": "Dina Spel",
         "your-captures": "Dina Inspelningar",
-        "captures-note": "Dina inspelningar är nu längst upp! Leta efter <i class='material-icons-extended stadiaplus_icon-inline' style='vertical-align: bottom'>photo_camera</i> ikonen i navigationsfältet."
+        "captures-note": "Dina inspelningar är nu längst upp! Leta efter <i class='material-icons-extended stadiaplus_icon-inline' style='vertical-align: bottom'>photo_camera</i> ikonen i navigationsfältet.",
+        "hide-game": "Dölj {{name}}",
+        "show-game": "Visa {{name}}"
     },
     "network-monitor": {
         "name": "Nätverksövervakning",

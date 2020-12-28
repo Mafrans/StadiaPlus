@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Language } from './Language';
+import Util from './util/Util';
 
 /**
  * A generic component of Stadia+
@@ -25,8 +26,7 @@ export class Component {
     active = false;
 
     enabled = false;
-
-    renderer?: HTMLElement;
+    renderer?: HTMLElement = Util.renderer;
 
     /**
      * This method is called whenever the component should start loading.
@@ -39,13 +39,8 @@ export class Component {
     }
 
     updateRenderer(): void {
-        const renderers = document.querySelectorAll('.lhsE4e>c-wiz');
-        let newRenderer = renderers.item(0) as HTMLElement;
-        if (renderers.length > 1) {
-            newRenderer = Array.from(renderers).find((renderer: Element) => (renderer as HTMLElement).style.opacity === '1') as HTMLElement;
-        }
-
-        if (newRenderer != null) this.renderer = newRenderer;
+        Util.updateRenderer();
+        this.renderer = Util.renderer;
     }
 
     /**
@@ -54,8 +49,8 @@ export class Component {
      * @returns {boolean}
      */
     exists(): boolean {
-        if (this.renderer == null || this.renderer.style.opacity === '0') return false;
-        return this.renderer.querySelector(`#${this.id}`) !== null;
+        if (Util.renderer == null || Util.renderer.style.opacity === '0') return false;
+        return Util.renderer.querySelector(`#${this.id}`) !== null;
     }
 
     /**
