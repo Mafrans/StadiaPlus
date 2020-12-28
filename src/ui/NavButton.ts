@@ -49,7 +49,7 @@ export class NavButton {
     }
 
     create(): void {
-        const navbar = document.querySelector('.zM6lsb');
+        const navbar = document.querySelector('.w5qDee');
         if (navbar === null) {
             Logger.error('The navbar was not found, please report this to the developer of Stadia+');
             return;
@@ -59,14 +59,10 @@ export class NavButton {
 
         switch (this.position) {
             case NavPosition.LEFT:
-                this.element
-                    .css({ 'margin-left': '1rem' })
-                    .appendTo(document.querySelector('.YNlByb') as Node);
+                this.element.appendTo(document.querySelector('.tGNEjf>.ZECEje') as Node);
                 break;
             case NavPosition.RIGHT:
-                this.element
-                    .css({ 'margin-right': '1rem' })
-                    .prependTo(document.querySelector('.WpnpPe') as Element);
+                this.element.prependTo(document.querySelector('.QBnfOe>.WpnpPe') as Element);
                 break;
             default: break;
         }

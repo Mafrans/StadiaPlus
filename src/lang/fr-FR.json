@@ -78,7 +78,9 @@
         "custom-visible": "Personalisé",
         "your-games": "Vos Jeux",
         "your-captures": "Captures",
-        "captures-note": "Retrouvez vos captures d'écran/vidéo en haut de la page ! Cherchez l'icône <i class='material-icons-extended stadiaplus_icon-inline'>photo_camera</i> dans la barre de navigation."
+        "captures-note": "Retrouvez vos captures d'écran/vidéo en haut de la page ! Cherchez l'icône <i class='material-icons-extended stadiaplus_icon-inline'>photo_camera</i> dans la barre de navigation.",
+        "hide-game": "Hide {{name}}",
+        "show-game": "Show {{name}}"
     },
     "network-monitor": {
         "name": "Moniteur réseau",

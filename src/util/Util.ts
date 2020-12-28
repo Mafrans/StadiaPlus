@@ -6,6 +6,7 @@ class Util {
      * Stadia's menu bar element, used to know when the player has opened the menu.
      */
     menuElement!: HTMLElement | null;
+    renderer?: HTMLElement;
 
     load() {
         this.menuElement = document.querySelector('.X1asv');
@@ -51,6 +52,16 @@ class Util {
             array[j] = temp;
         }
         return array;
+    }
+
+    updateRenderer(): void {
+        const renderers = document.querySelectorAll('.lhsE4e>c-wiz');
+        let newRenderer = renderers.item(0) as HTMLElement;
+        if (renderers.length > 1) {
+            newRenderer = Array.from(renderers).find((renderer: Element) => (renderer as HTMLElement).style.opacity === '1') as HTMLElement;
+        }
+
+        if (newRenderer != null) this.renderer = newRenderer;
     }
 }
 export default new Util();

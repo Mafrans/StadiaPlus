@@ -22,18 +22,18 @@ export class ElGen {
     }
 
     appendTo(element: Node | ElGen): void {
-        if (element instanceof Node) {
-            (element).appendChild(this.element);
-        } else {
+        if (element instanceof ElGen) {
             (element).element.appendChild(this.element);
+        } else {
+            (element).appendChild(this.element);
         }
     }
 
     prependTo(element: Element | ElGen): void {
-        if (element instanceof Node) {
-            (element).prepend(this.element);
-        } else {
+        if (element instanceof ElGen) {
             (element).element.prepend(this.element);
+        } else {
+            (element).prepend(this.element);
         }
     }
 
@@ -80,14 +80,22 @@ export class ElGen {
         });
         return this;
     }
+
+    $sel(selector: string): ElGen | null {
+        const element = this.element.querySelector(selector) as HTMLElement;
+        return element != null ? new ElGen(element) : null;
+    }
 }
 
 function $el(tag: string): ElGen {
     return new ElGen(tag);
 }
 
-function $sel(selector: string): ElGen {
-    return new ElGen(document.querySelector(selector) as HTMLElement);
+function $sel(element: string | HTMLElement): ElGen {
+    if (element instanceof HTMLElement) {
+        return new ElGen(element);
+    }
+    return new ElGen(document.querySelector(element) as HTMLElement);
 }
 
 export { $el, $sel };

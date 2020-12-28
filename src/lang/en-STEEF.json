@@ -78,7 +78,9 @@
         "custom-visible": "Custom",
         "your-games": "Your Games",
         "your-captures": "Your Captures",
-        "captures-note": "Your captures are now at the top! Look for the <i class='material-icons-extended stadiaplus_icon-inline'>photo_camera</i> icon in the navbar."
+        "captures-note": "Your captures are now at the top! Look for the <i class='material-icons-extended stadiaplus_icon-inline'>photo_camera</i> icon in the navbar.",
+        "hide-game": "Hide {{name}}",
+        "show-game": "Show {{name}}"
     },
     "network-monitor": {
         "name": "Network Monitor",
