@@ -375,12 +375,12 @@ export class LibraryFilter extends Component {
         const root = $sel(
             this.renderer.querySelector('.f2pfBf') as HTMLElement,
         );
-        root.id(this.id);
+        root.id( this.id )
+            .class({'stadiaplus_libraryfilter-wrapper': true});
         const barContainer = root.$sel('.lEPylf:first-child');
 
         const gameContainer = root
-            .$sel('.lEPylf:last-child')
-            ?.css({ padding: '0' });
+            .$sel('.lEPylf:last-child');
         if (root === null || barContainer === null) return;
 
         const orderDropdown = this.getOrderDropdown();
@@ -389,7 +389,7 @@ export class LibraryFilter extends Component {
             .class({ 'stadiaplus_libraryfilter-bar': true })
             .child(
                 $el('div')
-                    .css({ display: 'flex', width: '300px' })
+                    .class({ 'bar-dropdowns': true })
                     .child(
                         $el('div')
                             .class({ 'bar-item': true })
@@ -459,6 +459,44 @@ export class LibraryFilter extends Component {
                             )
                             .child(visibleDropdown),
                     ),
+            )
+            .child(
+                $el('div')
+                    .class({
+                        'bar-item': true,
+                        'searchcolumn-toggle': true
+                    })
+                    .child(
+                        $el('button')
+                            .class({ 'stadiaplus_libraryfilter-button': true })
+                            .event({
+                                click: (event) => {
+                                    this.renderer?.querySelectorAll(
+                                        '.stadiaplus_libraryfilter-wrapper'
+                                    ).forEach((element) => {
+                                        element.classList.toggle( 'searchcolumn-shown' );
+                                    });
+
+                                    event.stopPropagation();
+                                },
+                            })
+                            .child(
+                                $el('i')
+                                    .class({
+                                        'material-icons-extended': true,
+                                        'searchcolumn-toggle-icon-search': true
+                                    })
+                                    .text('search')
+                            )
+                            .child(
+                                $el('i')
+                                    .class({
+                                        'material-icons-extended': true,
+                                        'searchcolumn-toggle-icon-back': true
+                                    })
+                                    .text('arrow_back')
+                            )
+                    )
             )
             .child(
                 $el('div')
@@ -720,6 +758,11 @@ export class LibraryFilter extends Component {
                 'stadiaplus_libraryfilter-button': true,
                 active: localStorage.getItem('autoUpdate') === 'true',
             })
+            .child(
+                $el('i')
+                    .class({ 'material-icons-extended': true })
+                    .text('update_disabled'),
+            )
             .child(
                 $el('i')
                     .class({ 'material-icons-extended': true })
