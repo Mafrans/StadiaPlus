@@ -296,13 +296,14 @@ $break-uhd: 2560px;
     &.flip {
         transform: translateX(-100%) translateY(-0.5rem) translateZ(-1px);
         margin-left: 2rem;
-        margin-top: 1rem;
+        margin-top: 2rem;
     }
 
     &.selected {
         pointer-events: all;
         opacity: 1;
         transform: translateY(0);
+        cursor: default;
         
         &.flip {
             transform: translateX(-100%) translateY(0);
@@ -311,6 +312,7 @@ $break-uhd: 2560px;
 
     >* {
         padding: 0.5rem 0;
+        cursor: pointer;
     }
 }
 
@@ -415,9 +417,7 @@ $break-uhd: 2560px;
     .stadiaplus_libraryfilter-game {
         display: inline-flex;
         position: relative;
-        overflow: hidden;
-        
-        border-radius: 0.5rem;
+        overflow: visible;
 
         box-shadow: 0 0.125rem 0.75rem rgba(0,0,0,0.32), 0 0.0625rem 0.375rem rgba(0,0,0,0.18);
 
@@ -450,6 +450,12 @@ $break-uhd: 2560px;
 
         &.hidden {
             opacity: 0.5;
+        }
+
+        >div:not(.more-icon),
+        >div > picture {
+            border-radius: 0.5rem;
+            overflow: hidden;
         }
 
         .tile-background {

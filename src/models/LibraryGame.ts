@@ -85,12 +85,13 @@ export class LibraryGame {
                             .text(Language.get('library-filter.get-shortcut')),
                     )
                     .event({
-                        click: () => {
+                        click: ( event) => {
                             window.open(
                                 `https://stadiaicons.web.app/${this.uuid}/?fullName=${encodeURIComponent(this.name)}`,
                                 '_blank',
                             );
                             element.class({ selected: false });
+                            event.stopPropagation();
                         },
                     }),
             )
@@ -110,7 +111,7 @@ export class LibraryGame {
                             .text(Language.get(this.visible ? 'library-filter.hide-game' : 'library-filter.show-game', { name: this.name })),
                     )
                     .event({
-                        click: () => {
+                        click: (event) => {
                             const self = document.getElementById(`${this.uuid}-hideoption`);
                             // Always true, but should exist to appease the linting gods
                             if (self !== null) {
@@ -133,6 +134,8 @@ export class LibraryGame {
                             void this.libraryFilter.saveGameData();
                             this.libraryFilter.updateVisibility();
                             element.class({ selected: false });
+
+                            event.stopPropagation();
                         },
                     }),
             );
