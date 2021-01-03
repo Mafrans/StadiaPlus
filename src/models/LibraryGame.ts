@@ -83,6 +83,7 @@ export class LibraryGame {
             .class({
                 'stadiaplus_libraryfilter-dropdown': true,
             })
+            .css({ 'z-index': '2' })
             .child(
                 $el('div')
                     .child(
