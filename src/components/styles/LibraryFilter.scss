@@ -245,6 +245,7 @@
     pointer-events: none;
     width: max-content;
     z-index: 2;
+    top: 100%;
 
     &.flip {
         transform: translateX(-100%) translateY(-0.5rem) translateZ(-1px);
@@ -357,6 +358,12 @@
             height: 100%;
         }
 
+        >.Llx2qd {
+            ~.more-icon {
+                display: none;
+            }
+        }
+
         &.hidden {
             opacity: 0.5;
         }
@@ -374,7 +381,7 @@
             width: 40px;
             height: 40px;
             margin: 0.25rem;
-            z-index: 999999999999;
+            z-index: 2;
             border-radius: 50%;
 
             &:hover {
