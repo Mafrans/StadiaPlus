@@ -42,7 +42,7 @@ export class LibraryGame {
 
         this.card = $el('div')
             .class({ 'stadiaplus_libraryfilter-game': true })
-            .attr({ uuid: this.uuid }).element as HTMLDivElement;
+            .attr({ uuid: this.uuid, name: this.name }).element as HTMLDivElement;
         tile.parentElement.prepend(this.card);
         this.card.prepend(tile);
 
