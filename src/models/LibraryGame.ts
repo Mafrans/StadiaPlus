@@ -33,11 +33,13 @@ export class LibraryGame {
         }
     }
 
-    getName(tile: HTMLDivElement) {
+    getName(tile: HTMLDivElement): string {
+        if(tile === undefined || tile.parentElement === null) return 'undefined';
+        
         return tile.querySelector('h3.xmcLFc')?.textContent as string
     }
 
-    createTile(tile: HTMLDivElement) {
+    createTile(tile: HTMLDivElement): void {
         if(tile === undefined || tile.parentElement === null) return;
 
         this.card = $el('div')
