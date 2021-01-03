@@ -49,33 +49,21 @@ export class LibraryGame {
         this.card.prepend(tile);
 
         const dropdown = this.getMoreDropdown();
-        const { element } = $el('div')
+        $el('div')
             .class({ 'more-icon': true })
             .child(
                 $el('i')
                     .class({ 'material-icons-extended': true })
                     .text('more_vert'),
             )
-            .child(dropdown);
-
-        element.addEventListener('mousedown', () => {
-            if (this.card !== undefined) {
-                this.card.style.pointerEvents = 'none';
-            }
-        });
-
-        window.addEventListener('mouseup', () => {
-            if (this.card !== undefined) {
-                if (this.card.style.pointerEvents === 'none') {
-                    this.card.style.pointerEvents = '';
-                    setTimeout(() => {
-                        dropdown.element.classList.add('selected');
-                    }, 100);
+            .event({
+                click: (event) => {
+                    dropdown.class({selected: true });
+                    event.stopPropagation();
                 }
-            }
-        });
-
-        this.card.appendChild(element);
+            })
+            .child(dropdown)
+            .appendTo(this.card);
     }
 
     getMoreDropdown(): ElGen {
