@@ -165,9 +165,9 @@ export class LibraryFilter extends Component {
         );
 
         sorted.forEach((game) => {
-            game.tile?.parentNode?.append(game.tile);
+            game.card?.parentNode?.append(game.card);
 
-            if (game.listEntry === undefined && game.tile !== undefined) {
+            if (game.listEntry === undefined && game.card !== undefined) {
                 const splitPlayerURL = location.href.split('/');
                 splitPlayerURL[
                     splitPlayerURL.length - 1
@@ -204,8 +204,8 @@ export class LibraryFilter extends Component {
         }
 
         this.games.forEach((game) => {
-            if (game.tile !== undefined) {
-                game.tile.style.display = '';
+            if (game.card !== undefined) {
+                game.card.style.display = '';
             }
         });
 
@@ -250,9 +250,9 @@ export class LibraryFilter extends Component {
                 anyGameHidden = true;
             }
 
-            if (game.tile !== undefined) {
-                game.tile.classList.toggle('hidden', !game.visible);
-                game.tile.style.display = visible ? '' : 'none';
+            if (game.card !== undefined) {
+                game.card.classList.toggle('hidden', !game.visible);
+                game.card.style.display = visible ? '' : 'none';
             }
             if (game.listEntry !== undefined) {
                 game.listEntry.classList.toggle('hidden', !game.visible);
@@ -548,15 +548,15 @@ export class LibraryFilter extends Component {
 
             this.games.forEach((game) => {
                 if (game.name.toLowerCase().includes(val.toLowerCase())) {
-                    if (game.tile !== undefined) {
-                        game.tile.style.display = '';
+                    if (game.card !== undefined) {
+                        game.card.style.display = '';
                     }
                     if (game.listEntry !== undefined) {
                         game.listEntry.style.display = '';
                     }
                 } else {
-                    if (game.tile !== undefined) {
-                        game.tile.style.display = 'none';
+                    if (game.card !== undefined) {
+                        game.card.style.display = 'none';
                     }
                     if (game.listEntry !== undefined) {
                         game.listEntry.style.display = 'none';

@@ -9,7 +9,7 @@ export class LibraryGame {
     public name = 'undefined';
     public uuid = 'undefined';
     public gameId = 'undefined';
-    public tile?: HTMLDivElement;
+    public card?: HTMLDivElement;
     public listEntry?: HTMLDivElement;
     public visible = true;
 
@@ -27,48 +27,54 @@ export class LibraryGame {
         });
 
         if (Util.isInHome()) {
-            this.tile = Array.from(document.querySelectorAll('.GqLi4d')).find((tile) => tile.getAttribute('jsdata')?.includes(this.gameId)) as HTMLDivElement;
-            if (this.tile !== undefined) {
-                this.name = this.tile.querySelector('h3.xmcLFc')?.textContent as string;
-                this.tile.classList.add('stadiaplus_libraryfilter-game');
-
-                const dropdown = this.getMoreDropdown();
-                const { element } = $el('div')
-                    .class({ 'more-icon': true })
-                    .child(
-                        $el('i')
-                            .class({ 'material-icons-extended': true })
-                            .text('more_vert'),
-                    )
-                    .child(dropdown);
-
-                element.addEventListener('mousedown', () => {
-                    if (this.tile !== undefined) {
-                        this.tile.style.pointerEvents = 'none';
-                    }
-                });
-
-                window.addEventListener('mouseup', () => {
-                    if (this.tile !== undefined) {
-                        if (this.tile.style.pointerEvents === 'none') {
-                            this.tile.style.pointerEvents = '';
-                            setTimeout(() => {
-                                dropdown.element.classList.add('selected');
-                            }, 100);
-                        }
-                    }
-                });
-
-                this.tile.appendChild(element);
-            }
+            const tile = Array.from(document.querySelectorAll('.GqLi4d')).find((tile) => tile.getAttribute('jsdata')?.includes(this.gameId)) as HTMLDivElement;
+            this.createTile(tile);
         }
+    }
+
+    createTile(tile: HTMLDivElement) {
+        if(tile === undefined || tile.parentElement === null) return;
+
+        this.card = $el('div')
+            .class({ 'stadiaplus_libraryfilter-game': true })
+            .attr({ uuid: this.uuid }).element as HTMLDivElement;
+        tile.parentElement.prepend(this.card);
+        this.card.prepend(tile);
+
+        const dropdown = this.getMoreDropdown();
+        const { element } = $el('div')
+            .class({ 'more-icon': true })
+            .child(
+                $el('i')
+                    .class({ 'material-icons-extended': true })
+                    .text('more_vert'),
+            )
+            .child(dropdown);
+
+        element.addEventListener('mousedown', () => {
+            if (this.card !== undefined) {
+                this.card.style.pointerEvents = 'none';
+            }
+        });
+
+        window.addEventListener('mouseup', () => {
+            if (this.card !== undefined) {
+                if (this.card.style.pointerEvents === 'none') {
+                    this.card.style.pointerEvents = '';
+                    setTimeout(() => {
+                        dropdown.element.classList.add('selected');
+                    }, 100);
+                }
+            }
+        });
+
+        this.card.appendChild(element);
     }
 
     getMoreDropdown(): ElGen {
         const element = $el('div')
             .class({
                 'stadiaplus_libraryfilter-dropdown': true,
-                flip: true,
             })
             .child(
                 $el('div')
