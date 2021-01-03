@@ -105,7 +105,6 @@ export class LibraryGame {
                                 '_blank',
                             );
                             element.class({ selected: false });
-                            event.stopPropagation();
                         },
                     }),
             )
@@ -148,8 +147,6 @@ export class LibraryGame {
                             void this.libraryFilter.saveGameData();
                             this.libraryFilter.updateVisibility();
                             element.class({ selected: false });
-
-                            event.stopPropagation();
                         },
                     }),
             );
