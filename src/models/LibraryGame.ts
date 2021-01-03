@@ -87,12 +87,13 @@ export class LibraryGame {
                             .text(Language.get('library-filter.get-shortcut')),
                     )
                     .event({
-                        click: ( event) => {
+                        click: (event) => {
                             window.open(
                                 `https://stadiaicons.web.app/${this.uuid}/?fullName=${encodeURIComponent(this.name)}`,
                                 '_blank',
                             );
                             element.class({ selected: false });
+                            event.stopPropagation();
                         },
                     }),
             )
@@ -135,6 +136,7 @@ export class LibraryGame {
                             void this.libraryFilter.saveGameData();
                             this.libraryFilter.updateVisibility();
                             element.class({ selected: false });
+                            event.stopPropagation();
                         },
                     }),
             );
