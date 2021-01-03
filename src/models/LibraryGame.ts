@@ -28,8 +28,13 @@ export class LibraryGame {
 
         if (Util.isInHome()) {
             const tile = Array.from(document.querySelectorAll('.GqLi4d')).find((tile) => tile.getAttribute('jsdata')?.includes(this.gameId)) as HTMLDivElement;
+            this.name = this.getName(tile);
             this.createTile(tile);
         }
+    }
+
+    getName(tile: HTMLDivElement) {
+        return tile.querySelector('h3.xmcLFc')?.textContent as string
     }
 
     createTile(tile: HTMLDivElement) {
