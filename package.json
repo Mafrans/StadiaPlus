@@ -5,7 +5,7 @@
   "main": "modules/main/src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:dev@main": "parcel build modules/main/src/index.ts -d ./dist/main",
+    "build:dev@main": "parcel build modules/main/src/index.tsx -d ./dist/main",
     "build:dev@popup": "parcel build modules/popup/src/index.ts -d ./dist/popup",
     "build:dev": "npm run build:dev@main && npm run build:dev@popup"
   },
@@ -25,7 +25,15 @@
     "@babel/plugin-transform-runtime": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
     "@babel/preset-react": "^7.12.10",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
     "typescript": "^4.1.3"
   },
-  "browserslist": [ "last 2 Chrome versions" ]
+  "browserslist": [
+    "last 2 Chrome versions"
+  ],
+  "dependencies": {
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  }
 }

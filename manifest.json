@@ -47,7 +47,7 @@
                 "https://stadia.google.com/*"
             ],
             "js": [
-                "dist/index.js"
+                "dist/main/index.js"
             ]
         }
     ],
