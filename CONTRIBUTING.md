@@ -1,0 +1,1 @@
+Information about contributing to Stadia+ can be found [on the wiki](https://github.com/Mafrans/StadiaPlus/wiki/Contributing).
