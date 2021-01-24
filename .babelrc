@@ -8,5 +8,10 @@
     ],
     "@babel/preset-react"
   ],
-  "plugins": ["@babel/plugin-transform-runtime"]
+  "plugins": [
+    "@babel/plugin-transform-runtime",
+    "macros",
+    "@babel/plugin-syntax-object-rest-spread",
+    "tailwind-components"
+  ]
 }
