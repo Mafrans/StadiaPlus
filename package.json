@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:dev@main": "parcel build modules/main/src/index.tsx -d ./dist/main",
-    "build:dev@popup": "parcel build modules/popup/src/index.ts -d ./dist/popup",
+    "build:dev@popup": "parcel build modules/popup/src/index.html -d ./dist/popup",
     "build:dev": "npm run build:dev@main && npm run build:dev@popup"
   },
   "repository": {

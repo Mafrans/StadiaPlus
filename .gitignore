@@ -1,7 +1,7 @@
 .**/
 node_modules
 dist/*/*
-!dist/popup/index.html
+!modules/popup/src/index.html
 
 *.log
 
