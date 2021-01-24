@@ -9,9 +9,8 @@ interface GoogleButtonProps {
     onAuthenticate: (profile: DBProfile | null) => void
 }
 
-const Button = styled('div')`
+const Button = styled('button')`
     ${tw`
-        cursor-pointer
     `}
 `;
 

@@ -9,11 +9,11 @@ export default class Logger {
     }
 
     static warning(...obj: any[]) {
-        console.log(`${prefix} %c😟 ${obj.join(' ')}`, 'color: orange');
+        console.trace(`${prefix} %c😟 ${obj.join(' ')}`, 'color: orange');
     }
 
     static error(...obj: any[]) {
-        console.log(`${prefix} %c❌ ${obj.join(' ')}`, 'color: red; font-weight: 700');
+        console.trace(`${prefix} %c❌ ${obj.join(' ')}`, 'color: red; font-weight: 700');
     }
 
     static component(...obj: any[]) {

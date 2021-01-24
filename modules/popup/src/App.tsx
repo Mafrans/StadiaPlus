@@ -6,6 +6,7 @@ import tw from 'twin.macro';
 import GoogleButton from './GoogleButton';
 import StadiaPlusDB from '../../shared/StadiaPlusDB';
 import DBProfile from '../../shared/models/DBProfile';
+import ProfilePanel from './ProfilePanel';
 
 interface AppState {
     profile: DBProfile | null
@@ -26,13 +27,16 @@ export default class App extends React.Component<any, AppState> {
         return (
             <AppWrapper>
                 <Header icon={{ src: StadiaPlusLogo, alt: 'Stadia+ Logo' }} title='Stadia+' />
-                <GoogleButton
-                    visible={ this.state.profile === null }
-                    onAuthenticate={ this.onAuthenticate.bind(this) }
-                />
-                <div>
-                    {JSON.stringify(this.state.profile)}
-                </div>
+
+                {
+                    this.state.profile !== null
+                        ? <ProfilePanel profile={ this.state.profile } />
+                        : <GoogleButton
+                            // visible={ this.state.profile === null }
+                            onAuthenticate={ this.onAuthenticate.bind(this) }
+                        />
+                }
+
             </AppWrapper>
         );
     }
