@@ -3,21 +3,79 @@ import ReactDOM from 'react-dom';
 import Logger from '../Logger';
 import Util from '../Util';
 
+/**
+ * Default React property interface for Stadia+ Components
+ */
 export interface DefaultProps {
 
 }
 
+/**
+ * Default React state interface for Stadia+ Components
+ */
 export interface DefaultState {
+    /**
+     * The current web renderer element, used to identify where an element should be in the DOM
+     * @default null
+     */
     renderer: HTMLElement | null
 }
 
+/**
+ * Abstract base component class for Stadia+ components, supports React.
+ *
+ * @abstract
+ * @augments React.Component
+ * @author Mafrans
+ * @example
+ * class ExampleComponent extends AbstractComponent<DefaultProps, DefaultState> {
+ *     constructor() {
+ *         super({ name: "Example Component" });
+ *     }
+ *
+ *     async onStart() {
+ *         Logger.info("Hello Stadia!");
+ *     }
+ * }
+ *
+ *
+ * @example
+ * \@ReactComponent
+ * class ExampleReactComponent extends AbstractComponent<DefaultProps, DefaultState> {
+ *     constructor() {
+ *         super({ name: "Example Component" });
+ *     }
+ *
+ *     async onStart() {
+ *         Logger.info("Hello Stadia!");
+ *     }
+ * }
+ *
+ */
 export default class AbstractComponent<A extends DefaultProps, B extends DefaultState> extends React.Component<A, B> {
 
+    /**
+     * Whether this component is a React component or not
+     * Do not edit directly, instead see {@link @ReactComponent}
+     * @see @ReactComponent
+     * @default false
+     */
     public __useReact = false;
+
+    /**
+     * The name of this component
+     * @default undefined
+     */
     public name: string;
 
-    constructor(data: { props?: A, name: string }) {
-        super(data.props !== undefined ? data.props : {} as A);
+    /**
+     * Base constructor for all components, includes
+     * @param {{ name: string }} data
+     * @param {A extends DefaultProps} props
+     * @see DefaultProps
+     */
+    constructor(data: { name: string }, props?: A) {
+        super(props !== undefined ? props : {} as A);
         this.name = data.name;
 
         // TODO: Not safe, find better solution
@@ -29,16 +87,27 @@ export default class AbstractComponent<A extends DefaultProps, B extends Default
         setInterval(() => this.__tick(), 1000);
     }
 
+    /**
+     * Internal method used to start components, overriding may cause issues.
+     * @see onStart
+     */
     public async __start() {
         Logger.component(`Component ${this.name} has been enabled`);
         this.onStart();
     }
 
+    /**
+     * Internal method used to update components, overriding may cause issues.
+     * @see onUpdate
+     */
     public async __tick() {
         console.log("tick");
         this.onUpdate();
     }
 
+    /**
+     * Updates the renderer state. Relies on heavy querying, so should be used as sparingly as possible.
+     */
     public async updateRenderer() {
         await Util.updateRenderer();
         if (this.__useReact) {
@@ -47,7 +116,7 @@ export default class AbstractComponent<A extends DefaultProps, B extends Default
     }
 
     /**
-     * @deprecated React render function, only override this if you're 100% sure you know what you're doing.
+     * @deprecated React render function, overriding may cause issues.
      * @see onRender
      */
     render() {
@@ -68,7 +137,36 @@ export default class AbstractComponent<A extends DefaultProps, B extends Default
         return null;
     }
 
+    /**
+     * Abstract async Start event, override for all your startup needs
+     * @example
+     * async onStart() {
+     *     console.log('This message is sent when the component is started');
+     * }
+     */
     async onStart(): Promise<void> {}
+
+    /**
+     * Abstract async Update event, override for all your continuous update needs
+     * @example
+     * async onUpdate() {
+     *     console.log('This message is sent every second');
+     * }
+     */
     async onUpdate(): Promise<void> {}
+
+    /**
+     * Abstract React Render event, override for all your react needs
+     * @return {{ query: string, node: React.ReactNode }} a response including the css query of the node's parent, as well as the JSX node.
+     * @example
+     * onRender(): { query: string; node: React.ReactNode } {
+     *     return {
+     *         query: '.CVVXfc',
+     *         node: (
+     *             <p>Hello Stadia!</p>
+     *         ),
+     *     }
+     * }
+     */
     onRender(): { query: string, node: React.ReactNode } | null { return null }
 }

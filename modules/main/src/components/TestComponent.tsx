@@ -8,9 +8,9 @@ export default class TestComponent extends AbstractComponent<DefaultProps, Defau
         super({ name: "Test Component" });
     }
 
-    async onStart(): Promise<void> {}
+    async onStart() {}
 
-    async onUpdate(): Promise<void> {
+    async onUpdate() {
         this.updateRenderer();
         console.log(this.__useReact);
     }

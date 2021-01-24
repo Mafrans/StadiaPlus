@@ -1,6 +1,9 @@
 export default class Util {
     static renderer: HTMLElement | null = null;
 
+    /**
+     * Finds and caches the current web renderer.
+     */
     static async updateRenderer(): Promise<void> {
         const renderers = document.querySelectorAll('.lhsE4e>c-wiz');
         let newRenderer = renderers.item(0) as HTMLElement;
