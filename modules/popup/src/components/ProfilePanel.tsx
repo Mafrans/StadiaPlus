@@ -1,7 +1,7 @@
 import React from 'react';
-import DBProfile from '../../shared/models/DBProfile';
+import DBProfile from '../../../shared/models/DBProfile';
 import GenericButton from './GenericButton';
-import StadiaPlusDB from '../../shared/StadiaPlusDB';
+import StadiaPlusDB from '../../../shared/StadiaPlusDB';
 import styled from 'styled-components';
 import tw from 'twin.macro';
 

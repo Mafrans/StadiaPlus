@@ -1,14 +1,14 @@
 import React from 'react';
-import Header from './Header';
+import Header from './components/Header';
 import StadiaPlusLogo from './assets/image/StadiaPlus.svg';
 import styled from 'styled-components';
 import tw from 'twin.macro';
-import GoogleButton from './GoogleButton';
+import GoogleButton from './components/GoogleButton';
 import StadiaPlusDB from '../../shared/StadiaPlusDB';
 import DBProfile from '../../shared/models/DBProfile';
-import ProfilePanel from './ProfilePanel';
-import UpdatePanel from './UpdatePanel';
-import { UpdateStatus } from './UpdateIcon';
+import ProfilePanel from './components/ProfilePanel';
+import UpdatePanel from './components/UpdatePanel';
+import { UpdateStatus } from './components/UpdateIcon';
 
 interface AppState {
     profile: DBProfile | null

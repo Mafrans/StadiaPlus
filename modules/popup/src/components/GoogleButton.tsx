@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import tw from 'twin.macro';
-import StadiaPlusDB from '../../shared/StadiaPlusDB';
-import DBProfile from '../../shared/models/DBProfile';
+import StadiaPlusDB from '../../../shared/StadiaPlusDB';
+import DBProfile from '../../../shared/models/DBProfile';
 
 interface GoogleButtonProps {
     visible?: boolean,
