@@ -1,10 +1,11 @@
 import Logger from '../main/src/Logger';
 import DBProfile from './models/DBProfile';
+import { Config } from './Config';
 
 export default class StadiaPlusDB {
     static url: string;
     static connected: boolean;
-    static authToken: string;
+    static authToken: string | null = null;
 
     static async connect(url: string) {
         Logger.info(`Connecting to ${url}`);
@@ -26,11 +27,7 @@ export default class StadiaPlusDB {
         }
     }
 
-    static async authenticate(): Promise<void> {
-        if (!this.isConnected()) {
-            Logger.error('Attempting to authenticate without being connected.');
-        }
-
+    static async googleSignIn(): Promise<void> {
         const url = `${this.url}/auth/google?redirect=${chrome.identity.getRedirectURL('database')}`;
         const responseUrl: string = await new Promise(resolve => chrome.identity.launchWebAuthFlow({
             url,
@@ -39,7 +36,24 @@ export default class StadiaPlusDB {
 
         const urlData = new URL(responseUrl);
         this.authToken = urlData.hash.substring(1);
-        // TODO: Store auth token in the local storage
+        await Config.AUTH_TOKEN.set(this.authToken);
+    }
+
+    static async authenticate(): Promise<boolean> {
+        if (!this.isConnected()) {
+            Logger.error('Attempting to authenticate without being connected.');
+        }
+
+        this.authToken = await Config.AUTH_TOKEN.get();
+
+        if (this.authToken !== null) {
+            if (await this.getProfile() === null) {
+                Logger.warning('Your authentication token is likely outdated, requesting a new one...');
+                await this.googleSignIn();
+            }
+            return true;
+        }
+        return false;
     }
 
     static signout(): Promise<unknown> {

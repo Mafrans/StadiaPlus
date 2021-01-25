@@ -37,9 +37,8 @@ export default class GoogleButton extends React.Component<GoogleButtonProps, any
     }
 
     async startSignIn() {
-        await StadiaPlusDB.authenticate();
+        await StadiaPlusDB.googleSignIn();
         const profile = await StadiaPlusDB.getProfile();
-        console.log({ profile });
         this.props.onAuthenticate(profile)
     }
 }
