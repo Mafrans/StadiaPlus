@@ -38,6 +38,7 @@
   ],
   "dependencies": {
     "@fontsource/material-icons": "^4.1.0",
+    "@fontsource/roboto": "^4.1.0",
     "@types/chrome": "0.0.128",
     "autoprefixer": "^10.2.3",
     "babel-plugin-tailwind-components": "^0.5.10",
