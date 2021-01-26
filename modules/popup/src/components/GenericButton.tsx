@@ -17,7 +17,6 @@ const Button = styled('button')`
         h-11
         border-none
         rounded-lg
-        text-sm
         cursor-pointer
     `}
     background-color: ${Theme.LIGHT_GRAY};
