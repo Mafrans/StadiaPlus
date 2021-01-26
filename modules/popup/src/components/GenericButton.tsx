@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import tw from 'twin.macro';
+import Theme from '../Theme';
 
 interface GenericButtonProps {
     icon?: string,
@@ -8,10 +9,24 @@ interface GenericButtonProps {
 }
 
 const Button = styled('button')`
-  ${tw`
-        
+    ${tw`
+        flex
+        items-center
+        justify-center
+        w-full
+        h-11
+        border-none
+        rounded-lg
+        text-sm
+        cursor-pointer
     `}
+    background-color: ${Theme.LIGHT_GRAY};
+    color: ${Theme.CHARCOAL};
 `;
+
+const Icon = styled('span')`
+    font-family: 'Material Icons', serif;
+`
 
 export default class GenericButton extends React.Component<GenericButtonProps, any> {
     constructor(props: any) {
@@ -27,6 +42,10 @@ export default class GenericButton extends React.Component<GenericButtonProps, a
                         : undefined
                 }
             >
+                {
+                    this.props.icon !== undefined
+                        ? <Icon>{this.props.icon}</Icon> : null
+                }
                 {this.props.children}
             </Button>
         );
