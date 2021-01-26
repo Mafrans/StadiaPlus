@@ -39,6 +39,7 @@ const IconWrapper = styled('div')`
         w-7 h-7
         box-border
         p-0.5
+        mr-4
     `}
 `
 
