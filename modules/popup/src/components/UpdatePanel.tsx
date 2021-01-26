@@ -67,7 +67,10 @@ export default class UpdatePanel extends React.Component<UpdatePanelProps, any> 
                             // TODO: Update games here!
                         }
                     }
-                    style={{ background: this.props.status.buttonBackground }}
+                    style={{
+                        background: this.props.status.buttonBackground,
+                        color: this.props.status.buttonTextColor,
+                    }}
                 >
                     {this.props.status.buttonText}
                 </GenericButton>

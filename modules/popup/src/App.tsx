@@ -47,9 +47,9 @@ export default class App extends React.Component<any, AppState> {
                             ? (
                                 <div>
                                     <UpdatePanel
-                                        status={ UpdateStatus.DONE }
-                                        title='All games updated'
-                                        description='Last update: Jan 25th, 08:37'
+                                        status={ UpdateStatus.WAITING }
+                                        title='Waiting...'
+                                        description='Start Stadia to begin using Stadia+'
                                     />
                                     <ProfilePanel profile={ this.state.profile } />
                                 </div>

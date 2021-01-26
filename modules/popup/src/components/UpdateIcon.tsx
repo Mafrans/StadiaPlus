@@ -9,6 +9,7 @@ export class UpdateStatus {
         iconBackground: '#E9EAEF',
         buttonIcon: 'play_arrow',
         buttonText: 'Start Stadia',
+        buttonTextColor: '#ffffff',
         buttonBackground: '-webkit-linear-gradient(45deg, #F54F29 0%, #EB4534 30%, #D02C53 70%, #B9166D 100%)',
     };
     static DO_UPDATE: UpdateStatus = {
@@ -17,6 +18,7 @@ export class UpdateStatus {
         iconBackground: '#FFEAB4',
         buttonIcon: 'sync',
         buttonText: 'Update Now',
+        buttonTextColor: '#ffffff',
         buttonBackground: '-webkit-linear-gradient(45deg, #F54F29 0%, #EB4534 30%, #D02C53 70%, #B9166D 100%)',
     };
     static ERRORED: UpdateStatus = {
@@ -39,6 +41,7 @@ export class UpdateStatus {
     iconBackground!: string;
     buttonIcon!: string;
     buttonText!: string;
+    buttonTextColor?: string;
     buttonBackground?: string;
 }
 
