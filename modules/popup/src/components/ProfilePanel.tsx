@@ -41,6 +41,14 @@ const ProfileName = styled('h3')`
         text-lg
         font-medium
     `}
+    color: ${Theme.CHARCOAL};
+`;
+
+const ProfileTag = styled('p')`
+    ${tw`
+        text-sm
+    `}
+    color: ${Theme.GRAY};
 `;
 
 export default class ProfilePanel extends React.Component<ProfilePanelProps, any> {
@@ -59,7 +67,7 @@ export default class ProfilePanel extends React.Component<ProfilePanelProps, any
 
                     <div>
                         <ProfileName>{this.props.profile.name}</ProfileName>
-                        <p>#{this.props.profile.tag}</p>
+                        <ProfileTag>#{this.props.profile.tag}</ProfileTag>
                     </div>
                 </ProfileInfoWrapper>
 
