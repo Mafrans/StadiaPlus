@@ -15,6 +15,7 @@ const HeaderWrapper = styled('div')`
         box-border
         flex
         items-center
+        mb-4
     `}
 `
 
