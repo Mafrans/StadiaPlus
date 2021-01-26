@@ -19,6 +19,7 @@ const Button = styled('button')`
         border-none
         rounded-lg
         cursor-pointer
+        mt-4
     `}
     background-color: ${Theme.LIGHT_GRAY};
     color: ${Theme.CHARCOAL};

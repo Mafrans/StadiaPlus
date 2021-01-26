@@ -23,7 +23,6 @@ const ProfileWrapper = styled('div')`
 const ProfileInfoWrapper = styled('div')`
     ${tw`
         flex
-        mb-4
     `}
 `;
 

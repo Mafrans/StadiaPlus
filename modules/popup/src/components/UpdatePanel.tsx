@@ -26,7 +26,6 @@ const PanelInfo = styled('div')`
     ${tw`
         flex
         items-center
-        mb-4
     `}
 `;
 

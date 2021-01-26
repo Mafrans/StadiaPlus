@@ -15,7 +15,7 @@ interface PostLoginPageProps {
 const SupportText = styled('p')`
   ${tw`
         text-sm
-        mt-2
+        mb-2
     `}
   color: ${Theme.GRAY};
 `;
@@ -34,6 +34,11 @@ export default class PostLoginPage extends React.Component<PostLoginPageProps, a
                     description='Start Stadia to begin using Stadia+'
                 />
                 <ProfilePanel profile={this.props.profile} />
+                <SupportText>
+                    I'm a high school student and Stadia+ isn't free to host.
+                    If you have a dollar to spare, please consider supporting
+                    me on Patreon or Ko.fi
+                </SupportText>
                 <GenericButton
                     style={{
                         backgroundColor: Theme.TOMATO,
@@ -43,11 +48,6 @@ export default class PostLoginPage extends React.Component<PostLoginPageProps, a
                 >
                     Support Stadia+
                 </GenericButton>
-                <SupportText>
-                    I'm a high school student and Stadia+ isn't free to host.
-                    If you have a dollar to spare, please consider supporting
-                    me on Patreon or Ko.fi
-                </SupportText>
             </div>
         );
     }
