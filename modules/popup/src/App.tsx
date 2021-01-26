@@ -9,6 +9,8 @@ import DBProfile from '../../shared/models/DBProfile';
 import ProfilePanel from './components/ProfilePanel';
 import UpdatePanel from './components/UpdatePanel';
 import { UpdateStatus } from './components/UpdateIcon';
+import LoginPage from './LoginPage';
+import PostLoginPage from './PostLoginPage';
 
 interface AppState {
     profile?: DBProfile | null
@@ -44,20 +46,8 @@ export default class App extends React.Component<any, AppState> {
 
                     {
                         this.state.profile !== null
-                            ? (
-                                <div>
-                                    <UpdatePanel
-                                        status={ UpdateStatus.WAITING }
-                                        title='Waiting...'
-                                        description='Start Stadia to begin using Stadia+'
-                                    />
-                                    <ProfilePanel profile={ this.state.profile } />
-                                </div>
-                            )
-                            : <GoogleButton
-                                // visible={ this.state.profile === null }
-                                onAuthenticate={ this.onAuthenticate.bind(this) }
-                            />
+                            ? <PostLoginPage profile={this.state.profile} />
+                            : <LoginPage onAuthenticate={this.onAuthenticate.bind(this)}/>
                     }
 
                 </AppWrapper>
