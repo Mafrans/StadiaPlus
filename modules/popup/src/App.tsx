@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from './components/Header';
-import StadiaPlusLogo from './assets/image/StadiaPlus.svg';
+import FullLogo from './assets/image/FullLogo.svg';
 import styled from 'styled-components';
 import tw from 'twin.macro';
 import GoogleButton from './components/GoogleButton';
@@ -9,7 +9,6 @@ import DBProfile from '../../shared/models/DBProfile';
 import ProfilePanel from './components/ProfilePanel';
 import UpdatePanel from './components/UpdatePanel';
 import { UpdateStatus } from './components/UpdateIcon';
-import Theme from './Theme';
 
 interface AppState {
     profile?: DBProfile | null
@@ -41,7 +40,7 @@ export default class App extends React.Component<any, AppState> {
         if (this.state.profile !== undefined) {
             return (
                 <AppWrapper>
-                    <Header icon={{ src: StadiaPlusLogo, alt: 'Stadia+ Logo' }} title='Stadia+' />
+                    <Header icon={{ src: FullLogo, alt: 'Stadia+ Logo' }} />
 
                     {
                         this.state.profile !== null

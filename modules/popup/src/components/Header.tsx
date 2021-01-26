@@ -7,7 +7,7 @@ interface HeaderProps {
         src: string,
         alt: string,
     },
-    title: string,
+    title?: string,
 }
 
 const HeaderWrapper = styled('div')`
@@ -47,7 +47,11 @@ export default class Header extends React.Component<HeaderProps, any> {
         return (
             <HeaderWrapper>
                 <LogoImage src={this.props.icon.src} alt={this.props.icon.alt}/>
-                <LogoHeading>{this.props.title}</LogoHeading>
+                {
+                    this.props.title !== undefined
+                        ? <LogoHeading>{this.props.title}</LogoHeading>
+                        : null
+                }
             </HeaderWrapper>
         );
     }
