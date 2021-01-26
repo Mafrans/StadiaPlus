@@ -56,7 +56,7 @@ export default class UpdateIcon extends React.Component<UpdateIconProps, any> {
         return (
             <div>
                 <IconWrapper style={{ backgroundColor: this.props.status.iconBackground }}>
-                    <Icon className='material_icons' style={{ color: this.props.status.iconColor }}>{ this.props.status.icon }</Icon>
+                    <Icon style={{ color: this.props.status.iconColor }}>{ this.props.status.icon }</Icon>
                 </IconWrapper>
             </div>
         );
