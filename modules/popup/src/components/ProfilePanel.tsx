@@ -36,6 +36,7 @@ export default class ProfilePanel extends React.Component<ProfilePanelProps, any
                 </ProfileInfo>
 
                 <GenericButton
+                    icon='person'
                     onClick={
                         () => {
                             window.open(`${StadiaPlusDB.url}/profile/${this.props.profile.name}/${this.props.profile.tag}`);
