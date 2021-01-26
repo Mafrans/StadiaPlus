@@ -3,6 +3,8 @@ import UpdateIcon, { UpdateStatus } from './UpdateIcon';
 import styled from 'styled-components';
 import tw from 'twin.macro';
 import Theme from '../Theme';
+import StadiaPlusDB from '../../../shared/StadiaPlusDB';
+import GenericButton from './GenericButton';
 
 interface UpdatePanelProps {
     status: UpdateStatus,
@@ -24,6 +26,7 @@ const PanelInfo = styled('div')`
     ${tw`
         flex
         items-center
+        mb-4
     `}
 `;
 
@@ -50,12 +53,24 @@ export default class UpdatePanel extends React.Component<UpdatePanelProps, any> 
         return (
             <PanelWrapper>
                 <PanelInfo>
-                    <UpdateIcon status={UpdateStatus.ERRORED} />
+                    <UpdateIcon status={this.props.status} />
                     <div>
                         <InfoHeading>{ this.props.title }</InfoHeading>
                         <InfoSubheading>{ this.props.description }</InfoSubheading>
                     </div>
                 </PanelInfo>
+
+                <GenericButton
+                    icon={this.props.status.buttonIcon}
+                    onClick={
+                        () => {
+                            // TODO: Update games here!
+                        }
+                    }
+                    style={{ background: this.props.status.buttonBackground }}
+                >
+                    {this.props.status.buttonText}
+                </GenericButton>
             </PanelWrapper>
         );
     }

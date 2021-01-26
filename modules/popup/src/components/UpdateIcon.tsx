@@ -6,27 +6,40 @@ export class UpdateStatus {
     static WAITING: UpdateStatus = {
         icon: 'more_horiz',
         iconColor: '#BFC1CC',
-        iconBackground: '#E9EAEF'
+        iconBackground: '#E9EAEF',
+        buttonIcon: 'play_arrow',
+        buttonText: 'Start Stadia',
+        buttonBackground: '-webkit-linear-gradient(45deg, #F54F29 0%, #EB4534 30%, #D02C53 70%, #B9166D 100%)',
     };
     static DO_UPDATE: UpdateStatus = {
         icon: 'priority_high',
         iconColor: '#D39A29',
-        iconBackground: '#FFEAB4'
+        iconBackground: '#FFEAB4',
+        buttonIcon: 'sync',
+        buttonText: 'Update Now',
+        buttonBackground: '-webkit-linear-gradient(45deg, #F54F29 0%, #EB4534 30%, #D02C53 70%, #B9166D 100%)',
     };
     static ERRORED: UpdateStatus = {
         icon: 'close',
         iconColor: '#DF5151',
-        iconBackground: '#FFDEDE'
+        iconBackground: '#FFDEDE',
+        buttonIcon: 'refresh',
+        buttonText: 'Try Again',
     };
     static DONE: UpdateStatus = {
         icon: 'done',
         iconColor: '#66C164',
-        iconBackground: '#D2FFD1'
+        iconBackground: '#D2FFD1',
+        buttonIcon: 'refresh',
+        buttonText: 'Update Again',
     };
 
     icon!: string;
     iconColor!: string;
     iconBackground!: string;
+    buttonIcon!: string;
+    buttonText!: string;
+    buttonBackground?: string;
 }
 
 interface UpdateIconProps {

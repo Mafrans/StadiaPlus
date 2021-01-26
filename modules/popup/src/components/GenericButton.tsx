@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import styled from 'styled-components';
 import tw from 'twin.macro';
 import Theme from '../Theme';
 
 interface GenericButtonProps {
     icon?: string,
+    style?: CSSProperties,
     onClick?: (event: React.MouseEvent) => void
 }
 
@@ -35,6 +36,7 @@ export default class GenericButton extends React.Component<GenericButtonProps, a
     render() {
         return (
             <Button
+                style={this.props.style}
                 onClick={
                     this.props.onClick !== undefined
                         ? this.props.onClick.bind(this)
