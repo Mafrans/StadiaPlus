@@ -25,10 +25,12 @@ export default class App extends React.Component<any, AppState> {
         this.checkAuthenticated().then(this.onAuthenticate.bind(this));
     }
 
-    async checkAuthenticated() {
+    async checkAuthenticated(): Promise<DBProfile | null> {
         await StadiaPlusDB.connect('https://stadiaplus.dev');
-        await StadiaPlusDB.authenticate();
-        return await StadiaPlusDB.getProfile();
+        if (await StadiaPlusDB.authenticate()) {
+            return await StadiaPlusDB.getProfile();
+        }
+        return null;
     }
 
     render() {

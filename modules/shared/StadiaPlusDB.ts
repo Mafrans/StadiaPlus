@@ -10,21 +10,48 @@ export default class StadiaPlusDB {
     static async connect(url: string) {
         Logger.info(`Connecting to ${url}`);
         this.url = url;
-        this.connected = await this.testConnection();
+        this.connected = await this.checkConnected();
         return this.connected;
     }
 
-    static async testConnection(): Promise<boolean> {
+    static async checkConnected(): Promise<boolean> {
         try {
             const response = await fetch(`${this.url}/api/ping`);
 
-            return response !== null
-                && response !== undefined
-                && response.body !== null;
+            if(response === null) {
+                return false;
+            }
+
+            console.log('c', response.body);
+            const json = await response.json();
+            console.log('c', json);
+            if(json.hasOwnProperty('connected')) {
+                return json.connected;
+            }
         } catch (e) {
             Logger.error(e);
-            return false;
         }
+        return false;
+    }
+
+    static async checkAuthenticated(): Promise<boolean> {
+        try {
+            const response = await fetch(`${this.url}/api/ping?token=${this.authToken}`);
+
+            if(response === null) {
+                return false;
+            }
+
+            console.log(response.body);
+            const json = await response.json();
+            console.log(json);
+            if(json.hasOwnProperty('authenticated')) {
+                return json.authenticated;
+            }
+        } catch (e) {
+            Logger.error(e);
+        }
+        return false;
     }
 
     static async googleSignIn(): Promise<void> {
@@ -47,9 +74,9 @@ export default class StadiaPlusDB {
         this.authToken = await Config.AUTH_TOKEN.get();
 
         if (this.authToken !== null) {
-            if (await this.getProfile() === null) {
-                Logger.warning('Your authentication token is likely outdated, requesting a new one...');
-                await this.googleSignIn();
+            if (!await this.checkAuthenticated()) {
+                Logger.warning('Your authentication token is outdated');
+                return false;
             }
             return true;
         }
