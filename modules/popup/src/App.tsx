@@ -9,13 +9,17 @@ import DBProfile from '../../shared/models/DBProfile';
 import ProfilePanel from './components/ProfilePanel';
 import UpdatePanel from './components/UpdatePanel';
 import { UpdateStatus } from './components/UpdateIcon';
+import Theme from './Theme';
 
 interface AppState {
     profile?: DBProfile | null
 }
 
 const AppWrapper = styled('div')`
-    ${tw``}
+    ${tw`
+        w-80
+        p-4
+    `}
 `;
 
 export default class App extends React.Component<any, AppState> {
