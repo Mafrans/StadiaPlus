@@ -7,7 +7,8 @@
 </template>
 
 <script>
-import { Select, SelectStyle } from '../../../ui/Select';
+import { Select } from '../../../ui/Select';
+import { SelectStyle } from '../../../models/SelectStyle';
 import { Language } from '../../../Language';
 export default {
     props: ['placeholder', 'items', 'selectstyle', 'selected'],
@@ -23,7 +24,7 @@ export default {
         });
 
         if(this.selected !== undefined) {
-            select.set(this.selected.tag);
+            select.select(this.selected.tag);
         }
     },
 };

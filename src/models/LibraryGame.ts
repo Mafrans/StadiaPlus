@@ -28,47 +28,42 @@ export class LibraryGame {
 
         if (Util.isInHome()) {
             const tile = Array.from(document.querySelectorAll('.GqLi4d')).find((tile) => tile.getAttribute('jsdata')?.includes(this.gameId)) as HTMLDivElement;
+            this.name = this.getName(tile);
             this.createTile(tile);
         }
     }
 
-    createTile(tile: HTMLDivElement) {
+    getName(tile: HTMLDivElement): string {
+        if(tile === undefined || tile.parentElement === null) return 'undefined';
+        
+        return tile.querySelector('h3.xmcLFc')?.textContent as string
+    }
+
+    createTile(tile: HTMLDivElement): void {
         if(tile === undefined || tile.parentElement === null) return;
 
         this.card = $el('div')
             .class({ 'stadiaplus_libraryfilter-game': true })
-            .attr({ uuid: this.uuid }).element as HTMLDivElement;
+            .attr({ uuid: this.uuid, name: this.name }).element as HTMLDivElement;
         tile.parentElement.prepend(this.card);
         this.card.prepend(tile);
 
         const dropdown = this.getMoreDropdown();
-        const { element } = $el('div')
+        $el('div')
             .class({ 'more-icon': true })
             .child(
                 $el('i')
                     .class({ 'material-icons-extended': true })
                     .text('more_vert'),
             )
-            .child(dropdown);
-
-        element.addEventListener('mousedown', () => {
-            if (this.card !== undefined) {
-                this.card.style.pointerEvents = 'none';
-            }
-        });
-
-        window.addEventListener('mouseup', () => {
-            if (this.card !== undefined) {
-                if (this.card.style.pointerEvents === 'none') {
-                    this.card.style.pointerEvents = '';
-                    setTimeout(() => {
-                        dropdown.element.classList.add('selected');
-                    }, 100);
+            .event({
+                click: (event) => {
+                    dropdown.class({selected: true });
+                    event.stopPropagation();
                 }
-            }
-        });
-
-        this.card.appendChild(element);
+            })
+            .child(dropdown)
+            .appendTo(this.card);
     }
 
     getMoreDropdown(): ElGen {
@@ -76,6 +71,7 @@ export class LibraryGame {
             .class({
                 'stadiaplus_libraryfilter-dropdown': true,
             })
+            .css({ 'z-index': '2' })
             .child(
                 $el('div')
                     .child(
@@ -91,7 +87,7 @@ export class LibraryGame {
                             .text(Language.get('library-filter.get-shortcut')),
                     )
                     .event({
-                        click: ( event) => {
+                        click: (event) => {
                             window.open(
                                 `https://stadiaicons.web.app/${this.uuid}/?fullName=${encodeURIComponent(this.name)}`,
                                 '_blank',
@@ -140,7 +136,6 @@ export class LibraryGame {
                             void this.libraryFilter.saveGameData();
                             this.libraryFilter.updateVisibility();
                             element.class({ selected: false });
-
                             event.stopPropagation();
                         },
                     }),

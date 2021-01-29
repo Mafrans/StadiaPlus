@@ -1,6 +1,7 @@
 const path = require('path');
 const TypedocWebpackPlugin = require('typedoc-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = (env) => ({
     entry: {
@@ -71,6 +72,10 @@ module.exports = (env) => ({
             mode: 'file',
             out: './docs',
         }, './src'),
+        new HtmlWebpackPlugin({
+            chunks: ['popup'],
+            filename: 'popup.html',
+        }),
     ],
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],

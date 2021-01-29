@@ -5,7 +5,7 @@
         </transition>
 
         <footer>
-            <span>Stadia+ 2.5.6</span>
+            <span>Stadia+ 2.5.8</span>
             <span>
                 <a href="https://github.com/Mafrans/StadiaPlus/wiki" target="_blank">{{ Language.get('popup.main-page.help-and-faq') }}</a>
                  • 
@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import './assets/global.css';
 import HelloWorld from './components/HelloWorld.vue';
 import MainPage from './MainPage.vue';
 import SelectBox from './components/SelectBox.vue';

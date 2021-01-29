@@ -45,7 +45,7 @@ import SelectBox from './components/SelectBox.vue';
 import PageButton from './components/PageButton.vue';
 import { Language } from '../../Language';
 import logo from './assets/logo.png';
-import { SelectStyle } from '../../ui/Select';
+import { SelectStyle } from '../../models/SelectStyle';
 import { SyncStorage } from '../../Storage';
 export default {
     data() {

@@ -365,7 +365,9 @@
         }
 
         &.hidden {
-            opacity: 0.5;
+            >.GqLi4d {
+                opacity: 0.5;
+            }
         }
 
         >div:not(.more-icon),

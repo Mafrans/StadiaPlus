@@ -30,6 +30,13 @@
             "accept-label": "Registrandoti a Stadia+ DB accetti le",
             "privacy-policy": "privacy policy"
         },
+        "wipe-data-page": {
+            "title": "Wipe Data",
+            "heading": "Really wipe your data?",
+            "text": "Wiping your user data from Stadia+ DB means your profile will no longer be available, and your data will be completely gone from the Stadia+ DB database. <br><br> This does not effect your Stadia profile, and all your game data will still be available in Stadia.",
+            "confirm": "Yes, wipe my data",
+            "cancel": "No, I changed my mind"
+        },
         "settings-page": {
             "title": "Impostazioni",
             "language": "Lingua",

@@ -79,7 +79,7 @@ export class ComponentLoader {
             this.components.forEach((component) => {
                 if (component.active) component.onUpdate();
             });
-        }, 1000);
+        }, 1000) as unknown as number;
     }
 
     private stopTimer() {
