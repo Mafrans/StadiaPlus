@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import './assets/global.css';
 import HelloWorld from './components/HelloWorld.vue';
 import MainPage from './MainPage.vue';
 import SelectBox from './components/SelectBox.vue';

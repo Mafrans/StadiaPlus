@@ -23,15 +23,20 @@ const routes = [
 
 const router = new VueRouter({
     base: 'dist/popup.html', // taken from manifest.json
-    mode: 'history',
+    // mode: 'history',
     routes, // short for `routes: routes`
 });
 
 // Always load languages first
 Language.init();
-Language.load(() => {
+Language.load().then(() => {
+    console.log("new Vue")
+
+    const app = document.createElement('div');
+    document.body.appendChild(app);
+
     new Vue({
         router,
         render: (h) => h(App),
-    }).$mount('#app');
+    }).$mount(app);
 });
