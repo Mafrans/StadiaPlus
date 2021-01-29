@@ -31,11 +31,11 @@
             "privacy-policy": "politique de confidentialité"
         },
         "wipe-data-page": {
-            "title": "Wipe Data",
-            "heading": "Really wipe your data?",
-            "text": "Wiping your user data from Stadia+ DB means your profile will no longer be available, and your data will be completely gone from the Stadia+ DB database. <br><br> This does not effect your Stadia profile, and all your game data will still be available in Stadia.",
-            "confirm": "Yes, wipe my data",
-            "cancel": "No, I changed my mind"
+            "title": "Effacer les données",
+            "heading": "Voulez-vous vraiment effacer toutes vos données ?",
+            "text": "Effacer vos données stoquées sur Stadia+ DB supprimera votre profil sur le site, et vos données seront entièrement supprimées de la base de données Stadia+ DB.<br><br>Ceci n'aura aucun effet sur votre profil Stadia et vos jeux resteront disponibles sur la plateforme Stadia.",
+            "confirm": "Oui, effacer mes données",
+            "cancel": "Non, j'ai changé·e d'avis"
         },
         "settings-page": {
             "title": "Paramètres",
@@ -145,6 +145,9 @@
         "reload-to-update": "Rechargez la page pour voir vos modifications.",
         "hide-game": "Un jeu a été caché.",
         "show-game": "Un jeu n'est plus caché."
+    },
+    "profile": {
+        "name": "Profil"
     },
     "automatic": "Automatique",
     "vp9": "VP9",
