@@ -375,7 +375,7 @@ export class LibraryFilter extends Component {
         const root = $sel(
             this.renderer.querySelector('.f2pfBf') as HTMLElement,
         );
-        root.id( this.id )
+        root.id(this.id)
             .class({'stadiaplus_libraryfilter-wrapper': true});
         const barContainer = root.$sel('.lEPylf:first-child');
 
@@ -468,14 +468,15 @@ export class LibraryFilter extends Component {
                     })
                     .child(
                         $el('button')
-                            .class({ 'stadiaplus_libraryfilter-button': true })
+                            .class({'stadiaplus_libraryfilter-button': true})
                             .event({
                                 click: (event) => {
-                                    this.renderer?.querySelectorAll(
-                                        '.stadiaplus_libraryfilter-wrapper'
-                                    ).forEach((element) => {
-                                        element.classList.toggle( 'searchcolumn-shown' );
-                                    });
+                                    this.renderer
+                                        ?.querySelectorAll(
+                                            '.stadiaplus_libraryfilter-wrapper'
+                                        ).forEach((element) => {
+                                            element.classList.toggle( 'searchcolumn-shown' );
+                                        });
 
                                     event.stopPropagation();
                                 },
@@ -486,7 +487,7 @@ export class LibraryFilter extends Component {
                                         'material-icons-extended': true,
                                         'searchcolumn-toggle-icon-search': true
                                     })
-                                    .text('search')
+                                    .text('search'),
                             )
                             .child(
                                 $el('i')
@@ -494,9 +495,9 @@ export class LibraryFilter extends Component {
                                         'material-icons-extended': true,
                                         'searchcolumn-toggle-icon-back': true
                                     })
-                                    .text('arrow_back')
-                            )
-                    )
+                                    .text('arrow_back'),
+                            ),
+                    ),
             )
             .child(
                 $el('div')
