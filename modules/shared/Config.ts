@@ -55,7 +55,7 @@ export class ConfigEntry<T> {
 }
 
 export class Config {
-    static GAMES_UPDATED = new ConfigEntry<string[]>('games-updated', ConfigType.SYNC);
+    static GAME_UPDATES = new ConfigEntry<string[]>('games-updated', ConfigType.SYNC);
     static GAMES = new ConfigEntry<{[uuid: string]: DBGame}>('games', ConfigType.LOCAL);
     static AUTH_TOKEN = new ConfigEntry<string>('auth-token', ConfigType.LOCAL);
 }

@@ -31,9 +31,9 @@ export default class App extends React.Component<any, AppState> {
     }
 
     async checkAuthenticated(): Promise<DBProfile | null> {
-        await StadiaPlusDB.connect('https://stadiaplus.dev');
+        await StadiaPlusDB.connect('http://localhost:3000');
         if (await StadiaPlusDB.authenticate()) {
-            return await StadiaPlusDB.getProfile();
+            return await StadiaPlusDB.getOwnProfile();
         }
         return null;
     }

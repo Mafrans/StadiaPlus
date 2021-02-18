@@ -61,11 +61,11 @@ export default class ProfilePanel extends React.Component<ProfilePanelProps, any
                 <ProfileInfoWrapper>
                     <ProfileImage
                         src={this.props.profile.avatar}
-                        alt={`${this.props.profile.name}'s Avatar`}
+                        alt={`${this.props.profile.username}'s Avatar`}
                     />
 
                     <div>
-                        <ProfileName>{this.props.profile.name}</ProfileName>
+                        <ProfileName>{this.props.profile.username}</ProfileName>
                         <ProfileTag>#{this.props.profile.tag}</ProfileTag>
                     </div>
                 </ProfileInfoWrapper>
@@ -74,7 +74,7 @@ export default class ProfilePanel extends React.Component<ProfilePanelProps, any
                     icon='person'
                     onClick={
                         () => {
-                            window.open(`${StadiaPlusDB.url}/profile/${this.props.profile.name}/${this.props.profile.tag}`);
+                            window.open(`${StadiaPlusDB.url}/profile/${this.props.profile.username}/${this.props.profile.tag}`);
                         }
                     }
                 >

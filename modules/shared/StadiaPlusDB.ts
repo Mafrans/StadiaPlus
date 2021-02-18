@@ -18,14 +18,14 @@ export default class StadiaPlusDB {
         try {
             const response = await fetch(`${this.url}/api/ping`);
 
-            if(response === null) {
+            if (response === null) {
                 return false;
             }
 
             console.log('c', response.body);
             const json = await response.json();
             console.log('c', json);
-            if(json.hasOwnProperty('connected')) {
+            if (json.hasOwnProperty('connected')) {
                 return json.connected;
             }
         } catch (e) {
@@ -38,14 +38,14 @@ export default class StadiaPlusDB {
         try {
             const response = await fetch(`${this.url}/api/ping?token=${this.authToken}`);
 
-            if(response === null) {
+            if (response === null) {
                 return false;
             }
 
             console.log(response.body);
             const json = await response.json();
             console.log(json);
-            if(json.hasOwnProperty('authenticated')) {
+            if (json.hasOwnProperty('authenticated')) {
                 return json.authenticated;
             }
         } catch (e) {
@@ -97,7 +97,7 @@ export default class StadiaPlusDB {
         });
     }
 
-    static async getProfile(): Promise<DBProfile | null> {
+    static async getOwnProfile(): Promise<DBProfile | null> {
         if (!this.connected) {
             Logger.warning('Trying to run getProfile() without being connected!');
             return null;
@@ -117,6 +117,37 @@ export default class StadiaPlusDB {
             return null;
         }
 
+        if(JSON.stringify(json) == '{}') { // Hacky fix, useful because {} is not equal to {}
+            return null;
+        }
+
+        return json;
+    }
+
+    static async getOtherProfile(name: string, tag: string): Promise<DBProfile | null> {
+        if (!this.connected) {
+            Logger.warning('Trying to run getProfile() without being connected!');
+            return null;
+        }
+
+        let response;
+        try {
+            response = await fetch(`${this.url}/api/profile/${name}/${tag}`);
+        } catch (e) {
+            Logger.error(e);
+            return null;
+        }
+
+        const json = await response.json();
+        if (json.hasOwnProperty('error')) {
+            Logger.error(json.error);
+            return null;
+        }
+
+        if(JSON.stringify(json) == '{}') { // Hacky fix, useful because {} is not equal to {}
+            return null;
+        }
+
         return json;
     }
 
@@ -126,5 +157,25 @@ export default class StadiaPlusDB {
 
     static isAuthenticated(): boolean {
         return StadiaPlusDB.isConnected() && StadiaPlusDB.authToken != null;
+    }
+
+    static async updateDBProfile(profile: DBProfile) {
+        if (!StadiaPlusDB.isConnected()) {
+            return new Promise((resolve, reject) => reject({ error: 'Not connected to the StadiaPlusDB database' }));
+        }
+        if (!StadiaPlusDB.isAuthenticated()) {
+            return new Promise((resolve, reject) => reject({ error: 'Not authenticated with StadiaPlusDB' }));
+        }
+
+        const response = await fetch(`${StadiaPlusDB.url}/api/update`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                token: this.authToken,
+                profile
+            }),
+        });
     }
 }

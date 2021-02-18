@@ -83,8 +83,9 @@ export default class AbstractComponent<A extends DefaultProps, B extends Default
             renderer: null
         } as B
 
-        this.__start();
-        setInterval(() => this.__tick(), 1000);
+        this.__start().then(() => {
+            setInterval(this.__tick.bind(this), 1000)
+        });
     }
 
     /**
@@ -93,7 +94,7 @@ export default class AbstractComponent<A extends DefaultProps, B extends Default
      */
     public async __start() {
         Logger.component(`Component ${this.name} has been enabled`);
-        this.onStart();
+        await this.onStart();
     }
 
     /**
@@ -101,8 +102,7 @@ export default class AbstractComponent<A extends DefaultProps, B extends Default
      * @see onUpdate
      */
     public async __tick() {
-        console.log("tick");
-        this.onUpdate();
+        await this.onUpdate();
     }
 
     /**

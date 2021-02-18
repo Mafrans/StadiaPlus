@@ -5,6 +5,7 @@ import tw from 'twin.macro';
 import Theme from '../Theme';
 import StadiaPlusDB from '../../../shared/StadiaPlusDB';
 import GenericButton from './GenericButton';
+import { PageQueryType } from '../../../shared/models/PageQueryType';
 
 interface UpdatePanelProps {
     status: UpdateStatus,
@@ -63,7 +64,11 @@ export default class UpdatePanel extends React.Component<UpdatePanelProps, any> 
                     icon={this.props.status.buttonIcon}
                     onClick={
                         () => {
-                            // TODO: Update games here!
+                            // switch (this.props.status) {
+                            //     case UpdateStatus.DO_UPDATE
+                            // }
+
+                            window.open(`https://stadia.google.com?pqt=${PageQueryType.UPDATE}`);
                         }
                     }
                     style={{
