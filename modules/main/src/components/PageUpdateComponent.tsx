@@ -33,13 +33,14 @@ export default class PageUpdateComponent extends AbstractComponent<DefaultProps,
 
     constructor() {
         super({ name: 'Page Update Component' });
-        this.setState(() => ({
+        this.state = {
+            renderer: null,
             userId: null,
             finished: false,
             progress: 0,
             goal: 0,
             games: [],
-        }));
+        };
     }
 
     async onStart() {
@@ -130,10 +131,10 @@ export default class PageUpdateComponent extends AbstractComponent<DefaultProps,
 
         return ReactDOM.createPortal(
             <Wrapper>
-                <Heading>Syncing your games...</Heading>
+                <Heading>Syncing your games... ({this.state.goal})</Heading>
 
                 <GameGrid
-                    style={{ gridTemplateColumns: `repeat(${Math.ceil(Math.sqrt(this.state.goal))}, minmax(0, 1fr));` }}
+                    style={{ gridTemplateColumns: `repeat(${Math.ceil(Math.sqrt(this.state.goal))}, minmax(0, 1fr))` }}
                 >
                     {
                         this.state.games === undefined
