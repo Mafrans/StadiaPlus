@@ -5,12 +5,14 @@ import Util from './Util';
 import PageUpdateComponent from './components/PageUpdateComponent';
 import StadiaPlusDB from '../../shared/StadiaPlusDB';
 import GameUpdateComponent from './components/GameUpdateComponent';
+import { StadiaGameDB } from './StadiaGameDB';
 
 console.log("main2");
 
-window.addEventListener('load', async () => {
+document.addEventListener('DOMContentLoaded', async () => {
     await StadiaPlusDB.connect('http://localhost:3000');
     await StadiaPlusDB.authenticate();
+    await StadiaGameDB.update();
     await Util.updateRenderer();
 
     const root = document.createElement('div');

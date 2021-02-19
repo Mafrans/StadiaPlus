@@ -12,11 +12,15 @@ import StadiaPlusDB from '../../../shared/StadiaPlusDB';
 import ReactDOM from 'react-dom';
 import { PageQueryType } from '../../../shared/models/PageQueryType';
 import Logger from '../Logger';
+import { StadiaGameDB } from '../StadiaGameDB';
+import GamePanel from './subcomponents/GamePanel';
 
 interface GameUpdateComponentState extends DefaultState {
+    userId: string | null
     finished: boolean
     progress: number
-    goal: number
+    goal: number,
+    games: { name: string, poster: string | null }[],
 }
 
 @ReactComponent
@@ -30,9 +34,11 @@ export default class PageUpdateComponent extends AbstractComponent<DefaultProps,
     constructor() {
         super({ name: "Page Update Component" });
         this.setState(() => ({
+            userId: null,
             finished: false,
             progress: 0,
-            goal: 0
+            goal: 0,
+            games: []
         }));
     }
 
@@ -45,26 +51,44 @@ export default class PageUpdateComponent extends AbstractComponent<DefaultProps,
             return;
         }
 
-        const profile = await StadiaPlusDB.getOwnProfile();
-        this.profile = profile !== null ? new DBProfile(profile) : this.profile
+        this.setupVariables();
 
-        const remainingIds = await Config.GAME_UPDATES.get();
-        this.remainingIds = remainingIds !== null ? remainingIds : [];
+        document.querySelectorAll('body>*:not(#stadiaplus-root)')
+            .forEach(element => {
+                if(element instanceof HTMLElement) {
+                    element.style.display = 'none';
+                }
+            });
 
-        this.setState(() => ({
-            goal: this.remainingIds.length
-        }))
+        // After some experimentation, it seems like 3000ms is the optimal interval for updating games.
+        // It's fast enough to update games in somewhat of an efficient fashion,
+        // but slow enough for the user not to get stuck in the ratelimit.
+        setInterval(this.nextGame.bind(this), 3000)
+    }
+
+    async setupVariables() {
+        await this.updateProfile()
+        await this.updateRemainingIds()
 
         // For whatever reason, this HAS to be placed below any `await` calls
         this.userId = document.querySelector('.ksZYgc.VGZcUb')!.getAttribute('data-player-id');
 
-        document.querySelectorAll('body>*:not(#stadiaplus-root)').forEach(element => element.remove());
+        document.querySelectorAll('body>*:not(#stadiaplus-root)')
+            .forEach(element => element.remove());
+    }
 
-        // After some experimentation, it seems like 3000ms is the optimal interval for updating games.
-        //
-        // It's fast enough to update games in somewhat of an efficient fashion,
-        // but slow enough for the user not to get stuck in the ratelimit.
-        setInterval(this.nextGame.bind(this), 3000)
+    async updateProfile() {
+        const _profile = await StadiaPlusDB.getOwnProfile();
+        this.profile = _profile !== null ? new DBProfile(_profile) : this.profile
+    }
+
+    async updateRemainingIds() {
+        const _remainingIds = await Config.GAME_UPDATES.get();
+        this.remainingIds = _remainingIds !== null ? _remainingIds : [];
+
+        this.setState(() => ({
+            goal: this.remainingIds.length
+        }))
     }
 
     async nextGame() {
@@ -77,12 +101,29 @@ export default class PageUpdateComponent extends AbstractComponent<DefaultProps,
         }
         else if (!this.cooldown) {
             const gameId = this.remainingIds.pop() as string;
-            await this.profile.fetchGame(this.userId, gameId);
+            const game = await this.profile.fetchGame(this.userId, gameId);
 
-            // Add 1 because we're working on the n+1th item
+            if(game == null) {
+                // Try again until it works
+                this.remainingIds.unshift(gameId);
+                return;
+            }
+
+            const dbGame = await StadiaGameDB.get(gameId);
+            console.log({ dbGame })
+            const gameEntry = {
+                name: game !== null ? game.name : '',
+                poster: dbGame !== undefined ? dbGame.img : ''
+            };
+
+
+            const _games = this.state.games !== undefined ? this.state.games : [];
+            _games.push(gameEntry);
+            // We're working on the n+1th item
             this.setState(state => ({
-                progress: state.goal + 1 - this.remainingIds.length
-            }))
+                progress: state.goal + 1 - this.remainingIds.length,
+                games: _games,
+            }));
         }
     }
 
@@ -92,6 +133,17 @@ export default class PageUpdateComponent extends AbstractComponent<DefaultProps,
         return ReactDOM.createPortal(
             <Wrapper>
                 <Heading>Syncing your games...</Heading>
+
+                {
+                    this.state.games === undefined
+                        ? null
+                        : this.state.games.map(game => {
+                            if(game.poster != null) {
+                                return <GamePanel src={game.poster}/>
+                            }
+                        })
+
+                }
             </Wrapper>,
             document.getElementById('stadiaplus-root')!,
         );

@@ -14,7 +14,7 @@ export default class DBProfile {
         this.tag = partial.tag;
     }
 
-    async fetchGame(userId: string, gameId: string) {
+    async fetchGame(userId: string, gameId: string): Promise<DBGame | null> {
         const response = await fetch(`https://stadia.google.com/profile/${userId}/detail/${gameId}`);
         const text = await response.text();
         const playData = text.match(new RegExp(`\\[\\[\\["${gameId}",.+\\n.+\\n,\\[([0-9]+)`));
@@ -49,5 +49,7 @@ export default class DBProfile {
         this.username = data[5][3][0][0];
         this.tag = data[5][3][0][1];
         this.games[gameId] = game;
+
+        return game;
     }
 }
