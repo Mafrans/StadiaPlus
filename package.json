@@ -39,6 +39,7 @@
   ],
   "dependencies": {
     "@fontsource/material-icons": "^4.1.0",
+    "@fontsource/overpass": "^4.2.1",
     "@fontsource/roboto": "^4.1.0",
     "@tailwindcss/postcss7-compat": "^2.0.2",
     "@types/chrome": "0.0.128",
@@ -51,6 +52,6 @@
     "reset-css": "^5.0.1",
     "styled-components": "^5.2.1",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2",
-    "twin.macro": "^2.1.0"
+    "twin.macro": "^2.2.3"
   }
 }

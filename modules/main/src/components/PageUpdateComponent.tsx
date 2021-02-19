@@ -1,4 +1,8 @@
 import React from 'react';
+import '@fontsource/overpass';
+import styled from 'styled-components';
+import tw from 'twin.macro';
+
 import AbstractComponent, { DefaultProps, DefaultState } from './AbstractComponent';
 import ReactComponent from '../decorators/@ReactComponent';
 import DBProfile from '../../../shared/models/DBProfile';
@@ -25,7 +29,11 @@ export default class PageUpdateComponent extends AbstractComponent<DefaultProps,
 
     constructor() {
         super({ name: "Page Update Component" });
-        this.setState(() => ({ finished: false }));
+        this.setState(() => ({
+            finished: false,
+            progress: 0,
+            goal: 0
+        }));
     }
 
     async onStart() {
@@ -65,15 +73,15 @@ export default class PageUpdateComponent extends AbstractComponent<DefaultProps,
         if (this.remainingIds.length === 0) {
             await StadiaPlusDB.updateDBProfile(this.profile);
             this.setState(() => ({ finished: true }));
-            console.log('finished');
             this.active = false;
         }
         else if (!this.cooldown) {
             const gameId = this.remainingIds.pop() as string;
             await this.profile.fetchGame(this.userId, gameId);
 
+            // Add 1 because we're working on the n+1th item
             this.setState(state => ({
-                progress: state.goal - this.remainingIds.length
+                progress: state.goal + 1 - this.remainingIds.length
             }))
         }
     }
@@ -82,12 +90,29 @@ export default class PageUpdateComponent extends AbstractComponent<DefaultProps,
         if(!this.active) return null;
 
         return ReactDOM.createPortal(
-            <div>
-                <h1>{this.state.finished ? 'Finished!' : 'Working...'}</h1>
-            </div>,
+            <Wrapper>
+                <Heading>Syncing your games...</Heading>
+            </Wrapper>,
             document.getElementById('stadiaplus-root')!,
         );
     }
 }
 
+const Wrapper = styled.div`
+  ${tw`
+    w-screen
+    h-screen
+    
+    flex
+    justify-center
+    items-center
+  `}
+  background-color: #202124;
+`
 
+const Heading = styled.h1`
+  ${tw`
+    text-4xl
+  `}
+  font-family: 'Overpass', sans-serif;
+`
