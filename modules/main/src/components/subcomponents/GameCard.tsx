@@ -4,6 +4,9 @@ import tw from 'twin.macro';
 
 interface IGamePanelProps {
     src: string
+    offsetX: number
+    offsetY: number
+    scale: number
 }
 
 export default class GameCard extends React.Component<IGamePanelProps> {
