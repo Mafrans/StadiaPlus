@@ -13,7 +13,7 @@ import ReactDOM from 'react-dom';
 import { PageQueryType } from '../../../shared/models/PageQueryType';
 import Logger from '../Logger';
 import { StadiaGameDB } from '../StadiaGameDB';
-import GamePanel from './subcomponents/GamePanel';
+import GameCard from './subcomponents/GameCard';
 
 interface GameUpdateComponentState extends DefaultState {
     userId: string | null
@@ -140,7 +140,7 @@ export default class PageUpdateComponent extends AbstractComponent<DefaultProps,
                             ? null
                             : this.state.games.map(game => {
                                 if (game.poster != null) {
-                                    return <GamePanel src={game.poster} />;
+                                    return <GameCard src={game.poster} />;
                                 }
                             })
 

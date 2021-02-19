@@ -6,7 +6,7 @@ interface IGamePanelProps {
     src: string
 }
 
-export default class GamePanel extends React.Component<IGamePanelProps> {
+export default class GameCard extends React.Component<IGamePanelProps> {
     constructor(props: any) {
         super(props);
     }
