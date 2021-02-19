@@ -32,19 +32,19 @@ export default class PageUpdateComponent extends AbstractComponent<DefaultProps,
     profile: DBProfile = new DBProfile({});
 
     constructor() {
-        super({ name: "Page Update Component" });
+        super({ name: 'Page Update Component' });
         this.setState(() => ({
             userId: null,
             finished: false,
             progress: 0,
             goal: 0,
-            games: []
+            games: [],
         }));
     }
 
     async onStart() {
         const url: URL = new URL(location.href);
-        const pageQueryType: PageQueryType = parseInt(url.searchParams.get('pqt') as string)
+        const pageQueryType: PageQueryType = parseInt(url.searchParams.get('pqt') as string);
 
         if (pageQueryType !== PageQueryType.UPDATE) {
             this.active = false;
@@ -55,7 +55,7 @@ export default class PageUpdateComponent extends AbstractComponent<DefaultProps,
 
         document.querySelectorAll('body>*:not(#stadiaplus-root)')
             .forEach(element => {
-                if(element instanceof HTMLElement) {
+                if (element instanceof HTMLElement) {
                     element.style.display = 'none';
                 }
             });
@@ -63,12 +63,12 @@ export default class PageUpdateComponent extends AbstractComponent<DefaultProps,
         // After some experimentation, it seems like 3000ms is the optimal interval for updating games.
         // It's fast enough to update games in somewhat of an efficient fashion,
         // but slow enough for the user not to get stuck in the ratelimit.
-        setInterval(this.nextGame.bind(this), 3000)
+        setInterval(this.nextGame.bind(this), 3000);
     }
 
     async setupVariables() {
-        await this.updateProfile()
-        await this.updateRemainingIds()
+        await this.updateProfile();
+        await this.updateRemainingIds();
 
         // For whatever reason, this HAS to be placed below any `await` calls
         this.userId = document.querySelector('.ksZYgc.VGZcUb')!.getAttribute('data-player-id');
@@ -79,7 +79,7 @@ export default class PageUpdateComponent extends AbstractComponent<DefaultProps,
 
     async updateProfile() {
         const _profile = await StadiaPlusDB.getOwnProfile();
-        this.profile = _profile !== null ? new DBProfile(_profile) : this.profile
+        this.profile = _profile !== null ? new DBProfile(_profile) : this.profile;
     }
 
     async updateRemainingIds() {
@@ -87,8 +87,8 @@ export default class PageUpdateComponent extends AbstractComponent<DefaultProps,
         this.remainingIds = _remainingIds !== null ? _remainingIds : [];
 
         this.setState(() => ({
-            goal: this.remainingIds.length
-        }))
+            goal: this.remainingIds.length,
+        }));
     }
 
     async nextGame() {
@@ -98,22 +98,20 @@ export default class PageUpdateComponent extends AbstractComponent<DefaultProps,
             await StadiaPlusDB.updateDBProfile(this.profile);
             this.setState(() => ({ finished: true }));
             this.active = false;
-        }
-        else if (!this.cooldown) {
+        } else if (!this.cooldown) {
             const gameId = this.remainingIds.pop() as string;
             const game = await this.profile.fetchGame(this.userId, gameId);
 
-            if(game == null) {
+            if (game == null) {
                 // Try again until it works
                 this.remainingIds.unshift(gameId);
                 return;
             }
 
             const dbGame = await StadiaGameDB.get(gameId);
-            console.log({ dbGame })
             const gameEntry = {
-                name: game !== null ? game.name : '',
-                poster: dbGame !== undefined ? dbGame.img : ''
+                name: game.name,
+                poster: dbGame !== undefined ? dbGame.img : '',
             };
 
 
@@ -128,22 +126,26 @@ export default class PageUpdateComponent extends AbstractComponent<DefaultProps,
     }
 
     render(): null | React.ReactPortal {
-        if(!this.active) return null;
+        if (!this.active) return null;
 
         return ReactDOM.createPortal(
             <Wrapper>
                 <Heading>Syncing your games...</Heading>
 
-                {
-                    this.state.games === undefined
-                        ? null
-                        : this.state.games.map(game => {
-                            if(game.poster != null) {
-                                return <GamePanel src={game.poster}/>
-                            }
-                        })
+                <GameGrid
+                    style={{ gridTemplateColumns: `repeat(${Math.ceil(Math.sqrt(this.state.goal))}, minmax(0, 1fr));` }}
+                >
+                    {
+                        this.state.games === undefined
+                            ? null
+                            : this.state.games.map(game => {
+                                if (game.poster != null) {
+                                    return <GamePanel src={game.poster} />;
+                                }
+                            })
 
-                }
+                    }
+                </GameGrid>
             </Wrapper>,
             document.getElementById('stadiaplus-root')!,
         );
@@ -160,11 +162,17 @@ const Wrapper = styled.div`
     items-center
   `}
   background-color: #202124;
-`
+`;
 
 const Heading = styled.h1`
   ${tw`
     text-4xl
   `}
   font-family: 'Overpass', sans-serif;
-`
+`;
+
+const GameGrid = styled.div`
+  ${tw`
+    grid
+  `}
+`;
