@@ -20,8 +20,9 @@ export default class GameCard extends React.Component<IGamePanelProps> {
 
 const Wrapper = styled.div`
   ${tw`
-    w-64
-    h-80
+    w-24
+    h-32
     opacity-25
+    rounded-md
   `}
 `
