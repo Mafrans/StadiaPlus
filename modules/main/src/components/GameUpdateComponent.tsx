@@ -25,13 +25,18 @@ export default class GameUpdateComponent extends AbstractComponent<DefaultProps,
             return;
         }
 
+        const gameIds = this.getGameIds();
+
+        const games: {[uuid: string]: { uuid: string, subId: string }} = {};
+        gameIds.forEach(it => games[it.uuid] = it);
+        void Config.GAMES.set(games);
+
         if(await StadiaPlusDB.getOwnProfile() === null) {
-            await Config.GAME_UPDATES.set(this.getGameIds());
-            console.log(this.getGameIds());
+            void Config.GAME_UPDATES.set(gameIds.map(it => it.uuid));
         }
     }
 
-    getGameIds(): string[] {
+    getGameIds(): { uuid: string, subId: string }[] {
         const initDataCallback = Array.from(document.querySelectorAll('body>script')).find(
             (script) => script.attributes
                 && script.attributes.length === 1
@@ -41,9 +46,10 @@ export default class GameUpdateComponent extends AbstractComponent<DefaultProps,
         )?.textContent;
 
         const libraryData = eval(`(() => (${initDataCallback?.substring('AF_initDataCallback('.length, initDataCallback.length - ');'.length) as string}))()`) as AFLibraryData;
-        const games: string[] = libraryData.data[1].map((game: any) => game[1][0]);
-
-        return games;
+        return libraryData.data[1].map((game: any) => ({
+            uuid: game[1][0],
+            subId: game[1][1]
+        }));
     }
 }
 
