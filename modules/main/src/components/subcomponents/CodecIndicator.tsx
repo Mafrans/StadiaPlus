@@ -4,15 +4,15 @@ import { CgOptions } from 'react-icons/cg';
 import StadiaCodec from '../../../../shared/models/StadiaCodec';
 import { Config } from '../../../../shared/Config';
 
-interface ICodecSelectIconProps {
+interface ICodecIndicatorProps {
     uuid: string;
 }
 
-interface ICodecSelectIconState {
+interface ICodecIndicatorState {
     value: StadiaCodec | null;
 }
 
-export default class CodecIndicator extends React.Component<ICodecSelectIconProps, ICodecSelectIconState> {
+export default class CodecIndicator extends React.Component<ICodecIndicatorProps, ICodecIndicatorState> {
     constructor(props: any) {
         super(props);
 
