@@ -8,6 +8,8 @@ export enum ConfigType {
 }
 
 export class ConfigEntry<T> {
+    private listeners: { id: number, listener: (newValue: T) => void }[] = [];
+
     tag: string;
     type: ConfigType;
     constructor(tag: string, type: ConfigType) {
@@ -21,7 +23,10 @@ export class ConfigEntry<T> {
                 await new Promise<void>(resolve => {
                     chrome.storage.local.set(
                         { [this.tag]: value },
-                        () => resolve()
+                        () => {
+                            this.listeners.forEach(listener => listener.listener(value))
+                            resolve();
+                        }
                     );
                 });
                 return;
@@ -30,7 +35,10 @@ export class ConfigEntry<T> {
                 await new Promise<void>(resolve => {
                     chrome.storage.sync.set(
                         { [this.tag]: value },
-                        () => resolve()
+                        () => {
+                            this.listeners.forEach(listener => listener.listener(value))
+                            resolve();
+                        }
                     );
                 });
                 return;
@@ -53,6 +61,17 @@ export class ConfigEntry<T> {
                     );
                 });
         }
+    }
+
+    addChangeListener(listener: (newValue: T) => void): number {
+        const id = Math.round(Math.random() * 10000);
+        this.listeners.push({ id, listener });
+
+        return id;
+    }
+
+    removeChangeListener(id: number) {
+        this.listeners = this.listeners.filter(it => it.id === id);
     }
 }
 

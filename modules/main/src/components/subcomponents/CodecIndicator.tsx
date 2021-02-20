@@ -27,7 +27,16 @@ export default class CodecIndicator extends React.Component<ICodecSelectIconProp
                 }));
             }
         })
+
+        Config.CODECS.addChangeListener(newCodecs => {
+            if (newCodecs !== null && newCodecs !== undefined && newCodecs.hasOwnProperty(this.props.uuid)) {
+                this.setState(() => ({
+                    value: newCodecs[this.props.uuid],
+                }));
+            }
+        })
     }
+
 
     render() {
         if (this.state.value === null) return null;
