@@ -7,7 +7,7 @@ import { StadiaClasses } from '../StadiaClasses';
 import ReactComponent from '../decorators/@ReactComponent';
 import ReactDOM from 'react-dom';
 import GameCard from './subcomponents/GameCard';
-import GameTileIcon from './subcomponents/GameTileIcon';
+import GameTileIcons from './subcomponents/GameTileIcons';
 
 interface ICodecSelectComponentState extends DefaultState {
     tileQueries: {uuid: string, subId: string, query: string}[];
@@ -77,9 +77,7 @@ export default class GameTileComponent extends AbstractComponent<DefaultProps, I
             if (tile === null || tile === undefined) return;
 
             icons.push(
-                <GameTileIcon tile={tile}>
-                    {entry.uuid}
-                </GameTileIcon>
+                <GameTileIcons tile={tile} />
             );
         });
 

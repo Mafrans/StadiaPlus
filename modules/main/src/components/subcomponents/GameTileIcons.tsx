@@ -5,7 +5,7 @@ interface IGameTileIconProps {
     tile: HTMLDivElement;
 }
 
-export default class GameTileIcon extends React.Component<IGameTileIconProps> {
+export default class GameTileIcons extends React.Component<IGameTileIconProps> {
     constructor(props: any) {
         super(props);
     }
@@ -16,7 +16,6 @@ export default class GameTileIcon extends React.Component<IGameTileIconProps> {
         return ReactDOM.createPortal(
             (
                 <div>
-                    { this.props.children }
                 </div>
             ),
             this.props.tile,
