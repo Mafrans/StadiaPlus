@@ -73,7 +73,7 @@ export default class GameTileComponent extends AbstractComponent<DefaultProps, I
             if (tile === null || tile === undefined) return;
 
             icons.push(
-                <GameTileIcons tile={tile} />
+                <GameTileIcons uuid={entry.uuid} tile={tile} />
             );
         });
 

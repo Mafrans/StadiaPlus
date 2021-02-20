@@ -1,5 +1,5 @@
 import DBGame from './models/DBGame';
-import { StadiaCodec } from './models/StadiaCodec';
+import StadiaCodec from './models/StadiaCodec';
 
 export enum ConfigType {
     LOCAL,

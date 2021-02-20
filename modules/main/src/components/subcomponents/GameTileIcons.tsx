@@ -1,12 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import CodecSelectIcon from './CodecSelectIcon';
+import GameTileIcon from './GameTileIcon';
 import { CgOptions, CgScreen } from 'react-icons/cg';
 import styled from 'styled-components';
 import tw from 'twin.macro';
+import CodecIndicator from './CodecIndicator';
 
 interface IGameTileIconProps {
     tile: HTMLDivElement;
+    uuid: string;
 }
 
 export default class GameTileIcons extends React.Component<IGameTileIconProps> {
@@ -20,9 +22,7 @@ export default class GameTileIcons extends React.Component<IGameTileIconProps> {
         return ReactDOM.createPortal(
             (
                 <Wrapper>
-                    <CodecSelectIcon icon={<CgOptions />}>
-                        VP9
-                    </CodecSelectIcon>
+                    <CodecIndicator uuid={this.props.uuid}/>
                 </Wrapper>
             ),
             this.props.tile,

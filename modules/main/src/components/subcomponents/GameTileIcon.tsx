@@ -6,7 +6,7 @@ interface ICodecSelectIconProps {
     icon: ReactNode
 }
 
-export default class CodecSelectIcon extends React.Component<ICodecSelectIconProps> {
+export default class GameTileIcon extends React.Component<ICodecSelectIconProps> {
     constructor(props: any) {
         super(props);
     }
