@@ -4,6 +4,11 @@ import ReactComponent from '../decorators/@ReactComponent';
 import Dropdown from './subcomponents/Dropdown';
 import ReactDOM from 'react-dom';
 import GameCard from './subcomponents/GameCard';
+import styled from 'styled-components';
+import tw from 'twin.macro';
+import StadiaPlusIcon from './subcomponents/StadiaPlusIcon';
+import StadiaCodec from '../../../shared/models/StadiaCodec';
+import StadiaResolution from '../../../shared/models/StadiaResolution';
 
 interface IGameSettingsComponentState extends DefaultState{
     container: Element | null;
@@ -59,20 +64,47 @@ export default class GameSettingsComponent extends AbstractComponent<DefaultProp
         if(this.state.container === undefined || this.state.container === null) return null;
 
         return ReactDOM.createPortal(
-            <div>
-                <Dropdown
-                    style={{ width: 250 }}
-                    options={[
-                        { value: 'en_US', label: 'English' },
-                        { value: 'de_DE', label: 'Deutsh' },
-                        { value: 'es_ES', label: 'Español' },
-                        { value: 'sv_SE', label: 'Svenska' },
-                        { value: 'ar_RR', label: 'Pirate Speak' }
-                    ]}
-                />
-            </div>,
+            <Wrapper>
+                <Section>
+                    <StadiaPlusIcon />
+                </Section>
+                <Section>
+                    <Heading>Codec</Heading>
+                    <Dropdown
+                        style={{ width: 250 }}
+                        options={StadiaCodec.values().map(codec => ({ value: codec.name, label: codec.name }))}
+                    />
+                </Section>
+                <Section>
+                    <Heading>Resolution</Heading>
+                    <Dropdown
+                        style={{ width: 250 }}
+                        options={StadiaResolution.values().map(resolution => ({ value: resolution.name, label: resolution.name }))}
+                    />
+                </Section>
+            </Wrapper>,
             this.state.container,
         );
     }
 }
 
+const Wrapper = styled.div`
+  ${tw`
+    flex
+    items-center
+    p-8
+  `}
+`
+
+const Section = styled.section`
+  ${tw`
+    pr-8
+  `}
+`
+
+const Heading = styled.section`
+  ${tw`
+    mb-2
+  `}
+  font-family: Overpass, sans-serif;
+`
