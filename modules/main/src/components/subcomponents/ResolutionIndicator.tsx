@@ -3,6 +3,7 @@ import GameTileIcon from './GameTileIcon';
 import { CgScreen } from 'react-icons/cg';
 import StadiaCodec from '../../../../shared/models/StadiaCodec';
 import { Config } from '../../../../shared/Config';
+import StadiaResolution from '../../../../shared/models/StadiaResolution';
 
 interface ICodecResolutionIndicatorProps {
     uuid: string;
@@ -22,19 +23,23 @@ export default class ResolutionIndicator extends React.Component<ICodecResolutio
 
         Config.RESOLUTIONS.get().then((resolutions) => {
             if (resolutions !== null && resolutions !== undefined && resolutions.hasOwnProperty(this.props.uuid)) {
-                this.setState(() => ({
-                    value: resolutions[this.props.uuid],
-                }));
+                this.setValue(resolutions[this.props.uuid]);
             }
         })
 
         Config.RESOLUTIONS.addChangeListener(newResolutions => {
             if (newResolutions !== null && newResolutions !== undefined && newResolutions.hasOwnProperty(this.props.uuid)) {
-                this.setState(() => ({
-                    value: newResolutions[this.props.uuid],
-                }));
+                this.setValue(newResolutions[this.props.uuid]);
             }
         })
+    }
+
+    setValue(value: StadiaResolution | null) {
+        if (value?.name === StadiaResolution.AUTOMATIC.name) {
+            value = null;
+        }
+
+        this.setState(() => ({ value }));
     }
 
 
