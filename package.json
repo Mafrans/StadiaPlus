@@ -40,7 +40,6 @@
   ],
   "dependencies": {
     "@fontsource/material-icons": "^4.1.0",
-    "@fontsource/overpass": "^4.2.1",
     "@fontsource/roboto": "^4.1.0",
     "@tailwindcss/postcss7-compat": "^2.0.2",
     "@types/chrome": "0.0.128",
@@ -50,6 +49,7 @@
     "postcss": "^7.0.35",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-icons": "^4.2.0",
     "react-transition-group": "^4.4.1",
     "reset-css": "^5.0.1",
     "styled-components": "^5.2.1",

@@ -7,10 +7,12 @@ import StadiaPlusDB from '../../shared/StadiaPlusDB';
 import GameUpdateComponent from './components/GameUpdateComponent';
 import { StadiaGameDB } from './StadiaGameDB';
 import GameTileComponent from './components/GameTileComponent';
+import Fonts from './Fonts';
 
-console.log("main2");
 
 document.addEventListener('DOMContentLoaded', async () => {
+    Fonts.load('Overpass', [300, 400, 700]);
+
     await StadiaPlusDB.connect('http://localhost:3000');
     await StadiaPlusDB.authenticate();
     await StadiaGameDB.update();
