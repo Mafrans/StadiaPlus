@@ -1,4 +1,5 @@
 import DBGame from './models/DBGame';
+import { StadiaCodec } from './models/StadiaCodec';
 
 export enum ConfigType {
     LOCAL,
@@ -57,5 +58,6 @@ export class ConfigEntry<T> {
 export class Config {
     static GAME_UPDATES = new ConfigEntry<string[]>('games-updated', ConfigType.SYNC);
     static GAMES = new ConfigEntry<{[uuid: string]: DBGame}>('games', ConfigType.LOCAL);
+    static CODECS = new ConfigEntry<{[uuid: string]: StadiaCodec}>('codecs', ConfigType.LOCAL);
     static AUTH_TOKEN = new ConfigEntry<string>('auth-token', ConfigType.LOCAL);
 }
