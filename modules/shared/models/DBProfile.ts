@@ -15,8 +15,14 @@ export default class DBProfile {
     }
 
     async fetchGame(userId: string, gameId: string): Promise<DBGame | null> {
-        const response = await fetch(`https://stadia.google.com/profile/${userId}/detail/${gameId}`);
+        let response = await fetch(`https://stadia.google.com/profile/${userId}/detail/${gameId}`);
         const text = await response.text();
+
+        const error = text.match(new RegExp(`<div id="af-error-container">.*<b>([0-9]{3})\\.<\\/b>`));
+        if (error !== null && error.length > 1) {
+            throw new Error(error[1]);
+        }
+
         const playData = text.match(new RegExp(`\\[\\[\\["${gameId}",.+\\n.+\\n,\\[([0-9]+)`));
         const achievementData = text.match(new RegExp("AF_initDataCallback\\(\\{ *key: *'ds:3'.*?data: *((.|\\n)*?), *sideChannel: *\\{\\}\\}\\)"));
 
