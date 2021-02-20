@@ -14,7 +14,7 @@ interface ICodecSelectComponentState extends DefaultState {
 }
 
 @ReactComponent
-export default class CodecSelectComponent extends AbstractComponent<DefaultProps, ICodecSelectComponentState> {
+export default class GameTileComponent extends AbstractComponent<DefaultProps, ICodecSelectComponentState> {
     gameIds: { uuid: string, subId: string }[] = [];
 
     constructor() {
