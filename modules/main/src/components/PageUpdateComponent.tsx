@@ -20,14 +20,13 @@ interface GameUpdateComponentState extends DefaultState {
     finished: boolean
     progress: number
     goal: number,
-    games: { name: string, poster: string | null }[],
+    games: { name: string, poster: string | null, offsets: { x: number, y: number } }[],
 }
 
 @ReactComponent
 export default class PageUpdateComponent extends AbstractComponent<DefaultProps, GameUpdateComponentState> {
     remainingIds: string[] = [];
     active: boolean = true;
-    cooldown: boolean = false;
     userId: string | null = null;
     profile: DBProfile = new DBProfile({});
 
@@ -47,7 +46,7 @@ export default class PageUpdateComponent extends AbstractComponent<DefaultProps,
         const url: URL = new URL(location.href);
         const pageQueryType: PageQueryType = parseInt(url.searchParams.get('pqt') as string);
 
-        if (pageQueryType !== PageQueryType.UPDATE) {
+        if (url.searchParams.has('pqt') && pageQueryType !== PageQueryType.UPDATE) {
             this.active = false;
             return;
         }
@@ -96,52 +95,70 @@ export default class PageUpdateComponent extends AbstractComponent<DefaultProps,
         if (!this.active || this.userId === null) return;
 
         if (this.remainingIds.length === 0) {
-            await StadiaPlusDB.updateDBProfile(this.profile);
+            console.log('finished');
             this.setState(() => ({ finished: true }));
+            await StadiaPlusDB.updateDBProfile(this.profile);
             this.active = false;
-        } else if (!this.cooldown) {
+        } else {
             const gameId = this.remainingIds.pop() as string;
-            const game = await this.profile.fetchGame(this.userId, gameId);
 
-            if (game == null) {
-                // Try again until it works
-                this.remainingIds.unshift(gameId);
-                return;
+            let game = null;
+            try {
+                game = await this.profile.fetchGame(this.userId, gameId);
             }
+            catch (e) {
+                if (e === '429') {
+                    this.remainingIds.unshift(gameId);
+                }
+            }
+
+            if (game === null) return;
 
             const dbGame = await StadiaGameDB.get(gameId);
             const gameEntry = {
                 name: game.name,
                 poster: dbGame !== undefined ? dbGame.img : '',
+                offsets: {
+                    x: (Math.random()-0.5) * window.innerWidth,
+                    y: (Math.random()-0.5) * window.innerHeight,
+                },
             };
 
 
             const _games = this.state.games !== undefined ? this.state.games : [];
             _games.push(gameEntry);
-            // We're working on the n+1th item
             this.setState(state => ({
-                progress: state.goal + 1 - this.remainingIds.length,
+                progress: state.goal - this.remainingIds.length,
                 games: _games,
             }));
         }
     }
 
     render(): null | React.ReactPortal {
-        if (!this.active) return null;
+        console.log({ finished: this.state.finished, games: this.state.games, remaining: this.remainingIds })
 
         return ReactDOM.createPortal(
             <Wrapper>
-                <Heading>Syncing your games... ({this.state.goal})</Heading>
+                <Heading>Syncing your games... ({this.state.progress}/{this.state.goal})</Heading>
 
                 <GameGrid
-                    style={{ gridTemplateColumns: `repeat(${Math.ceil(Math.sqrt(this.state.goal))}, minmax(0, 1fr))` }}
+                    style={{
+                        gridTemplateColumns: `repeat(${Math.ceil(Math.sqrt(this.state.goal) + 1)}, minmax(0, 1fr))`,
+                        gridTemplateRows: `repeat(${Math.floor(Math.sqrt(this.state.goal))}, minmax(0, 1fr))`,
+                    }}
                 >
                     {
                         this.state.games === undefined
                             ? null
                             : this.state.games.map(game => {
                                 if (game.poster != null) {
-                                    return <GameCard src={game.poster} />;
+                                    return <GameCard
+                                        finished={this.state.finished}
+                                        offsetX={game.offsets.x}
+                                        offsetY={game.offsets.y}
+                                        scale={2}
+                                        src={game.poster}
+                                    />;
                                 }
                             })
 
@@ -175,5 +192,14 @@ const Heading = styled.h1`
 const GameGrid = styled.div`
   ${tw`
     grid
+    gap-4
+
+    absolute
+    left-1/2
+    top-1/2
+    
+    transform
+    -translate-x-1/2
+    -translate-y-1/2
   `}
 `;
