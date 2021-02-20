@@ -27,9 +27,7 @@ export default class GameUpdateComponent extends AbstractComponent<DefaultProps,
 
         const gameIds = this.getGameIds();
 
-        const games: {[uuid: string]: { uuid: string, subId: string }} = {};
-        gameIds.forEach(it => games[it.uuid] = it);
-        void Config.GAMES.set(games);
+        void Config.GAME_IDS.set(gameIds);
 
         if(await StadiaPlusDB.getOwnProfile() === null) {
             void Config.GAME_UPDATES.set(gameIds.map(it => it.uuid));
