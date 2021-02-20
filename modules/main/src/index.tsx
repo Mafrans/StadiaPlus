@@ -6,6 +6,7 @@ import PageUpdateComponent from './components/PageUpdateComponent';
 import StadiaPlusDB from '../../shared/StadiaPlusDB';
 import GameUpdateComponent from './components/GameUpdateComponent';
 import { StadiaGameDB } from './StadiaGameDB';
+import CodecSelectComponent from './components/CodecSelectComponent';
 
 console.log("main2");
 
@@ -23,6 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         <div>
             <GameUpdateComponent/>
             <PageUpdateComponent/>
+            <CodecSelectComponent/>
         </div>,
         root
     )
