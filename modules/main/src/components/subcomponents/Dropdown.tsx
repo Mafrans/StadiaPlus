@@ -5,13 +5,14 @@ import { CgChevronDown } from 'react-icons/cg';
 import { Theme } from '../../../../shared/Theme';
 
 interface IDropdownProps {
-    options: { value: string, label: string }[];
+    options: string[];
     style: CSSProperties;
+    default?: string;
     onChange?: (value: string) => void;
 }
 
 interface IDropdownState {
-    value: { value: string, label: string };
+    value: string;
     active: boolean;
 }
 
@@ -21,7 +22,7 @@ export default class Dropdown extends React.Component<IDropdownProps, IDropdownS
 
         this.state = {
             active: false,
-            value: this.props.options[0],
+            value: this.props.default !== undefined ? this.props.default : this.props.options[0],
         }
 
         window.addEventListener('click', this.onClickAnywhere.bind(this));
@@ -34,7 +35,7 @@ export default class Dropdown extends React.Component<IDropdownProps, IDropdownS
                     <CurrentValue
                         onClick={this.onClick.bind(this)}
                     >
-                        <CurrentLabel>{ this.state.value.label }</CurrentLabel>
+                        <CurrentLabel>{ this.state.value }</CurrentLabel>
                         <CgChevronDown
                             style={{
                                 marginLeft: 'auto',
@@ -53,7 +54,7 @@ export default class Dropdown extends React.Component<IDropdownProps, IDropdownS
                     {
                         this.props.options.map(option => (
                             <Option onClick={event => this.onClickOption(event, option)}>
-                                { option.label }
+                                { option }
                             </Option>
                         ))
                     }
@@ -69,13 +70,13 @@ export default class Dropdown extends React.Component<IDropdownProps, IDropdownS
         event.stopPropagation();
     }
 
-    onClickOption(event: React.MouseEvent, option: { value: string, label: string }) {
+    onClickOption(event: React.MouseEvent, option: string) {
         this.setState(() => ({
             value: option,
         }))
 
         if(this.props.onChange !== undefined) {
-            this.props.onChange(this.state.value.value);
+            this.props.onChange(option);
         }
     }
 

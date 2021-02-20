@@ -22,11 +22,11 @@ export default class CodecSelectComponent extends AbstractComponent<DefaultProps
                 <Dropdown
                     style={{ width: 250 }}
                     options={[
-                        { value: 'en_US', label: 'English' },
-                        { value: 'de_DE', label: 'Deutsh' },
-                        { value: 'es_ES', label: 'Español' },
-                        { value: 'sv_SE', label: 'Svenska' },
-                        { value: 'ar_RR', label: 'Pirate Speak' }
+                        'English',
+                        'Deutsh',
+                        'Español',
+                        'Svenska',
+                        'Pirate Speak'
                     ]}
                 />
             )
