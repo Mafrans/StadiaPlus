@@ -9,9 +9,11 @@ import tw from 'twin.macro';
 import StadiaPlusIcon from './subcomponents/StadiaPlusIcon';
 import StadiaCodec from '../../../shared/models/StadiaCodec';
 import StadiaResolution from '../../../shared/models/StadiaResolution';
+import { Config } from '../../../shared/Config';
 
 interface IGameSettingsComponentState extends DefaultState{
     container: Element | null;
+    uuid: string | null;
 }
 
 @ReactComponent
@@ -53,15 +55,20 @@ export default class GameSettingsComponent extends AbstractComponent<DefaultProp
 
         const container = document.createElement('div');
         container.id = 'stadiaplus-game-settings';
-        document.querySelector('.EST2y')!.parentElement!.insertBefore(container, document.querySelector('.EST2y'));
+        const dataElement = document.querySelector('.EST2y');
+        dataElement!.parentElement!.insertBefore(container, document.querySelector('.EST2y'));
 
         this.setState(() => ({
             container,
+            uuid: dataElement!.getAttribute('data-app-id'),
         }))
     }
 
     render(): null | React.ReactPortal {
-        if(this.state.container === undefined || this.state.container === null) return null;
+        if(this.state.container === undefined
+            || this.state.container === null
+            || this.state.uuid === null
+        ) return null;
 
         return ReactDOM.createPortal(
             <Wrapper>
@@ -72,19 +79,45 @@ export default class GameSettingsComponent extends AbstractComponent<DefaultProp
                     <Heading>Codec</Heading>
                     <Dropdown
                         style={{ width: 250 }}
-                        options={StadiaCodec.values().map(codec => ({ value: codec.name, label: codec.name }))}
+                        options={ StadiaCodec.values().map(codec => ({ value: codec.name, label: codec.name })) }
+                        onChange={ value => this.changeCodec(StadiaCodec.valueOf(value)) }
                     />
                 </Section>
                 <Section>
                     <Heading>Resolution</Heading>
                     <Dropdown
                         style={{ width: 250 }}
-                        options={StadiaResolution.values().map(resolution => ({ value: resolution.name, label: resolution.name }))}
+                        options={ StadiaResolution.values().map(resolution => ({ value: resolution.name, label: resolution.name })) }
+                        onChange={ value => this.changeResolution(StadiaResolution.valueOf(value)) }
                     />
                 </Section>
             </Wrapper>,
             this.state.container,
         );
+    }
+
+    async changeCodec(value: StadiaCodec | undefined) {
+        if (this.state.uuid === null || value === undefined) return;
+
+        let codecs = await Config.CODECS.get();
+        if (codecs === null) {
+            codecs = {};
+        }
+        codecs[this.state.uuid] = value;
+
+        Config.CODECS.set(codecs);
+    }
+
+    async changeResolution(value: StadiaResolution | undefined) {
+        if (this.state.uuid === null || value === undefined) return;
+
+        let resolutions = await Config.RESOLUTIONS.get();
+        if (resolutions === null) {
+            resolutions = {};
+        }
+        resolutions[this.state.uuid] = value;
+
+        Config.CODECS.set(resolutions);
     }
 }
 

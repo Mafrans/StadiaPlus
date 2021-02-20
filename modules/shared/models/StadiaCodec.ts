@@ -15,4 +15,8 @@ export default class StadiaCodec {
             StadiaCodec.H264,
         ]
     }
+
+    static valueOf(value: string): StadiaCodec | undefined {
+        return this.values().find(codec => codec.name === value);
+    }
 }

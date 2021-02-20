@@ -7,6 +7,7 @@ import { Theme } from '../../../../shared/Theme';
 interface IDropdownProps {
     options: { value: string, label: string }[];
     style: CSSProperties;
+    onChange?: (value: string) => void;
 }
 
 interface IDropdownState {
@@ -72,6 +73,10 @@ export default class Dropdown extends React.Component<IDropdownProps, IDropdownS
         this.setState(() => ({
             value: option,
         }))
+
+        if(this.props.onChange !== undefined) {
+            this.props.onChange(this.state.value.value);
+        }
     }
 
     onClickAnywhere(event: MouseEvent) {
