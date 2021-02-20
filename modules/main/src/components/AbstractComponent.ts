@@ -109,8 +109,11 @@ export default class AbstractComponent<A extends DefaultProps, B extends Default
      * Updates the renderer state. Relies on heavy querying, so should be used as sparingly as possible.
      */
     public async updateRenderer() {
+        if (this.state.renderer?.style.opacity === '1') return;
+
         await Util.updateRenderer();
-        if (this.__useReact) {
+        if (this.__useReact && Util.renderer !== this.state.renderer) {
+
             this.setState(state => ({ renderer: Util.renderer }));
         }
     }
