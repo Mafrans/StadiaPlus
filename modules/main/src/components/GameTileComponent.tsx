@@ -66,14 +66,10 @@ export default class GameTileComponent extends AbstractComponent<DefaultProps, I
     }
 
     render(): null | React.ReactPortal {
-        console.log(this.state.tileQueries);
-
         const icons: ReactNode[] = [];
 
         this.state.tileQueries.forEach(entry => {
-            console.log({ entry, renderer: this.state.renderer });
             const tile = this.state.renderer?.querySelector(entry.query) as HTMLDivElement;
-            console.log({ tile });
             if (tile === null || tile === undefined) return;
 
             icons.push(
@@ -82,6 +78,7 @@ export default class GameTileComponent extends AbstractComponent<DefaultProps, I
         });
 
         if(icons.filter(it => it !== null).length === 0) {
+            // If no icons have been added, try again next second.
             setTimeout(this.updateQueries.bind(this), 1000);
             return null;
         }
