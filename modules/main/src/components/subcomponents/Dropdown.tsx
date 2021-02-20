@@ -44,6 +44,7 @@ export default class Dropdown extends React.Component<IDropdownProps, IDropdownS
                 </GradientBorder>
                 <OptionContainer
                     style={{
+                        pointerEvents: this.state.active ? 'all' : 'none',
                         opacity: this.state.active ? 1 : 0,
                         transform: `translateY(${ this.state.active ? 0.25 : 0 }rem)`,
                     }}
