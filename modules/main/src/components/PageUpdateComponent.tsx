@@ -46,7 +46,7 @@ export default class PageUpdateComponent extends AbstractComponent<DefaultProps,
         const url: URL = new URL(location.href);
         const pageQueryType: PageQueryType = parseInt(url.searchParams.get('pqt') as string);
 
-        if (url.searchParams.has('pqt') && pageQueryType !== PageQueryType.UPDATE) {
+        if (!url.searchParams.has('pqt') || pageQueryType !== PageQueryType.UPDATE) {
             this.active = false;
             return;
         }
