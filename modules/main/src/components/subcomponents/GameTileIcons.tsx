@@ -5,6 +5,7 @@ import { CgOptions, CgScreen } from 'react-icons/cg';
 import styled from 'styled-components';
 import tw from 'twin.macro';
 import CodecIndicator from './CodecIndicator';
+import ResolutionIndicator from './ResolutionIndicator';
 
 interface IGameTileIconProps {
     tile: HTMLDivElement;
@@ -22,6 +23,7 @@ export default class GameTileIcons extends React.Component<IGameTileIconProps> {
         return ReactDOM.createPortal(
             (
                 <Wrapper>
+                    <ResolutionIndicator uuid={this.props.uuid}/>
                     <CodecIndicator uuid={this.props.uuid}/>
                 </Wrapper>
             ),
@@ -33,6 +35,7 @@ export default class GameTileIcons extends React.Component<IGameTileIconProps> {
 const Wrapper = styled.div`
   ${tw`
     absolute
+    flex
     right-0
   `}
 `
