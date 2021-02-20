@@ -27,7 +27,6 @@ export default class Dropdown extends React.Component<IDropdownProps, IDropdownS
     }
 
     render() {
-
         return (
             <Select style={this.props.style}>
                 <GradientBorder style={{ background: this.state.active ? Theme.Colors.neon.gradient : Theme.Colors.gray['700'] }}>
