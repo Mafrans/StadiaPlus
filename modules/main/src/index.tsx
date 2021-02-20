@@ -8,6 +8,7 @@ import GameUpdateComponent from './components/GameUpdateComponent';
 import { StadiaGameDB } from './StadiaGameDB';
 import GameTileComponent from './components/GameTileComponent';
 import Fonts from './Fonts';
+import CodecSelectComponent from './components/CodecSelectComponent';
 
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -27,6 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             <GameUpdateComponent/>
             <PageUpdateComponent/>
             <GameTileComponent/>
+            <CodecSelectComponent/>
         </div>,
         root
     )
