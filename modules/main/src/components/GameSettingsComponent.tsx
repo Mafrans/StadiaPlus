@@ -38,7 +38,7 @@ export default class GameSettingsComponent extends AbstractComponent<DefaultProp
                         if (node.nodeType === 1) {
                             const element = node as HTMLElement;
                             if(element.classList.contains('llhEMd')) {
-                                this.updateContainer();
+                                this.updateContainer(0);
                             }
                         }
                     })
@@ -48,10 +48,12 @@ export default class GameSettingsComponent extends AbstractComponent<DefaultProp
         observer.observe(document.body, { childList: true })
     }
 
-    async updateContainer() {
+    async updateContainer(gen: number) {
         if (document.querySelector('.EST2y') === null) {
-            // Try again 4 times per second until it works
-            setTimeout(this.updateContainer.bind(this), 250);
+            // Try again 4 times per second until it works, or until it reaches the 8th generation (2 seconds)
+            if(gen < 8) {
+                setTimeout(() => this.updateContainer(gen+1), 250);
+            }
             return;
         }
 
