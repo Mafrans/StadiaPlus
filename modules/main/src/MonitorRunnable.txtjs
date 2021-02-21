@@ -1,0 +1,35 @@
+class StadiaPlusNetworkMonitor {
+    originalRTC = [];
+    peerConnections = [];
+
+    constructor() {
+        const self = this;
+        this.originalRTC = RTCPeerConnection;
+        (function (OriginalRTCConnection) {
+            self.originalRTC = OriginalRTCConnection;
+
+            RTCPeerConnection = function (args) {
+                const connection = new OriginalRTCConnection(args);
+                self.peerConnections.push(connection);
+                return connection;
+            };
+            RTCPeerConnection.prototype = OriginalRTCConnection.prototype;
+        }(RTCPeerConnection));
+
+        setInterval(this.poll.bind(this), 1000);
+    }
+
+    async poll() {
+        const data = [];
+        for (const connection of this.peerConnections.filter(it => it.connectionState === 'connected')) {
+            data.push(Array.from(await connection.getStats()));
+        }
+
+        window.postMessage({
+            source: "StadiaPlusNetworkMonitor",
+            stats: data
+        }, "*");
+    }
+}
+
+window.StadiaPlusNetworkMonitor = new StadiaPlusNetworkMonitor();

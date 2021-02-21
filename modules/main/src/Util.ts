@@ -13,4 +13,11 @@ export default class Util {
 
         if (newRenderer != null) this.renderer = newRenderer;
     }
+
+    static desandbox(javascript: string) {
+        const script = document.createElement('script');
+        script.innerHTML = javascript;
+        document.body.appendChild(script);
+        script.remove();
+    }
 }

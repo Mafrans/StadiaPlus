@@ -23,6 +23,11 @@ declare module '*.scss' {
     export default content;
 }
 
+declare module '*.txtjs' {
+    const content: string;
+    export default content;
+}
+
 declare module '*.json' {
     const value: never;
     export default value;

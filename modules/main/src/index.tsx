@@ -9,6 +9,7 @@ import { StadiaGameDB } from './StadiaGameDB';
 import GameTileComponent from './components/GameTileComponent';
 import Fonts from './Fonts';
 import GameSettingsComponent from './components/GameSettingsComponent';
+import GameMonitorComponent from './components/GameMonitorComponent';
 
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -28,6 +29,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             <PageUpdateComponent/>
             <GameTileComponent/>
             <GameSettingsComponent/>
+            <GameMonitorComponent/>
         </div>,
         root
     )

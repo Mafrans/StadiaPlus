@@ -8,9 +8,10 @@
         "module": "es6",
         "target": "es2015",
         "jsx": "react",
-        "allowJs": true,
+        "allowJs": false,
         "moduleResolution": "node",
         "strict": true,
         "allowSyntheticDefaultImports": true
-    }
+    },
+    "exclude": ["node_modules", ".*", "modules/main/src/**/*.js", "modules/main/src/**/*.txtjs"]
 }
