@@ -54,14 +54,23 @@ export interface DefaultState {
  *
  */
 export default class AbstractComponent<A extends DefaultProps, B extends DefaultState> extends React.Component<A, B> {
+    /**
+     * Whether this component has started or not.
+     * @default false
+     *
+     * @private
+     */
+    private __started: boolean = false;
 
     /**
      * Whether this component is a React component or not.
      * Do not edit directly, instead see {@link @ReactComponent}
      * @see @ReactComponent
      * @default false
+     *
+     * @private
      */
-    public __useReact: boolean = false;
+    private __useReact: boolean = false;
 
     /**
      * Whether this component is limited to certain Stadia pages,
@@ -69,8 +78,10 @@ export default class AbstractComponent<A extends DefaultProps, B extends Default
      * Do not edit directly, instead see {@link @PageFilter}
      * @see @PageFilter
      * @default undefined
+     *
+     * @private
      */
-    public __pageFilter?: StadiaPage[] = undefined;
+    private __pageFilter?: StadiaPage[] = undefined;
 
     /**
      * The name of this component
@@ -103,7 +114,16 @@ export default class AbstractComponent<A extends DefaultProps, B extends Default
      * @see onStart
      */
     public async __start() {
+        const currentPage = StadiaPage.current();
+        if (this.__pageFilter !== undefined && currentPage !== null) {
+            if(this.__pageFilter.indexOf(currentPage) === -1) {
+                return;
+            }
+        }
+
         Logger.component(`Component ${this.name} has been enabled`);
+
+        this.__started = true;
         await this.onStart();
     }
 
@@ -117,6 +137,10 @@ export default class AbstractComponent<A extends DefaultProps, B extends Default
             if(this.__pageFilter.indexOf(currentPage) === -1) {
                 return;
             }
+        }
+
+        if (this.__started) {
+            await this.__start();
         }
         await this.onUpdate();
     }
