@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Logger from '../Logger';
 import Util from '../Util';
+import StadiaPage from '../StadiaPage';
 
 /**
  * Default React property interface for Stadia+ Components
@@ -55,12 +56,21 @@ export interface DefaultState {
 export default class AbstractComponent<A extends DefaultProps, B extends DefaultState> extends React.Component<A, B> {
 
     /**
-     * Whether this component is a React component or not
+     * Whether this component is a React component or not.
      * Do not edit directly, instead see {@link @ReactComponent}
      * @see @ReactComponent
      * @default false
      */
-    public __useReact = false;
+    public __useReact: boolean = false;
+
+    /**
+     * Whether this component is limited to certain Stadia pages,
+     * the component will never update unless the current page matches the filter.
+     * Do not edit directly, instead see {@link @PageFilter}
+     * @see @PageFilter
+     * @default undefined
+     */
+    public __pageFilter?: StadiaPage[] = undefined;
 
     /**
      * The name of this component
@@ -102,6 +112,12 @@ export default class AbstractComponent<A extends DefaultProps, B extends Default
      * @see onUpdate
      */
     public async __tick() {
+        const currentPage = StadiaPage.current();
+        if (this.__pageFilter !== undefined && currentPage !== null) {
+            if(this.__pageFilter.indexOf(currentPage) === -1) {
+                return;
+            }
+        }
         await this.onUpdate();
     }
 
