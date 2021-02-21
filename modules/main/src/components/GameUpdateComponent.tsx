@@ -3,6 +3,8 @@ import AbstractComponent, { DefaultProps, DefaultState } from './AbstractCompone
 import StadiaPlusDB from '../../../shared/StadiaPlusDB';
 import { Config } from '../../../shared/Config';
 import { PageQueryType } from '../../../shared/models/PageQueryType';
+import PageFilter from '../decorators/@PageFilter';
+import StadiaPage from '../StadiaPage';
 
 interface AFLibraryData {
     data: [boolean, [string, [string, string, boolean, number]], unknown[]];
@@ -12,6 +14,7 @@ interface AFLibraryData {
     sideChannel: unknown,
 }
 
+@PageFilter([ StadiaPage.HOME ])
 export default class GameUpdateComponent extends AbstractComponent<DefaultProps, DefaultState> {
     constructor() {
         super({ name: "Game Update Component" });

@@ -8,11 +8,14 @@ import ReactComponent from '../decorators/@ReactComponent';
 import ReactDOM from 'react-dom';
 import GameCard from './subcomponents/GameCard';
 import GameTileIcons from './subcomponents/GameTileIcons';
+import PageFilter from '../decorators/@PageFilter';
+import StadiaPage from '../StadiaPage';
 
 interface ICodecSelectComponentState extends DefaultState {
     tileQueries: {uuid: string, subId: string, query: string}[];
 }
 
+@PageFilter([ StadiaPage.HOME ])
 @ReactComponent
 export default class GameTileComponent extends AbstractComponent<DefaultProps, ICodecSelectComponentState> {
     gameIds: { uuid: string, subId: string }[] = [];

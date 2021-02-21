@@ -10,6 +10,8 @@ import StadiaPlusIcon from './subcomponents/StadiaPlusIcon';
 import StadiaCodec from '../../../shared/models/StadiaCodec';
 import StadiaResolution from '../../../shared/models/StadiaResolution';
 import { Config } from '../../../shared/Config';
+import PageFilter from '../decorators/@PageFilter';
+import StadiaPage from '../StadiaPage';
 
 interface IGameSettingsComponentState extends DefaultState{
     container: Element | null;
@@ -18,6 +20,7 @@ interface IGameSettingsComponentState extends DefaultState{
     resolution: StadiaResolution;
 }
 
+@PageFilter([ StadiaPage.HOME ])
 @ReactComponent
 export default class GameSettingsComponent extends AbstractComponent<DefaultProps, IGameSettingsComponentState> {
     constructor() {
