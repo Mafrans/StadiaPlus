@@ -139,7 +139,7 @@ export default class AbstractComponent<A extends DefaultProps, B extends Default
             }
         }
 
-        if (this.__started) {
+        if (!this.__started) {
             await this.__start();
         }
         await this.onUpdate();
