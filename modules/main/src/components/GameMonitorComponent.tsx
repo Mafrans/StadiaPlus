@@ -9,6 +9,7 @@ import StadiaPage from '../StadiaPage';
 import ReactDOM from 'react-dom';
 import { RTCStatistics } from '../RTCStatistics';
 import RTCStatistic = RTCStatistics.RTCStatistic;
+import RTCIceCandidatePair = RTCStatistics.RTCIceCandidatePair;
 import { CgChevronDown } from 'react-icons/cg';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { VscGripper } from 'react-icons/vsc';
@@ -34,7 +35,7 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
 
         this.state = {
             renderer: null,
-            items: []
+            items: [],
         }
     }
 
@@ -43,17 +44,24 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
 
         window.addEventListener('message', async event => {
             if(event.data.source === 'StadiaPlusNetworkMonitor') {
-                const stats = await this.parseStats(event.data.stats[1]);
-                console.log('trying to update state')
-                const rtt = Math.round((stats.find(it => it.id.startsWith('RTCIceCandidatePair')) as RTCStatistics.RTCIceCandidatePair).currentRoundTripTime * 1000);
-                console.log({rtt, ice: stats.find(it => it.id.startsWith('RTCIceCandidatePair')) as RTCStatistics.RTCIceCandidatePair})
+
+                const ICECandidatePair = RTCStatistic.from<RTCIceCandidatePair>(
+                        event.data.stats[1], 
+                        id => id.startsWith('RTCIceCandidatePair')
+                    );
+                
                 this.setState(() => ({
                     items: [
                         {
                             name: 'Latency',
-                            value: rtt + 'ms',
+                            value: `${Math.round(ICECandidatePair.currentRoundTripTime! * 1000)} ms`,
                             visible: true,
-                        }
+                        },
+                        {
+                            name: 'Bytes Received',
+                            value: `${ICECandidatePair.bytesReceived!}`,
+                            visible: true,
+                        },
                     ]
                 }))
             }
@@ -62,54 +70,6 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
 
     async onUpdate() {
         this.updateRenderer();
-    }
-
-    async parseStats(stats: [string, any]): Promise<RTCStatistic[]> {
-        const statistics: RTCStatistic[] = [];
-
-        for (let stat of stats) {
-            if(stat[0].startsWith('RTCAudioSource')) {
-                statistics.push(stat[1] as RTCStatistics.RTCAudioSource);
-            }
-            else if(stat[0].startsWith('RTCCertificate')) {
-                statistics.push(stat[1] as RTCStatistics.RTCCertificate);
-            }
-            else if(stat[0].startsWith('RTCCodec')) {
-                const rtc = stat[1] as RTCStatistics.RTCCodec;
-                rtc.direction = stat[0].indexOf('Inbound') !== -1 ? 'inbound' : 'outbound';
-
-                statistics.push(rtc);
-            }
-            else if(stat[0].startsWith('RTCDataChannel')) {
-                statistics.push(stat[1] as RTCStatistics.RTCDataChannel);
-            }
-            else if(stat[0].startsWith('RTCIceCandidatePair')) {
-                statistics.push(stat[1] as RTCStatistics.RTCIceCandidatePair);
-            }
-            else if(stat[0].startsWith('RTCIceCandidate')) {
-                statistics.push(stat[1] as RTCStatistics.RTCIceCandidate);
-            }
-            else if(stat[0].indexOf('RTPAudioStream') !== -1) {
-                statistics.push(stat[1] as RTCStatistics.RTCAudioRTPStream);
-            }
-            else if(stat[0].indexOf('RTPVideoStream') !== -1) {
-                statistics.push(stat[1] as RTCStatistics.RTCVideoRTPStream);
-            }
-            else if(stat[0].startsWith('RTCMediaStreamTrack')) {
-                statistics.push(stat[1] as RTCStatistics.RTCMediaStreamTrack);
-            }
-            else if(stat[0].startsWith('RTCMediaStream')) {
-                statistics.push(stat[1] as RTCStatistics.RTCMediaStream);
-            }
-            else if(stat[0].startsWith('RTCTransport')) {
-                statistics.push(stat[1] as RTCStatistics.RTCTransport);
-            }
-            else if(stat[0].startsWith('RTCPeerConnection')) {
-                statistics.push(stat[1] as RTCStatistics.RTCPeerConnection);
-            }
-        }
-
-        return statistics;
     }
 
     render(): null | React.ReactPortal {
@@ -126,28 +86,28 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
                     <Column>
                         {
                             this.state.items.map(item => (
-                                <b>{ item.name }</b>
+                                <ItemTitle>{ item.name }</ItemTitle>
                             ))
                         }
                     </Column>
                     <Column>
                         {
                             this.state.items.map(item => (
-                                <span>{ item.value }</span>
+                                <ItemValue>{ item.value }</ItemValue>
                             ))
                         }
                     </Column>
                     <Column>
                         {
                             this.state.items.map(item => (
-                                <div>
+                                <ItemIcons>
                                     {
                                         item.visible
                                         ? <AiOutlineEye />
                                         : <AiOutlineEyeInvisible />
                                     }
                                     <VscGripper />
-                                </div>
+                                </ItemIcons>
                             ))
                         }
                     </Column>
@@ -186,7 +146,7 @@ const Heading = styled.h1`
   ${tw`
     text-base
     font-normal
-    ml-auto
+    mr-auto
   `}
 `
 
@@ -202,11 +162,33 @@ const Divider = styled.h1`
 const ItemContainer = styled.div`
   ${tw`
     flex
-    p-4
+    py-4
   `}
 `
 
 const Column = styled.div`
-  ${tw``}
+  ${tw`
+    px-4
+  `}
+`
+
+const ItemTitle = styled.p`
+  ${tw`
+    font-medium
+    mb-1
+  `}
+`
+
+const ItemValue = styled.p`
+  ${tw`
+    font-light
+    mb-1
+  `}
+`
+
+const ItemIcons = styled.p`
+  ${tw`
+    mb-1
+  `}
 `
 
