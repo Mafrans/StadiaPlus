@@ -16,6 +16,7 @@ import { VscGripper } from 'react-icons/vsc';
 import styled from 'styled-components';
 import tw from 'twin.macro';
 import { Theme } from '../../../shared/Theme';
+import { StadiaClasses } from '../StadiaClasses';
 
 interface GameMonitorItem {
     name: string
@@ -25,6 +26,7 @@ interface GameMonitorItem {
 
 interface INetworkMonitorComponentState extends DefaultState {
     items: GameMonitorItem[]
+    sidebarOpen: boolean
 }
 
 @PageFilter([StadiaPage.PLAYER])
@@ -36,6 +38,7 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
         this.state = {
             renderer: null,
             items: [],
+            sidebarOpen: false,
         }
     }
 
@@ -70,47 +73,76 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
 
     async onUpdate() {
         this.updateRenderer();
+
+        const sidebar = document.querySelector(`.${StadiaClasses.PLAYER_SIDEBAR}`) as HTMLElement | null;
+        const sidebarOpen = sidebar !== null && sidebar.style.opacity !== '0';
+        console.log({ sidebar, sidebarOpen })
+        if (this.state.sidebarOpen !== sidebarOpen) {
+            this.setState(() => ({
+                sidebarOpen
+            }));
+        }
+    }
+
+    hexToRGBA(hex: string, alpha?: number) {
+        var r = parseInt(hex.slice(1, 3), 16),
+            g = parseInt(hex.slice(3, 5), 16),
+            b = parseInt(hex.slice(5, 7), 16);
+    
+        if (alpha) {
+            return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
+        } else {
+            return "rgb(" + r + ", " + g + ", " + b + ")";
+        }
     }
 
     render(): null | React.ReactPortal {
-        console.log({items: this.state.items})
-
         return ReactDOM.createPortal(
-            <Wrapper>
-                <Header>
-                    <Heading>Network Monitor</Heading>
-                    <CgChevronDown />
-                </Header>
-                <Divider />
-                <ItemContainer>
+            <Wrapper style={{ backgroundColor: this.hexToRGBA(Theme.Colors.gray[900], this.state.sidebarOpen ? 1 : 0.25) }}>
+                {
+                    this.state.sidebarOpen ? (
+                            <div>
+                                <Header>
+                                    <Heading>Network Monitor</Heading>
+                                    <CgChevronDown />
+                                </Header>
+                                <Divider />
+                            </div>
+                        ): null
+                }
+                <ItemContainer style={{ opacity: this.state.sidebarOpen ? 1 : 0.75 }}>
                     <Column>
                         {
                             this.state.items.map(item => (
-                                <ItemTitle>{ item.name }</ItemTitle>
+                                <p style={{ fontWeight: 500 }}>{ item.name }</p>
                             ))
                         }
                     </Column>
                     <Column>
                         {
                             this.state.items.map(item => (
-                                <ItemValue>{ item.value }</ItemValue>
+                                <p style={{ fontWeight: 300 }}>{ item.value }</p>
                             ))
                         }
                     </Column>
-                    <Column>
-                        {
-                            this.state.items.map(item => (
-                                <ItemIcons>
-                                    {
-                                        item.visible
-                                        ? <AiOutlineEye />
-                                        : <AiOutlineEyeInvisible />
-                                    }
-                                    <VscGripper />
-                                </ItemIcons>
-                            ))
-                        }
-                    </Column>
+                    {
+                    this.state.sidebarOpen ? (
+                        <Column>
+                            {
+                                this.state.items.map(item => (
+                                    <p>
+                                        {
+                                            item.visible
+                                            ? <AiOutlineEye />
+                                            : <AiOutlineEyeInvisible />
+                                        }
+                                        <VscGripper />
+                                    </p>
+                                ))
+                            }
+                        </Column>
+                        ): null
+                    }
                 </ItemContainer>
             </Wrapper>,
             document.getElementById('stadiaplus-root')!
@@ -125,9 +157,9 @@ const Wrapper = styled.div`
     rounded-lg
     box-border
     text-white
+    transition
   `}
   z-index: 180;
-  background-color: ${Theme.Colors.gray['900']};
 `
 
 const Header = styled.div`
@@ -170,25 +202,12 @@ const Column = styled.div`
   ${tw`
     px-4
   `}
-`
+  >* {
+    margin-bottom: 0;
+    margin-top: .5rem;
 
-const ItemTitle = styled.p`
-  ${tw`
-    font-medium
-    mb-1
-  `}
+    &:first-child {
+        margin-top: 0;
+    }
+  }
 `
-
-const ItemValue = styled.p`
-  ${tw`
-    font-light
-    mb-1
-  `}
-`
-
-const ItemIcons = styled.p`
-  ${tw`
-    mb-1
-  `}
-`
-
