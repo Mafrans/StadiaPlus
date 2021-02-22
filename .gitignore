@@ -1,6 +1,6 @@
 .**/
 node_modules
-dist/*/*
+dist/**/*
 !modules/popup/src/index.html
 
 *.log
