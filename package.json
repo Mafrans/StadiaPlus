@@ -54,6 +54,7 @@
     "react-beautiful-dnd": "^13.0.0",
     "react-dom": "^17.0.1",
     "react-icons": "^4.2.0",
+    "react-md-spinner": "^1.0.0",
     "react-reorder": "^3.0.0-alpha.7",
     "react-transition-group": "^4.4.1",
     "reset-css": "^5.0.1",

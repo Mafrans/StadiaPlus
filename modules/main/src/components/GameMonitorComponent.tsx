@@ -20,6 +20,7 @@ import { StadiaClasses } from '../StadiaClasses';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import MonitorItem from './subcomponents/MonitorItem';
 import { Config } from '../../../shared/Config';
+import MDSpinner from 'react-md-spinner';
 
 export interface GameMonitorItem {
     name: string
@@ -31,6 +32,7 @@ export interface GameMonitorItem {
 interface INetworkMonitorComponentState extends DefaultState {
     items: GameMonitorItem[]
     sidebarOpen: boolean
+    loading: boolean
 }
 
 @PageFilter([StadiaPage.PLAYER])
@@ -50,6 +52,7 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
             renderer: null,
             items: [],
             sidebarOpen: false,
+            loading: true
         }
 
         this.order = await Config.MONITOR_ORDER.get();
@@ -62,7 +65,19 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
     }
 
     onMessageCapture(event: MessageEvent) {
-        if(event.data.source === 'StadiaPlusNetworkMonitor' && !this.state.sidebarOpen) {
+        if (event.data.source === 'StadiaPlusNetworkMonitor' && !this.state.sidebarOpen) {
+            if (event.data.stats[1] === undefined) {
+                this.setState(() => ({
+                    loading: true
+                }));
+                return;
+            }
+            else if (this.state.loading) {
+                this.setState(() => ({
+                    loading: false
+                }));
+            }
+
             const ICECandidatePair = RTCStatistic.from<RTCIceCandidatePair>(
                     event.data.stats[1], 
                     id => id.startsWith('RTCIceCandidatePair')
@@ -180,32 +195,45 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
         return ReactDOM.createPortal(
             <Wrapper style={{ backgroundColor: this.hexToRGBA(Theme.Colors.gray[900], this.state.sidebarOpen ? 1 : 0.25) }}>
                 {
-                    this.state.sidebarOpen ? (
-                            <div>
-                                <Header>
-                                    <Heading>Game Monitor</Heading>
-                                    <CgChevronDown />
-                                </Header>
-                                <Divider />
-                            </div>
-                        ): null
-                }
-                <DragDropContext onDragEnd={this.onDragEnd.bind(this)}>
-                    <Droppable droppableId="list">
-                        {
-                            provided => (
-                                <div ref={provided.innerRef} {...provided.droppableProps}>
+                    this.state.loading
+                    ? (
+                        <Loader>
+                            <MDSpinner size={16} style={{ marginRight: '1rem' }} singleColor='#ffffff'/>
+                            <span>Loading Monitor</span>
+                        </Loader>
+                    )
+                    : (
+                        <MonitorWrapper>
+                            {
+                                this.state.sidebarOpen ? (
+                                        <div>
+                                            <Header>
+                                                <Heading>Game Monitor</Heading>
+                                                <CgChevronDown />
+                                            </Header>
+                                            <Divider />
+                                        </div>
+                                    ): null
+                            }
+                            <DragDropContext onDragEnd={this.onDragEnd.bind(this)}>
+                                <Droppable droppableId="list">
                                     {
-                                        this.state.items.map((item, index) => (
-                                            <MonitorItem sidebarOpen={this.state.sidebarOpen} index={index} item={item} />
-                                        ))
+                                        provided => (
+                                            <div ref={provided.innerRef} {...provided.droppableProps}>
+                                                {
+                                                    this.state.items.map((item, index) => (
+                                                        <MonitorItem sidebarOpen={this.state.sidebarOpen} index={index} item={item} />
+                                                    ))
+                                                }
+                                                {provided.placeholder}
+                                            </div>
+                                        )
                                     }
-                                    {provided.placeholder}
-                                </div>
-                            )
-                        }
-                    </Droppable>
-                </DragDropContext>
+                                </Droppable>
+                            </DragDropContext>
+                        </MonitorWrapper>
+                    )
+                }
             </Wrapper>,
             document.getElementById('stadiaplus-root')!
         );
@@ -219,9 +247,22 @@ const Wrapper = styled.div`
     rounded-lg
     box-border
     text-white
-    transition
   `}
   z-index: 180;
+`
+
+const Loader = styled.div`
+  ${tw`
+    flex
+    p-4
+    items-center
+  `}
+`
+
+const MonitorWrapper = styled.div`
+  ${tw`
+    transition
+  `}
 `
 
 const Header = styled.div`
