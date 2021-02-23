@@ -20,6 +20,11 @@ export interface DefaultState {
      * @default null
      */
     renderer: HTMLElement | null
+
+    /**
+     * Whether the component is active or not
+     */
+    active?: boolean
 }
 
 /**
@@ -54,14 +59,6 @@ export interface DefaultState {
  *
  */
 export default class AbstractComponent<A extends DefaultProps, B extends DefaultState> extends React.Component<A, B> {
-    /**
-     * Whether this component has started or not.
-     * @default false
-     *
-     * @private
-     */
-    private __started: boolean = false;
-
     /**
      * Whether this component is a React component or not.
      * Do not edit directly, instead see {@link @ReactComponent}
@@ -123,7 +120,9 @@ export default class AbstractComponent<A extends DefaultProps, B extends Default
 
         Logger.component(`Component ${this.name} has been enabled`);
 
-        this.__started = true;
+        this.setState(() => ({
+            active: true
+        }))
         await this.onStart();
     }
 
@@ -135,15 +134,18 @@ export default class AbstractComponent<A extends DefaultProps, B extends Default
         const currentPage = StadiaPage.current();
         if (this.__pageFilter !== undefined && currentPage !== null) {
             if(this.__pageFilter.indexOf(currentPage) === -1) {
-                if(this.__started) {
-                    this.__started = false;
+                if(this.state.active) {
+                    this.setState(() => ({
+                        active: false
+                    }))
                     this.onStop();
+                    this.render();
                 }
                 return;
             }
         }
 
-        if (!this.__started) {
+        if (!this.state.active) {
             await this.__start();
         }
         await this.onUpdate();
@@ -167,7 +169,7 @@ export default class AbstractComponent<A extends DefaultProps, B extends Default
      * @see onRender
      */
     render() {
-        if (!this.__useReact) return null;
+        if (!this.__useReact || !this.state.active) return null;
 
         if (this.state.renderer !== null) {
             const renderData = this.onRender();

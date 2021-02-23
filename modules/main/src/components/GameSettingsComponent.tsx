@@ -89,7 +89,8 @@ export default class GameSettingsComponent extends AbstractComponent<DefaultProp
     }
 
     render(): null | React.ReactPortal {
-        if(this.state.container === undefined
+        if(!this.state.active
+            || this.state.container === undefined
             || this.state.container === null
             || this.state.uuid === null
         ) return null;

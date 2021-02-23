@@ -13,6 +13,7 @@ import { PageQueryType } from '../../../shared/models/PageQueryType';
 import Logger from '../Logger';
 import { StadiaGameDB } from '../StadiaGameDB';
 import GameCard from './subcomponents/GameCard';
+import PageFilter from '../decorators/@PageFilter';
 
 interface GameUpdateComponentState extends DefaultState {
     userId: string | null
@@ -22,6 +23,7 @@ interface GameUpdateComponentState extends DefaultState {
     games: { name: string, poster: string | null, offsets: { x: number, y: number } }[],
 }
 
+@PageFilter([])
 @ReactComponent
 export default class PageUpdateComponent extends AbstractComponent<DefaultProps, GameUpdateComponentState> {
     remainingIds: string[] = [];
@@ -134,7 +136,7 @@ export default class PageUpdateComponent extends AbstractComponent<DefaultProps,
     }
 
     render(): null | React.ReactPortal {
-        console.log({ finished: this.state.finished, games: this.state.games, remaining: this.remainingIds })
+        if (!this.state.active) return null;
 
         return ReactDOM.createPortal(
             <Wrapper>

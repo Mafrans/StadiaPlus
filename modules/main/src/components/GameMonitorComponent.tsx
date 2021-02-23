@@ -37,69 +37,76 @@ interface INetworkMonitorComponentState extends DefaultState {
 @ReactComponent
 export default class GameMonitorComponent extends AbstractComponent<DefaultProps, INetworkMonitorComponentState> {
     order: {[id: string]: number} | null = null;
+    messageListener = this.onMessageCapture.bind(this);
 
     constructor() {
         super({ name: "Game Monitor Component" });
+    }
+
+    async onStart() {
+        Util.desandbox(MonitorRunnable);
 
         this.state = {
             renderer: null,
             items: [],
             sidebarOpen: false,
         }
-    }
-
-    async onStart() {
-        Util.desandbox(MonitorRunnable);
 
         this.order = await Config.MONITOR_ORDER.get();
+        window.addEventListener('message', this.messageListener);
+    }
+    
+    async onStop() {
+        window.removeEventListener('message', this.messageListener);
+        console.log('STOPPED!!!')
+    }
 
-        window.addEventListener('message', async event => {
-            if(event.data.source === 'StadiaPlusNetworkMonitor' && !this.state.sidebarOpen) {
-                const ICECandidatePair = RTCStatistic.from<RTCIceCandidatePair>(
-                        event.data.stats[1], 
-                        id => id.startsWith('RTCIceCandidatePair')
-                    );
+    onMessageCapture(event: MessageEvent) {
+        if(event.data.source === 'StadiaPlusNetworkMonitor' && !this.state.sidebarOpen) {
+            const ICECandidatePair = RTCStatistic.from<RTCIceCandidatePair>(
+                    event.data.stats[1], 
+                    id => id.startsWith('RTCIceCandidatePair')
+                );
 
-                let items = [
-                    {
-                        name: 'Latency',
-                        value: `${Math.round(ICECandidatePair.currentRoundTripTime! * 1000)} ms`,
-                        visible: true,
-                        id: 'latency',
-                    },
-                    {
-                        name: 'Bytes Received',
-                        value: `${ICECandidatePair.bytesReceived!}`,
-                        visible: true,
-                        id: 'bytes-received',
-                    },
-                    {
-                        name: 'Bytes Received',
-                        value: `${ICECandidatePair.bytesReceived!}`,
-                        visible: true,
-                        id: 'bytes-received1',
-                    },
-                    {
-                        name: 'Bytes Received',
-                        value: `${ICECandidatePair.bytesReceived!}`,
-                        visible: true,
-                        id: 'bytes-received2',
-                    },
-                ]
+            let items = [
+                {
+                    name: 'Latency',
+                    value: `${Math.round(ICECandidatePair.currentRoundTripTime! * 1000)} ms`,
+                    visible: true,
+                    id: 'latency',
+                },
+                {
+                    name: 'Bytes Received',
+                    value: `${ICECandidatePair.bytesReceived!}`,
+                    visible: true,
+                    id: 'bytes-received',
+                },
+                {
+                    name: 'Bytes Received',
+                    value: `${ICECandidatePair.bytesReceived!}`,
+                    visible: true,
+                    id: 'bytes-received1',
+                },
+                {
+                    name: 'Bytes Received',
+                    value: `${ICECandidatePair.bytesReceived!}`,
+                    visible: true,
+                    id: 'bytes-received2',
+                },
+            ]
 
-                if (this.order !== null && this.order !== undefined) {
-                    items = items.sort((a, b) => this.order![a.id] - this.order![b.id]);
-                }
-                else {
-                    this.order = {};
-                    items.forEach((item, index) => this.order![item.id] = index);
-                }
-                
-                this.setState(() => ({
-                    items
-                }))
+            if (this.order !== null && this.order !== undefined) {
+                items = items.sort((a, b) => this.order![a.id] - this.order![b.id]);
             }
-        })
+            else {
+                this.order = {};
+                items.forEach((item, index) => this.order![item.id] = index);
+            }
+            
+            this.setState(() => ({
+                items
+            }))
+        }
     }
 
     async onUpdate() {
@@ -133,7 +140,7 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
       
         return result;
     };
-    
+
     onDragEnd(result: DropResult) {
         // dropped outside the list
         if (!result.destination) {
@@ -169,6 +176,7 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
     }
 
     render(): null | React.ReactPortal {
+        if (!this.state.active) return null;
         return ReactDOM.createPortal(
             <Wrapper style={{ backgroundColor: this.hexToRGBA(Theme.Colors.gray[900], this.state.sidebarOpen ? 1 : 0.25) }}>
                 {

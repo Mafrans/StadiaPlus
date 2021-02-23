@@ -69,6 +69,7 @@ export default class GameTileComponent extends AbstractComponent<DefaultProps, I
     }
 
     render(): null | React.ReactPortal {
+        if (!this.state.active) return null;
         const icons: ReactNode[] = [];
 
         this.state.tileQueries.forEach(entry => {
