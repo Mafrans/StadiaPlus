@@ -22,12 +22,12 @@ export default class MonitorItem extends React.Component<IMonitorItemProps> {
             <Draggable key={this.props.item.id} draggableId={this.props.item.id} index={this.props.index}  >
                 {(provided, snapshot) => (
                     <Wrapper ref={ provided.innerRef } { ...provided.draggableProps } style={{...provided.draggableProps.style, opacity: this.props.item.visible ? 1 : 0.5 }}>
-                        <span style={{ fontWeight: 500 }}>{ this.props.item.name }</span>
-                        <span style={{ fontWeight: 300 }}>{ this.props.item.value }</span>
+                        <ItemTitle type='text' value={ this.props.item.name } style={{ fontWeight: 500 }} />
+                        <ItemValue style={{ fontWeight: 300 }}>{ this.props.item.value }</ItemValue>
                         
                         {
                             this.props.sidebarOpen ? (
-                                <span>
+                                <ItemIcons>
                                     <span>
                                         {
                                             this.props.item.visible
@@ -38,7 +38,7 @@ export default class MonitorItem extends React.Component<IMonitorItemProps> {
                                     <span { ...provided.dragHandleProps } >
                                         <VscGripper/>
                                     </span>
-                                </span>
+                                </ItemIcons>
                                 ): null
                         }
                     </Wrapper>
@@ -53,7 +53,33 @@ const Wrapper = styled.div`
     ${tw`
         grid
         grid-flow-col
+        items-center
         gap-4
         p-4
+    `}
+`
+
+const ItemIcons = styled.span`
+    ${tw`
+        flex
+        items-center
+    `}
+    
+    >*:not(:first-child) {
+        margin-left: 0.25rem;
+    }
+`
+
+const ItemTitle = styled.input`
+    ${tw`
+        inline-flex
+        w-32
+    `}
+`
+
+const ItemValue = styled.span`
+    ${tw`
+        inline-flex
+        w-24
     `}
 `
