@@ -135,6 +135,10 @@ export default class AbstractComponent<A extends DefaultProps, B extends Default
         const currentPage = StadiaPage.current();
         if (this.__pageFilter !== undefined && currentPage !== null) {
             if(this.__pageFilter.indexOf(currentPage) === -1) {
+                if(this.__started) {
+                    this.__started = false;
+                    this.onStop();
+                }
                 return;
             }
         }
@@ -197,6 +201,17 @@ export default class AbstractComponent<A extends DefaultProps, B extends Default
      * }
      */
     async onUpdate(): Promise<void> {}
+    
+    /**
+     * Abstract async Start event, runs when the component is stopped
+     * @example
+     * async onStop() {
+     *     console.log('This message is sent when the component is stopped');
+     * }
+     */
+    async onStop(): Promise<void> {
+
+    }
 
     /**
      * Abstract React Render event, override for all your react needs
