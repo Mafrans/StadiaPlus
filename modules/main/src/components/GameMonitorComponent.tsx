@@ -17,11 +17,15 @@ import styled from 'styled-components';
 import tw from 'twin.macro';
 import { Theme } from '../../../shared/Theme';
 import { StadiaClasses } from '../StadiaClasses';
+import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
+import MonitorItem from './subcomponents/MonitorItem';
+import { Config } from '../../../shared/Config';
 
-interface GameMonitorItem {
+export interface GameMonitorItem {
     name: string
     value: string
     visible: boolean
+    id: string
 }
 
 interface INetworkMonitorComponentState extends DefaultState {
@@ -32,6 +36,8 @@ interface INetworkMonitorComponentState extends DefaultState {
 @PageFilter([StadiaPage.PLAYER])
 @ReactComponent
 export default class GameMonitorComponent extends AbstractComponent<DefaultProps, INetworkMonitorComponentState> {
+    order: {[id: string]: number} | null = null;
+
     constructor() {
         super({ name: "Game Monitor Component" });
 
@@ -45,27 +51,53 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
     async onStart() {
         Util.desandbox(MonitorRunnable);
 
-        window.addEventListener('message', async event => {
-            if(event.data.source === 'StadiaPlusNetworkMonitor') {
+        this.order = await Config.MONITOR_ORDER.get();
+        console.log({order: this.order});
 
+        window.addEventListener('message', async event => {
+            if(event.data.source === 'StadiaPlusNetworkMonitor' && !this.state.sidebarOpen) {
                 const ICECandidatePair = RTCStatistic.from<RTCIceCandidatePair>(
                         event.data.stats[1], 
                         id => id.startsWith('RTCIceCandidatePair')
                     );
+
+                let items = [
+                    {
+                        name: 'Latency',
+                        value: `${Math.round(ICECandidatePair.currentRoundTripTime! * 1000)} ms`,
+                        visible: true,
+                        id: 'latency',
+                    },
+                    {
+                        name: 'Bytes Received',
+                        value: `${ICECandidatePair.bytesReceived!}`,
+                        visible: true,
+                        id: 'bytes-received',
+                    },
+                    {
+                        name: 'Bytes Received',
+                        value: `${ICECandidatePair.bytesReceived!}`,
+                        visible: true,
+                        id: 'bytes-received1',
+                    },
+                    {
+                        name: 'Bytes Received',
+                        value: `${ICECandidatePair.bytesReceived!}`,
+                        visible: true,
+                        id: 'bytes-received2',
+                    },
+                ]
+
+                if (this.order !== null && this.order !== undefined) {
+                    items = items.sort((a, b) => this.order![a.id] - this.order![b.id]);
+                }
+                else {
+                    this.order = {};
+                    items.forEach((item, index) => this.order![item.id] = index);
+                }
                 
                 this.setState(() => ({
-                    items: [
-                        {
-                            name: 'Latency',
-                            value: `${Math.round(ICECandidatePair.currentRoundTripTime! * 1000)} ms`,
-                            visible: true,
-                        },
-                        {
-                            name: 'Bytes Received',
-                            value: `${ICECandidatePair.bytesReceived!}`,
-                            visible: true,
-                        },
-                    ]
+                    items
                 }))
             }
         })
@@ -76,7 +108,6 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
 
         const sidebar = document.querySelector(`.${StadiaClasses.PLAYER_SIDEBAR}`) as HTMLElement | null;
         const sidebarOpen = sidebar !== null && sidebar.style.opacity !== '0';
-        console.log({ sidebar, sidebarOpen })
         if (this.state.sidebarOpen !== sidebarOpen) {
             this.setState(() => ({
                 sidebarOpen
@@ -96,6 +127,48 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
         }
     }
 
+    reorder(list: GameMonitorItem[], startIndex: number, endIndex: number) {
+        const result = Array.from(list);
+        const [removed] = result.splice(startIndex, 1);
+        result.splice(endIndex, 0, removed);
+      
+        return result;
+    };
+    
+    async onDragEnd(result: DropResult) {
+        // dropped outside the list
+        if (!result.destination) {
+            return;
+        }
+
+        if(this.order === null || this.order === undefined) return;
+
+        for (const id of Object.keys(this.order)) {
+            if(result.destination.index > result.source.index) {
+                if (this.order[id] > result.source.index && this.order[id] <= result.destination.index) {
+                    this.order[id]--;
+                }
+            }
+            else {
+                if (this.order[id] < result.source.index && this.order[id] >= result.destination.index) {
+                    this.order[id]++;
+                }
+            }
+        }
+        this.order[result.draggableId] = result.destination.index;
+        await Config.MONITOR_ORDER.set(this.order);
+    
+        const items = this.reorder(
+            this.state.items,
+            result.source.index,
+            result.destination.index
+        );
+    
+        this.setState({
+            items,
+        });
+    }
+
     render(): null | React.ReactPortal {
         return ReactDOM.createPortal(
             <Wrapper style={{ backgroundColor: this.hexToRGBA(Theme.Colors.gray[900], this.state.sidebarOpen ? 1 : 0.25) }}>
@@ -110,40 +183,22 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
                             </div>
                         ): null
                 }
-                <ItemContainer style={{ opacity: this.state.sidebarOpen ? 1 : 0.75 }}>
-                    <Column>
+                <DragDropContext onDragEnd={this.onDragEnd.bind(this)}>
+                    <Droppable droppableId="list">
                         {
-                            this.state.items.map(item => (
-                                <p style={{ fontWeight: 500 }}>{ item.name }</p>
-                            ))
+                            provided => (
+                                <div ref={provided.innerRef} {...provided.droppableProps}>
+                                    {
+                                        this.state.items.map((item, index) => (
+                                            <MonitorItem sidebarOpen={this.state.sidebarOpen} index={index} item={item} />
+                                        ))
+                                    }
+                                    {provided.placeholder}
+                                </div>
+                            )
                         }
-                    </Column>
-                    <Column>
-                        {
-                            this.state.items.map(item => (
-                                <p style={{ fontWeight: 300 }}>{ item.value }</p>
-                            ))
-                        }
-                    </Column>
-                    {
-                    this.state.sidebarOpen ? (
-                        <Column>
-                            {
-                                this.state.items.map(item => (
-                                    <p>
-                                        {
-                                            item.visible
-                                            ? <AiOutlineEye />
-                                            : <AiOutlineEyeInvisible />
-                                        }
-                                        <VscGripper />
-                                    </p>
-                                ))
-                            }
-                        </Column>
-                        ): null
-                    }
-                </ItemContainer>
+                    </Droppable>
+                </DragDropContext>
             </Wrapper>,
             document.getElementById('stadiaplus-root')!
         );
