@@ -175,7 +175,7 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
                     this.state.sidebarOpen ? (
                             <div>
                                 <Header>
-                                    <Heading>Network Monitor</Heading>
+                                    <Heading>Game Monitor</Heading>
                                     <CgChevronDown />
                                 </Header>
                                 <Divider />
