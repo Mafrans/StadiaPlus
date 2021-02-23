@@ -113,7 +113,7 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
         this.updateRenderer();
 
         const sidebar = document.querySelector(`.${StadiaClasses.PLAYER_SIDEBAR}`) as HTMLElement | null;
-        const sidebarOpen = sidebar !== null && sidebar.style.opacity !== '0';
+        const sidebarOpen = sidebar !== null && sidebar.style.opacity === '1';
         if (this.state.sidebarOpen !== sidebarOpen) {
             this.setState(() => ({
                 sidebarOpen
