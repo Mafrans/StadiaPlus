@@ -52,7 +52,6 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
         Util.desandbox(MonitorRunnable);
 
         this.order = await Config.MONITOR_ORDER.get();
-        console.log({order: this.order});
 
         window.addEventListener('message', async event => {
             if(event.data.source === 'StadiaPlusNetworkMonitor' && !this.state.sidebarOpen) {
@@ -135,7 +134,7 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
         return result;
     };
     
-    async onDragEnd(result: DropResult) {
+    onDragEnd(result: DropResult) {
         // dropped outside the list
         if (!result.destination) {
             return;
@@ -156,7 +155,7 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
             }
         }
         this.order[result.draggableId] = result.destination.index;
-        await Config.MONITOR_ORDER.set(this.order);
+        Config.MONITOR_ORDER.set(this.order);
     
         const items = this.reorder(
             this.state.items,
