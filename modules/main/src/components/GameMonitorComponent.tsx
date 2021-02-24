@@ -9,7 +9,7 @@ import StadiaPage from '../StadiaPage';
 import ReactDOM from 'react-dom';
 import { RTCStatistics } from '../RTCStatistics';
 import RTCStatistic = RTCStatistics.RTCStatistic;
-import { CgChevronDown } from 'react-icons/cg';
+import { CgChevronDown, CgChevronUp } from 'react-icons/cg';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { VscGripper } from 'react-icons/vsc';
 import styled from 'styled-components';
@@ -32,6 +32,7 @@ interface INetworkMonitorComponentState extends DefaultState {
     items: GameMonitorItem[]
     sidebarOpen: boolean
     loading: boolean
+    enabled: boolean
 }
 
 @PageFilter([StadiaPage.PLAYER])
@@ -51,7 +52,8 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
             renderer: null,
             items: [],
             sidebarOpen: false,
-            loading: true
+            loading: true,
+            enabled: false,
         }
 
         this.order = await Config.MONITOR_ORDER.get();
@@ -65,7 +67,7 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
 
     onMessageCapture(event: MessageEvent) {
         if (event.data.source === 'StadiaPlusNetworkMonitor' && !this.state.sidebarOpen) {
-            if (event.data.stats[1] === undefined) {
+            if (event.data.stats === undefined || event.data.stats === null || event.data.stats.length < 2) {
                 this.setState(() => ({
                     loading: true
                 }));
@@ -82,6 +84,8 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
                     loading: false
                 }));
             }
+
+            if (!this.state.enabled && !this.state.sidebarOpen && this.state.items.length > 0) return;
 
             const audioStream = RTCStatistic.from<RTCStatistics.RTCAudioRTPStream>(
                 event.data.stats[1],
@@ -231,11 +235,20 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
     
         return `${(value / Math.pow(1024, exponent)).toFixed(decimals || 2)} ${suffixes[exponent]}`;
     }
+    
+    toggleEnabled(): void {
+        this.setState(state => ({ enabled: !state.enabled }))
+    }
 
     render(): null | React.ReactPortal {
-        if (!this.state.active) return null;
+        if (!this.state.enabled && !this.state.loading && !this.state.sidebarOpen) return null;
+
+        console.log(this.state.items);
+
         return ReactDOM.createPortal(
-            <Wrapper style={{ backgroundColor: this.hexToRGBA(Theme.Colors.gray[900], this.state.sidebarOpen ? 1 : 0.25) }}>
+            <Wrapper 
+                style={{ backgroundColor: this.hexToRGBA(Theme.Colors.gray[900], this.state.sidebarOpen ? 1 : 0.25) }}
+            >
                 {
                     this.state.loading
                         ? (
@@ -245,34 +258,50 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
                             </Loader>
                         )
                         : (
-                            <MonitorWrapper>
+                            <MonitorWrapper style={{ width: !this.state.sidebarOpen ? 'auto' : '' }}>
                                 {
                                     this.state.sidebarOpen ? (
                                         <div>
                                             <Header>
                                                 <Heading>Game Monitor</Heading>
-                                                <CgChevronDown />
+                                                <ToggleIcon aria-roledescription='button' onClick={() => this.toggleEnabled()}>
+                                                    {
+                                                        this.state.enabled
+                                                            ? <CgChevronUp />
+                                                            : <CgChevronDown />
+                                                    }
+                                                </ToggleIcon>
                                             </Header>
-                                            <Divider />
+                                            {
+                                                this.state.enabled 
+                                                    ? <Divider /> 
+                                                    : null
+                                            }
                                         </div>
                                     ) : null
                                 }
-                                <DragDropContext onDragEnd={this.onDragEnd.bind(this)}>
-                                    <Droppable droppableId="list">
-                                        {
-                                            provided => (
-                                                <div ref={provided.innerRef} {...provided.droppableProps}>
+                                {
+                                    this.state.enabled
+                                        ? (
+                                            <DragDropContext onDragEnd={this.onDragEnd.bind(this)}>
+                                                <Droppable droppableId="list">
                                                     {
-                                                        this.state.items.map((item, index) => (
-                                                            <MonitorItem sidebarOpen={this.state.sidebarOpen} index={index} item={item} />
-                                                        ))
+                                                        provided => (
+                                                            <div ref={provided.innerRef} {...provided.droppableProps}>
+                                                                {
+                                                                    this.state.items.map((item, index) => (
+                                                                        <MonitorItem sidebarOpen={this.state.sidebarOpen} index={index} item={item} />
+                                                                    ))
+                                                                }
+                                                                {provided.placeholder}
+                                                            </div>
+                                                        )
                                                     }
-                                                    {provided.placeholder}
-                                                </div>
-                                            )
-                                        }
-                                    </Droppable>
-                                </DragDropContext>
+                                                </Droppable>
+                                            </DragDropContext>
+                                        )
+                                        : null
+                                }
                             </MonitorWrapper>
                         )
                 }
@@ -307,6 +336,7 @@ const MonitorWrapper = styled.div`
   ${tw`
     transition
   `}
+  width: 22rem;
 `
 
 const Header = styled.div`
@@ -326,6 +356,14 @@ const Heading = styled.h1`
     text-base
     font-normal
     mr-auto
+  `}
+`
+
+const ToggleIcon = styled.div`
+  ${tw`
+    cursor-pointer
+    flex
+    items-center
   `}
 `
 

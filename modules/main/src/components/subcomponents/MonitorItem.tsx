@@ -32,7 +32,7 @@ export default class MonitorItem extends React.Component<IMonitorItemProps> {
                         ref={ provided.innerRef } 
                         style={{
                             ...provided.draggableProps.style, 
-                            
+
                             opacity: this.props.item.visible 
                                 ? this.props.sidebarOpen 
                                     ? 1
@@ -69,22 +69,9 @@ export default class MonitorItem extends React.Component<IMonitorItemProps> {
 
 const Wrapper = styled.div`
     ${tw`
-        grid
-        grid-flow-col
-        items-center
-        gap-4
+        flex
         p-2
     `}
-`
-
-const ItemIcons = styled.span`
-    ${tw`
-        flex
-        items-center
-    `}
-    >*:not(:first-child) {
-        margin-left: 0.25rem;
-    }
 `
 
 const ItemTitle = styled.span`
@@ -92,6 +79,7 @@ const ItemTitle = styled.span`
         inline-flex
         font-bold
         w-32
+        mr-4
     `}
 `
 
@@ -99,6 +87,22 @@ const ItemValue = styled.span`
     ${tw`
         inline-flex
         font-light
-        w-32
+        mr-4
     `}
+`
+
+const ItemIcons = styled.span`
+    ${tw`
+        flex
+        items-center
+        ml-auto
+    `}
+    >* {
+        display: flex;
+        align-items: center;
+
+        &:not(:first-child) {
+            margin-left: 0.25rem;
+        }
+    }
 `
