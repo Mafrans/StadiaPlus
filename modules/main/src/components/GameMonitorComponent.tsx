@@ -288,6 +288,7 @@ const Wrapper = styled.div`
     rounded-lg
     box-border
     text-white
+    p-2
   `}
   z-index: 180;
 `
@@ -295,7 +296,7 @@ const Wrapper = styled.div`
 const Loader = styled.div`
   ${tw`
     flex
-    p-4
+    p-2
     items-center
   `}
 `
@@ -311,7 +312,7 @@ const Header = styled.div`
     flex
     items-center
   
-    p-4
+    p-2
   `}
   background: ${Theme.Colors.neon.gradient};
   -webkit-background-clip: text;
@@ -330,7 +331,7 @@ const Divider = styled.h1`
   ${tw`
     border-0
     h-px
-    mx-4
+    m-2
   `}
   background-color: ${Theme.Colors.gray['700']};
 `

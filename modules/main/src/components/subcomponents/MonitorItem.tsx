@@ -55,7 +55,7 @@ const Wrapper = styled.div`
         grid-flow-col
         items-center
         gap-4
-        p-4
+        p-2
     `}
 `
 
@@ -79,6 +79,6 @@ const ItemTitle = styled.span`
 const ItemValue = styled.span`
     ${tw`
         inline-flex
-        w-24
+        w-32
     `}
 `
