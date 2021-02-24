@@ -13,7 +13,7 @@ import GameMonitorComponent from './components/GameMonitorComponent';
 
 
 document.addEventListener('DOMContentLoaded', async () => {
-    Fonts.load('Overpass', [300, 400, 700]);
+    Fonts.load('Overpass', [200, 300, 400, 700]);
 
     StadiaPlusDB.connect('http://localhost:3000');
     StadiaPlusDB.authenticate();

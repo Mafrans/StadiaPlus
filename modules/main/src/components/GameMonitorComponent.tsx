@@ -292,6 +292,7 @@ const Wrapper = styled.div`
     p-2
   `}
   z-index: 180;
+  font-family: Overpass, sans-serif;
 `
 
 const Loader = styled.div`

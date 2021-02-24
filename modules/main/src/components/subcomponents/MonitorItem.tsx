@@ -18,10 +18,28 @@ export default class MonitorItem extends React.Component<IMonitorItemProps> {
     }
     
     render() {
+
+        if(this.props.sidebarOpen && !this.props.item.visible) {
+            return null;
+        }
+
         return (
             <Draggable key={this.props.item.id} draggableId={this.props.item.id} index={this.props.index}  >
                 {(provided, snapshot) => (
-                    <Wrapper ref={ provided.innerRef } { ...provided.draggableProps } style={{...provided.draggableProps.style, opacity: this.props.item.visible ? 1 : 0.5 }}>
+                    <Wrapper 
+                        { ...provided.draggableProps } 
+
+                        ref={ provided.innerRef } 
+                        style={{
+                            ...provided.draggableProps.style, 
+                            
+                            opacity: this.props.item.visible 
+                                ? this.props.sidebarOpen 
+                                    ? 1
+                                    : 0.75
+                                : 0.5 
+                        }}
+                    >
                         <ItemTitle style={{ fontWeight: 500 }}>{ this.props.item.name }</ItemTitle>
                         <ItemValue style={{ fontWeight: 300 }}>{ this.props.item.value }</ItemValue>
                         
@@ -72,6 +90,7 @@ const ItemIcons = styled.span`
 const ItemTitle = styled.span`
     ${tw`
         inline-flex
+        font-bold
         w-32
     `}
 `
@@ -79,6 +98,7 @@ const ItemTitle = styled.span`
 const ItemValue = styled.span`
     ${tw`
         inline-flex
+        font-light
         w-32
     `}
 `
