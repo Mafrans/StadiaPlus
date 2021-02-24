@@ -71,16 +71,17 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
                 }));
                 return;
             }
-            else if (this.state.loading) {
-                this.setState(() => ({
-                    loading: false
-                }));
-            }
 
             const ICECandidatePair = RTCStatistic.from<RTCStatistics.RTCIceCandidatePair>(
                 event.data.stats[1],
                 id => id.startsWith('RTCIceCandidatePair')
             );
+
+            if(this.state.loading && ICECandidatePair.bytesReceived! !== 0) {
+                this.setState(() => ({
+                    loading: false
+                }));
+            }
 
             const audioStream = RTCStatistic.from<RTCStatistics.RTCAudioRTPStream>(
                 event.data.stats[1],
