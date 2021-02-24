@@ -9,7 +9,6 @@ import StadiaPage from '../StadiaPage';
 import ReactDOM from 'react-dom';
 import { RTCStatistics } from '../RTCStatistics';
 import RTCStatistic = RTCStatistics.RTCStatistic;
-import RTCIceCandidatePair = RTCStatistics.RTCIceCandidatePair;
 import { CgChevronDown } from 'react-icons/cg';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { VscGripper } from 'react-icons/vsc';
@@ -38,7 +37,7 @@ interface INetworkMonitorComponentState extends DefaultState {
 @PageFilter([StadiaPage.PLAYER])
 @ReactComponent
 export default class GameMonitorComponent extends AbstractComponent<DefaultProps, INetworkMonitorComponentState> {
-    order: {[id: string]: number} | null = null;
+    order: { [id: string]: number } | null = null;
     messageListener = this.onMessageCapture.bind(this);
 
     constructor() {
@@ -58,7 +57,7 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
         this.order = await Config.MONITOR_ORDER.get();
         window.addEventListener('message', this.messageListener);
     }
-    
+
     async onStop() {
         window.removeEventListener('message', this.messageListener);
         console.log('STOPPED!!!')
@@ -78,10 +77,30 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
                 }));
             }
 
-            const ICECandidatePair = RTCStatistic.from<RTCIceCandidatePair>(
-                    event.data.stats[1], 
-                    id => id.startsWith('RTCIceCandidatePair')
-                );
+            const ICECandidatePair = RTCStatistic.from<RTCStatistics.RTCIceCandidatePair>(
+                event.data.stats[1],
+                id => id.startsWith('RTCIceCandidatePair')
+            );
+
+            const audioStream = RTCStatistic.from<RTCStatistics.RTCAudioRTPStream>(
+                event.data.stats[1],
+                id => id.startsWith('RTCInboundRTPAudioStream')
+            );
+
+            const audioCodec = RTCStatistic.from<RTCStatistics.RTCCodec>(
+                event.data.stats[1],
+                id => id === audioStream.codecId
+            );
+
+            const videoStream = RTCStatistic.from<RTCStatistics.RTCVideoRTPStream>(
+                event.data.stats[1],
+                id => id.startsWith('RTCInboundRTPVideoStream')
+            );
+
+            const videoCodec = RTCStatistic.from<RTCStatistics.RTCCodec>(
+                event.data.stats[1],
+                id => id === videoStream.codecId
+            );
 
             let items = [
                 {
@@ -97,27 +116,38 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
                     id: 'bytes-received',
                 },
                 {
-                    name: 'Bytes Received',
-                    value: `${ICECandidatePair.bytesReceived!}`,
+                    name: 'Video Codec',
+                    value: `${videoCodec.mimeType!.split('/')[1]} (${videoStream.decoderImplementation === 'ExternalDecoder' ? 'hardware' : 'software'})`,
                     visible: true,
-                    id: 'bytes-received1',
+                    id: 'video-codec',
                 },
                 {
-                    name: 'Bytes Received',
-                    value: `${ICECandidatePair.bytesReceived!}`,
+                    name: 'Audio Codec',
+                    value: `${audioCodec.mimeType!}`,
                     visible: true,
-                    id: 'bytes-received2',
+                    id: 'audio-codec',
+                },
+                {
+                    name: 'Bitrate',
+                    value: `${ICECandidatePair.availableOutgoingBitrate!}`,
+                    visible: true,
+                    id: 'bitrate',
                 },
             ]
 
             if (this.order !== null && this.order !== undefined) {
                 items = items.sort((a, b) => this.order![a.id] - this.order![b.id]);
+
+                if (Object.keys(this.order).length != items.length) {
+                    this.order = {};
+                    items.forEach((item, index) => this.order![item.id] = index);
+                }
             }
             else {
                 this.order = {};
                 items.forEach((item, index) => this.order![item.id] = index);
             }
-            
+
             this.setState(() => ({
                 items
             }))
@@ -140,7 +170,7 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
         var r = parseInt(hex.slice(1, 3), 16),
             g = parseInt(hex.slice(3, 5), 16),
             b = parseInt(hex.slice(5, 7), 16);
-    
+
         if (alpha) {
             return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
         } else {
@@ -152,7 +182,7 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
         const result = Array.from(list);
         const [removed] = result.splice(startIndex, 1);
         result.splice(endIndex, 0, removed);
-      
+
         return result;
     };
 
@@ -162,10 +192,10 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
             return;
         }
 
-        if(this.order === null || this.order === undefined) return;
+        if (this.order === null || this.order === undefined) return;
 
         for (const id of Object.keys(this.order)) {
-            if(result.destination.index > result.source.index) {
+            if (result.destination.index > result.source.index) {
                 if (this.order[id] > result.source.index && this.order[id] <= result.destination.index) {
                     this.order[id]--;
                 }
@@ -178,13 +208,13 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
         }
         this.order[result.draggableId] = result.destination.index;
         Config.MONITOR_ORDER.set(this.order);
-    
+
         const items = this.reorder(
             this.state.items,
             result.source.index,
             result.destination.index
         );
-    
+
         this.setState({
             items,
         });
@@ -196,16 +226,16 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
             <Wrapper style={{ backgroundColor: this.hexToRGBA(Theme.Colors.gray[900], this.state.sidebarOpen ? 1 : 0.25) }}>
                 {
                     this.state.loading
-                    ? (
-                        <Loader>
-                            <MDSpinner size={16} style={{ marginRight: '1rem' }} singleColor='#ffffff'/>
-                            <span>Loading Monitor</span>
-                        </Loader>
-                    )
-                    : (
-                        <MonitorWrapper>
-                            {
-                                this.state.sidebarOpen ? (
+                        ? (
+                            <Loader>
+                                <MDSpinner size={16} style={{ marginRight: '1rem' }} singleColor='#ffffff' />
+                                <span>Loading Monitor</span>
+                            </Loader>
+                        )
+                        : (
+                            <MonitorWrapper>
+                                {
+                                    this.state.sidebarOpen ? (
                                         <div>
                                             <Header>
                                                 <Heading>Game Monitor</Heading>
@@ -213,26 +243,26 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
                                             </Header>
                                             <Divider />
                                         </div>
-                                    ): null
-                            }
-                            <DragDropContext onDragEnd={this.onDragEnd.bind(this)}>
-                                <Droppable droppableId="list">
-                                    {
-                                        provided => (
-                                            <div ref={provided.innerRef} {...provided.droppableProps}>
-                                                {
-                                                    this.state.items.map((item, index) => (
-                                                        <MonitorItem sidebarOpen={this.state.sidebarOpen} index={index} item={item} />
-                                                    ))
-                                                }
-                                                {provided.placeholder}
-                                            </div>
-                                        )
-                                    }
-                                </Droppable>
-                            </DragDropContext>
-                        </MonitorWrapper>
-                    )
+                                    ) : null
+                                }
+                                <DragDropContext onDragEnd={this.onDragEnd.bind(this)}>
+                                    <Droppable droppableId="list">
+                                        {
+                                            provided => (
+                                                <div ref={provided.innerRef} {...provided.droppableProps}>
+                                                    {
+                                                        this.state.items.map((item, index) => (
+                                                            <MonitorItem sidebarOpen={this.state.sidebarOpen} index={index} item={item} />
+                                                        ))
+                                                    }
+                                                    {provided.placeholder}
+                                                </div>
+                                            )
+                                        }
+                                    </Droppable>
+                                </DragDropContext>
+                            </MonitorWrapper>
+                        )
                 }
             </Wrapper>,
             document.getElementById('stadiaplus-root')!
