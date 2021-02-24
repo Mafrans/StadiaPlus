@@ -87,16 +87,16 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
                 id => id.startsWith('RTCInboundRTPAudioStream')
             );
 
-            const audioCodec = RTCStatistic.from<RTCStatistics.RTCCodec>(
-                event.data.stats[1],
-                id => id === audioStream.codecId
-            );
-
             const videoStream = RTCStatistic.from<RTCStatistics.RTCVideoRTPStream>(
                 event.data.stats[1],
                 id => id.startsWith('RTCInboundRTPVideoStream')
             );
 
+            const audioCodec = RTCStatistic.from<RTCStatistics.RTCCodec>(
+                event.data.stats[1],
+                id => id === audioStream.codecId
+            );
+            
             const videoCodec = RTCStatistic.from<RTCStatistics.RTCCodec>(
                 event.data.stats[1],
                 id => id === videoStream.codecId
@@ -123,7 +123,7 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
                 },
                 {
                     name: 'Audio Codec',
-                    value: `${audioCodec.mimeType!}`,
+                    value: `${audioCodec.mimeType!.split('/')[1]}`,
                     visible: true,
                     id: 'audio-codec',
                 },
