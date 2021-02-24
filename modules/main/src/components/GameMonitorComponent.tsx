@@ -96,7 +96,7 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
                 event.data.stats[1],
                 id => id === audioStream.codecId
             );
-            
+
             const videoCodec = RTCStatistic.from<RTCStatistics.RTCCodec>(
                 event.data.stats[1],
                 id => id === videoStream.codecId
@@ -111,7 +111,7 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
                 },
                 {
                     name: 'Bytes Received',
-                    value: `${ICECandidatePair.bytesReceived!}`,
+                    value: `${this.formatBytes(ICECandidatePair.bytesReceived!)}`,
                     visible: true,
                     id: 'bytes-received',
                 },
@@ -129,7 +129,7 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
                 },
                 {
                     name: 'Bitrate',
-                    value: `${ICECandidatePair.availableOutgoingBitrate!}`,
+                    value: `${this.formatBytes(ICECandidatePair.availableOutgoingBitrate!)}`,
                     visible: true,
                     id: 'bitrate',
                 },
@@ -218,6 +218,17 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
         this.setState({
             items,
         });
+    }
+
+    formatBytes(value: number, decimals?: number): string {
+        if (value === 0) {
+            return "0 Bytes";
+        }
+
+        const exponent = Math.floor(Math.log(value) / Math.log(1024));
+        const suffixes = ["Bytes", "KB", "MB", "GB", "TB", "PB"]
+    
+        return `${(value / Math.pow(1024, exponent)).toFixed(decimals || 2)} ${suffixes[exponent]}`;
     }
 
     render(): null | React.ReactPortal {
