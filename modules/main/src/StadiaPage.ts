@@ -37,7 +37,7 @@ export default class StadiaPage {
 
             return pathname === `/${page.path}` || pathname === `/${page.path}/`;
         });
-        this.lastPage = page !== undefined ? page : null;
+        this.lastPage = page || null;
 
         return this.lastPage;
     }

@@ -9,7 +9,7 @@ export default class DBProfile {
 
     constructor(partial: Partial<DBProfile>) {
         this.avatar = partial.avatar;
-        this.games = partial.games !== undefined ? partial.games : {} ;
+        this.games = partial.games || {};
         this.username = partial.username;
         this.tag = partial.tag;
     }

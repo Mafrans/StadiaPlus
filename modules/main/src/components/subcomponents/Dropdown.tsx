@@ -22,7 +22,7 @@ export default class Dropdown extends React.Component<IDropdownProps, IDropdownS
 
         this.state = {
             active: false,
-            value: this.props.default !== undefined ? this.props.default : this.props.options[0],
+            value: this.props.default || this.props.options[0],
         }
 
         window.addEventListener('click', this.onClickAnywhere.bind(this));

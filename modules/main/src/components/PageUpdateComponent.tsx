@@ -126,7 +126,7 @@ export default class PageUpdateComponent extends AbstractComponent<DefaultProps,
             };
 
 
-            const _games = this.state.games !== undefined ? this.state.games : [];
+            const _games = this.state.games || [];
             _games.push(gameEntry);
             this.setState(state => ({
                 progress: state.goal - this.remainingIds.length,

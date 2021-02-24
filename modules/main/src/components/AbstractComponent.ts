@@ -93,7 +93,7 @@ export default class AbstractComponent<A extends DefaultProps, B extends Default
      * @see DefaultProps
      */
     constructor(data: { name: string }, props?: A) {
-        super(props !== undefined ? props : {} as A);
+        super(props || {} as A);
         this.name = data.name;
 
         // TODO: Not safe, find better solution
