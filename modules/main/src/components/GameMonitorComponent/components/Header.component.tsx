@@ -5,27 +5,32 @@ import styled from "styled-components"
 import tw from "twin.macro"
 
 export type HeaderProps = {
-   collapsed?: boolean;
-   onToggle?: (value: boolean) => void;
-   onGrab?: (event: React.MouseEvent) => void
+    visible?: boolean;
+    collapsed?: boolean;
+    onToggle?: (value: boolean) => void;
+    onGrab?: (event: React.MouseEvent) => void
 }
 
 const Header = (props: HeaderProps) => (
     <>
-        <HeaderWrapper onMouseDown={props.onGrab!}>
-        {/*  TODO: Add translations  */}
-            <Heading>Game Monitor</Heading>
-            <ToggleIcon aria-roledescription='button' onClick={() => props.onToggle!(props.collapsed!)}>
-                { props.collapsed ? 
-                    <CgChevronUp />
-                    : <CgChevronDown />
-                }
-            </ToggleIcon>
-        </HeaderWrapper>
-        
-        { props.collapsed &&
-            <Divider /> 
-        }
+    { props.visible && (
+        <>
+            <HeaderWrapper onMouseDown={props.onGrab!}>
+                {/*  TODO: Add translations  */}
+                <Heading>Game Monitor</Heading>
+                <ToggleIcon aria-roledescription='button' onClick={() => props.onToggle!(props.collapsed!)}>
+                    { props.collapsed ?
+                        <CgChevronUp />
+                        : <CgChevronDown />
+                    }
+                </ToggleIcon>
+            </HeaderWrapper>
+
+            { !props.collapsed &&
+                <Divider />
+            }
+        </>
+    )}
     </>
 )
 

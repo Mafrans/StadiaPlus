@@ -95,6 +95,7 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
 
              
             const { videoStream, videoCodec, audioCodec } = getStream(statArray);
+
             // TODO: Is it possible to move into a fined format. perhaps a class?
             let items = [
                 {
@@ -128,6 +129,9 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
                     id: 'bitrate',
                 },
             ]
+
+            console.log({items});
+
             // TODO: clean this up into its own function
             if (this.order !== null && this.order !== undefined) {
                 items = items.sort((a, b) => this.order![a.id] - this.order![b.id]);
@@ -238,7 +242,8 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
                 />
                 
                 <MonitorWrapper style={{ width: !this.state.sidebarOpen ? 'auto' : '' }}>
-                    <Header 
+                    <Header
+                        visible={this.state.sidebarOpen}
                         collapsed={!this.state.enabled}
                         onToggle={(val) => {
                             console.log('this happens', val);
@@ -248,6 +253,7 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
                     />
                     { this.state.enabled &&
                         <Content
+                            editable={ this.state.sidebarOpen }
                             items={ this.state.items }
                             onDragEnd={ this.onDragEnd.bind(this) }
                         />
