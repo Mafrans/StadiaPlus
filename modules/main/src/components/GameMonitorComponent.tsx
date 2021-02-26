@@ -33,6 +33,7 @@ interface INetworkMonitorComponentState extends DefaultState {
     sidebarOpen: boolean
     loading: boolean
     enabled: boolean
+    position: { x: number, y: number }
 }
 
 @PageFilter([StadiaPage.PLAYER])
@@ -40,6 +41,9 @@ interface INetworkMonitorComponentState extends DefaultState {
 export default class GameMonitorComponent extends AbstractComponent<DefaultProps, INetworkMonitorComponentState> {
     order: { [id: string]: number } | null = null;
     messageListener = this.onMessageCapture.bind(this);
+
+    grabPosition?: { x: number, y: number };
+    moveListener: (event: MouseEvent) => void = this.onMove.bind(this);
 
     constructor() {
         super({ name: "Game Monitor Component" });
@@ -54,6 +58,7 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
             sidebarOpen: false,
             loading: true,
             enabled: false,
+            position: { x: 10, y: 10 }
         }
 
         this.order = await Config.MONITOR_ORDER.get();
@@ -240,6 +245,28 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
         this.setState(state => ({ enabled: !state.enabled }))
     }
 
+    grab() {
+        window.addEventListener('mousemove', this.moveListener);
+    }
+
+    release() {
+        window.removeEventListener('mousemove', this.moveListener);
+        console.log('release')
+    }
+
+    onMove(event: MouseEvent) {
+        if(this.grabPosition === undefined) {
+            this.grabPosition = { x: event.x - this.state.position.x, y: event.y - this.state.position.y };
+        }
+
+        this.setState(state => ({
+            position: {
+                x: event.x - this.grabPosition!.x,
+                y: event.y - this.grabPosition!.y
+            }
+        }));
+    }
+
     render(): null | React.ReactPortal {
         if (!this.state.enabled && !this.state.loading && !this.state.sidebarOpen) return null;
 
@@ -247,7 +274,11 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
 
         return ReactDOM.createPortal(
             <Wrapper 
-                style={{ backgroundColor: this.hexToRGBA(Theme.Colors.gray[900], this.state.sidebarOpen ? 1 : 0.25) }}
+                style={{ 
+                    backgroundColor: this.hexToRGBA(Theme.Colors.gray[900], this.state.sidebarOpen ? 1 : 0.25),
+                    left: this.state.position.x,
+                    top: this.state.position.y,
+                }}
             >
                 {
                     this.state.loading
@@ -262,7 +293,7 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
                                 {
                                     this.state.sidebarOpen ? (
                                         <div>
-                                            <Header>
+                                            <Header onMouseDown={this.grab.bind(this)} onMouseUp={this.release.bind(this)}>
                                                 <Heading>Game Monitor</Heading>
                                                 <ToggleIcon aria-roledescription='button' onClick={() => this.toggleEnabled()}>
                                                     {
