@@ -225,6 +225,12 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
         }));
     }
 
+    toggleItemVisibility(item: GameMonitorItem, value: boolean) {
+        const items = this.state.items;
+        items[items.indexOf(item)].visible = value;
+        this.setState(() => ({ items }));
+    }
+
     render(): null | React.ReactPortal {
         if (!this.state.active) return null;
         if (!this.state.enabled && !this.state.loading && !this.state.sidebarOpen) return null;
@@ -255,6 +261,7 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
                         <Content
                             editable={ this.state.sidebarOpen }
                             items={ this.state.items }
+                            onVisibilityToggle={ this.toggleItemVisibility.bind(this) }
                             onDragEnd={ this.onDragEnd.bind(this) }
                         />
                     }

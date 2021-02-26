@@ -10,6 +10,7 @@ export type MonitorItemProps = {
     editable?: boolean
     item: GameMonitorItem
     index: number
+    onVisibilityToggle?: (value: boolean) => void
 }
 
 const MonitorItem = (props: MonitorItemProps) => (
@@ -36,7 +37,7 @@ const MonitorItem = (props: MonitorItemProps) => (
 
                 { props.editable && (
                     <ItemIcons>
-                        <span>
+                        <span onClick={() => props.onVisibilityToggle!(!props.item.visible)}>
                             {
                                 props.item.visible
                                     ? <AiOutlineEye />

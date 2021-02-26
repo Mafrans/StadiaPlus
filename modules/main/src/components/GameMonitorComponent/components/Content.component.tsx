@@ -7,6 +7,7 @@ export type ContentProps = {
     onDragEnd?: (result: DropResult) => void
     items: GameMonitorItem[]
     editable?: boolean
+    onVisibilityToggle?: (item: GameMonitorItem, value: boolean) => void
 } 
 
 const Content = (props: ContentProps) => {
@@ -17,7 +18,12 @@ const Content = (props: ContentProps) => {
                     provided => (
                         <div ref={provided.innerRef} {...provided.droppableProps}>
                             { props.items.map((item, index) =>
-                                <MonitorItem editable={props.editable} index={index} item={item} />
+                                <MonitorItem
+                                    onVisibilityToggle={(value) => props.onVisibilityToggle!(item, value)}
+                                    editable={props.editable}
+                                    index={index}
+                                    item={item}
+                                />
                             )}
                             {provided.placeholder}
                         </div>
