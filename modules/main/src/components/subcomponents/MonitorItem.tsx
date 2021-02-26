@@ -4,10 +4,10 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { VscGripper } from "react-icons/vsc";
 import styled from "styled-components";
 import tw from "twin.macro";
-import { GameMonitorItem } from "../GameMonitorComponent";
+import { GameMonitorItem } from "../GameMonitorComponent/GameMonitorComponent";
 
 interface IMonitorItemProps {
-    sidebarOpen: boolean
+    editable?: boolean
     item: GameMonitorItem
     index: number
 }
@@ -19,7 +19,7 @@ export default class MonitorItem extends React.Component<IMonitorItemProps> {
     
     render() {
 
-        if(this.props.sidebarOpen && !this.props.item.visible) {
+        if(this.props.editable && !this.props.item.visible) {
             return null;
         }
 
@@ -34,7 +34,7 @@ export default class MonitorItem extends React.Component<IMonitorItemProps> {
                             ...provided.draggableProps.style, 
 
                             opacity: this.props.item.visible 
-                                ? this.props.sidebarOpen 
+                                ? this.props.editable 
                                     ? 1
                                     : 0.75
                                 : 0.5 
@@ -44,7 +44,7 @@ export default class MonitorItem extends React.Component<IMonitorItemProps> {
                         <ItemValue style={{ fontWeight: 300 }}>{ this.props.item.value }</ItemValue>
                         
                         {
-                            this.props.sidebarOpen ? (
+                            this.props.editable ? (
                                 <ItemIcons>
                                     <span>
                                         {

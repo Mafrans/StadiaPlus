@@ -9,7 +9,7 @@ import { StadiaGameDB } from './StadiaGameDB';
 import GameTileComponent from './components/GameTileComponent';
 import Fonts from './Fonts';
 import GameSettingsComponent from './components/GameSettingsComponent';
-import GameMonitorComponent from './components/GameMonitorComponent';
+import GameMonitorComponent from './components/GameMonitorComponent/GameMonitorComponent';
 
 
 document.addEventListener('DOMContentLoaded', async () => {
