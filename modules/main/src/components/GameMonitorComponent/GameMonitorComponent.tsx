@@ -222,9 +222,8 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
     }
 
     render(): null | React.ReactPortal {
+        if (!this.state.active) return null;
         if (!this.state.enabled && !this.state.loading && !this.state.sidebarOpen) return null;
-
-        console.log(this.state.items);
 
         return ReactDOM.createPortal(
             <Wrapper 
