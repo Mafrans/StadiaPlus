@@ -31,7 +31,7 @@ const Section = styled.section`
   `}
 `
 
-const Heading = styled.h1`
+const Heading = styled.p`
   ${tw`
     mb-2
   `}
