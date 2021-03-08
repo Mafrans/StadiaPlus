@@ -8,7 +8,7 @@ import GameUpdateComponent from './components/GameUpdateComponent';
 import { StadiaGameDB } from './StadiaGameDB';
 import GameTileComponent from './components/GameTileComponent';
 import Fonts from './Fonts';
-import GameSettingsComponent from './components/GameSettingsComponent';
+import GameSettingsComponent from './components/GameSettingsComponent/GameSettingsComponent';
 import GameMonitorComponent from './components/GameMonitorComponent/GameMonitorComponent';
 
 
