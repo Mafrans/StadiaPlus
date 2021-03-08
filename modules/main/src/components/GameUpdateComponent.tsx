@@ -55,8 +55,8 @@ export default class GameUpdateComponent extends AbstractComponent<DefaultProps,
         try {
             // IMPORTANT: If the ds:4 key and its contents change, these values will be outdated and error.
             return libraryData.data[2].map((game: any) => ({
-                uuid: game[1][0] as string,
-                subId: game[1][4] as string
+                uuid: game[1][4] as string,
+                subId: game[1][0] as string
             }));
         }
         catch (e) {
