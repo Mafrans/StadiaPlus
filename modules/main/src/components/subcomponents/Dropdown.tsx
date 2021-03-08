@@ -141,6 +141,7 @@ const OptionContainer = styled.div`
     py-1
     w-full
   `}
+  border: 1px solid ${Theme.Colors.gray['700']};
   background-color: ${Theme.Colors.gray['800']};
   max-height: 150px;
 
