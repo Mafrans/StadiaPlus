@@ -81,5 +81,5 @@ export class Config {
     static CODECS = new ConfigEntry<{[uuid: string]: StadiaCodec}>('codecs', ConfigType.LOCAL);
     static RESOLUTIONS = new ConfigEntry<{[uuid: string]: StadiaResolution}>('resolutions', ConfigType.LOCAL);
     static AUTH_TOKEN = new ConfigEntry<string>('auth-token', ConfigType.LOCAL);
-    static MONITOR_ORDER = new ConfigEntry<{[id: string]: number}>('monitor-order', ConfigType.LOCAL);
+    static MONITOR_ITEMS = new ConfigEntry<{[id: string]: { index: number, visible: boolean }}>('monitor-items', ConfigType.LOCAL);
 }

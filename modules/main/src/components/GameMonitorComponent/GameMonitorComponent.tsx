@@ -38,7 +38,7 @@ interface INetworkMonitorComponentState extends DefaultState {
 @PageFilter([StadiaPage.PLAYER])
 @ReactComponent
 export default class GameMonitorComponent extends AbstractComponent<DefaultProps, INetworkMonitorComponentState> {
-    order: { [id: string]: number } | null = null;
+    itemData: { [id: string]: { index: number, visible: boolean } } | null = null;
     messageListener = this.onMessageCapture.bind(this);
 
     grabPosition?: { x: number, y: number };
@@ -60,7 +60,7 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
             position: { x: 10, y: 10 }
         }
 
-        this.order = await Config.MONITOR_ORDER.get();
+        this.itemData = await Config.MONITOR_ITEMS.get();
         window.addEventListener('message', this.messageListener);
     }
 
@@ -130,20 +130,19 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
                 },
             ]
 
-            console.log({items});
-
             // TODO: clean this up into its own function
-            if (this.order !== null && this.order !== undefined) {
-                items = items.sort((a, b) => this.order![a.id] - this.order![b.id]);
+            if (this.itemData !== null && this.itemData !== undefined) {
+                items = items.sort((a, b) => this.itemData![a.id].index - this.itemData![b.id].index);
+                items.forEach(item => item.visible = this.itemData![item.id].visible);
 
-                if (Object.keys(this.order).length != items.length) {
-                    this.order = {};
-                    items.forEach((item, index) => this.order![item.id] = index);
+                if (Object.keys(this.itemData).length != items.length) {
+                    this.itemData = {};
+                    items.forEach((item, index) => this.itemData![item.id] = { index, visible: item.visible });
                 }
             }
             else {
-                this.order = {};
-                items.forEach((item, index) => this.order![item.id] = index);
+                this.itemData = {};
+                items.forEach((item, index) => this.itemData![item.id] = { index, visible: item.visible });
             }
 
             this.setState(() => ({
@@ -164,28 +163,36 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
         }
     }
 
+    moveItemTo(id: string, source: number, destination: number) {
+        if (this.itemData === null || this.itemData === undefined) return;
+
+        // Reorder other items to match
+        for (const id of Object.keys(this.itemData)) {
+            let index = this.itemData[id].index;
+
+            if (source > destination) {
+                if (index > source && index <= destination) {
+                    index--;
+                }
+            }
+            else {
+                if (index < source && index >= destination) {
+                    index++;
+                }
+            }
+            this.itemData[id].index = index;
+        }
+        this.itemData[id].index = destination;
+        Config.MONITOR_ITEMS.set(this.itemData);
+    }
+
     onDragEnd (result: DropResult) {
         // dropped outside the list
         if (!result.destination) {
             return;
         }
 
-        if (this.order === null || this.order === undefined) return;
-        // TOOD: Move this forof into a function to clarify what this does
-        for (const id of Object.keys(this.order)) {
-            if (result.destination.index > result.source.index) {
-                if (this.order[id] > result.source.index && this.order[id] <= result.destination.index) {
-                    this.order[id]--;
-                }
-            }
-            else {
-                if (this.order[id] < result.source.index && this.order[id] >= result.destination.index) {
-                    this.order[id]++;
-                }
-            }
-        }
-        this.order[result.draggableId] = result.destination.index;
-        Config.MONITOR_ORDER.set(this.order);
+        this.moveItemTo(result.draggableId, result.source.index, result.destination.index);
 
         const items = reorder<GameMonitorItem>(
             this.state.items,
@@ -228,7 +235,13 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
     toggleItemVisibility(item: GameMonitorItem, value: boolean) {
         const items = this.state.items;
         items[items.indexOf(item)].visible = value;
+
         this.setState(() => ({ items }));
+
+        if (this.itemData !== null) {
+            this.itemData[item.id].visible = value;
+            void Config.MONITOR_ITEMS.set(this.itemData);
+        }
     }
 
     render(): null | React.ReactPortal {
