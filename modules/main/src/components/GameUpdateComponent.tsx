@@ -5,6 +5,7 @@ import { Config } from '../../../shared/Config';
 import { PageQueryType } from '../../../shared/models/PageQueryType';
 import PageFilter from '../decorators/@PageFilter';
 import StadiaPage from '../StadiaPage';
+import Logger from '../Logger';
 
 interface AFLibraryData {
     data: [boolean, [string, [string, string, boolean, number]], unknown[]];
@@ -43,14 +44,28 @@ export default class GameUpdateComponent extends AbstractComponent<DefaultProps,
                 && script.attributes.length === 1
                 && script.hasAttribute('nonce')
                 && script.textContent?.substring(0, 19) === 'AF_initDataCallback'
-                && script.textContent?.includes("key: 'ds:6"),
+
+                // IMPORTANT: This ds:4 key and the information in this object is subject to change at any time.
+                // If this code errors, this is likely to be your culprit.
+                && script.textContent?.includes("key: 'ds:4"),
         )?.textContent;
 
         const libraryData = eval(`(() => (${initDataCallback?.substring('AF_initDataCallback('.length, initDataCallback.length - ');'.length) as string}))()`) as AFLibraryData;
-        return libraryData.data[1].map((game: any) => ({
-            uuid: game[1][0],
-            subId: game[1][1]
-        }));
+
+        try {
+            // IMPORTANT: If the ds:4 key and its contents change, these values will be outdated and error.
+            return libraryData.data[2].map((game: any) => ({
+                uuid: game[1][0] as string,
+                subId: game[1][4] as string
+            }));
+        }
+        catch (e) {
+            Logger.error(
+                'Fatal Error! Something went wrong while scraping game ids.\n' +
+                'Contact the developer immediately, or create an issue on https://github.com/Mafrans/StadiaPlus'
+            )
+            return [];
+        }
     }
 }
 

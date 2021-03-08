@@ -4,20 +4,26 @@ const prefix = '[Stadia+]';
  * Util class for sending semantic log messages.
  */
 export default class Logger {
-    static info(...obj: any[]) {
-        console.log(`${prefix} %c📃 ${obj.join(' ')}`, 'color: black');
+    static info(...data: any[]) {
+        console.log(`${prefix} %c📃 ${data.join(' ')}`, 'color: black');
     }
 
-    static warning(...obj: any[]) {
-        console.trace(`${prefix} %c😟 ${obj.join(' ')}`, 'color: orange');
+    static warning(...data: any[]) {
+        Logger.trace(`${prefix} %c😟 ${data.join(' ')}`, 'color: orange');
     }
 
-    static error(...obj: any[]) {
-        console.trace(`${prefix} %c❌ ${obj.join(' ')}`, 'color: red; font-weight: 700');
+    static error(...data: any[]) {
+        Logger.trace(`${prefix} %c❌ ${data.join(' ')}`, 'color: red; font-weight: 700')
     }
 
-    static component(...obj: any[]) {
-        console.log(`${prefix} %c🧩 ${obj.join(' ')}`, 'color: darkgreen');
+    static component(...data: any[]) {
+        console.log(`${prefix} %c🧩 ${data.join(' ')}`, 'color: darkgreen');
+    }
+
+    private static trace(...data: any[]) {
+        console.groupCollapsed(...data)
+        console.trace();
+        console.groupEnd();
     }
 
     /**
