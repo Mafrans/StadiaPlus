@@ -6,7 +6,7 @@ import PageUpdateComponent from './components/PageUpdateComponent';
 import StadiaPlusDB from '../../shared/StadiaPlusDB';
 import GameUpdateComponent from './components/GameUpdateComponent';
 import { StadiaGameDB } from './StadiaGameDB';
-import GameTileComponent from './components/GameTileComponent';
+import IndicatorComponent from './components/GameTileComponent/IndicatorComponent';
 import Fonts from './Fonts';
 import GameSettingsComponent from './components/GameSettingsComponent/GameSettingsComponent';
 import GameMonitorComponent from './components/GameMonitorComponent/GameMonitorComponent';
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         <div>
             <GameUpdateComponent/>
             <PageUpdateComponent/>
-            <GameTileComponent/>
+            <IndicatorComponent/>
             <GameSettingsComponent/>
             <GameMonitorComponent/>
         </div>,

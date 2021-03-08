@@ -1,23 +1,22 @@
 import React, { ReactNode } from 'react';
-import AbstractComponent, { DefaultProps, DefaultState } from './AbstractComponent';
-import StadiaPlusDB from '../../../shared/StadiaPlusDB';
-import { Config } from '../../../shared/Config';
-import { PageQueryType } from '../../../shared/models/PageQueryType';
-import { StadiaClasses } from '../StadiaClasses';
-import ReactComponent from '../decorators/@ReactComponent';
+import AbstractComponent, { DefaultProps, DefaultState } from '../AbstractComponent';
+import { Config } from '../../../../shared/Config';
+import { StadiaClasses } from '../../StadiaClasses';
+import ReactComponent from '../../decorators/@ReactComponent';
 import ReactDOM from 'react-dom';
-import GameCard from './subcomponents/GameCard';
-import GameTileIcons from './subcomponents/GameTileIcons';
-import PageFilter from '../decorators/@PageFilter';
-import StadiaPage from '../StadiaPage';
+import IndicatorGroup from './components/IndicatorGroup';
+import PageFilter from '../../decorators/@PageFilter';
+import StadiaPage from '../../StadiaPage';
 
 interface ICodecSelectComponentState extends DefaultState {
     tileQueries: {uuid: string, subId: string, query: string}[];
 }
 
+// TODO: This class needs to be cleaned up
+
 @PageFilter([ StadiaPage.HOME ])
 @ReactComponent
-export default class GameTileComponent extends AbstractComponent<DefaultProps, ICodecSelectComponentState> {
+export default class IndicatorComponent extends AbstractComponent<DefaultProps, ICodecSelectComponentState> {
     gameIds: { uuid: string, subId: string }[] = [];
 
     constructor() {
@@ -33,11 +32,11 @@ export default class GameTileComponent extends AbstractComponent<DefaultProps, I
         if(_gameIds !== null) {
             this.gameIds = _gameIds;
             await this.updateRenderer();
-            await this.updateQueries();
+            await this.updateTileQueries();
         }
     }
 
-    async updateQueries() {
+    async updateTileQueries() {
         if(this.state.renderer === null) return;
 
         const allTiles = Array.from(this.state.renderer.querySelectorAll(`.${StadiaClasses.GAME_TILE}`));
@@ -45,7 +44,7 @@ export default class GameTileComponent extends AbstractComponent<DefaultProps, I
 
         if (allTiles.length === 0) return;
 
-        this.gameIds?.forEach(game => {
+        for (const game of this.gameIds) {
             const tile = allTiles.find(it => {
                 return it.getAttribute('jsdata')?.split(';')[1] === game.subId;
             }) as HTMLDivElement;
@@ -57,7 +56,7 @@ export default class GameTileComponent extends AbstractComponent<DefaultProps, I
                     query: `.${StadiaClasses.GAME_TILE}[jsdata="${tile.getAttribute('jsdata')}"]`
                 });
             }
-        })
+        }
 
         this.setState(() => ({
             tileQueries
@@ -77,13 +76,13 @@ export default class GameTileComponent extends AbstractComponent<DefaultProps, I
             if (tile === null || tile === undefined) return;
 
             icons.push(
-                <GameTileIcons uuid={entry.uuid} tile={tile} />
+                <IndicatorGroup uuid={entry.uuid} tile={tile} />
             );
         });
 
         if(icons.filter(it => it !== null).length === 0) {
             // If no icons have been added, try again next second.
-            setTimeout(this.updateQueries.bind(this), 1000);
+            setTimeout(this.updateTileQueries.bind(this), 1000);
             return null;
         }
 

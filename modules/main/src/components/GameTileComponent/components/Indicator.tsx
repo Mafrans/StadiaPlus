@@ -1,28 +1,22 @@
-import React, { ReactNode } from 'react';
+import React, { PropsWithChildren, ReactChild, ReactChildren, ReactNode } from 'react';
 import styled from 'styled-components';
 import tw from 'twin.macro';
 
-interface ICodecSelectIconProps {
+type CodecSelectIconProps = {
     icon: ReactNode
 }
 
-export default class GameTileIcon extends React.Component<ICodecSelectIconProps> {
-    constructor(props: any) {
-        super(props);
-    }
-
-    render() {
-        return (
+export default function Indicator(props: PropsWithChildren<CodecSelectIconProps>) {
+        return <>
             <Wrapper>
-                <Icon>
-                    { this.props.icon }
-                </Icon>
+                {
+                    props.icon && <Icon>{ props.icon }</Icon>
+                }
                 <Label>
-                    { this.props.children }
+                    { props.children }
                 </Label>
             </Wrapper>
-        );
-    }
+        </>
 }
 
 const Wrapper = styled.div`
