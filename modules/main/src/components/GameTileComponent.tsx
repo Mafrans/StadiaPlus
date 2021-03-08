@@ -21,7 +21,7 @@ export default class GameTileComponent extends AbstractComponent<DefaultProps, I
     gameIds: { uuid: string, subId: string }[] = [];
 
     constructor() {
-        super({ name: "Codec Select Component" });
+        super({ name: "Game Tile Component" });
         this.state = {
             renderer: null,
             tileQueries: [],
