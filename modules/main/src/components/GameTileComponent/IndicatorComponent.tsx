@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import AbstractComponent, { DefaultProps, DefaultState } from '../AbstractComponent';
 import { Config } from '../../../../shared/Config';
-import { StadiaClasses } from '../../StadiaClasses';
+import { StadiaSelectors } from '../../StadiaSelectors';
 import ReactComponent from '../../decorators/@ReactComponent';
 import ReactDOM from 'react-dom';
 import IndicatorGroup from './components/IndicatorGroup';
@@ -39,7 +39,7 @@ export default class IndicatorComponent extends AbstractComponent<DefaultProps, 
     async updateTileQueries() {
         if(this.state.renderer === null) return;
 
-        const allTiles = Array.from(this.state.renderer.querySelectorAll(`.${StadiaClasses.GAME_TILE}`));
+        const allTiles = Array.from(this.state.renderer.querySelectorAll(StadiaSelectors.GAME_TILE));
         const tileQueries: {uuid: string, subId: string, query: string}[] = [];
 
         if (allTiles.length === 0) return;
@@ -53,7 +53,7 @@ export default class IndicatorComponent extends AbstractComponent<DefaultProps, 
                 tileQueries.push({
                     uuid: game.uuid,
                     subId: game.subId,
-                    query: `.${StadiaClasses.GAME_TILE}[jsdata="${tile.getAttribute('jsdata')}"]`
+                    query: `${StadiaSelectors.GAME_TILE}[jsdata="${tile.getAttribute('jsdata')}"]`
                 });
             }
         }

@@ -11,7 +11,7 @@ import { RTCStatistics } from '../../RTCStatistics';
 import RTCStatistic = RTCStatistics.RTCStatistic;
 import tw from 'twin.macro';
 import { Theme } from '../../../../shared/Theme';
-import { StadiaClasses } from '../../StadiaClasses';
+import { StadiaSelectors } from '../../StadiaSelectors';
 import { DropResult } from 'react-beautiful-dnd';
 import { Config } from '../../../../shared/Config';
 import Loader from './components/Loader.component';
@@ -154,7 +154,7 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
     async onUpdate() {
         this.updateRenderer();
 
-        const sidebar = document.querySelector(`.${StadiaClasses.PLAYER_SIDEBAR}`) as HTMLElement | null;
+        const sidebar = document.querySelector(`StadiaSelectors.PLAYER_SIDEBAR`) as HTMLElement | null;
         const sidebarOpen = sidebar !== null && sidebar.style.opacity === '1';
         if (this.state.sidebarOpen !== sidebarOpen) {
             this.setState(() => ({

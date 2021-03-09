@@ -13,6 +13,7 @@ import { Config } from '../../../../shared/Config';
 import PageFilter from '../../decorators/@PageFilter';
 import StadiaPage from '../../StadiaPage';
 import SelectionSection from './components/SelectionArea.component';
+import { StadiaSelectors } from '../../StadiaSelectors';
 
 interface IGameSettingsComponentState extends DefaultState {
     container: Element | null;
@@ -36,17 +37,8 @@ export default class GameSettingsComponent extends AbstractComponent<DefaultProp
         this.observe(document.body, 'childList', Node.ELEMENT_NODE, (mutation, node) => {
             const element = node as HTMLElement;
             if (element.classList.contains('llhEMd')) {
-                // Checks for when a specific transition ends, at that point the container should be loaded
-                const listener = (event: TransitionEvent) => {
-                    if (event.elapsedTime === 0.167) {
-                        this.updateContainer();
-
-                        // Only run this once, discard the entire event listener as soon as possible
-                        element.removeEventListener('transitionend', listener);
-                    }
-                };
-
-                element.addEventListener('transitionend', listener);
+                // Once the ring animation starts playing, the container is done!
+                element.addEventListener('animationstart', this.updateContainer.bind(this));
             }
         });
     }
@@ -72,14 +64,15 @@ export default class GameSettingsComponent extends AbstractComponent<DefaultProp
     }
 
     async updateContainer() {
-        const dataElement = document.querySelector('.EST2y');
-        if (dataElement === null) return
+        const banner = document.querySelector(StadiaSelectors.GAME_INFO_HERO)!;
+        const renderer = document.querySelector(StadiaSelectors.GAME_INFO_RENDERER)!;
 
         const container = document.createElement('div');
         container.id = 'stadiaplus-game-settings';
-        dataElement.parentElement!.insertBefore(container, dataElement);
+        banner.after(container);
 
-        const uuid = dataElement.getAttribute('data-app-id');
+        const uuid = renderer.getAttribute('data-app-id');
+        console.log({ renderer })
 
         const codecs = await Config.CODECS.get();
         const resolutions = await Config.RESOLUTIONS.get();
