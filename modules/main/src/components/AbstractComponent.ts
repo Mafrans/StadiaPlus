@@ -59,32 +59,8 @@ export interface DefaultState {
  *
  */
 export default class AbstractComponent<A extends DefaultProps, B extends DefaultState> extends React.Component<A, B> {
-    /**
-     * Whether this component is a React component or not.
-     * Do not edit directly, instead see {@link @ReactComponent}
-     * @see @ReactComponent
-     * @default false
-     *
-     * @private
-     */
-    private __useReact: boolean = false;
 
-    /**
-     * Whether this component is limited to certain Stadia pages,
-     * the component will never update unless the current page matches the filter.
-     * Do not edit directly, instead see {@link @PageFilter}
-     * @see @PageFilter
-     * @default undefined
-     *
-     * @private
-     */
-    private __pageFilter?: StadiaPage[] = undefined;
-
-    /**
-     * The name of this component
-     * @default undefined
-     */
-    public name: string;
+    private config: ComponentConfig;
 
     /**
      * Base constructor for all components, includes
@@ -92,9 +68,9 @@ export default class AbstractComponent<A extends DefaultProps, B extends Default
      * @param {A extends DefaultProps} props
      * @see DefaultProps
      */
-    constructor(data: { name: string }, props?: A) {
+    constructor(config?: ComponentConfig, props?: A) {
         super(props || {} as A);
-        this.name = data.name;
+        this.config = config || { name: 'Unknown Component' };
 
         // TODO: Not safe, find better solution
         this.state = {
@@ -112,13 +88,14 @@ export default class AbstractComponent<A extends DefaultProps, B extends Default
      */
     public async __start() {
         const currentPage = StadiaPage.current();
-        if (this.__pageFilter !== undefined && currentPage !== null) {
-            if(this.__pageFilter.indexOf(currentPage) === -1) {
+
+        if (this.config.pageFilter !== undefined && currentPage !== null) {
+            if(this.config.pageFilter.indexOf(currentPage) === -1) {
                 return;
             }
         }
 
-        Logger.component(`Component ${this.name} has been enabled`);
+        Logger.component(`Component ${this.config.name} has been enabled`);
 
         this.setState(() => ({
             active: true
@@ -132,13 +109,13 @@ export default class AbstractComponent<A extends DefaultProps, B extends Default
      */
     public async __tick() {
         const currentPage = StadiaPage.current();
-        if (this.__pageFilter !== undefined && currentPage !== null) {
-            if(this.__pageFilter.indexOf(currentPage) === -1) {
+        if (this.config.pageFilter !== undefined && currentPage !== null) {
+            if(this.config.pageFilter.indexOf(currentPage) === -1) {
                 if(this.state.active) {
                     this.setState(() => ({
                         active: false
-                    }))
-                    this.onStop();
+                    }));
+                    void this.onStop();
                     this.render();
                 }
                 return;
@@ -158,7 +135,7 @@ export default class AbstractComponent<A extends DefaultProps, B extends Default
         if (this.state.renderer?.style.opacity === '1') return;
 
         await Util.updateRenderer();
-        if (this.__useReact && Util.renderer !== this.state.renderer) {
+        if (this.config.useReact && Util.renderer !== this.state.renderer) {
 
             this.setState(state => ({ renderer: Util.renderer }));
         }
@@ -169,7 +146,7 @@ export default class AbstractComponent<A extends DefaultProps, B extends Default
      * @see onRender
      */
     render() {
-        if (!this.__useReact || !this.state.active) return null;
+        if (!this.config.useReact || !this.state.active) return null;
 
         if (this.state.renderer !== null) {
             const renderData = this.onRender();
@@ -229,4 +206,29 @@ export default class AbstractComponent<A extends DefaultProps, B extends Default
      * }
      */
     onRender(): { query: string, node: React.ReactNode } | null { return null }
+}
+
+type ComponentConfig = {
+    /**
+     * The name of this component
+     * @default undefined
+     */
+    name: string,
+
+    /**
+     * Whether this component is a React component or not.
+     * @default false
+     *
+     * @private
+     */
+    useReact?: boolean;
+
+    /**
+     * Whether this component is limited to certain Stadia pages,
+     * the component will never update unless the current page matches the filter.
+     * @default undefined
+     *
+     * @private
+     */
+    pageFilter?: StadiaPage[];
 }

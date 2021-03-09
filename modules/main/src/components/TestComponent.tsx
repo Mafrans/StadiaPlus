@@ -1,11 +1,12 @@
 import React from 'react';
 import AbstractComponent, { DefaultProps, DefaultState } from './AbstractComponent';
-import ReactComponent from '../decorators/@ReactComponent';
 
-@ReactComponent
 export default class TestComponent extends AbstractComponent<DefaultProps, DefaultState> {
     constructor() {
-        super({ name: "Test Component" });
+        super({
+            name: "Test Component",
+            useReact: true
+        });
     }
 
     async onStart() {}

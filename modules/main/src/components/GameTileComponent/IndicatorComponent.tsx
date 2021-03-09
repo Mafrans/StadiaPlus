@@ -2,10 +2,8 @@ import React, { ReactNode } from 'react';
 import AbstractComponent, { DefaultProps, DefaultState } from '../AbstractComponent';
 import { Config } from '../../../../shared/Config';
 import { StadiaSelectors } from '../../StadiaSelectors';
-import ReactComponent from '../../decorators/@ReactComponent';
 import ReactDOM from 'react-dom';
 import IndicatorGroup from './components/IndicatorGroup';
-import PageFilter from '../../decorators/@PageFilter';
 import StadiaPage from '../../StadiaPage';
 
 interface ICodecSelectComponentState extends DefaultState {
@@ -13,14 +11,15 @@ interface ICodecSelectComponentState extends DefaultState {
 }
 
 // TODO: This class needs to be cleaned up
-
-@PageFilter([ StadiaPage.HOME ])
-@ReactComponent
 export default class IndicatorComponent extends AbstractComponent<DefaultProps, ICodecSelectComponentState> {
     gameIds: { uuid: string, subId: string }[] = [];
 
     constructor() {
-        super({ name: "Game Tile Component" });
+        super({
+            name: "Tile Indicator Component",
+            useReact: true,
+            pageFilter: [ StadiaPage.HOME ]
+        });
         this.state = {
             renderer: null,
             tileQueries: [],

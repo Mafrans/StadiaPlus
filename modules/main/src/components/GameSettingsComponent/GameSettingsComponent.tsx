@@ -1,16 +1,12 @@
 import React from 'react';
 import AbstractComponent, { DefaultProps, DefaultState } from '../AbstractComponent';
-import ReactComponent from '../../decorators/@ReactComponent';
-import Dropdown from '../shared/Dropdown';
 import ReactDOM from 'react-dom';
-import GameCard from '../shared/GameCard';
 import styled from 'styled-components';
 import tw from 'twin.macro';
 import StadiaPlusIcon from '../shared/StadiaPlusIcon';
 import StadiaCodec from '../../../../shared/models/StadiaCodec';
 import StadiaResolution from '../../../../shared/models/StadiaResolution';
 import { Config } from '../../../../shared/Config';
-import PageFilter from '../../decorators/@PageFilter';
 import StadiaPage from '../../StadiaPage';
 import SelectionSection from './components/SelectionArea.component';
 import { StadiaSelectors } from '../../StadiaSelectors';
@@ -22,11 +18,13 @@ interface IGameSettingsComponentState extends DefaultState {
     resolution: StadiaResolution;
 }
 
-@PageFilter([StadiaPage.HOME])
-@ReactComponent
 export default class GameSettingsComponent extends AbstractComponent<DefaultProps, IGameSettingsComponentState> {
     constructor() {
-        super({ name: 'GameSettingsComponent' });
+        super({
+            name: 'GameSettingsComponent',
+            useReact: true,
+            pageFilter: [ StadiaPage.HOME ]
+        });
     }
 
     async onStart() {

@@ -1,10 +1,8 @@
 import React from 'react';
 import AbstractComponent, { DefaultProps, DefaultState } from '../AbstractComponent';
-import ReactComponent from '../../decorators/@ReactComponent';
 import Util from '../../Util';
 // @ts-ignore
 import MonitorRunnable from '../../MonitorRunnable.txtjs';
-import PageFilter from '../../decorators/@PageFilter';
 import StadiaPage from '../../StadiaPage';
 import ReactDOM from 'react-dom';
 import { RTCStatistics } from '../../RTCStatistics';
@@ -35,8 +33,6 @@ interface INetworkMonitorComponentState extends DefaultState {
     position: { x: number, y: number }
 }
 
-@PageFilter([StadiaPage.PLAYER])
-@ReactComponent
 export default class GameMonitorComponent extends AbstractComponent<DefaultProps, INetworkMonitorComponentState> {
     itemData: { [id: string]: { index: number, visible: boolean } } | null = null;
     messageListener = this.onMessageCapture.bind(this);
@@ -45,7 +41,11 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
     moveListener: (event: MouseEvent) => void = this.onMove.bind(this);
 
     constructor() {
-        super({ name: "Game Monitor Component" });
+        super({
+            name: "Game Monitor Component",
+            useReact: true,
+            pageFilter: [ StadiaPage.PLAYER ]
+        });
     }
 
     async onStart() {
@@ -66,7 +66,6 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
 
     async onStop() {
         window.removeEventListener('message', this.messageListener);
-        console.log('STOPPED!!!')
     }
 
     onMessageCapture(event: MessageEvent) {
@@ -77,7 +76,7 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
                 }));
                 return;
             }
-           
+
             const statArray: [string, any] = event.data.stats[1];
 
             const ICECandidatePair = RTCStatistic.from<RTCStatistics.RTCIceCandidatePair>(
@@ -91,9 +90,9 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
                 }));
             }
 
-            if (!this.state.enabled && !this.state.sidebarOpen && this.state.items.length > 0) return;
+            if (!this.state.enabled && !this.state.sidebarOpen) return;
 
-             
+
             const { videoStream, videoCodec, audioCodec } = getStream(statArray);
 
             // TODO: Is it possible to move into a fined format. perhaps a class?
@@ -145,6 +144,7 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
                 items.forEach((item, index) => this.itemData![item.id] = { index, visible: item.visible });
             }
 
+            console.log({items});
             this.setState(() => ({
                 items
             }))
@@ -154,7 +154,7 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
     async onUpdate() {
         this.updateRenderer();
 
-        const sidebar = document.querySelector(`StadiaSelectors.PLAYER_SIDEBAR`) as HTMLElement | null;
+        const sidebar = document.querySelector(StadiaSelectors.PLAYER_SIDEBAR) as HTMLElement | null;
         const sidebarOpen = sidebar !== null && sidebar.style.opacity === '1';
         if (this.state.sidebarOpen !== sidebarOpen) {
             this.setState(() => ({

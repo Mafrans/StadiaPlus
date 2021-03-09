@@ -10,6 +10,7 @@ import IndicatorComponent from './components/GameTileComponent/IndicatorComponen
 import Fonts from './Fonts';
 import GameSettingsComponent from './components/GameSettingsComponent/GameSettingsComponent';
 import GameMonitorComponent from './components/GameMonitorComponent/GameMonitorComponent';
+import CodecComponent from './components/CodecComponent';
 
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -30,6 +31,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             <IndicatorComponent/>
             <GameSettingsComponent/>
             <GameMonitorComponent/>
+            <CodecComponent/>
         </div>,
         root
     )

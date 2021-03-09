@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Dropdown from '../../subcomponents/Dropdown';
+import Dropdown from '../../shared/Dropdown';
 import StadiaCodec from '../../../../../shared/models/StadiaCodec';
 import styled from 'styled-components';
 import tw from 'twin.macro';

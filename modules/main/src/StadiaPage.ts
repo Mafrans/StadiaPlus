@@ -1,17 +1,17 @@
 export default class StadiaPage {
 
-    static HOME: StadiaPage = new StadiaPage('home');
-    static PLAYER: StadiaPage = new StadiaPage('player', true);
+    static HOME: StadiaPage = new StadiaPage(/home/);
+    static PLAYER: StadiaPage = new StadiaPage(/player\/[a-z0-9]{36}/, true);
 
 
 
     private static lastPathName: string = '';
     private static lastPage: StadiaPage | null = null;
 
-    path: string;
+    matcher: RegExp;
     isPrefix: boolean = false;
-    constructor(path: string, isPrefix?: boolean) {
-        this.path = path;
+    constructor(matcher: RegExp, isPrefix?: boolean) {
+        this.matcher = matcher;
 
         if(isPrefix !== undefined) {
             this.isPrefix = isPrefix;
@@ -31,14 +31,10 @@ export default class StadiaPage {
         this.lastPathName = pathname;
 
         const page = this.values().find(page => {
-            if (page.isPrefix) {
-                return pathname.startsWith(`/${page.path}`);
-            }
-
-            return pathname === `/${page.path}` || pathname === `/${page.path}/`;
+            return page.matcher.test(pathname);
         });
         this.lastPage = page || null;
-
+        
         return this.lastPage;
     }
 }

@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import tw from 'twin.macro';
 
 import AbstractComponent, { DefaultProps, DefaultState } from './AbstractComponent';
-import ReactComponent from '../decorators/@ReactComponent';
 import DBProfile from '../../../shared/models/DBProfile';
 import DBGame from '../../../shared/models/DBGame';
 import { Config } from '../../../shared/Config';
@@ -12,8 +11,7 @@ import ReactDOM from 'react-dom';
 import { PageQueryType } from '../../../shared/models/PageQueryType';
 import Logger from '../Logger';
 import { StadiaGameDB } from '../StadiaGameDB';
-import GameCard from './subcomponents/GameCard';
-import PageFilter from '../decorators/@PageFilter';
+import GameCard from './shared/GameCard';
 
 interface GameUpdateComponentState extends DefaultState {
     userId: string | null
@@ -23,8 +21,6 @@ interface GameUpdateComponentState extends DefaultState {
     games: { name: string, poster: string | null, offsets: { x: number, y: number } }[],
 }
 
-@PageFilter([])
-@ReactComponent
 export default class PageUpdateComponent extends AbstractComponent<DefaultProps, GameUpdateComponentState> {
     remainingIds: string[] = [];
     active: boolean = true;
@@ -32,7 +28,11 @@ export default class PageUpdateComponent extends AbstractComponent<DefaultProps,
     profile: DBProfile = new DBProfile({});
 
     constructor() {
-        super({ name: 'Page Update Component' });
+        super({
+            name: 'Page Update Component',
+            useReact: true,
+            pageFilter: []
+        });
         this.state = {
             renderer: null,
             userId: null,
