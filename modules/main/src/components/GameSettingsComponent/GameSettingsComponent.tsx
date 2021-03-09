@@ -1,12 +1,12 @@
 import React from 'react';
 import AbstractComponent, { DefaultProps, DefaultState } from '../AbstractComponent';
 import ReactComponent from '../../decorators/@ReactComponent';
-import Dropdown from '../subcomponents/Dropdown';
+import Dropdown from '../shared/Dropdown';
 import ReactDOM from 'react-dom';
-import GameCard from '../subcomponents/GameCard';
+import GameCard from '../shared/GameCard';
 import styled from 'styled-components';
 import tw from 'twin.macro';
-import StadiaPlusIcon from '../subcomponents/StadiaPlusIcon';
+import StadiaPlusIcon from '../shared/StadiaPlusIcon';
 import StadiaCodec from '../../../../shared/models/StadiaCodec';
 import StadiaResolution from '../../../../shared/models/StadiaResolution';
 import { Config } from '../../../../shared/Config';
