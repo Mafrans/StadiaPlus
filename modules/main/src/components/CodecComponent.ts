@@ -3,6 +3,7 @@ import AbstractComponent, { DefaultProps, DefaultState } from './AbstractCompone
 import StadiaPage from '../StadiaPage';
 import { Config } from '../../../shared/Config';
 import StadiaCodec from '../../../shared/models/StadiaCodec';
+import Logger from '../Logger';
 
 export default class CodecComponent extends AbstractComponent<DefaultProps, DefaultState> {
     constructor() {
@@ -17,14 +18,16 @@ export default class CodecComponent extends AbstractComponent<DefaultProps, Defa
         const codecs = await Config.CODECS.get() || {};
         const codec = codecs[this.parsePlayerUUID()] || StadiaCodec.AUTOMATIC;
 
+        Logger.info(`Using codec '${codec.name}'`);
+
         let codecData: StadiaCodecData | undefined;
 
-        switch (codec) {
-            case StadiaCodec.VP9:
+        switch (codec.name) {
+            case StadiaCodec.VP9.name:
                 codecData = { vp9: 'ExternalDecoder' }
                 break
 
-            case StadiaCodec.H264:
+            case StadiaCodec.H264.name:
                 codecData = {
                     h264: 'ExternalDecoder',
                     vp9: 'libvpx',
