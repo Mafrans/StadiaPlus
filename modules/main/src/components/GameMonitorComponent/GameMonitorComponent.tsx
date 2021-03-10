@@ -49,8 +49,6 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
     }
 
     async onStart() {
-        Util.desandbox(MonitorRunnable);
-
         this.state = {
             renderer: null,
             items: [],
@@ -59,6 +57,8 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
             enabled: false,
             position: { x: 10, y: 10 }
         }
+
+        Util.desandbox(MonitorRunnable);
 
         this.itemData = await Config.MONITOR_ITEMS.get();
         window.addEventListener('message', this.messageListener);
