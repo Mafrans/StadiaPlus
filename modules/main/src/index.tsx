@@ -11,6 +11,7 @@ import Fonts from './Fonts';
 import GameSettingsComponent from './components/GameSettingsComponent/GameSettingsComponent';
 import GameMonitorComponent from './components/GameMonitorComponent/GameMonitorComponent';
 import CodecComponent from './components/CodecComponent';
+import ResolutionComponent from './components/ResolutionComponent';
 
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -32,6 +33,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             <GameSettingsComponent/>
             <GameMonitorComponent/>
             <CodecComponent/>
+            <ResolutionComponent/>
         </div>,
         root
     )
