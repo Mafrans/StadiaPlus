@@ -218,6 +218,8 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
         window.addEventListener('mousemove', this.moveListener);
 
         const onRelease = () => {
+            this.grabPosition = undefined;
+
             window.removeEventListener('mousemove', this.moveListener);
             window.removeEventListener('mouseup', onRelease);
         }
@@ -228,6 +230,7 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
         if(this.grabPosition === undefined) {
             this.grabPosition = { x: event.x - this.state.position.x, y: event.y - this.state.position.y };
         }
+        console.log(this.grabPosition);
 
         this.setState(() => ({
             position: {
