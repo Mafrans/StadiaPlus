@@ -46,9 +46,7 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
             useReact: true,
             pageFilter: [ StadiaPage.PLAYER ]
         });
-    }
 
-    async onStart() {
         this.state = {
             renderer: null,
             items: [],
@@ -57,10 +55,12 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
             enabled: false,
             position: { x: 10, y: 10 }
         }
+    }
 
+    async onStart() {
         Util.desandbox(MonitorRunnable);
 
-        this.itemData = await Config.MONITOR_ITEMS.get();
+        this.itemData = await Config.MONITOR_ITEMS.get() || {};
         window.addEventListener('message', this.messageListener);
     }
 
@@ -90,7 +90,9 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
                 }));
             }
 
-            if (!this.state.enabled && !this.state.sidebarOpen) return;
+            if (this.state.items.length !== 0
+                && !this.state.enabled
+                && !this.state.sidebarOpen) return;
 
 
             const { videoStream, videoCodec, audioCodec } = getStream(statArray);
@@ -131,8 +133,11 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
 
             // TODO: clean this up into its own function
             if (this.itemData !== null && this.itemData !== undefined) {
-                items = items.sort((a, b) => this.itemData![a.id].index - this.itemData![b.id].index);
-                items.forEach(item => item.visible = this.itemData![item.id].visible);
+                items = items.sort((a, b) => this.itemData![a.id]?.index - this.itemData![b.id]?.index);
+                for (let i = 0; i < items.length; i++) {
+                    let item = items[i] || { visible: true };
+                    item.visible = this.itemData![item.id]?.visible;
+                }
 
                 if (Object.keys(this.itemData).length != items.length) {
                     this.itemData = {};
