@@ -214,23 +214,26 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
         this.setState(state => ({ enabled: !state.enabled }))
     }
 
-    onGrab() {
-        window.addEventListener('mousemove', this.moveListener);
+    onGrab(event: React.MouseEvent) {
+        (event.target as HTMLElement).style.cursor = 'grabbing';
 
+        window.addEventListener('mousemove', this.moveListener);
         const onRelease = () => {
             this.grabPosition = undefined;
+            (event.target as HTMLElement).style.cursor = '';
 
             window.removeEventListener('mousemove', this.moveListener);
             window.removeEventListener('mouseup', onRelease);
         }
         window.addEventListener('mouseup', onRelease);
+
+        event.preventDefault();
     }
 
     onMove(event: MouseEvent) {
         if(this.grabPosition === undefined) {
             this.grabPosition = { x: event.x - this.state.position.x, y: event.y - this.state.position.y };
         }
-        console.log(this.grabPosition);
 
         this.setState(() => ({
             position: {
@@ -268,7 +271,12 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
                     isLoading={this.state.loading}
                 />
                 
-                <MonitorWrapper style={{ width: !this.state.sidebarOpen ? 'auto' : '' }}>
+                <MonitorWrapper
+                    style={{
+                        width: !this.state.sidebarOpen ? 'auto' : '',
+                        cursor: 'grab'
+                    }}
+                >
                     <Header
                         visible={this.state.sidebarOpen}
                         collapsed={!this.state.enabled}
