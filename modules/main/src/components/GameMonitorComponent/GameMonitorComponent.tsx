@@ -30,7 +30,7 @@ interface INetworkMonitorComponentState extends DefaultState {
     sidebarOpen: boolean
     loading: boolean
     enabled: boolean
-    position: { x: number, y: number }
+    position: { left?: number, top?: number, right?: number, bottom?: number }
 }
 
 export default class GameMonitorComponent extends AbstractComponent<DefaultProps, INetworkMonitorComponentState> {
@@ -53,7 +53,7 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
             sidebarOpen: false,
             loading: true,
             enabled: false,
-            position: { x: 10, y: 10 }
+            position: { left: 0, top: 0 }
         }
     }
 
@@ -217,9 +217,31 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
     onGrab(event: React.MouseEvent) {
         (event.target as HTMLElement).style.cursor = 'grabbing';
 
+        const monitor = (event.target as HTMLElement).parentElement!;
+        let offsetX = 0;
+        let offsetY = 0;
+
+        if (this.state.position.left !== undefined) {
+            offsetX = this.state.position.left;
+        }
+        else if (this.state.position.right !== undefined) {
+            offsetX = window.innerWidth - this.state.position.right - monitor.offsetWidth;
+        }
+
+        if (this.state.position.top !== undefined) {
+            offsetY = this.state.position.top;
+        }
+        else if (this.state.position.bottom !== undefined) {
+            offsetY = window.innerHeight - this.state.position.bottom - monitor.offsetHeight;
+        }
+
+        this.grabPosition = {
+            x: event.pageX - offsetX,
+            y: event.pageY - offsetY
+        };
+
         window.addEventListener('mousemove', this.moveListener);
         const onRelease = () => {
-            this.grabPosition = undefined;
             (event.target as HTMLElement).style.cursor = '';
 
             window.removeEventListener('mousemove', this.moveListener);
@@ -231,16 +253,55 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
     }
 
     onMove(event: MouseEvent) {
-        if(this.grabPosition === undefined) {
-            this.grabPosition = { x: event.x - this.state.position.x, y: event.y - this.state.position.y };
+        const monitor = (event.target as HTMLElement).parentElement!;
+
+        const x = event.x - this.grabPosition!.x;
+        const y = event.y - this.grabPosition!.y;
+
+        const border = {
+            left: x,
+            top: y,
+            right: x + monitor.offsetWidth,
+            bottom: y + monitor.offsetHeight
+        };
+
+        let left: number | undefined;
+        let top: number | undefined;
+        let right: number | undefined;
+        let bottom: number | undefined;
+
+        const snapMargin = 64;
+
+        if (border.left < snapMargin
+            && border.top < snapMargin) {
+            // Top Left
+            top = 0;
+            left = 0;
+        }
+        else if (border.right > window.innerWidth - snapMargin
+                && border.top < snapMargin) {
+            // Top right
+            top = 0;
+            right = 0;
+        }
+        else if (border.left < snapMargin
+                && border.bottom > window.innerHeight - snapMargin) {
+            // Bottom left
+            bottom = 0;
+            left = 0;
+        }
+        else if (border.right > window.innerWidth - snapMargin
+                && border.bottom > window.innerHeight - snapMargin) {
+            // Bottom right
+            bottom = 0;
+            right = 0;
+        }
+        else {
+            top = y;
+            left = x;
         }
 
-        this.setState(() => ({
-            position: {
-                x: event.x - this.grabPosition!.x,
-                y: event.y - this.grabPosition!.y
-            }
-        }));
+        this.setState(() => ({ position: { left, right, top, bottom } }));
     }
 
     toggleItemVisibility(item: GameMonitorItem, value: boolean) {
@@ -263,8 +324,10 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
             <Wrapper 
                 style={{ 
                     backgroundColor: Theme.hexToRGBA(Theme.Colors.gray[900], this.state.sidebarOpen ? 1 : 0.25),
-                    left: this.state.position.x,
-                    top: this.state.position.y,
+                    left: this.state.position.left,
+                    top: this.state.position.top,
+                    right: this.state.position.right,
+                    bottom: this.state.position.bottom,
                 }}
             >
                 <Loader 
@@ -305,13 +368,12 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
 const Wrapper = styled.div`
     ${tw`
         fixed
-        top-0
         rounded-lg
         box-border
         text-white
         p-2
     `}
-    z-index: 180;
+    z-index: 200;
     font-family: Overpass, sans-serif;
 `
 
