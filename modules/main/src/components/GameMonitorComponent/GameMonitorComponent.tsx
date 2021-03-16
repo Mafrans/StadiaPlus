@@ -30,7 +30,8 @@ interface INetworkMonitorComponentState extends DefaultState {
     sidebarOpen: boolean
     loading: boolean
     enabled: boolean
-    position: { left?: number, top?: number, right?: number, bottom?: number }
+    position: { x: number, y: number },
+    transform: { x: number, y: number }
 }
 
 export default class GameMonitorComponent extends AbstractComponent<DefaultProps, INetworkMonitorComponentState> {
@@ -38,6 +39,7 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
     messageListener = this.onMessageCapture.bind(this);
 
     grabPosition?: { x: number, y: number };
+    grabElement?: HTMLElement;
     moveListener: (event: MouseEvent) => void = this.onMove.bind(this);
 
     constructor() {
@@ -53,7 +55,8 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
             sidebarOpen: false,
             loading: true,
             enabled: false,
-            position: { left: 0, top: 0 }
+            position: { x: 0, y: 0 },
+            transform: { x: 0, y: 0 }
         }
     }
 
@@ -217,28 +220,21 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
     onGrab(event: React.MouseEvent) {
         (event.target as HTMLElement).style.cursor = 'grabbing';
 
-        const monitor = (event.target as HTMLElement).parentElement!;
-        let offsetX = 0;
-        let offsetY = 0;
-
-        if (this.state.position.left !== undefined) {
-            offsetX = this.state.position.left;
-        }
-        else if (this.state.position.right !== undefined) {
-            offsetX = window.innerWidth - this.state.position.right - monitor.offsetWidth;
-        }
-
-        if (this.state.position.top !== undefined) {
-            offsetY = this.state.position.top;
-        }
-        else if (this.state.position.bottom !== undefined) {
-            offsetY = window.innerHeight - this.state.position.bottom - monitor.offsetHeight;
-        }
+        this.grabElement = (event.target as HTMLElement).parentElement!;
+        const offsetX = this.state.position.x;
+        const offsetY = this.state.position.y;
 
         this.grabPosition = {
             x: event.pageX - offsetX,
             y: event.pageY - offsetY
         };
+
+        if (this.state.transform.x !== 0) {
+            this.grabPosition.x += this.grabElement.offsetWidth;
+        }
+        if (this.state.transform.y !== 0) {
+            this.grabPosition.y += this.grabElement.offsetHeight;
+        }
 
         window.addEventListener('mousemove', this.moveListener);
         const onRelease = () => {
@@ -253,55 +249,36 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
     }
 
     onMove(event: MouseEvent) {
-        const monitor = (event.target as HTMLElement).parentElement!;
-
-        const x = event.x - this.grabPosition!.x;
-        const y = event.y - this.grabPosition!.y;
+        let x = event.x - this.grabPosition!.x;
+        let y = event.y - this.grabPosition!.y;
+        let transform = { x: 0, y: 0 };
 
         const border = {
             left: x,
             top: y,
-            right: x + monitor.offsetWidth,
-            bottom: y + monitor.offsetHeight
+            right: x + this.grabElement!.offsetWidth,
+            bottom: y + this.grabElement!.offsetHeight
         };
 
-        let left: number | undefined;
-        let top: number | undefined;
-        let right: number | undefined;
-        let bottom: number | undefined;
+        const snapMargin = 1;
 
-        const snapMargin = 64;
-
-        if (border.left < snapMargin
-            && border.top < snapMargin) {
-            // Top Left
-            top = 0;
-            left = 0;
+        if (border.left < snapMargin) {
+            x = 0;
         }
-        else if (border.right > window.innerWidth - snapMargin
-                && border.top < snapMargin) {
-            // Top right
-            top = 0;
-            right = 0;
-        }
-        else if (border.left < snapMargin
-                && border.bottom > window.innerHeight - snapMargin) {
-            // Bottom left
-            bottom = 0;
-            left = 0;
-        }
-        else if (border.right > window.innerWidth - snapMargin
-                && border.bottom > window.innerHeight - snapMargin) {
-            // Bottom right
-            bottom = 0;
-            right = 0;
-        }
-        else {
-            top = y;
-            left = x;
+        else if (border.right > window.innerWidth - snapMargin) {
+            x = window.innerWidth;
+            transform.x = -100;
         }
 
-        this.setState(() => ({ position: { left, right, top, bottom } }));
+        if (border.top < snapMargin) {
+            y = 0;
+        }
+        else if (border.bottom > window.innerHeight - snapMargin) {
+            y = window.innerHeight;
+            transform.y = -100;
+        }
+
+        this.setState(() => ({ position: { x, y }, transform }));
     }
 
     toggleItemVisibility(item: GameMonitorItem, value: boolean) {
@@ -324,10 +301,9 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
             <Wrapper 
                 style={{ 
                     backgroundColor: Theme.hexToRGBA(Theme.Colors.gray[900], this.state.sidebarOpen ? 1 : 0.25),
-                    left: this.state.position.left,
-                    top: this.state.position.top,
-                    right: this.state.position.right,
-                    bottom: this.state.position.bottom,
+                    left: this.state.position.x,
+                    top: this.state.position.y,
+                    transform: `translate(${this.state.transform.x}%, ${this.state.transform.y}%)`,
                 }}
             >
                 <Loader 
