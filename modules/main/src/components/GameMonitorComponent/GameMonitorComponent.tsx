@@ -16,7 +16,7 @@ import Loader from './components/Loader.component';
 import styled from 'styled-components';
 import Header from './components/Header.component';
 import Content from './components/Content.component';
-import { formatBytes, getStream, reorder } from './GameMonitorHelpers';
+import { formatBits, formatBytes, getStream, reorder } from './GameMonitorHelpers';
 
 export interface GameMonitorItem {
     name: string
@@ -41,6 +41,7 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
     grabPosition?: { x: number, y: number };
     grabElement?: HTMLElement;
     moveListener: (event: MouseEvent) => void = this.onMove.bind(this);
+    lastBytesReceived: number = 0;
 
     constructor() {
         super({
@@ -99,14 +100,22 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
 
 
             const { videoStream, videoCodec, audioCodec } = getStream(statArray);
+            const { bytesReceived, availableOutgoingBitrate, currentRoundTripTime } = ICECandidatePair;
+            const bytesPerSecond = bytesReceived! - this.lastBytesReceived;
 
             // TODO: Is it possible to move into a fined format. perhaps a class?
             let items = [
                 {
                     name: 'Latency',
-                    value: `${Math.round(ICECandidatePair.currentRoundTripTime! * 1000)} ms`,
+                    value: `${Math.round(currentRoundTripTime! * 1000)} ms`,
                     visible: true,
                     id: 'latency',
+                },
+                {
+                    name: 'Resolution',
+                    value: `${videoStream.frameWidth}x${videoStream.frameHeight}`,
+                    visible: true,
+                    id: 'resolution',
                 },
                 {
                     name: 'Bytes Received',
@@ -128,9 +137,15 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
                 },
                 {
                     name: 'Bitrate',
-                    value: `${formatBytes(ICECandidatePair.availableOutgoingBitrate!)}`,
+                    value: `${formatBytes(availableOutgoingBitrate!)}/s`,
                     visible: true,
                     id: 'bitrate',
+                },
+                {
+                    name: 'Bytes/s',
+                    value: `${formatBytes(bytesPerSecond)}/s`,
+                    visible: true,
+                    id: 'bytes-per-second',
                 },
             ]
 
@@ -152,10 +167,11 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
                 items.forEach((item, index) => this.itemData![item.id] = { index, visible: item.visible });
             }
 
-            console.log({items});
             this.setState(() => ({
                 items
             }))
+
+            this.lastBytesReceived = bytesReceived!
         }
     }
 

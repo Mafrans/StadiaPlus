@@ -9,15 +9,19 @@ export function reorder<T>(list: T[], startIndex: number, endIndex: number) {
     return result;
 }
 
-export function formatBytes(value: number, decimals?: number): string {
+export function formatBytes(value: number, decimals?: number, suffixes?: string[]): string {
+    suffixes = suffixes || ["Bytes", "KB", "MB", "GB", "TB", "PB"];
     if (value === 0) {
-        return "0 Bytes";
+        return `0 ${suffixes}`;
     }
 
     const exponent = Math.floor(Math.log(value) / Math.log(1024));
-    const suffixes = ["Bytes", "KB", "MB", "GB", "TB", "PB"]
 
     return `${(value / Math.pow(1024, exponent)).toFixed(decimals || 2)} ${suffixes[exponent]}`;
+}
+
+export function formatBits(value: number, decimals?: number): string {
+    return formatBytes(value, decimals, ["bits", "Kbit", "Mbit", "Gbit", "Tbit", "Pbit"]);
 }
 
 
