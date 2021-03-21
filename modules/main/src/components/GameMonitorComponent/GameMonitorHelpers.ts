@@ -12,7 +12,7 @@ export function reorder<T>(list: T[], startIndex: number, endIndex: number) {
 export function formatBytes(value: number, decimals?: number, suffixes?: string[]): string {
     suffixes = suffixes || ["Bytes", "KB", "MB", "GB", "TB", "PB"];
     if (value === 0) {
-        return `0 ${suffixes}`;
+        return `0 ${suffixes[0]}`;
     }
 
     const exponent = Math.floor(Math.log(value) / Math.log(1024));
