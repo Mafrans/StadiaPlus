@@ -41,6 +41,7 @@ const HeaderWrapper = styled.div`
 
         p-2
     `}
+    cursor: grab;
     background: ${Theme.Colors.neon.gradient};
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;

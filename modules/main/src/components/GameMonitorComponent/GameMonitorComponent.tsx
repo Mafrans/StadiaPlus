@@ -329,8 +329,7 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
                 <MonitorWrapper
                     style={{
                         display: this.state.loading ? 'none' : '',
-                        width: !this.state.sidebarOpen ? 'auto' : '',
-                        cursor: 'grab'
+                        width: !this.state.sidebarOpen ? 'auto' : ''
                     }}
                 >
                     <Header
