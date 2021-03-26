@@ -12,6 +12,7 @@ import GameSettingsComponent from './components/GameSettingsComponent/GameSettin
 import GameMonitorComponent from './components/GameMonitorComponent/GameMonitorComponent';
 import CodecComponent from './components/CodecComponent';
 import ResolutionComponent from './components/ResolutionComponent';
+import AbstractComponent from './components/AbstractComponent';
 
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -24,6 +25,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const root = document.createElement('div');
     root.id = 'stadiaplus-root';
     document.body.appendChild(root);
+
+    void AbstractComponent.startMutationListener();
 
     ReactDOM.render(
         <div>

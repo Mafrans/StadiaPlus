@@ -1,5 +1,6 @@
 export default class Util {
     static renderer: HTMLElement | null = null;
+    private static rendererListeners: ((renderer: HTMLElement) => void)[] = [];
 
     /**
      * Finds and caches the current web renderer.
@@ -12,6 +13,17 @@ export default class Util {
         }
 
         if (newRenderer != null) this.renderer = newRenderer;
+    }
+
+    static async setRenderer(renderer: HTMLElement): Promise<void> {
+        this.renderer = renderer;
+        for (const listener of this.rendererListeners) {
+            listener(renderer);
+        }
+    }
+
+    static onRendererChange(callback: (renderer: HTMLElement) => void) {
+        this.rendererListeners.push(callback);
     }
 
     static desandbox(data: string | object | Function, options?: { immediate?: boolean, name?: string }): string {
@@ -58,6 +70,26 @@ export default class Util {
         }
 
         return result;
+    }
+
+    static observe(element: Element, mutationType: MutationRecordType, nodeType: number, callback: (mutation: MutationRecord, node: Node) => void) {
+        const observer = new MutationObserver(mutations => {
+            mutations.forEach(mutation => {
+                if (mutation.type === mutationType) {
+                    mutation.addedNodes.forEach(node => {
+                        if (node.nodeType === nodeType) {
+                            callback(mutation, node);
+                        }
+                    });
+                }
+            });
+        });
+
+        observer.observe(element, {
+            childList: mutationType === 'childList',
+            attributes: mutationType === 'attributes',
+            characterData: mutationType === 'characterData'
+        });
     }
 }
 

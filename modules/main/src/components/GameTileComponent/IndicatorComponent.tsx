@@ -5,6 +5,7 @@ import { StadiaSelectors } from '../../StadiaSelectors';
 import ReactDOM from 'react-dom';
 import IndicatorGroup from './components/IndicatorGroup';
 import StadiaPage from '../../StadiaPage';
+import Util from '../../Util';
 
 interface ICodecSelectComponentState extends DefaultState {
     tileQueries: {uuid: string, subId: string, query: string}[];
@@ -30,12 +31,14 @@ export default class IndicatorComponent extends AbstractComponent<DefaultProps, 
         const _gameIds = await Config.GAME_IDS.get();
         if(_gameIds !== null) {
             this.gameIds = _gameIds;
-            await this.updateRenderer();
-            await this.updateTileQueries();
         }
+
+        Util.onRendererChange(renderer => {
+            this.updateTileQueries(renderer);
+        })
     }
 
-    async updateTileQueries() {
+    async updateTileQueries(renderer: HTMLElement) {
         if(this.state.renderer === null) return;
 
         const allTiles = Array.from(this.state.renderer.querySelectorAll(StadiaSelectors.GAME_TILE));
@@ -58,13 +61,12 @@ export default class IndicatorComponent extends AbstractComponent<DefaultProps, 
         }
 
         this.setState(() => ({
+            renderer,
             tileQueries
         }));
     }
 
-    async onUpdate() {
-        await this.updateRenderer();
-    }
+    async onUpdate() {}
 
     render(): null | React.ReactPortal {
         if (!this.state.active) return null;

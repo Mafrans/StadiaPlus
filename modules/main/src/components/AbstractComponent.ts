@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import Logger from '../Logger';
 import Util from '../Util';
 import StadiaPage from '../StadiaPage';
+import { StadiaSelectors } from '../StadiaSelectors';
 
 /**
  * Default React property interface for Stadia+ Components
@@ -63,8 +64,8 @@ export default class AbstractComponent<A extends DefaultProps, B extends Default
     private config: ComponentConfig;
 
     /**
-     * Base constructor for all components, includes
-     * @param {{ name: string }} data
+     * Base constructor for all components
+     * @param { ComponentConfig } config
      * @param {A extends DefaultProps} props
      * @see DefaultProps
      */
@@ -88,12 +89,7 @@ export default class AbstractComponent<A extends DefaultProps, B extends Default
      */
     public async __start() {
         const currentPage = StadiaPage.current();
-
-        if (this.config.pageFilter !== undefined && currentPage !== null) {
-            if(this.config.pageFilter.indexOf(currentPage) === -1) {
-                return;
-            }
-        }
+        if (!this.matchPage()) return;
 
         Logger.component(`Component ${this.config.name} has been enabled`);
 
@@ -109,23 +105,27 @@ export default class AbstractComponent<A extends DefaultProps, B extends Default
      */
     public async __tick() {
         const currentPage = StadiaPage.current();
-        if (this.config.pageFilter !== undefined && currentPage !== null) {
-            if(this.config.pageFilter.indexOf(currentPage) === -1) {
-                if(this.state.active) {
-                    this.setState(() => ({
-                        active: false
-                    }));
-                    void this.onStop();
-                    this.render();
-                }
-                return;
+        if (!this.matchPage()) {
+            if(this.state.active) {
+                this.setState(() => ({
+                    active: false
+                }));
+                void this.onStop();
+                this.render();
             }
+            return;
         }
 
         if (!this.state.active) {
             await this.__start();
         }
         await this.onUpdate();
+    }
+
+    public matchPage() {
+        const currentPage = StadiaPage.current();
+        const set = new Set(this.config.pageFilter);
+        return this.config.pageFilter !== undefined && currentPage !== null && set.has(currentPage);
     }
 
     /**
@@ -139,6 +139,12 @@ export default class AbstractComponent<A extends DefaultProps, B extends Default
 
             this.setState(state => ({ renderer: Util.renderer }));
         }
+    }
+
+    public static async startMutationListener() {
+        Util.observe(document.querySelector(StadiaSelectors.RENDERER_CONTAINER)!, 'childList', Node.ELEMENT_NODE, (mutation, node) => {
+            Util.renderer
+        });
     }
 
     /**

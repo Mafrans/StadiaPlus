@@ -10,6 +10,7 @@ import { Config } from '../../../../shared/Config';
 import StadiaPage from '../../StadiaPage';
 import SelectionSection from './components/SelectionArea.component';
 import { StadiaSelectors } from '../../StadiaSelectors';
+import Util from '../../Util';
 
 interface IGameSettingsComponentState extends DefaultState {
     container: Element | null;
@@ -32,32 +33,12 @@ export default class GameSettingsComponent extends AbstractComponent<DefaultProp
             container: null,
         }));
 
-        this.observe(document.body, 'childList', Node.ELEMENT_NODE, (mutation, node) => {
+        Util.observe(document.body, 'childList', Node.ELEMENT_NODE, (mutation, node) => {
             const element = node as HTMLElement;
             if (element.classList.contains('llhEMd')) {
                 // Once the ring animation starts playing, the container is done!
                 element.addEventListener('animationstart', this.updateContainer.bind(this));
             }
-        });
-    }
-
-    async observe(element: Element, mutationType: MutationRecordType, nodeType: number, callback: (mutation: MutationRecord, node: Node) => void) {
-        const observer = new MutationObserver(mutations => {
-            mutations.forEach(mutation => {
-                if (mutation.type === mutationType) {
-                    mutation.addedNodes.forEach(node => {
-                        if (node.nodeType === nodeType) {
-                            callback(mutation, node);
-                        }
-                    });
-                }
-            });
-        });
-
-        observer.observe(element, {
-            childList: mutationType === 'childList',
-            attributes: mutationType === 'attributes',
-            characterData: mutationType === 'characterData'
         });
     }
 
