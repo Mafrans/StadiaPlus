@@ -167,11 +167,11 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
                 items.forEach((item, index) => this.itemData![item.id] = { index, visible: item.visible });
             }
 
+            this.lastBytesReceived = bytesReceived!;
+
             this.setState(() => ({
                 items
             }))
-
-            this.lastBytesReceived = bytesReceived!
         }
     }
 
