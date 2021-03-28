@@ -22,7 +22,7 @@ export default class GameUpdateComponent extends AbstractComponent<DefaultProps,
         });
     }
 
-    async onStart() {
+    async onConnect() {
         const url: URL = new URL(location.href);
         const pageQueryType: PageQueryType = parseInt(url.searchParams.get('pqt') as string)
 

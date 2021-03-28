@@ -4,12 +4,12 @@ import Logger from '../Logger';
 import Util from '../Util';
 import StadiaPage from '../StadiaPage';
 import { StadiaSelectors } from '../StadiaSelectors';
+import StadiaPlusDB from '../../../shared/StadiaPlusDB';
 
 /**
  * Default React property interface for Stadia+ Components
  */
 export interface DefaultProps {
-
 }
 
 /**
@@ -79,7 +79,8 @@ export default class AbstractComponent<A extends DefaultProps, B extends Default
         } as B
 
         this.__start().then(() => {
-            setInterval(this.__tick.bind(this), 1000)
+            StadiaPlusDB.onConnect(() => this.onConnect());
+            setInterval(this.__tick.bind(this), 1000);
         });
     }
 
@@ -194,9 +195,17 @@ export default class AbstractComponent<A extends DefaultProps, B extends Default
      *     console.log('This message is sent when the component is stopped');
      * }
      */
-    async onStop(): Promise<void> {
+    async onStop(): Promise<void> {}
 
-    }
+
+    /**
+     * Abstract async Connect event, runs when the extension has connected to Stadia+
+     * @example
+     * async onConnect() {
+     *     console.log('This message is sent when the component has connected');
+     * }
+     */
+    async onConnect(): Promise<void> {}
 
     /**
      * Abstract React Render event, override for all your react needs

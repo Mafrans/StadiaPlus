@@ -6,12 +6,22 @@ export default class StadiaPlusDB {
     static url: string;
     static connected: boolean;
     static authToken: string | null = null;
+    private static listeners: Set<() => void> = new Set<() => void>();
 
     static async connect(url: string) {
         Logger.info(`Connecting to ${url}`);
         this.url = url;
         this.connected = await this.checkConnected();
+
+        if (this.connected) {
+            this.listeners.forEach(it => it());
+        }
+
         return this.connected;
+    }
+
+    static onConnect(callback: () => void) {
+        this.listeners.add(callback);
     }
 
     static async checkConnected(): Promise<boolean> {

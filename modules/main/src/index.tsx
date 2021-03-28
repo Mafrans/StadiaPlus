@@ -18,9 +18,10 @@ import AbstractComponent from './components/AbstractComponent';
 document.addEventListener('DOMContentLoaded', async () => {
     Fonts.load('Overpass', [200, 300, 400, 700]);
 
-    StadiaPlusDB.connect('http://localhost:3000');
-    StadiaPlusDB.authenticate();
-    StadiaGameDB.update();
+    StadiaPlusDB.connect('http://localhost:3000').then(() => {
+        StadiaPlusDB.authenticate();
+        StadiaGameDB.update();
+    });
 
     const root = document.createElement('div');
     root.id = 'stadiaplus-root';
