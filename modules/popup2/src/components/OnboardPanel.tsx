@@ -3,7 +3,11 @@ import { CgArrowTopRight, CgGoogle } from 'react-icons/cg';
 import Container from './Container';
 import styled from 'styled-components';
 import tw from 'twin.macro';
-import Button from './Button';
+import Button, { ButtonProps } from './Button';
+
+interface ButtonData extends ButtonProps {
+    label: string
+}
 
 type OnboardPanelProps = {
     title: string
@@ -13,11 +17,7 @@ type OnboardPanelProps = {
         label: string
         url: string
     }
-    button: {
-        icon?: ReactElement
-        label: string
-        onClick?: (event: MouseEvent) => void
-    }
+    button: ButtonData
 }
 
 export default function OnboardPanel(props: OnboardPanelProps) {

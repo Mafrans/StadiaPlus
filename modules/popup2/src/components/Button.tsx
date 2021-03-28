@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import tw from 'twin.macro';
 import { Theme } from '../../../shared/Theme';
 
-type ButtonProps = {
+export interface ButtonProps {
     type?: 'primary' | 'outline'
     icon?: ReactElement
     onClick?: (event: MouseEvent) => void
@@ -13,7 +13,7 @@ export default function Button(props: PropsWithChildren<ButtonProps>) {
     return <OutlineWrapper>
         <ButtonWrapper outlined={true} onClick={props.onClick}>
             <Icon>{ props.icon }</Icon>
-            { props.children }
+            <Label>{ props.children }</Label>
         </ButtonWrapper>
     </OutlineWrapper>
 }
@@ -60,8 +60,11 @@ const ButtonWrapper = styled.button<{ outlined: boolean }>`
 
 const Icon = styled.div(tw`
     flex
-    mb-1
     mr-3
     items-center
     text-xl
+`)
+
+const Label = styled.div(tw`
+    mt-1
 `)
