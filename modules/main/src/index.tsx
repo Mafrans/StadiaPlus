@@ -6,7 +6,7 @@ import PageUpdateComponent from './components/PageUpdateComponent';
 import StadiaPlusDB from '../../shared/StadiaPlusDB';
 import GameUpdateComponent from './components/GameUpdateComponent';
 import { StadiaGameDB } from './StadiaGameDB';
-import IndicatorComponent from './components/GameTileComponent/IndicatorComponent';
+import IndicatorComponent from './components/IndicatorComponent/IndicatorComponent';
 import Fonts from './Fonts';
 import GameSettingsComponent from './components/GameSettingsComponent/GameSettingsComponent';
 import GameMonitorComponent from './components/GameMonitorComponent/GameMonitorComponent';

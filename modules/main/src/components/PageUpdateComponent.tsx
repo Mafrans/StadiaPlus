@@ -12,6 +12,7 @@ import { PageQueryType } from '../../../shared/models/PageQueryType';
 import Logger from '../Logger';
 import { StadiaGameDB } from '../StadiaGameDB';
 import GameCard from './shared/GameCard';
+import StadiaPage from '../StadiaPage';
 
 interface GameUpdateComponentState extends DefaultState {
     userId: string | null
@@ -31,7 +32,7 @@ export default class PageUpdateComponent extends AbstractComponent<DefaultProps,
         super({
             name: 'Page Update Component',
             useReact: true,
-            pageFilter: []
+            pageFilter: [ StadiaPage.HOME ]
         });
         this.state = {
             renderer: null,
