@@ -22,21 +22,27 @@ export default class StadiaPlusDB {
                 return false;
             }
 
-            console.log('c', response.body);
             const json = await response.json();
-            console.log('c', json);
-            if (json.hasOwnProperty('connected')) {
-                return json.connected;
-            }
+            return json.connected as boolean;
         } catch (e) {
             Logger.error(e);
         }
         return false;
     }
 
+    private static async authFetch(path: string, options?: { type?: 'GET' | 'POST', body?: object }) {
+        return fetch(`${this.url}/${path}`, {
+            method: options?.type || 'GET',
+            body: options?.body && JSON.stringify(options.body),
+            headers: {
+                'Authorization': `Bearer ${this.authToken}`
+            }
+        })
+    }
+
     static async checkAuthenticated(): Promise<boolean> {
         try {
-            const response = await fetch(`${this.url}/api/ping?token=${this.authToken}`);
+            const response = await StadiaPlusDB.authFetch('api/ping');
 
             if (response === null) {
                 return false;
@@ -91,10 +97,7 @@ export default class StadiaPlusDB {
     }
 
     static wipedata(): Promise<unknown> {
-        return fetch(`${this.url}/api/signout`, {
-            method: 'POST',
-            body: JSON.stringify({ token: this.authToken }),
-        });
+        return StadiaPlusDB.authFetch('api/signout', { type: 'POST' });
     }
 
     static async getOwnProfile(): Promise<DBProfile | null> {
@@ -105,7 +108,7 @@ export default class StadiaPlusDB {
 
         let response;
         try {
-            response = await fetch(`${this.url}/api/user?token=${StadiaPlusDB.authToken}`);
+            response = await StadiaPlusDB.authFetch('api/profile');
         } catch (e) {
             Logger.error(e);
             return null;
