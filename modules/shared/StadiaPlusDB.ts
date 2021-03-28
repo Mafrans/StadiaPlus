@@ -35,7 +35,7 @@ export default class StadiaPlusDB {
             method: options?.type || 'GET',
             body: options?.body && JSON.stringify(options.body),
             headers: {
-                'Authorization': `Bearer ${this.authToken}`
+                authorization: `Bearer ${this.authToken}`
             }
         })
     }
@@ -108,13 +108,15 @@ export default class StadiaPlusDB {
 
         let response;
         try {
-            response = await StadiaPlusDB.authFetch('api/profile');
+            response = await StadiaPlusDB.authFetch('api/user');
         } catch (e) {
             Logger.error(e);
             return null;
         }
 
+        console.log({ response })
         const json = await response.json();
+        console.log({ json })
         if (json.hasOwnProperty('error')) {
             Logger.error(json.error);
             return null;

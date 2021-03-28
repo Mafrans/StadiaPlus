@@ -10,8 +10,14 @@ import {
     CgSync,
 } from 'react-icons/cg';
 import OnboardPanel from '../components/OnboardPanel';
+import StadiaPlusDB from '../../../shared/StadiaPlusDB';
 
 export default function HomePage() {
+
+    StadiaPlusDB.checkAuthenticated().then(authenticated => {
+        console.log({ authenticated });
+    })
+
     return <Container>
         <OnboardPanel
             title={'Get in sync'}
