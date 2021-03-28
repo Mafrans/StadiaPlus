@@ -12,7 +12,7 @@ interface ButtonData extends ButtonProps {
 type OnboardPanelProps = {
     title: string
     body: string
-    link: {
+    link?: {
         icon?: ReactElement
         label: string
         url: string
@@ -24,10 +24,12 @@ export default function OnboardPanel(props: OnboardPanelProps) {
     return <Wrapper>
         <Heading>{ props.title }</Heading>
         <p>{ props.body }</p>
-        <p>
-            <a href={ props.link.url }>{ props.link.label }</a>
-            { props.link.icon }
-        </p>
+
+        { props.link && <p>
+            <a href={props.link.url}>{props.link.label}</a>
+            {props.link.icon}
+        </p> }
+
         <Button icon={ props.button.icon } onClick={ props.button.onClick }>
             { props.button.label }
         </Button>
