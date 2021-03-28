@@ -34,13 +34,17 @@ export default class StadiaPlusDB {
         return fetch(`${this.url}/${path}`, {
             method: options?.type || 'GET',
             body: options?.body && JSON.stringify(options.body),
-            headers: {
+            headers: this.authToken ? {
                 authorization: `Bearer ${this.authToken}`
-            }
+            } : undefined
         })
     }
 
     static async checkAuthenticated(): Promise<boolean> {
+        if (this.authToken == null) {
+            this.authToken = await Config.AUTH_TOKEN.get();
+        }
+
         try {
             const response = await StadiaPlusDB.authFetch('api/ping');
 
@@ -48,12 +52,8 @@ export default class StadiaPlusDB {
                 return false;
             }
 
-            console.log(response.body);
             const json = await response.json();
-            console.log(json);
-            if (json.hasOwnProperty('authenticated')) {
-                return json.authenticated;
-            }
+            return json.authorized as boolean;
         } catch (e) {
             Logger.error(e);
         }
