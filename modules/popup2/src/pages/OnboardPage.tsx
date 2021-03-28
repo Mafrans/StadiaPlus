@@ -2,7 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import tw from 'twin.macro';
 import { Theme } from '../../../shared/Theme';
-import { CgArrowTopRight, CgGoogle } from 'react-icons/cg';
+import { CgArrowTopRight } from 'react-icons/cg';
+import { FaGoogle } from 'react-icons/fa';
 import Container from '../components/Container';
 import OnboardPanel from '../components/OnboardPanel';
 
@@ -17,7 +18,7 @@ export default function OnboardPage() {
                 url: ''
             }}
             button={{
-                icon: <CgGoogle />,
+                icon: <FaGoogle />,
                 label: 'Sign in with Google',
             }}
         />
