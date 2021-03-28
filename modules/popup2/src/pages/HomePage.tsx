@@ -4,7 +4,6 @@ import {
     CgArrowRight,
     CgArrowTopRight,
     CgGift,
-    CgGoogle,
     CgOptions,
     CgProfile,
     CgSupport,

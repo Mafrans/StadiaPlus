@@ -11,7 +11,7 @@ export interface ButtonProps {
 
 export default function Button(props: PropsWithChildren<ButtonProps>) {
     return <OutlineWrapper>
-        <ButtonWrapper outlined={true} onClick={props.onClick}>
+        <ButtonWrapper outlined={ props.type === 'outline' } onClick={props.onClick}>
             <Icon>{ props.icon }</Icon>
             <Label>{ props.children }</Label>
         </ButtonWrapper>
