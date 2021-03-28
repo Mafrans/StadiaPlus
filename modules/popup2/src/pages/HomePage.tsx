@@ -1,18 +1,32 @@
 import React from 'react';
 import Container from '../components/Container';
-import { CgArrowRight, CgArrowTopRight, CgGift, CgOptions, CgProfile, CgSupport, CgSync } from 'react-icons/cg';
+import {
+    CgArrowRight,
+    CgArrowTopRight,
+    CgGift,
+    CgGoogle,
+    CgOptions,
+    CgProfile,
+    CgSupport,
+    CgSync,
+} from 'react-icons/cg';
+import OnboardPanel from '../components/OnboardPanel';
 
 export default function HomePage() {
     return <Container>
-        <div>
-            <h1>Get in sync</h1>
-            <p>Sync your games with Stadia+ to automagically keep track of all your achievements and stats.</p>
-            <p>
-                <a href={''}>More about syncing</a>
-                <CgArrowRight />
-                <button><CgSync />Enable sync</button>
-            </p>
-        </div>
+        <OnboardPanel
+            title={'Get in sync'}
+            body={'Sync your games with Stadia+ to automagically keep track of all your achievements and stats.'}
+            link={{
+                icon: <CgArrowRight />,
+                label: 'More about syncing',
+                url: ''
+            }}
+            button={{
+                icon: <CgSync />,
+                label: 'Enable sync',
+            }}
+        />
         <hr />
         <div>
             <div>

@@ -4,17 +4,22 @@ import tw from 'twin.macro';
 import { Theme } from '../../../shared/Theme';
 import { CgArrowTopRight, CgGoogle } from 'react-icons/cg';
 import Container from '../components/Container';
+import OnboardPanel from '../components/OnboardPanel';
 
 export default function OnboardPage() {
     return <Container>
-        <div>
-            <h1>Stadia, elevated.</h1>
-            <p>Sign in to Stadia+ to automagically sync all your achievements and stats to your profile.</p>
-            <p>
-                <a href={''}>More about Stadia+ DB</a>
-                <CgArrowTopRight/>
-            </p>
-            <button><CgGoogle /> Sign in with Google</button>
-        </div>
+        <OnboardPanel
+            title={'Stadia, elevated.'}
+            body={'Sign in to Stadia+ to automagically sync all your achievements and stats to your profile.'}
+            link={{
+                icon: <CgArrowTopRight />,
+                label: 'More about Stadia+ DB',
+                url: ''
+            }}
+            button={{
+                icon: <CgGoogle />,
+                label: 'Sign in with Google',
+            }}
+        />
     </Container>;
 }

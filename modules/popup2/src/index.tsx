@@ -1,9 +1,8 @@
 import ReactDOM from 'react-dom';
 import React from 'react';
 import 'reset-css';
-import '@fontsource/material-icons';
-import '@fontsource/roboto';
-import '@fontsource/roboto/500';
+import '@fontsource/overpass';
+import '@fontsource/overpass/600.css';
 import Router from './Router';
 
 ReactDOM.render(
