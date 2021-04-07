@@ -4,7 +4,7 @@ import Logger from '../Logger';
 import Util from '../Util';
 import StadiaPage from '../StadiaPage';
 import { StadiaSelectors } from '../StadiaSelectors';
-import StadiaPlusDB from '../../../shared/StadiaPlusDB';
+import { StadiaPlusDB } from '../../../shared/StadiaPlusDB';
 
 /**
  * Default React property interface for Stadia+ Components
@@ -129,22 +129,15 @@ export default class AbstractComponent<A extends DefaultProps, B extends Default
         return this.config.pageFilter !== undefined && currentPage !== null && set.has(currentPage);
     }
 
-    /**
-     * Updates the renderer state. Relies on heavy querying, so should be used as sparingly as possible.
-     */
-    public async updateRenderer() {
-        if (this.state.renderer?.style.opacity === '1') return;
-
-        await Util.updateRenderer();
-        if (this.config.useReact && Util.renderer !== this.state.renderer) {
-
-            this.setState(state => ({ renderer: Util.renderer }));
-        }
-    }
-
     public static async startMutationListener() {
         Util.observe(document.querySelector(StadiaSelectors.RENDERER_CONTAINER)!, 'childList', Node.ELEMENT_NODE, (mutation, node) => {
-            Util.renderer
+            if (mutation.addedNodes.length > 0) {
+                const renderer = mutation.addedNodes.item(0) as HTMLElement;
+                console.log({renderer})
+                if (renderer != null) {
+                    Util.setRenderer(renderer)
+                }
+            }
         });
     }
 

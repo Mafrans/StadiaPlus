@@ -12,7 +12,7 @@ export default class Util {
             newRenderer = Array.from(renderers).find((renderer: Element) => (renderer as HTMLElement).style.opacity === '1') as HTMLElement;
         }
 
-        if (newRenderer != null) this.renderer = newRenderer;
+        if (newRenderer != null) this.setRenderer(newRenderer);
     }
 
     static async setRenderer(renderer: HTMLElement): Promise<void> {

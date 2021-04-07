@@ -1,32 +1,39 @@
 import Logger from '../main/src/Logger';
-import DBProfile from './models/DBProfile';
 import { Config } from './Config';
+import { DBModel } from './models/DBModel';
 
-export default class StadiaPlusDB {
-    static url: string;
-    static connected: boolean;
-    static authToken: string | null = null;
-    private static listeners: Set<() => void> = new Set<() => void>();
+export namespace StadiaPlusDB {
+    export let url: string;
+    export let connected: boolean;
+    export let authToken: string | null = null;
+    const listeners: Set<() => void> = new Set<() => void>();
 
-    static async connect(url: string) {
+    export interface Profile {
+        avatar: string
+        names: string[]
+        location?: string
+        score: number
+    }
+
+    export async function connect(url: string) {
         Logger.info(`Connecting to ${url}`);
-        this.url = url;
-        this.connected = await this.checkConnected();
+        StadiaPlusDB.url = url;
+        connected = await checkConnected();
 
-        if (this.connected) {
-            this.listeners.forEach(it => it());
+        if (connected) {
+            listeners.forEach(it => it());
         }
 
-        return this.connected;
+        return connected;
     }
 
-    static onConnect(callback: () => void) {
-        this.listeners.add(callback);
+    export function onConnect(callback: () => void) {
+        listeners.add(callback);
     }
 
-    static async checkConnected(): Promise<boolean> {
+    export async function checkConnected(): Promise<boolean> {
         try {
-            const response = await fetch(`${this.url}/api/ping`);
+            const response = await fetch(`${url}/api/ping`);
 
             if (response === null) {
                 return false;
@@ -40,23 +47,23 @@ export default class StadiaPlusDB {
         return false;
     }
 
-    private static async authFetch(path: string, options?: { type?: 'GET' | 'POST', body?: object }) {
-        return fetch(`${this.url}/${path}`, {
+    async function authFetch(path: string, options?: { type?: 'GET' | 'POST', body?: object }) {
+        return fetch(`${url}/${path}`, {
             method: options?.type || 'GET',
             body: options?.body && JSON.stringify(options.body),
-            headers: this.authToken ? {
-                authorization: `Bearer ${this.authToken}`
+            headers: authToken ? {
+                authorization: `Bearer ${authToken}`
             } : undefined
         })
     }
 
-    static async checkAuthenticated(): Promise<boolean> {
-        if (this.authToken == null) {
-            this.authToken = await Config.AUTH_TOKEN.get();
+    export async function checkAuthenticated(): Promise<boolean> {
+        if (authToken == null) {
+            authToken = await Config.AUTH_TOKEN.get();
         }
 
         try {
-            const response = await StadiaPlusDB.authFetch('api/ping');
+            const response = await authFetch('api/ping');
 
             if (response === null) {
                 return false;
@@ -70,27 +77,27 @@ export default class StadiaPlusDB {
         return false;
     }
 
-    static async googleSignIn(): Promise<void> {
-        const url = `${this.url}/auth/google?redirect=${chrome.identity.getRedirectURL('database')}`;
+    export async function googleSignIn(): Promise<void> {
+        const url = `${StadiaPlusDB.url}/auth/google?redirect=${chrome.identity.getRedirectURL('database')}`;
         const responseUrl: string = await new Promise(resolve => chrome.identity.launchWebAuthFlow({
             url,
             interactive: true,
         }, a => resolve(a as string)));
 
         const urlData = new URL(responseUrl);
-        this.authToken = urlData.hash.substring(1);
-        await Config.AUTH_TOKEN.set(this.authToken);
+        authToken = urlData.hash.substring(1);
+        await Config.AUTH_TOKEN.set(authToken);
     }
 
-    static async authenticate(): Promise<boolean> {
-        if (!this.isConnected()) {
+    export async function authenticate(): Promise<boolean> {
+        if (!isConnected()) {
             Logger.error('Attempting to authenticate without being connected.');
         }
 
-        this.authToken = await Config.AUTH_TOKEN.get();
+        authToken = await Config.AUTH_TOKEN.get();
 
-        if (this.authToken !== null) {
-            if (!await this.checkAuthenticated()) {
+        if (authToken !== null) {
+            if (!await checkAuthenticated()) {
                 Logger.warning('Your authentication token is outdated');
                 return false;
             }
@@ -99,55 +106,26 @@ export default class StadiaPlusDB {
         return false;
     }
 
-    static signout(): Promise<unknown> {
-        return fetch(`${this.url}/api/signout`, {
+    export function signout(): Promise<unknown> {
+        return fetch(`${url}/api/signout`, {
             method: 'POST',
-            body: JSON.stringify({ token: this.authToken }),
+            body: JSON.stringify({ token: authToken }),
         });
     }
 
-    static wipedata(): Promise<unknown> {
-        return StadiaPlusDB.authFetch('api/signout', { type: 'POST' });
+    export function wipedata(): Promise<unknown> {
+        return authFetch('api/signout', { type: 'POST' });
     }
 
-    static async getOwnProfile(): Promise<DBProfile | null> {
-        if (!this.connected) {
+    export async function getOwnProfile(): Promise<Profile | null> {
+        if (!connected) {
             Logger.warning('Trying to run getProfile() without being connected!');
             return null;
         }
 
         let response;
         try {
-            response = await StadiaPlusDB.authFetch('api/user');
-        } catch (e) {
-            Logger.error(e);
-            return null;
-        }
-
-        console.log({ response })
-        const json = await response.json();
-        console.log({ json })
-        if (json.hasOwnProperty('error')) {
-            Logger.error(json.error);
-            return null;
-        }
-
-        if(JSON.stringify(json) == '{}') { // Hacky fix, useful because {} is not equal to {}
-            return null;
-        }
-
-        return json;
-    }
-
-    static async getOtherProfile(name: string, tag: string): Promise<DBProfile | null> {
-        if (!this.connected) {
-            Logger.warning('Trying to run getProfile() without being connected!');
-            return null;
-        }
-
-        let response;
-        try {
-            response = await fetch(`${this.url}/api/profile/${name}/${tag}`);
+            response = await authFetch('api/profile/self');
         } catch (e) {
             Logger.error(e);
             return null;
@@ -166,31 +144,84 @@ export default class StadiaPlusDB {
         return json;
     }
 
-    static isConnected(): boolean {
+    export async function getOtherProfile(name: string, tag: string): Promise<Profile | null> {
+        if (!connected) {
+            Logger.warning('Trying to run getProfile() without being connected!');
+            return null;
+        }
+
+        let response;
+        try {
+            response = await fetch(`${url}/api/profile/${name}/${tag}`);
+        } catch (e) {
+            Logger.error(e);
+            return null;
+        }
+
+        const json = await response.json();
+        if (json.hasOwnProperty('error')) {
+            Logger.error(json.error);
+            return null;
+        }
+
+        if(JSON.stringify(json) == '{}') { // Hacky fix, useful because {} is not equal to {}
+            return null;
+        }
+
+        return json;
+    }
+
+    export function isConnected(): boolean {
         return StadiaPlusDB.connected && StadiaPlusDB.url != null;
     }
 
-    static isAuthenticated(): boolean {
+    export function isAuthenticated(): boolean {
         return StadiaPlusDB.isConnected() && StadiaPlusDB.authToken != null;
     }
 
-    static async updateDBProfile(profile: DBProfile) {
+    export async function updateGameProgress(userId: string, gameId: string) {
         if (!StadiaPlusDB.isConnected()) {
-            return new Promise((resolve, reject) => reject({ error: 'Not connected to the StadiaPlusDB database' }));
+            Logger.error('Not connected to the StadiaPlusDB database');
+            return;
         }
         if (!StadiaPlusDB.isAuthenticated()) {
-            return new Promise((resolve, reject) => reject({ error: 'Not authenticated with StadiaPlusDB' }));
+            Logger.error('Not authenticated with StadiaPlusDB' );
+            return;
         }
 
-        const response = await fetch(`${StadiaPlusDB.url}/api/update`, {
+        const data = await DBModel.fetchData(userId, gameId);
+        const profile = DBModel.getProfile(data);
+        const game = DBModel.getGame(data, gameId);
+        const playTime = DBModel.getPlayTime(data, gameId);
+        const achievements = DBModel.getAchievements(data);
+
+        console.log({
+            profile,
+            game,
+            playTime,
+            achievements
+        })
+
+        const response = await fetch(`${url}/api/profile/update`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + authToken
             },
             body: JSON.stringify({
-                token: this.authToken,
-                profile
+                data: {
+                    profile,
+                    game,
+                    playTime,
+                    achievements
+                }
             }),
         });
+
+        console.log(`${response.status} - ${response.statusText}`);
+
+        if (response.status !== 200) {
+            throw Error(response.status.toString());
+        }
     }
 }

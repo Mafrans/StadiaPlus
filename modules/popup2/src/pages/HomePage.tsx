@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Container from '../components/Container';
 import {
     CgArrowRight,
@@ -10,12 +10,16 @@ import {
     CgSync,
 } from 'react-icons/cg';
 import OnboardPanel from '../components/OnboardPanel';
-import StadiaPlusDB from '../../../shared/StadiaPlusDB';
+import ProfilePanel from '../components/ProfilePanel';
+import { StadiaPlusDB } from '../../../shared/StadiaPlusDB';
 
 export default function HomePage() {
+    const [profile, setProfile] = useState<StadiaPlusDB.Profile | null>(null);
 
-    StadiaPlusDB.checkAuthenticated().then(authenticated => {
-        console.log({ authenticated });
+    StadiaPlusDB.checkAuthenticated().then(async (authenticated) => {
+        if (authenticated) {
+            setProfile(await StadiaPlusDB.getOwnProfile());
+        }
     })
 
     return <Container>
@@ -33,17 +37,7 @@ export default function HomePage() {
             }}
         />
         <hr />
-        <div>
-            <div>
-                <img src={''} alt={'Profile picture'} />
-                <CgProfile />
-            </div>
-            <div>
-                <span>Mafrans</span>
-                <span>#1234</span>
-            </div>
-            <CgArrowTopRight />
-        </div>
+        { profile && <ProfilePanel profile={profile} /> }
         <div>
             <button>
                 <CgSupport />

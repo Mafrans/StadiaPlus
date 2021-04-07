@@ -3,10 +3,8 @@ import styled from 'styled-components';
 import tw from 'twin.macro';
 
 import AbstractComponent, { DefaultProps, DefaultState } from './AbstractComponent';
-import DBProfile from '../../../shared/models/DBProfile';
-import DBGame from '../../../shared/models/DBGame';
 import { Config } from '../../../shared/Config';
-import StadiaPlusDB from '../../../shared/StadiaPlusDB';
+import { StadiaPlusDB } from '../../../shared/StadiaPlusDB';
 import ReactDOM from 'react-dom';
 import { PageQueryType } from '../../../shared/models/PageQueryType';
 import Logger from '../Logger';
@@ -26,7 +24,6 @@ export default class PageUpdateComponent extends AbstractComponent<DefaultProps,
     remainingIds: string[] = [];
     active: boolean = true;
     userId: string | null = null;
-    profile: DBProfile = new DBProfile({});
 
     constructor() {
         super({
@@ -69,7 +66,6 @@ export default class PageUpdateComponent extends AbstractComponent<DefaultProps,
     }
 
     async setupVariables() {
-        await this.updateProfile();
         await this.updateRemainingIds();
 
         // For whatever reason, this HAS to be placed below any `await` calls
@@ -79,14 +75,9 @@ export default class PageUpdateComponent extends AbstractComponent<DefaultProps,
             .forEach(element => element.remove());
     }
 
-    async updateProfile() {
-        const _profile = await StadiaPlusDB.getOwnProfile();
-        this.profile = _profile !== null ? new DBProfile(_profile) : this.profile;
-    }
-
     async updateRemainingIds() {
         const _remainingIds = await Config.GAME_UPDATES.get();
-        this.remainingIds = _remainingIds !== null ? _remainingIds : [];
+        this.remainingIds = _remainingIds || [];
 
         this.setState(() => ({
             goal: this.remainingIds.length,
@@ -99,14 +90,12 @@ export default class PageUpdateComponent extends AbstractComponent<DefaultProps,
         if (this.remainingIds.length === 0) {
             console.log('finished');
             this.setState(() => ({ finished: true }));
-            await StadiaPlusDB.updateDBProfile(this.profile);
             this.active = false;
         } else {
             const gameId = this.remainingIds.pop() as string;
 
-            let game = null;
             try {
-                game = await this.profile.fetchGame(this.userId, gameId);
+                await StadiaPlusDB.updateGameProgress(this.userId, gameId);
             }
             catch (e) {
                 if (e === '429') {
@@ -114,12 +103,14 @@ export default class PageUpdateComponent extends AbstractComponent<DefaultProps,
                 }
             }
 
-            if (game === null) return;
-
             const dbGame = await StadiaGameDB.get(gameId);
+            if(!dbGame) {
+                return;
+            }
+
             const gameEntry = {
-                name: game.name,
-                poster: dbGame !== undefined ? dbGame.img : '',
+                name: dbGame.name,
+                poster: dbGame.img,
                 offsets: {
                     x: (Math.random()-0.5) * window.innerWidth,
                     y: (Math.random()-0.5) * window.innerHeight,

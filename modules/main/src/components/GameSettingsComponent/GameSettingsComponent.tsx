@@ -37,7 +37,11 @@ export default class GameSettingsComponent extends AbstractComponent<DefaultProp
             const element = node as HTMLElement;
             if (element.classList.contains('llhEMd')) {
                 // Once the ring animation starts playing, the container is done!
-                element.addEventListener('animationstart', this.updateContainer.bind(this));
+                const fn = () => {
+                    this.updateContainer();
+                    element.removeEventListener('animationstart', fn);
+                }
+                element.addEventListener('animationstart', fn);
             }
         });
     }
@@ -46,12 +50,13 @@ export default class GameSettingsComponent extends AbstractComponent<DefaultProp
         const banner = document.querySelector(StadiaSelectors.GAME_INFO_HERO)!;
         const renderer = document.querySelector(StadiaSelectors.GAME_INFO_RENDERER)!;
 
+        console.log({banner, renderer})
+
         const container = document.createElement('div');
         container.id = 'stadiaplus-game-settings';
         banner.after(container);
 
         const uuid = renderer.getAttribute('data-app-id');
-        console.log({ renderer })
 
         const codecs = await Config.CODECS.get();
         const resolutions = await Config.RESOLUTIONS.get();
@@ -80,6 +85,7 @@ export default class GameSettingsComponent extends AbstractComponent<DefaultProp
             || this.state.container === null
             || this.state.uuid === null
         ) return null;
+        console.log({container: this.state.container})
 
         return ReactDOM.createPortal(
             <Wrapper>

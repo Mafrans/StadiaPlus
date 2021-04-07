@@ -21,10 +21,8 @@ export default class IndicatorComponent extends AbstractComponent<DefaultProps, 
             useReact: true,
             pageFilter: [ StadiaPage.HOME ]
         });
-        this.state = {
-            renderer: null,
-            tileQueries: [],
-        }
+
+        this.setState({ tileQueries: [] });
     }
 
     async onStart() {
@@ -34,14 +32,13 @@ export default class IndicatorComponent extends AbstractComponent<DefaultProps, 
         }
 
         Util.onRendererChange(renderer => {
+            console.log({ renderer });
             this.updateTileQueries(renderer);
         })
     }
 
     async updateTileQueries(renderer: HTMLElement) {
-        if(this.state.renderer === null) return;
-
-        const allTiles = Array.from(this.state.renderer.querySelectorAll(StadiaSelectors.GAME_TILE));
+        const allTiles = Array.from(renderer.querySelectorAll(StadiaSelectors.GAME_TILE));
         const tileQueries: {uuid: string, subId: string, query: string}[] = [];
 
         if (allTiles.length === 0) return;
@@ -69,7 +66,7 @@ export default class IndicatorComponent extends AbstractComponent<DefaultProps, 
     async onUpdate() {}
 
     render(): null | React.ReactPortal {
-        if (!this.state.active) return null;
+        if (!this.state.active || this.state.tileQueries == null) return null;
         const icons: ReactNode[] = [];
 
         this.state.tileQueries.forEach(entry => {

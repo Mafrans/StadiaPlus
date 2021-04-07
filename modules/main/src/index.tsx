@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import TestComponent from './components/TestComponent';
 import Util from './Util';
 import PageUpdateComponent from './components/PageUpdateComponent';
-import StadiaPlusDB from '../../shared/StadiaPlusDB';
+import { StadiaPlusDB } from '../../shared/StadiaPlusDB';
 import GameUpdateComponent from './components/GameUpdateComponent';
 import { StadiaGameDB } from './StadiaGameDB';
 import IndicatorComponent from './components/IndicatorComponent/IndicatorComponent';
@@ -27,8 +27,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     root.id = 'stadiaplus-root';
     document.body.appendChild(root);
 
-    void AbstractComponent.startMutationListener();
-
     ReactDOM.render(
         <div>
             <GameUpdateComponent/>
@@ -40,5 +38,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             <ResolutionComponent/>
         </div>,
         root
-    )
+    );
+
+    void AbstractComponent.startMutationListener();
+    Util.updateRenderer();
 })
