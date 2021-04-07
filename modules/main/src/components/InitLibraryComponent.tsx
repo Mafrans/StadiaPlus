@@ -14,10 +14,10 @@ interface AFLibraryData {
     sideChannel: unknown,
 }
 
-export default class GameUpdateComponent extends AbstractComponent<DefaultProps, DefaultState> {
+export default class InitLibraryComponent extends AbstractComponent<DefaultProps, DefaultState> {
     constructor() {
         super({
-            name: "Game Update Component",
+            name: "Library Initialization Component",
             pageFilter: [ StadiaPage.HOME ]
         });
     }
