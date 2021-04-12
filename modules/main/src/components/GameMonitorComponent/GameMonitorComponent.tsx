@@ -1,9 +1,6 @@
-import React from 'react';
-import AbstractComponent, { DefaultProps, DefaultState } from '../AbstractComponent';
+import React, { useState } from 'react';
 import Util from '../../Util';
-// @ts-ignore
 import MonitorRunnable from '../../MonitorRunnable.txtjs';
-import StadiaPage from '../../StadiaPage';
 import ReactDOM from 'react-dom';
 import { RTCStatistics } from '../../RTCStatistics';
 import RTCStatistic = RTCStatistics.RTCStatistic;
@@ -16,7 +13,8 @@ import Loader from './components/Loader.component';
 import styled from 'styled-components';
 import Header from './components/Header.component';
 import Content from './components/Content.component';
-import { formatBits, formatBytes, getStream, reorder } from './GameMonitorHelpers';
+import { formatBytes, getStream, reorder } from './GameMonitorHelpers';
+import { onPageChanged } from '../../events/PageChangeEvent';
 
 export interface GameMonitorItem {
     name: string
@@ -25,86 +23,66 @@ export interface GameMonitorItem {
     id: string
 }
 
-interface INetworkMonitorComponentState extends DefaultState {
-    items: GameMonitorItem[]
-    sidebarOpen: boolean
-    loading: boolean
-    enabled: boolean
-    position: { x: number, y: number },
-    transform: { x: number, y: number }
-}
+const GameMonitorComponent = () => {
+    const [items, setItems] = useState<GameMonitorItem[]>([]);
+    const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [enabled, setEnabled] = useState<boolean>(false);
+    const [position, setPosition] = useState<{ x: number, y: number }>({ x: 0, y: 0 });
+    const [transform, setTransform] = useState<{ x: number, y: number }>({ x: 0, y: 0 });
 
-export default class GameMonitorComponent extends AbstractComponent<DefaultProps, INetworkMonitorComponentState> {
-    itemData: { [id: string]: { index: number, visible: boolean } } | null = null;
-    messageListener = this.onMessageCapture.bind(this);
+    let itemData: { [id: string]: { index: number, visible: boolean } } | null = null;
+    let grabPosition: { x: number, y: number };
+    let grabElement: HTMLElement;
+    let lastBytesReceived: number = 0;
 
-    grabPosition?: { x: number, y: number };
-    grabElement?: HTMLElement;
-    moveListener: (event: MouseEvent) => void = this.onMove.bind(this);
-    lastBytesReceived: number = 0;
-
-    constructor() {
-        super({
-            name: "Game Monitor Component",
-            useReact: true,
-            pageFilter: [ StadiaPage.PLAYER ]
-        });
-
-        this.state = {
-            renderer: null,
-            items: [],
-            sidebarOpen: false,
-            loading: true,
-            enabled: false,
-            position: { x: 0, y: 0 },
-            transform: { x: 0, y: 0 }
-        }
-    }
-
-    async onStart() {
-        Util.desandbox(MonitorRunnable);
-
-        this.itemData = await Config.MONITOR_ITEMS.get() || {};
-        window.addEventListener('message', this.messageListener);
-    }
-
-    async onStop() {
-        window.removeEventListener('message', this.messageListener);
-    }
-
-    onMessageCapture(event: MessageEvent) {
-        if (event.data.source === 'StadiaPlusNetworkMonitor' && !this.state.sidebarOpen) {
-            if (event.data.stats === undefined || event.data.stats === null || event.data.stats.length < 2) {
-                this.setState(() => ({
-                    loading: true
-                }));
-                return;
+    const parseItemData = (newItems: GameMonitorItem[]) => {
+        if (itemData !== null && itemData !== undefined) {
+            newItems = newItems.sort((a, b) => itemData![a.id]?.index - itemData![b.id]?.index);
+            for (let i = 0; i < newItems.length; i++) {
+                let item = newItems[i] || { visible: true };
+                item.visible = itemData![item.id]?.visible;
             }
 
-            const statArray: [string, any] = event.data.stats[1];
+            if (Object.keys(itemData).length != newItems.length) {
+                itemData = {};
+                newItems.forEach((item, index) => itemData![item.id] = { index, visible: item.visible });
+            }
+        }
+        else {
+            itemData = {};
+            newItems.forEach((item, index) => itemData![item.id] = { index, visible: item.visible });
+        }
 
+        return newItems;
+    }
+
+    const onMessageCapture = (event: MessageEvent) => {
+        if (event.data.source === 'StadiaPlusNetworkMonitor' && !sidebarOpen) {
+            if (event.data.stats === undefined || event.data.stats === null || event.data.stats.length < 2) {
+                setLoading(true);
+                return;
+            }
+            const statArray: [string, any] = event.data.stats[1];
             const ICECandidatePair = RTCStatistic.from<RTCStatistics.RTCIceCandidatePair>(
                 statArray,
                 id => id.startsWith('RTCIceCandidatePair')
             );
 
-            if(this.state.loading && ICECandidatePair.bytesReceived! !== 0) {
-                this.setState(() => ({
-                    loading: false
-                }));
+            if(loading && ICECandidatePair.bytesReceived! !== 0) {
+                setLoading(false);
             }
 
-            if (this.state.items.length !== 0
-                && !this.state.enabled
-                && !this.state.sidebarOpen) return;
-
+            if (items.length !== 0 && !enabled && !sidebarOpen) {
+                return;
+            }
 
             const { videoStream, videoCodec, audioCodec } = getStream(statArray);
             const { bytesReceived, availableOutgoingBitrate, currentRoundTripTime } = ICECandidatePair;
-            const bytesPerSecond = bytesReceived! - this.lastBytesReceived;
+            const bytesPerSecond = bytesReceived! - lastBytesReceived;
 
             // TODO: Is it possible to move into a fined format. perhaps a class?
-            let items = [
+            let newItems = [
                 {
                     name: 'Latency',
                     value: `${Math.round(currentRoundTripTime! * 1000)} ms`,
@@ -149,48 +127,19 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
                 },
             ]
 
-            // TODO: clean this up into its own function
-            if (this.itemData !== null && this.itemData !== undefined) {
-                items = items.sort((a, b) => this.itemData![a.id]?.index - this.itemData![b.id]?.index);
-                for (let i = 0; i < items.length; i++) {
-                    let item = items[i] || { visible: true };
-                    item.visible = this.itemData![item.id]?.visible;
-                }
-
-                if (Object.keys(this.itemData).length != items.length) {
-                    this.itemData = {};
-                    items.forEach((item, index) => this.itemData![item.id] = { index, visible: item.visible });
-                }
-            }
-            else {
-                this.itemData = {};
-                items.forEach((item, index) => this.itemData![item.id] = { index, visible: item.visible });
-            }
-
-            this.lastBytesReceived = bytesReceived!;
-
-            this.setState(() => ({
-                items
-            }))
+            lastBytesReceived = bytesReceived!;
+            setItems(parseItemData(newItems));
         }
     }
 
-    async onUpdate() {
-        const sidebar = document.querySelector(StadiaSelectors.PLAYER_SIDEBAR) as HTMLElement | null;
-        const sidebarOpen = sidebar !== null && sidebar.style.opacity === '1';
-        if (this.state.sidebarOpen !== sidebarOpen) {
-            this.setState(() => ({
-                sidebarOpen
-            }));
+    const moveItemTo = (id: string, source: number, destination: number) => {
+        if (!itemData) {
+            return;
         }
-    }
-
-    moveItemTo(id: string, source: number, destination: number) {
-        if (this.itemData === null || this.itemData === undefined) return;
 
         // Reorder other items to match
-        for (const id of Object.keys(this.itemData)) {
-            let index = this.itemData[id].index;
+        for (const id in itemData) {
+            let index = itemData[id].index;
 
             if (source > destination) {
                 if (index > source && index <= destination) {
@@ -202,157 +151,147 @@ export default class GameMonitorComponent extends AbstractComponent<DefaultProps
                     index++;
                 }
             }
-            this.itemData[id].index = index;
+            itemData[id].index = index;
         }
-        this.itemData[id].index = destination;
-        Config.MONITOR_ITEMS.set(this.itemData);
+        itemData[id].index = destination;
+        void Config.MONITOR_ITEMS.set(itemData);
     }
 
-    onDragEnd (result: DropResult) {
+    const onDragEnd = (result: DropResult) => {
         // dropped outside the list
         if (!result.destination) {
             return;
         }
 
-        this.moveItemTo(result.draggableId, result.source.index, result.destination.index);
+        moveItemTo(result.draggableId, result.source.index, result.destination.index);
 
-        const items = reorder<GameMonitorItem>(
-            this.state.items,
+        setItems(reorder<GameMonitorItem>(
+            items,
             result.source.index,
             result.destination.index
-        );
-
-        this.setState({
-            items,
-        });
+        ));
     }
 
-    toggleEnabled(): void {
-        this.setState(state => ({ enabled: !state.enabled }))
-    }
-
-    onGrab(event: React.MouseEvent) {
+    const onGrab = (event: React.MouseEvent) => {
         (event.target as HTMLElement).style.cursor = 'grabbing';
 
-        this.grabElement = (event.target as HTMLElement).parentElement!;
-        const offsetX = this.state.position.x;
-        const offsetY = this.state.position.y;
+        grabElement = (event.target as HTMLElement).parentElement!;
+        const offsetX = position.x;
+        const offsetY = position.y;
 
-        this.grabPosition = {
+        grabPosition = {
             x: event.pageX - offsetX,
             y: event.pageY - offsetY
         };
 
-        if (this.state.transform.x !== 0) {
-            this.grabPosition.x += this.grabElement.offsetWidth;
+        if (transform.x !== 0) {
+            grabPosition.x += grabElement.offsetWidth;
         }
-        if (this.state.transform.y !== 0) {
-            this.grabPosition.y += this.grabElement.offsetHeight;
+        if (transform.y !== 0) {
+            grabPosition.y += grabElement.offsetHeight;
         }
 
-        window.addEventListener('mousemove', this.moveListener);
         const onRelease = () => {
             (event.target as HTMLElement).style.cursor = '';
 
-            window.removeEventListener('mousemove', this.moveListener);
+            window.removeEventListener('mousemove', onMove);
             window.removeEventListener('mouseup', onRelease);
         }
+
+        window.addEventListener('mousemove', onMove);
         window.addEventListener('mouseup', onRelease);
 
         event.preventDefault();
     }
 
-    onMove(event: MouseEvent) {
-        let x = event.x - this.grabPosition!.x;
-        let y = event.y - this.grabPosition!.y;
+    const onMove = (event: MouseEvent) => {
+        let x = event.x - grabPosition.x;
+        let y = event.y - grabPosition.y;
         let transform = { x: 0, y: 0 };
 
-        const border = {
-            left: x,
-            top: y,
-            right: x + this.grabElement!.offsetWidth,
-            bottom: y + this.grabElement!.offsetHeight
-        };
-
-        const snapMargin = 1;
-
-        if (border.left < snapMargin) {
+        if (x <= 0) {
             x = 0;
         }
-        else if (border.right > window.innerWidth - snapMargin) {
+        else if (x + grabElement.offsetWidth >= window.innerWidth) {
             x = window.innerWidth;
             transform.x = -100;
         }
 
-        if (border.top < snapMargin) {
+        if (y <= 0) {
             y = 0;
         }
-        else if (border.bottom > window.innerHeight - snapMargin) {
+        else if (y + grabElement.offsetHeight >= window.innerHeight) {
             y = window.innerHeight;
             transform.y = -100;
         }
 
-        this.setState(() => ({ position: { x, y }, transform }));
+        setPosition({ x, y });
+        setTransform(transform);
     }
 
-    toggleItemVisibility(item: GameMonitorItem, value: boolean) {
-        const items = this.state.items;
-        items[items.indexOf(item)].visible = value;
+    const toggleItemVisibility = (item: GameMonitorItem, value: boolean) => {
+        const newItems = items;
+        newItems[newItems.indexOf(item)].visible = value;
+        setItems(newItems);
 
-        this.setState(() => ({ items }));
-
-        if (this.itemData !== null) {
-            this.itemData[item.id].visible = value;
-            void Config.MONITOR_ITEMS.set(this.itemData);
+        if (itemData !== null) {
+            itemData[item.id].visible = value;
+            void Config.MONITOR_ITEMS.set(itemData);
         }
     }
 
-    render(): null | React.ReactPortal {
-        if (!this.state.active) return null;
-        if (!this.state.enabled && !this.state.loading && !this.state.sidebarOpen) return null;
+    onPageChanged(async event => {
+        if (event.page === 'player') {
+            Util.desandbox(MonitorRunnable);
 
-        return ReactDOM.createPortal(
-            <Wrapper 
-                style={{ 
-                    backgroundColor: Theme.hexToRGBA(Theme.Colors.gray[900], this.state.sidebarOpen ? 1 : 0.25),
-                    left: this.state.position.x,
-                    top: this.state.position.y,
-                    transform: `translate(${this.state.transform.x}%, ${this.state.transform.y}%)`,
+            itemData = await Config.MONITOR_ITEMS.get() || {};
+            window.addEventListener('message', onMessageCapture);
+        }
+    });
+
+    setInterval(() => {
+        const sidebar = document.querySelector(StadiaSelectors.PLAYER_SIDEBAR) as HTMLElement | null;
+        const newSidebarOpen = sidebar !== null && sidebar.style.opacity === '1';
+
+        if (newSidebarOpen !== sidebarOpen) {
+            setSidebarOpen(newSidebarOpen);
+        }
+    }, 500);
+
+    if (!enabled && !loading && !sidebarOpen) return null;
+    ReactDOM.createPortal(
+        <Wrapper
+            style={{
+                backgroundColor: Theme.hexToRGBA(Theme.Colors.gray[900], sidebarOpen ? 1 : 0.25),
+                left: position.x,
+                top: position.y,
+                transform: `translate(${transform.x}%, ${transform.y}%)`,
+            }}
+        >
+            <Loader isLoading={loading} />
+
+            <MonitorWrapper
+                style={{
+                    display: loading ? 'none' : '',
+                    width: !sidebarOpen ? 'auto' : ''
                 }}
             >
-                <Loader 
-                    isLoading={this.state.loading}
+                <Header
+                    visible={ sidebarOpen }
+                    collapsed={ !enabled }
+                    onToggle={ (val) => setEnabled(val) }
+                    onGrab={ onGrab }
                 />
-                
-                <MonitorWrapper
-                    style={{
-                        display: this.state.loading ? 'none' : '',
-                        width: !this.state.sidebarOpen ? 'auto' : ''
-                    }}
-                >
-                    <Header
-                        visible={this.state.sidebarOpen}
-                        collapsed={!this.state.enabled}
-                        onToggle={(val) => {
-                            console.log('this happens', val);
-                            this.setState(() => ({ enabled: val }))
-                        }}
-                        onGrab={this.onGrab.bind(this)}
-                    />
-                    { this.state.enabled &&
-                        <Content
-                            editable={ this.state.sidebarOpen }
-                            items={ this.state.items }
-                            onVisibilityToggle={ this.toggleItemVisibility.bind(this) }
-                            onDragEnd={ this.onDragEnd.bind(this) }
-                        />
-                    }
-                </MonitorWrapper>
-                
-            </Wrapper>,
-            document.getElementById('stadiaplus-root')!
-        );
-    }
+                { enabled && <Content
+                    editable={ sidebarOpen }
+                    items={ items }
+                    onVisibilityToggle={ toggleItemVisibility }
+                    onDragEnd={ onDragEnd }
+                /> }
+            </MonitorWrapper>
+        </Wrapper>,
+        document.getElementById('stadiaplus-root')!
+    );
 }
 
 const Wrapper = styled.div`
@@ -373,3 +312,5 @@ const MonitorWrapper = styled.div`
     `}
     width: 22rem;
 `
+
+export default GameMonitorComponent;
