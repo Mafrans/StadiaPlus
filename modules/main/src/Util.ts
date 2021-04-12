@@ -21,6 +21,10 @@ export default class Util {
     }
 
     static async setRenderer(renderer: HTMLElement): Promise<void> {
+        if (renderer.isEqualNode(this.renderer)) {
+            return;
+        }
+
         triggerRendererChangeEvent({
             renderer,
             lastRenderer: this.renderer

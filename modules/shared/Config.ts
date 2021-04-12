@@ -1,5 +1,5 @@
-import StadiaCodec from './models/StadiaCodec';
-import StadiaResolution from './models/StadiaResolution';
+import { StadiaCodec } from './models/StadiaCodec';
+import { StadiaResolution } from './models/StadiaResolution';
 
 export enum ConfigType {
     LOCAL,

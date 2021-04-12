@@ -14,6 +14,7 @@ import AbstractComponent from './components/AbstractComponent';
 import InGameSyncComponent from './components/InGameSyncComponent';
 import ResolutionComponent from './components/ResolutionComponent';
 import { updatePage } from './StadiaPage';
+import { StadiaSelectors } from './StadiaSelectors';
 
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -41,7 +42,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         <GameMonitorComponent/>
     </>,root)
 
-    void AbstractComponent.startMutationListener();
+
+    Util.observe(document.querySelector(StadiaSelectors.RENDERER_CONTAINER)!, 'childList', Node.ELEMENT_NODE, (mutation, node) => {
+        if (mutation.addedNodes.length > 0) {
+            const renderer = mutation.addedNodes.item(0) as HTMLElement;
+            console.log({renderer})
+            if (renderer != null) {
+                Util.setRenderer(renderer)
+            }
+        }
+    });
+
     Util.updateRenderer();
 
     setInterval(() => updatePage(), 1000);

@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import Indicator from './Indicator';
 import { CgOptions } from 'react-icons/cg';
-import StadiaCodec from '../../../../../shared/models/StadiaCodec';
 import { Config } from '../../../../../shared/Config';
+import { StadiaCodec } from '../../../../../shared/models/StadiaCodec';
 
 type CodecIndicatorProps = {
     uuid: string;
 }
 
 const CodecIndicator = (props: CodecIndicatorProps) => {
-    const [value, setValue] = useState(StadiaCodec.AUTOMATIC);
+    const [value, setValue] = useState<StadiaCodec>('Automatic');
 
     const setValueFromConfig = async (codecs: {[uuid: string]: StadiaCodec} | null) => {
         if (codecs && codecs.hasOwnProperty(props.uuid)) {
-            setValue(codecs[props.uuid] || StadiaCodec.AUTOMATIC);
+            setValue(codecs[props.uuid] || 'Automatic');
         }
     }
 
@@ -21,9 +21,9 @@ const CodecIndicator = (props: CodecIndicatorProps) => {
     Config.CODECS.addChangeListener(setValueFromConfig);
 
     return <>
-        { value.name !== StadiaCodec.AUTOMATIC.name &&
+        { value !== 'Automatic' &&
             <Indicator icon={<CgOptions />}>
-                {value.name}
+                {value}
             </Indicator>
         }
     </>

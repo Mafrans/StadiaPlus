@@ -1,19 +1,10 @@
-import React, { ReactNode, useState } from 'react';
-import AbstractComponent, { DefaultProps, DefaultState } from '../AbstractComponent';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { Config } from '../../../../shared/Config';
 import { StadiaSelectors } from '../../StadiaSelectors';
 import ReactDOM from 'react-dom';
 import IndicatorGroup from './components/IndicatorGroup';
-import { StadiaPage } from '../../StadiaPage';
 import Util from '../../Util';
 import { onPageChanged } from '../../events/PageChangeEvent';
-import { onRendererChange } from '../../events/RendererChangeEvent';
-import { StadiaPlusDB } from '../../../../shared/StadiaPlusDB';
-import updateGameProgress = StadiaPlusDB.updateGameProgress;
-
-interface ICodecSelectComponentState extends DefaultState {
-    tileQueries: {uuid: string, subId: string, query: string}[];
-}
 
 type TileQuery = {
     uuid: string
@@ -21,11 +12,12 @@ type TileQuery = {
     query: string
 }
 
+let inHome = false;
+let gameIds: { uuid: string, subId: string }[] = [];
+
 const IndicatorComponent = () => {
     const [tileQueries, setTileQueries] = useState<TileQuery[]>([]);
     const [renderer, setRenderer] = useState<HTMLElement | null>(null);
-    let inHome = false;
-    let gameIds: { uuid: string, subId: string }[] = [];
 
     const updateTileQueries = (renderer: HTMLElement) => {
         const allTiles = Array.from(renderer.querySelectorAll(StadiaSelectors.GAME_TILE));
@@ -50,19 +42,20 @@ const IndicatorComponent = () => {
         setTileQueries(tileQueries);
     }
 
-    onPageChanged(async event => {
-        if (event.page !== 'home') {
-            return;
-        }
-        gameIds = await Config.GAME_IDS.get() || [];
-        inHome = true;
-    });
+    useEffect(() => {
+        onPageChanged(async event => {
+            if (event.page !== 'home') {
+                return;
+            }
+            gameIds = await Config.GAME_IDS.get() || [];
+            inHome = true;
 
-    onRendererChange(event => {
-        updateTileQueries(event.renderer);
-        setRenderer(event.renderer);
+            if (Util.renderer) {
+                updateTileQueries(Util.renderer);
+                setRenderer(Util.renderer);
+            }
+        });
     })
-
 
     if (tileQueries && renderer) {
         const icons: ReactNode[] = [];
