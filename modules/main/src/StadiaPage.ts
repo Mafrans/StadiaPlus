@@ -1,3 +1,4 @@
+import { triggerPageChangeEvent } from './events/PageChangeEvent';
 
 export type StadiaPage = null | 'home' | 'player';
 
@@ -20,6 +21,7 @@ export function getCurrentPage() {
         matcher.test(pathname);
     }) as StadiaPage;
 
+    triggerPageChangeEvent({ page, lastPage })
     lastPage = page || null;
     return lastPage;
 }

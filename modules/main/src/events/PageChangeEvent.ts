@@ -6,7 +6,10 @@ type PageChangeEvent = {
 }
 
 const listeners: ((event: PageChangeEvent) => void)[] = [];
-
 export function onPageChange(listener: (event: PageChangeEvent) => void) {
     listeners.push(listener);
+}
+
+export function triggerPageChangeEvent(event: PageChangeEvent) {
+    listeners.forEach(f => f(event));
 }
