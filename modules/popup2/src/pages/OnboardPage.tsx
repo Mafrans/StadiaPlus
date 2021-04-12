@@ -6,7 +6,7 @@ import { CgArrowTopRight } from 'react-icons/cg';
 import { FaGoogle } from 'react-icons/fa';
 import Container from '../components/Container';
 import OnboardPanel from '../components/OnboardPanel';
-import StadiaPlusDB from '../../../shared/StadiaPlusDB';
+import { StadiaPlusDB } from '../../../shared/StadiaPlusDB';
 import { useHistory } from 'react-router-dom';
 import Logger from '../../../main/src/Logger';
 

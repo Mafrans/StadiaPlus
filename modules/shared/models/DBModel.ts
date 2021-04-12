@@ -18,6 +18,12 @@ export namespace DBModel {
         name: string
     }
 
+    export interface PatreonUser {
+        firstName: string
+        lastName: string
+        reward: 'none' | 'bronze' | 'silver' | 'gold'
+    }
+
     export function getGameData(data: string) {
         const gameData = data.match(new RegExp("AF_initDataCallback\\(\\{ *key: *'ds:3'.*?data: *((.|\\n)*?), *sideChannel: *\\{\\}\\}\\)"));
         if (!gameData) {

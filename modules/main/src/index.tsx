@@ -13,6 +13,7 @@ import GameMonitorComponent from './components/GameMonitorComponent/GameMonitorC
 import CodecComponent from './components/CodecComponent';
 import ResolutionComponent from './components/ResolutionComponent';
 import AbstractComponent from './components/AbstractComponent';
+import InGameSyncComponent from './components/InGameSyncComponent';
 
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -36,6 +37,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             <GameMonitorComponent/>
             <CodecComponent/>
             <ResolutionComponent/>
+            <InGameSyncComponent/>
         </div>,
         root
     );

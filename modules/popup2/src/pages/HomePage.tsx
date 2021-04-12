@@ -12,6 +12,8 @@ import {
 import OnboardPanel from '../components/OnboardPanel';
 import ProfilePanel from '../components/ProfilePanel';
 import { StadiaPlusDB } from '../../../shared/StadiaPlusDB';
+import Button from '../components/Button';
+import { FaPatreon } from 'react-icons/fa';
 
 export default function HomePage() {
     const [profile, setProfile] = useState<StadiaPlusDB.Profile | null>(null);
@@ -38,6 +40,9 @@ export default function HomePage() {
         />
         <hr />
         { profile && <ProfilePanel profile={profile} /> }
+        <Button icon={ <FaPatreon /> } type={'outline'} onClick={ async () => await StadiaPlusDB.patreonSignIn() }>
+            Connect with Patreon
+        </Button>
         <div>
             <button>
                 <CgSupport />

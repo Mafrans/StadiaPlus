@@ -57,7 +57,7 @@ interface ProfilePanelProps {
 }
 
 export default function ProfilePanel(props: ProfilePanelProps) {
-    const [name, tag] = props.profile.names[0]?.split('#');
+    const [name, tag] = (props.profile.names[0]||'#').split('#');
 
     return <Panel>
         <ProfilePicture>

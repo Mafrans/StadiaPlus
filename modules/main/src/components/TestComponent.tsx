@@ -11,9 +11,7 @@ export default class TestComponent extends AbstractComponent<DefaultProps, Defau
 
     async onStart() {}
 
-    async onUpdate() {
-        this.updateRenderer();
-    }
+    async onUpdate() {}
 
     onRender(): { query: string; node: React.ReactNode } {
         return {

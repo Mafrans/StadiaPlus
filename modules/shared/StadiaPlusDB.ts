@@ -78,15 +78,39 @@ export namespace StadiaPlusDB {
     }
 
     export async function googleSignIn(): Promise<void> {
-        const url = `${StadiaPlusDB.url}/auth/google?redirect=${chrome.identity.getRedirectURL('database')}`;
+        authToken = await oauthSignIn('google');
+        await Config.AUTH_TOKEN.set(authToken);
+    }
+
+    export async function patreonSignIn(): Promise<void> {
+        await oauthSignIn('patreon');
+    }
+
+    const oauthData = {
+        google: {
+            external: false,
+            redirect: chrome.identity.getRedirectURL('database')
+        },
+        patreon: {
+            external: true,
+            redirect: `https://${StadiaPlusDB.url}/auth/patreon/finished`
+        }
+    }
+
+    export async function oauthSignIn(type: 'google' | 'patreon') {
+        let url = `${StadiaPlusDB.url}/auth/${type}?login=${authToken}&redirect=${oauthData[type].redirect}`;
+
+        if (oauthData[type].external) {
+            window.open(url, '_open');
+            return '';
+        }
+
         const responseUrl: string = await new Promise(resolve => chrome.identity.launchWebAuthFlow({
             url,
             interactive: true,
         }, a => resolve(a as string)));
-
         const urlData = new URL(responseUrl);
-        authToken = urlData.hash.substring(1);
-        await Config.AUTH_TOKEN.set(authToken);
+        return urlData.hash.substring(1);
     }
 
     export async function authenticate(): Promise<boolean> {
