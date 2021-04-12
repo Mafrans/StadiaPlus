@@ -13,7 +13,7 @@ import GameMonitorComponent from './components/GameMonitorComponent/GameMonitorC
 import CodecComponent from './components/CodecComponent';
 import AbstractComponent from './components/AbstractComponent';
 import InGameSyncComponent from './components/InGameSyncComponent';
-import { ResolutionComponent } from './components/ResolutionComponent';
+import ResolutionComponent from './components/ResolutionComponent';
 
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -29,11 +29,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.body.appendChild(root);
 
     ResolutionComponent();
+    PageUpdateComponent();
 
     ReactDOM.render(
         <div>
             <InitLibraryComponent/>
-            <PageUpdateComponent/>
             <IndicatorComponent/>
             <GameSettingsComponent/>
             <GameMonitorComponent/>
