@@ -30,15 +30,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     ResolutionComponent();
     PageUpdateComponent();
+    InitLibraryComponent();
+    CodecComponent();
+    InGameSyncComponent();
 
     ReactDOM.render(
         <div>
-            <InitLibraryComponent/>
             <IndicatorComponent/>
             <GameSettingsComponent/>
             <GameMonitorComponent/>
-            <CodecComponent/>
-            <InGameSyncComponent/>
         </div>,
         root
     );
