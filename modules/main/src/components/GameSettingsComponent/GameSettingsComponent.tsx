@@ -76,9 +76,7 @@ const GameSettingsComponent = () => {
     }
 
     onPageChanged(event => {
-        console.log('page changed!')
         Util.observe(document.body, 'childList', Node.ELEMENT_NODE, (mutation, node) => {
-            console.log('observed change in document.body')
             const element = node as HTMLElement;
             if (element.classList.contains('llhEMd')) {
                 // Once the ring animation starts playing, the container is done!
@@ -90,8 +88,6 @@ const GameSettingsComponent = () => {
             }
         });
     })
-
-    console.log({ container, codec, resolution });
 
     if (container) {
         return ReactDOM.createPortal(<Wrapper>
