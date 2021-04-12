@@ -44,5 +44,5 @@ document.addEventListener('DOMContentLoaded', async () => {
     void AbstractComponent.startMutationListener();
     Util.updateRenderer();
 
-    setInterval(() => updatePage());
+    setInterval(() => updatePage(), 1000);
 })
