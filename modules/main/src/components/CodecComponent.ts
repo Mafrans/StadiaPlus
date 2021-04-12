@@ -1,27 +1,28 @@
 import React from 'react';
 import AbstractComponent, { DefaultProps, DefaultState } from './AbstractComponent';
-import StadiaPage from '../StadiaPage';
+import { StadiaPage } from '../StadiaPage';
 import { Config } from '../../../shared/Config';
 import StadiaCodec from '../../../shared/models/StadiaCodec';
 import Logger from '../Logger';
+import { onPageChanged } from '../events/PageChangeEvent';
+import Util from '../Util';
 
-export default class CodecComponent extends AbstractComponent<DefaultProps, DefaultState> {
-    constructor() {
-        super({
-            name: "Codec Component",
-            pageFilter: [ StadiaPage.PLAYER ]
-        });
-    }
+type StadiaCodecData = {
+    h264?: 'ExternalDecoder'
+    vp9?: 'ExternalDecoder' | 'libvpx',
+    'vp9-profile0'?: 'libvpx'
+}
 
-    async onStart() {
+const CodecComponent = () => {
+    onPageChanged(async event => {
+        if (event.page !== 'player') {
+            return;
+        }
 
         const codecs = await Config.CODECS.get() || {};
-        const codec = codecs[this.parsePlayerUUID()] || StadiaCodec.AUTOMATIC;
-
-        Logger.info(`Using codec '${codec.name}'`);
+        const codec = codecs[Util.getPlayerGameId()] || StadiaCodec.AUTOMATIC;
 
         let codecData: StadiaCodecData | undefined;
-
         switch (codec.name) {
             case StadiaCodec.VP9.name:
                 codecData = { vp9: 'ExternalDecoder' }
@@ -42,18 +43,9 @@ export default class CodecComponent extends AbstractComponent<DefaultProps, Defa
         else {
             localStorage.removeItem('video_codec_implementation_by_codec_key');
         }
-    }
 
-    parsePlayerUUID() {
-        // Each UUID is 36 characters long
-        return location.pathname.substring('/player/'.length, '/player/'.length + 36)
-    }
-
-    async onUpdate() {}
+        Logger.info(`Using codec '${codec.name}'`);
+    })
 }
 
-type StadiaCodecData = {
-    h264?: 'ExternalDecoder'
-    vp9?: 'ExternalDecoder' | 'libvpx',
-    'vp9-profile0'?: 'libvpx'
-}
+export default CodecComponent;
