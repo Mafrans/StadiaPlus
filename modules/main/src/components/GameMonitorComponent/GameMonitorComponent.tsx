@@ -292,6 +292,7 @@ const GameMonitorComponent = () => {
         </Wrapper>,
         document.getElementById('stadiaplus-root')!
     );
+    return null;
 }
 
 const Wrapper = styled.div`

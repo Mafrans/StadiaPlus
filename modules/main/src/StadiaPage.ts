@@ -2,26 +2,30 @@ import { triggerPageChangeEvent } from './events/PageChangeEvent';
 
 export type StadiaPage = null | 'home' | 'player';
 
-let lastPathName = '';
-let lastPage: StadiaPage = null;
+let pathName = '';
+let page: StadiaPage = null;
 
 export const pages: { [key: string]: RegExp } = {
     'home': /home/,
     'player': /player\/[a-z0-9]{36}.+/
 }
 
-export function getCurrentPage() {
-    let pathname = location.pathname;
-    if(lastPathName === pathname) return lastPage;
-    lastPathName = pathname;
+export function updatePage() {
+    let newPathname = location.pathname;
+    if(pathName === newPathname) return page;
+    pathName = newPathname;
 
     const keys = Object.keys(pages);
-    const page = keys.find(key => {
+    const newPage = keys.find(key => {
         const matcher = pages[key];
-        matcher.test(pathname);
+        matcher.test(pathName);
     }) as StadiaPage;
 
-    triggerPageChangeEvent({ page, lastPage })
-    lastPage = page || null;
-    return lastPage;
+    triggerPageChangeEvent({ page: newPage, lastPage: page })
+    page = newPage || null;
+    return page;
+}
+
+export function getCurrentPage() {
+    return page;
 }

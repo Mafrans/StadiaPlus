@@ -91,7 +91,7 @@ export namespace StadiaPlusDB {
     const oauthData = {
         google: {
             external: false,
-            redirect: chrome.identity.getRedirectURL('database')
+            redirect: chrome.identity ? chrome.identity.getRedirectURL('database') : ''
         },
         patreon: {
             external: true,

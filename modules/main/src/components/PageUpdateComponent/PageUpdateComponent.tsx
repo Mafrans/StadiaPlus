@@ -74,31 +74,34 @@ const PageUpdateComponent = () => {
     });
 
     const root = document.getElementById('stadiaplus-root');
-    ReactDOM.render(<Wrapper>
-        <Heading>Syncing your games... ({progress}/{goal})</Heading>
+    if (root) {
+        return ReactDOM.createPortal(<Wrapper>
+            <Heading>Syncing your games... ({progress}/{goal})</Heading>
 
-        <GameGrid
-            style={{
-                gridTemplateColumns: `repeat(${Math.ceil(Math.sqrt(goal) + 1)}, minmax(0, 1fr))`,
-                gridTemplateRows: `repeat(${Math.floor(Math.sqrt(goal))}, minmax(0, 1fr))`,
-            }}
-        >
-            {
-                games === undefined
-                    ? null
-                    : games.map(game => {
-                        if (game.poster != null) {
-                            return <GameCard
-                                finished={finished}
-                                scale={2}
-                                src={game.poster}
-                            />;
-                        }
-                    })
+            <GameGrid
+                style={{
+                    gridTemplateColumns: `repeat(${Math.ceil(Math.sqrt(goal) + 1)}, minmax(0, 1fr))`,
+                    gridTemplateRows: `repeat(${Math.floor(Math.sqrt(goal))}, minmax(0, 1fr))`,
+                }}
+            >
+                {
+                    games === undefined
+                        ? null
+                        : games.map(game => {
+                            if (game.poster != null) {
+                                return <GameCard
+                                    finished={finished}
+                                    scale={2}
+                                    src={game.poster}
+                                />;
+                            }
+                        })
 
-            }
-        </GameGrid>
-    </Wrapper>, root)
+                }
+            </GameGrid>
+        </Wrapper>, root);
+    }
+    return null;
 }
 
 const Wrapper = styled.div`

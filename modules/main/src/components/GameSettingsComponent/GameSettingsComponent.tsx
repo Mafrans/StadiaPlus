@@ -97,37 +97,40 @@ const GameSettingsComponent = () => {
         });
     })
 
-    ReactDOM.render(<Wrapper>
-        <Section>
-            <StadiaPlusIcon />
-        </Section>
-        <Section>
-            <SelectionSection
-                heading={'Codec'}
-                default={codec.name}
-                options={StadiaCodec.values().map(codec => codec.name)}
-                onChange={value => {
-                    const codec = StadiaCodec.valueOf(value);
-                    if (codec) {
-                        void changeCodec(codec);
-                    }
-                }}
-            />
-        </Section>
-        <Section>
-            <SelectionSection
-                heading={'Resolution'}
-                default={resolution.name}
-                options={StadiaResolution.values().map(res => res.name)}
-                onChange={value => {
-                    const resolution = StadiaResolution.valueOf(value);
-                    if (resolution) {
-                        void changeResolution(resolution)
-                    }
-                }}
-            />
-        </Section>
-    </Wrapper>, container);
+    if (container) {
+        ReactDOM.createPortal(<Wrapper>
+            <Section>
+                <StadiaPlusIcon />
+            </Section>
+            <Section>
+                <SelectionSection
+                    heading={'Codec'}
+                    default={codec.name}
+                    options={StadiaCodec.values().map(codec => codec.name)}
+                    onChange={value => {
+                        const codec = StadiaCodec.valueOf(value);
+                        if (codec) {
+                            void changeCodec(codec);
+                        }
+                    }}
+                />
+            </Section>
+            <Section>
+                <SelectionSection
+                    heading={'Resolution'}
+                    default={resolution.name}
+                    options={StadiaResolution.values().map(res => res.name)}
+                    onChange={value => {
+                        const resolution = StadiaResolution.valueOf(value);
+                        if (resolution) {
+                            void changeResolution(resolution)
+                        }
+                    }}
+                />
+            </Section>
+        </Wrapper>, container);
+    }
+    return null;
 }
 
 const Wrapper = styled.div`

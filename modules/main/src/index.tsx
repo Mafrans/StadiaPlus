@@ -1,19 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import TestComponent from './components/TestComponent';
 import Util from './Util';
-import PageUpdateComponent from './components/PageUpdateComponent/PageUpdateComponent';
 import { StadiaPlusDB } from '../../shared/StadiaPlusDB';
-import InitLibraryComponent from './components/InitLibraryComponent';
 import { StadiaGameDB } from './StadiaGameDB';
-import IndicatorComponent from './components/IndicatorComponent/IndicatorComponent';
 import Fonts from './Fonts';
+import PageUpdateComponent from './components/PageUpdateComponent/PageUpdateComponent';
+import IndicatorComponent from './components/IndicatorComponent/IndicatorComponent';
 import GameSettingsComponent from './components/GameSettingsComponent/GameSettingsComponent';
+import InitLibraryComponent from './components/InitLibraryComponent';
 import GameMonitorComponent from './components/GameMonitorComponent/GameMonitorComponent';
 import CodecComponent from './components/CodecComponent';
 import AbstractComponent from './components/AbstractComponent';
 import InGameSyncComponent from './components/InGameSyncComponent';
 import ResolutionComponent from './components/ResolutionComponent';
+import { updatePage } from './StadiaPage';
 
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -29,20 +29,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.body.appendChild(root);
 
     ResolutionComponent();
-    PageUpdateComponent();
     InitLibraryComponent();
     CodecComponent();
+    ResolutionComponent();
     InGameSyncComponent();
-    IndicatorComponent();
-    GameSettingsComponent();
 
-    ReactDOM.render(
-        <div>
-            <GameMonitorComponent/>
-        </div>,
-        root
-    );
+    ReactDOM.render(<>
+        <PageUpdateComponent/>
+        <IndicatorComponent/>
+        <GameSettingsComponent/>
+        <GameMonitorComponent/>
+    </>,root)
 
     void AbstractComponent.startMutationListener();
     Util.updateRenderer();
+
+    setInterval(() => updatePage());
 })

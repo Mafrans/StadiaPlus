@@ -10,6 +10,7 @@
         "storage",
         "identity",
         "https://stadiagamedb.com/data/gamedb.json",
+        "https://stadiagamedb.com/data/uuidmap.json",
         "https://stadiaplus.dev/*"
     ],
     "oauth2": {

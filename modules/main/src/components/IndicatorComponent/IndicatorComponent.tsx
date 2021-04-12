@@ -82,11 +82,15 @@ const IndicatorComponent = () => {
             return null;
         }
 
-        return ReactDOM.render(
-            <div>{ icons }</div>,
-            document.getElementById('stadiaplus-root'),
-        );
+        const root = document.getElementById('stadiaplus-root');
+        if (root) {
+            return ReactDOM.createPortal(
+                <div>{ icons }</div>,
+                root,
+            );
+        }
     }
+    return null;
 }
 
 export default IndicatorComponent;

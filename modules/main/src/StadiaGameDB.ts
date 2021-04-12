@@ -4,7 +4,7 @@ export namespace StadiaGameDB {
     export async function update(): Promise<void> {
         const gameDB: string[][] = (await (
             await fetch('https://stadiagamedb.com/data/gamedb.json')
-        ).json())['gameDb'];
+        ).json())['data'];
 
         const uuidMap: { [key: string]: number } = (await (
             await fetch('https://stadiagamedb.com/data/uuidmap.json')
@@ -12,6 +12,10 @@ export namespace StadiaGameDB {
 
         Object.keys(uuidMap).forEach((uuid) => {
             const entry = gameDB[uuidMap[uuid]];
+            if(!entry) {
+                return;
+            }
+
             let imgName = /images\/posters\/([a-z0-9_.-]+).png/g.exec(entry[0])?.[1];
             if (imgName === undefined) imgName = '';
 
