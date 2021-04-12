@@ -103,7 +103,7 @@ export default class PageUpdateComponent extends AbstractComponent<DefaultProps,
                 }
             }
 
-            const dbGame = await StadiaGameDB.get(gameId);
+            const dbGame = await StadiaGameDB.games[gameId];
             if(!dbGame) {
                 return;
             }
