@@ -34,10 +34,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     CodecComponent();
     InGameSyncComponent();
     IndicatorComponent();
+    GameSettingsComponent();
 
     ReactDOM.render(
         <div>
-            <GameSettingsComponent/>
             <GameMonitorComponent/>
         </div>,
         root
