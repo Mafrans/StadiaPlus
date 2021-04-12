@@ -11,6 +11,8 @@ export const pages: { [key: string]: RegExp } = {
 }
 
 export function updatePage() {
+    console.log('updatePage');
+
     let newPathname = location.pathname;
     if(pathName === newPathname) return page;
     pathName = newPathname;

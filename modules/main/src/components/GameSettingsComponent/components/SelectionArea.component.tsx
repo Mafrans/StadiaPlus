@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Dropdown from '../../shared/Dropdown';
-import StadiaCodec from '../../../../../shared/models/StadiaCodec';
 import styled from 'styled-components';
 import tw from 'twin.macro';
 
@@ -24,12 +23,6 @@ export default function SelectionSection(props: SelectionSectionProps) {
         </>
     );
 }
-
-const Section = styled.section`
-  ${tw`
-    pr-8
-  `}
-`
 
 const Heading = styled.p`
   ${tw`

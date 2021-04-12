@@ -4,8 +4,8 @@ import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import tw from 'twin.macro';
 import StadiaPlusIcon from '../shared/StadiaPlusIcon';
-import StadiaCodec from '../../../../shared/models/StadiaCodec';
-import StadiaResolution from '../../../../shared/models/StadiaResolution';
+import { stadiaCodecs, StadiaCodec } from '../../../../shared/models/StadiaCodec';
+import {  stadiaResolutions, StadiaResolution } from '../../../../shared/models/StadiaResolution';
 import { Config } from '../../../../shared/Config';
 import { StadiaPage } from '../../StadiaPage';
 import SelectionSection from './components/SelectionArea.component';
@@ -13,18 +13,13 @@ import { StadiaSelectors } from '../../StadiaSelectors';
 import Util from '../../Util';
 import { onPageChanged } from '../../events/PageChangeEvent';
 
-interface IGameSettingsComponentState extends DefaultState {
-    container: Element | null;
-    uuid: string | null;
-    codec: StadiaCodec;
-    resolution: StadiaResolution;
-}
+
+let uuid: string | null = null;
 
 const GameSettingsComponent = () => {
     const [container, setContainer] = useState<Element | null>(null)
-    const [codec, setCodec] = useState<StadiaCodec>(StadiaCodec.AUTOMATIC);
-    const [resolution, setResolution] = useState<StadiaResolution>(StadiaResolution.AUTOMATIC);
-    let uuid: string | null = null;
+    const [codec, setCodec] = useState<StadiaCodec>('Automatic');
+    const [resolution, setResolution] = useState<StadiaResolution>('Automatic');
 
     const updateContainer = async () => {
         const banner = document.querySelector(StadiaSelectors.GAME_INFO_HERO);
@@ -37,25 +32,22 @@ const GameSettingsComponent = () => {
 
             uuid = renderer.getAttribute('data-app-id');
 
-            const codecs = await Config.CODECS.get();
-            const resolutions = await Config.RESOLUTIONS.get();
+            const codecs = await Config.CODECS.get() || {};
+            const resolutions = await Config.RESOLUTIONS.get() || {};
 
-            let codec = StadiaCodec.AUTOMATIC;
-            let resolution = StadiaResolution.AUTOMATIC;
+            let codec: StadiaCodec = 'Automatic';
+            let resolution: StadiaResolution = 'Automatic';
 
             if(uuid) {
-                if(codecs) {
-                    codec = codecs[uuid!];
-                }
-
-                if (resolutions) {
-                    resolution = resolutions[uuid!];
-                }
+                codec = codecs[uuid];
+                resolution = resolutions[uuid];
             }
 
-            setContainer(container);
             setCodec(codec);
             setResolution(resolution);
+
+            // Always set the container after setting codec/resolution
+            setContainer(container);
         }
     }
 
@@ -84,7 +76,9 @@ const GameSettingsComponent = () => {
     }
 
     onPageChanged(event => {
+        console.log('page changed!')
         Util.observe(document.body, 'childList', Node.ELEMENT_NODE, (mutation, node) => {
+            console.log('observed change in document.body')
             const element = node as HTMLElement;
             if (element.classList.contains('llhEMd')) {
                 // Once the ring animation starts playing, the container is done!
@@ -97,35 +91,27 @@ const GameSettingsComponent = () => {
         });
     })
 
+    console.log({ container, codec, resolution });
+
     if (container) {
-        ReactDOM.createPortal(<Wrapper>
+        return ReactDOM.createPortal(<Wrapper>
             <Section>
                 <StadiaPlusIcon />
             </Section>
             <Section>
                 <SelectionSection
                     heading={'Codec'}
-                    default={codec.name}
-                    options={StadiaCodec.values().map(codec => codec.name)}
-                    onChange={value => {
-                        const codec = StadiaCodec.valueOf(value);
-                        if (codec) {
-                            void changeCodec(codec);
-                        }
-                    }}
+                    default={codec}
+                    options={stadiaCodecs}
+                    onChange={value => void changeCodec(value as StadiaCodec)}
                 />
             </Section>
             <Section>
                 <SelectionSection
                     heading={'Resolution'}
-                    default={resolution.name}
-                    options={StadiaResolution.values().map(res => res.name)}
-                    onChange={value => {
-                        const resolution = StadiaResolution.valueOf(value);
-                        if (resolution) {
-                            void changeResolution(resolution)
-                        }
-                    }}
+                    default={resolution}
+                    options={stadiaResolutions}
+                    onChange={value => void changeResolution(value as StadiaResolution)}
                 />
             </Section>
         </Wrapper>, container);
