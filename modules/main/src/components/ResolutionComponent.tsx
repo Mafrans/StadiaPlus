@@ -1,8 +1,6 @@
 import React from 'react';
-import AbstractComponent, { DefaultProps, DefaultState } from './AbstractComponent';
 import { Config } from '../../../shared/Config';
-import StadiaCodec from '../../../shared/models/StadiaCodec';
-import StadiaResolution from '../../../shared/models/StadiaResolution';
+import { StadiaResolution } from '../../../shared/models/StadiaResolution';
 import Logger from '../Logger';
 import Util from '../Util';
 import { onPageChanged } from '../events/PageChangeEvent';
@@ -16,29 +14,29 @@ const ResolutionComponent = () => {
 
         const gameId = Util.getPlayerGameId();
         const resolutions = await Config.RESOLUTIONS.get() || {};
-        const resolution = resolutions[gameId] || StadiaResolution.AUTOMATIC;
+        const resolution: StadiaResolution = resolutions[gameId] || 'Automatic';
 
         let width: number = 0;
         let height: number = 0;
 
-        switch (resolution.name) {
-            case StadiaResolution.FULL_HD.name:
+        switch (resolution) {
+            case 'Full HD':
                 width = 1920;
                 height = 1080;
                 break;
 
-            case StadiaResolution.QHD.name:
+            case 'QHD':
                 width = 2560;
                 height = 1440;
                 break;
 
-            case StadiaResolution.ULTRA_HD.name:
+            case '4K':
                 width = 3840;
                 height = 2160;
                 break;
         }
 
-        if (resolution.name !== StadiaResolution.AUTOMATIC.name) {
+        if (resolution !== 'Automatic') {
             Util.desandbox({
                 availWidth: width,
                 width: width,
@@ -48,8 +46,8 @@ const ResolutionComponent = () => {
             }, { name: 'screen' });
         }
 
-        Logger.info(`Using resolution '${resolution.name}' (${width}x${height})`);
-    })
+        Logger.info(`Using resolution '${resolution}' (${width}x${height})`);
+    });
 }
 
 export default ResolutionComponent;

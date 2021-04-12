@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 import IndicatorGroup from './components/IndicatorGroup';
 import Util from '../../Util';
 import { onPageChanged } from '../../events/PageChangeEvent';
+import { onRendererChange } from '../../events/RendererChangeEvent';
 
 type TileQuery = {
     uuid: string
@@ -17,13 +18,21 @@ let gameIds: { uuid: string, subId: string }[] = [];
 
 const IndicatorComponent = () => {
     const [tileQueries, setTileQueries] = useState<TileQuery[]>([]);
-    const [renderer, setRenderer] = useState<HTMLElement | null>(null);
 
-    const updateTileQueries = (renderer: HTMLElement) => {
-        const allTiles = Array.from(renderer.querySelectorAll(StadiaSelectors.GAME_TILE));
+    const updateTileQueries = () => {
+        if (!Util.renderer) {
+            return;
+        }
+
+        const allTiles = Array.from(Util.renderer.querySelectorAll(StadiaSelectors.GAME_TILE));
         const tileQueries: {uuid: string, subId: string, query: string}[] = [];
 
-        if (allTiles.length === 0) return;
+        console.log({allTiles, gameIds});
+
+        if (allTiles.length === 0) {
+            setTimeout(() => updateTileQueries(), 1000);
+            return;
+        }
 
         for (const game of gameIds) {
             const tile = allTiles.find(it => {
@@ -39,6 +48,8 @@ const IndicatorComponent = () => {
             }
         }
 
+        console.log({ tileQueries });
+
         setTileQueries(tileQueries);
     }
 
@@ -47,33 +58,29 @@ const IndicatorComponent = () => {
             if (event.page !== 'home') {
                 return;
             }
+            console.log('Quick! Indicate')
             gameIds = await Config.GAME_IDS.get() || [];
             inHome = true;
 
+            console.log(gameIds, Util.renderer)
             if (Util.renderer) {
-                updateTileQueries(Util.renderer);
-                setRenderer(Util.renderer);
+                console.log('yes, please update tile queries');
+                updateTileQueries();
             }
         });
     })
 
-    if (tileQueries && renderer) {
+    if (tileQueries && Util.renderer) {
         const icons: ReactNode[] = [];
 
         tileQueries.forEach(entry => {
-            const tile = renderer.querySelector(entry.query) as HTMLDivElement;
+            const tile = Util.renderer!.querySelector(entry.query) as HTMLDivElement;
             if (tile) {
                 icons.push(
                     <IndicatorGroup uuid={entry.uuid} tile={tile} />
                 );
             }
         });
-
-        if(icons.filter(it => it !== null).length === 0) {
-            // If no icons have been added, try again next second.
-            setTimeout(() => updateTileQueries(renderer), 1000);
-            return null;
-        }
 
         const root = document.getElementById('stadiaplus-root');
         if (root) {

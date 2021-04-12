@@ -2,10 +2,10 @@ import React from 'react';
 import AbstractComponent, { DefaultProps, DefaultState } from './AbstractComponent';
 import { StadiaPage } from '../StadiaPage';
 import { Config } from '../../../shared/Config';
-import StadiaCodec from '../../../shared/models/StadiaCodec';
 import Logger from '../Logger';
 import { onPageChanged } from '../events/PageChangeEvent';
 import Util from '../Util';
+import { StadiaCodec } from '../../../shared/models/StadiaCodec';
 
 type StadiaCodecData = {
     h264?: 'ExternalDecoder'
@@ -20,15 +20,15 @@ const CodecComponent = () => {
         }
 
         const codecs = await Config.CODECS.get() || {};
-        const codec = codecs[Util.getPlayerGameId()] || StadiaCodec.AUTOMATIC;
+        const codec: StadiaCodec = codecs[Util.getPlayerGameId()] || 'Automatic';
 
         let codecData: StadiaCodecData | undefined;
-        switch (codec.name) {
-            case StadiaCodec.VP9.name:
+        switch (codec) {
+            case 'VP9':
                 codecData = { vp9: 'ExternalDecoder' }
                 break
 
-            case StadiaCodec.H264.name:
+            case 'H264':
                 codecData = {
                     h264: 'ExternalDecoder',
                     vp9: 'libvpx',
@@ -44,8 +44,8 @@ const CodecComponent = () => {
             localStorage.removeItem('video_codec_implementation_by_codec_key');
         }
 
-        Logger.info(`Using codec '${codec.name}'`);
-    })
+        Logger.info(`Using codec '${codec}'`);
+    });
 }
 
 export default CodecComponent;
