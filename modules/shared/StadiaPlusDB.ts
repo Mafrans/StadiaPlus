@@ -1,11 +1,13 @@
 import Logger from '../main/src/Logger';
 import { Config } from './Config';
 import { DBModel } from './models/DBModel';
+import { triggerAuthenticatedEvent } from '../main/src/events/AuthenticatedEvent';
 
 export namespace StadiaPlusDB {
     export let url: string;
     export let connected: boolean;
     export let authToken: string | null = null;
+    export let authenticated = false;
     const listeners: Set<() => void> = new Set<() => void>();
 
     export interface Profile {
@@ -117,17 +119,22 @@ export namespace StadiaPlusDB {
         if (!isConnected()) {
             Logger.error('Attempting to authenticate without being connected.');
         }
+        if (authenticated) {
+            Logger.warning('Duplicate authentication attempt.');
+        }
 
         authToken = await Config.AUTH_TOKEN.get();
 
         if (authToken !== null) {
-            if (!await checkAuthenticated()) {
-                Logger.warning('Your authentication token is outdated');
-                return false;
+            if (await checkAuthenticated()) {
+                authenticated = true;
+                triggerAuthenticatedEvent({ token: authToken });
             }
-            return true;
+            else {
+                Logger.warning('Your authentication token is outdated');
+            }
         }
-        return false;
+        return authenticated;
     }
 
     export function signout(): Promise<unknown> {

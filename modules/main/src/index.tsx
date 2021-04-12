@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import TestComponent from './components/TestComponent';
 import Util from './Util';
-import PageUpdateComponent from './components/PageUpdateComponent';
+import PageUpdateComponent from './components/PageUpdateComponent/PageUpdateComponent';
 import { StadiaPlusDB } from '../../shared/StadiaPlusDB';
 import InitLibraryComponent from './components/InitLibraryComponent';
 import { StadiaGameDB } from './StadiaGameDB';
