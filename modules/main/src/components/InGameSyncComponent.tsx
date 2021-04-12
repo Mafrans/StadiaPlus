@@ -1,56 +1,53 @@
 import React from 'react';
 import AbstractComponent, { DefaultProps, DefaultState } from './AbstractComponent';
-import StadiaPage from '../StadiaPage';
+import { StadiaPage } from '../StadiaPage';
 import { StadiaPlusDB } from '../../../shared/StadiaPlusDB';
 import Util from '../Util';
 import { StadiaSelectors } from '../StadiaSelectors';
+import { onAuthenticated } from '../events/AuthenticatedEvent';
+import { onPageChanged } from '../events/PageChangeEvent';
 
-export default class InGameSyncComponent extends AbstractComponent<DefaultProps, DefaultState> {
-    connected: boolean = false;
-    gameId?: string;
+const InGameSyncComponent = () => {
+    let connected: boolean = false;
+    let gameId: string;
 
-    constructor() {
-        super({
-            name: "In Game Sync Component",
-            pageFilter: [ StadiaPage.PLAYER ]
-        });
-    }
+    const reportGameProgress = () => {
+        console.log('reportGameProgress');
 
-    async onConnect() {
-        this.connected = true;
-        if(this.state.active) {
-            this.onStart();
-        }
-    }
-
-    async onStart() {
-        if (!this.connected) {
+        if (!connected || !gameId) {
             return;
         }
 
-        this.gameId = location.pathname.split('/')[2];
-        console.log(this.connected);
-        console.log(this.gameId);
-        document.body.addEventListener('beforeunload', this.reportGameProgress);
-    }
-
-    async onStop() {
-        console.log('stopping...');
-        document.body.removeEventListener('beforeunload', this.reportGameProgress);
-        void this.reportGameProgress();
-    }
-
-    async reportGameProgress() {
-        console.log(0);
         const avatarElement = document.querySelector(StadiaSelectors.USER_AVATAR);
-        if (!avatarElement) {
+        if (avatarElement) {
+            const userId = avatarElement.getAttribute('data-player-id');
+
+            void StadiaPlusDB.updateGameProgress(userId!, gameId!);
+            console.log(`Reporting progress for ${userId} in game ${gameId}`);
+        }
+    }
+
+    onPageChanged(event => {
+        if (!connected) {
             return;
         }
 
-        const userId = avatarElement.getAttribute('data-player-id');
-        console.log(`Reporting progress for ${userId} in game ${this.gameId}`);
-        await StadiaPlusDB.updateGameProgress(userId!, this.gameId!);
-    }
+        if (event.page === 'player') {
+            gameId = Util.getPlayerGameId();
+        }
+
+        if (event.page !== 'player' && event.lastPage === 'player') {
+            reportGameProgress();
+        }
+    });
+
+    onAuthenticated(() => {
+        connected = true;
+    });
+
+    document.body.addEventListener('beforeunload', reportGameProgress);
 }
+
+export default InGameSyncComponent;
 
 

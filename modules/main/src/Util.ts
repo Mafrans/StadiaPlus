@@ -15,6 +15,10 @@ export default class Util {
         if (newRenderer != null) this.setRenderer(newRenderer);
     }
 
+    static getPlayerGameId() {
+        return location.pathname.substring('/player/'.length, '/player/'.length + 36);
+    }
+
     static async setRenderer(renderer: HTMLElement): Promise<void> {
         this.renderer = renderer;
         for (const listener of this.rendererListeners) {
