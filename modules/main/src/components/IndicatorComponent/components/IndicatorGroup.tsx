@@ -1,7 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Indicator from './Indicator';
-import { CgOptions, CgScreen } from 'react-icons/cg';
 import styled from 'styled-components';
 import tw from 'twin.macro';
 import CodecIndicator from './CodecIndicator';
@@ -12,16 +10,13 @@ type IndicatorGroupProps = {
     uuid: string;
 }
 
-export default function IndicatorGroup(props: IndicatorGroupProps) {
-    return ReactDOM.createPortal(
-        (
-            <Wrapper>
-                <ResolutionIndicator uuid={props.uuid}/>
-                <CodecIndicator uuid={props.uuid}/>
-            </Wrapper>
-        ),
-        props.tile,
-    );
+const IndicatorGroup = (props: IndicatorGroupProps) => {
+    return ReactDOM.createPortal((
+        <Wrapper>
+            <ResolutionIndicator uuid={props.uuid}/>
+            <CodecIndicator uuid={props.uuid}/>
+        </Wrapper>
+    ), props.tile);
 }
 
 const Wrapper = styled.div`
@@ -31,3 +26,5 @@ const Wrapper = styled.div`
     right-0
   `}
 `
+
+export default IndicatorGroup;

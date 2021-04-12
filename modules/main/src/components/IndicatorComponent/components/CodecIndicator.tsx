@@ -8,8 +8,7 @@ type CodecIndicatorProps = {
     uuid: string;
 }
 
-export default function CodecIndicator(props: CodecIndicatorProps) {
-
+const CodecIndicator = (props: CodecIndicatorProps) => {
     const [value, setValue] = useState(StadiaCodec.AUTOMATIC);
 
     const setValueFromConfig = async (codecs: {[uuid: string]: StadiaCodec} | null) => {
@@ -29,3 +28,5 @@ export default function CodecIndicator(props: CodecIndicatorProps) {
         }
     </>
 }
+
+export default CodecIndicator;

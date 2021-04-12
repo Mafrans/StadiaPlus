@@ -8,8 +8,7 @@ type ResolutionIndicatorProps = {
     uuid: string;
 }
 
-export default function ResolutionIndicator(props: ResolutionIndicatorProps) {
-
+const ResolutionIndicator = (props: ResolutionIndicatorProps) => {
     const [value, setValue] = useState(StadiaResolution.AUTOMATIC);
 
     const setValueFromConfig = async (resolution: {[uuid: string]: StadiaResolution} | null) => {
@@ -29,3 +28,5 @@ export default function ResolutionIndicator(props: ResolutionIndicatorProps) {
         }
     </>
 }
+
+export default ResolutionIndicator;

@@ -6,17 +6,15 @@ type CodecSelectIconProps = {
     icon: ReactNode
 }
 
-export default function Indicator(props: PropsWithChildren<CodecSelectIconProps>) {
-        return <>
-            <Wrapper>
-                {
-                    props.icon && <Icon>{ props.icon }</Icon>
-                }
-                <Label>
-                    { props.children }
-                </Label>
-            </Wrapper>
-        </>
+const Indicator = (props: PropsWithChildren<CodecSelectIconProps>) => {
+    return <>
+        <Wrapper>
+            { props.icon && <Icon>{ props.icon }</Icon> }
+            <Label>
+                { props.children }
+            </Label>
+        </Wrapper>
+    </>
 }
 
 const Wrapper = styled.div`
@@ -60,3 +58,5 @@ const Label = styled.label`
   margin-top: 4px;
   font-family: 'Overpass', sans-serif;
 `
+
+export default Indicator;
