@@ -11,9 +11,9 @@ import Fonts from './Fonts';
 import GameSettingsComponent from './components/GameSettingsComponent/GameSettingsComponent';
 import GameMonitorComponent from './components/GameMonitorComponent/GameMonitorComponent';
 import CodecComponent from './components/CodecComponent';
-import ResolutionComponent from './components/ResolutionComponent';
 import AbstractComponent from './components/AbstractComponent';
 import InGameSyncComponent from './components/InGameSyncComponent';
+import { ResolutionComponent } from './components/ResolutionComponent';
 
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -28,6 +28,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     root.id = 'stadiaplus-root';
     document.body.appendChild(root);
 
+    ResolutionComponent();
+
     ReactDOM.render(
         <div>
             <InitLibraryComponent/>
@@ -36,7 +38,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             <GameSettingsComponent/>
             <GameMonitorComponent/>
             <CodecComponent/>
-            <ResolutionComponent/>
             <InGameSyncComponent/>
         </div>,
         root

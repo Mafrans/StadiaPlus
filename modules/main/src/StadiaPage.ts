@@ -1,40 +1,25 @@
-export default class StadiaPage {
 
-    static HOME: StadiaPage = new StadiaPage(/home/);
-    static PLAYER: StadiaPage = new StadiaPage(/player\/[a-z0-9]{36}/, true);
+export type StadiaPage = null | 'home' | 'player';
 
+let lastPathName = '';
+let lastPage: StadiaPage = null;
 
+export const pages: { [key: string]: RegExp } = {
+    'home': /home/,
+    'player': /player\/[a-z0-9]{36}.+/
+}
 
-    private static lastPathName: string = '';
-    private static lastPage: StadiaPage | null = null;
+export function getCurrentPage() {
+    let pathname = location.pathname;
+    if(lastPathName === pathname) return lastPage;
+    lastPathName = pathname;
 
-    matcher: RegExp;
-    isPrefix: boolean = false;
-    constructor(matcher: RegExp, isPrefix?: boolean) {
-        this.matcher = matcher;
+    const keys = Object.keys(pages);
+    const page = keys.find(key => {
+        const matcher = pages[key];
+        matcher.test(pathname);
+    }) as StadiaPage;
 
-        if(isPrefix !== undefined) {
-            this.isPrefix = isPrefix;
-        }
-    }
-
-    static values(): StadiaPage[] {
-        return [
-            StadiaPage.HOME,
-            StadiaPage.PLAYER,
-        ];
-    }
-
-    static current(): StadiaPage | null {
-        let pathname = location.pathname;
-        if(this.lastPathName === pathname) return this.lastPage;
-        this.lastPathName = pathname;
-
-        const page = this.values().find(page => {
-            return page.matcher.test(pathname);
-        });
-        this.lastPage = page || null;
-        
-        return this.lastPage;
-    }
+    lastPage = page || null;
+    return lastPage;
 }

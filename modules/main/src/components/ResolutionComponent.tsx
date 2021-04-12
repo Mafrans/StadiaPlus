@@ -1,25 +1,22 @@
 import React from 'react';
 import AbstractComponent, { DefaultProps, DefaultState } from './AbstractComponent';
-import StadiaPage from '../StadiaPage';
 import { Config } from '../../../shared/Config';
 import StadiaCodec from '../../../shared/models/StadiaCodec';
 import StadiaResolution from '../../../shared/models/StadiaResolution';
 import Logger from '../Logger';
 import Util from '../Util';
+import { onPageChange } from '../events/PageChangeEvent';
 
-export default class ResolutionComponent extends AbstractComponent<DefaultProps, DefaultState> {
-    constructor() {
-        super({
-            name: "Resolution Component",
-            pageFilter: [ StadiaPage.PLAYER ]
-        });
-    }
 
-    async onStart() {
+export function ResolutionComponent() {
+    onPageChange(async event => {
+        if (event.page !== 'player') {
+            return;
+        }
+
+        const gameId = location.pathname.substring('/player/'.length, '/player/'.length + 36);
         const resolutions = await Config.RESOLUTIONS.get() || {};
-        const resolution = resolutions[this.parsePlayerUUID()] || StadiaResolution.AUTOMATIC;
-
-        Logger.info(`Using resolution '${resolution.name}'`);
+        const resolution = resolutions[gameId] || StadiaResolution.AUTOMATIC;
 
         let width: number = 0;
         let height: number = 0;
@@ -50,12 +47,7 @@ export default class ResolutionComponent extends AbstractComponent<DefaultProps,
                 colorDepth: 48
             }, { name: 'screen' });
         }
-    }
 
-    parsePlayerUUID() {
-        // Each UUID is 36 characters long
-        return location.pathname.substring('/player/'.length, '/player/'.length + 36)
-    }
-
-    async onUpdate() {}
+        Logger.info(`Using resolution '${resolution.name}' (${width}x${height})`);
+    })
 }
