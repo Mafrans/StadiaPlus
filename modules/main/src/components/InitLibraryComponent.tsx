@@ -7,7 +7,7 @@ import { StadiaPage } from '../StadiaPage';
 import Logger from '../Logger';
 import { onAuthenticated } from '../events/AuthenticatedEvent';
 import getOwnProfile = StadiaPlusDB.getOwnProfile;
-import { onPageChange } from '../events/PageChangeEvent';
+import { onPageChanged } from '../events/PageChangeEvent';
 
 interface AFLibraryData {
     data: [boolean, [string, [string, string, boolean, number]], unknown[]];
@@ -50,7 +50,7 @@ function getGameIds(): { uuid: string, subId: string }[] {
 const InitLibraryComponent = () => {
     const gameIds = getGameIds();
 
-    onPageChange(event => {
+    onPageChanged(event => {
         if (event.page === 'home') {
             void Config.GAME_IDS.set(gameIds);
         }

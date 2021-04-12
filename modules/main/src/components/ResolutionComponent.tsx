@@ -5,16 +5,16 @@ import StadiaCodec from '../../../shared/models/StadiaCodec';
 import StadiaResolution from '../../../shared/models/StadiaResolution';
 import Logger from '../Logger';
 import Util from '../Util';
-import { onPageChange } from '../events/PageChangeEvent';
+import { onPageChanged } from '../events/PageChangeEvent';
 
 
 const ResolutionComponent = () => {
-    onPageChange(async event => {
+    onPageChanged(async event => {
         if (event.page !== 'player') {
             return;
         }
 
-        const gameId = location.pathname.substring('/player/'.length, '/player/'.length + 36);
+        const gameId = Util.getPlayerGameId();
         const resolutions = await Config.RESOLUTIONS.get() || {};
         const resolution = resolutions[gameId] || StadiaResolution.AUTOMATIC;
 
