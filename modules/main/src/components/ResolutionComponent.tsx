@@ -8,7 +8,7 @@ import Util from '../Util';
 import { onPageChange } from '../events/PageChangeEvent';
 
 
-export function ResolutionComponent() {
+const ResolutionComponent = () => {
     onPageChange(async event => {
         if (event.page !== 'player') {
             return;
@@ -51,3 +51,5 @@ export function ResolutionComponent() {
         Logger.info(`Using resolution '${resolution.name}' (${width}x${height})`);
     })
 }
+
+export default ResolutionComponent;
