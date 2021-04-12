@@ -1,6 +1,7 @@
+import { triggerRendererChangeEvent } from './events/RendererChangeEvent';
+
 export default class Util {
     static renderer: HTMLElement | null = null;
-    private static rendererListeners: ((renderer: HTMLElement) => void)[] = [];
 
     /**
      * Finds and caches the current web renderer.
@@ -20,14 +21,11 @@ export default class Util {
     }
 
     static async setRenderer(renderer: HTMLElement): Promise<void> {
+        triggerRendererChangeEvent({
+            renderer,
+            lastRenderer: this.renderer
+        })
         this.renderer = renderer;
-        for (const listener of this.rendererListeners) {
-            listener(renderer);
-        }
-    }
-
-    static onRendererChange(callback: (renderer: HTMLElement) => void) {
-        this.rendererListeners.push(callback);
     }
 
     static desandbox(data: string | object | Function, options?: { immediate?: boolean, name?: string }): string {
