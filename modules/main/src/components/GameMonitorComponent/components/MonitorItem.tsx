@@ -10,6 +10,7 @@ export type MonitorItemProps = {
     editable?: boolean
     item: GameMonitorItem
     index: number
+    offset: { x: number, y: number },
     onVisibilityToggle?: (value: boolean) => void
 }
 
@@ -17,13 +18,16 @@ const MonitorItem = (props: MonitorItemProps) => (
     <>
     { (props.editable || props.item.visible) &&
         <Draggable key={props.item.id} draggableId={props.item.id} index={props.index} >
-        { provided => (
+        { (provided, snapshot) => (
             <Wrapper
                 { ...provided.draggableProps }
                 ref={ provided.innerRef }
 
                 style={{
                     ...provided.draggableProps.style,
+
+                    marginLeft: snapshot.isDragging ? props.offset.x : 0,
+                    marginTop: snapshot.isDragging ? props.offset.y : 0,
 
                     opacity: props.item.visible ?
                         props.editable ?

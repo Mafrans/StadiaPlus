@@ -7,6 +7,7 @@ export type ContentProps = {
     onDragEnd?: (result: DropResult) => void
     items: GameMonitorItem[]
     editable?: boolean
+    dragOffset: { x: number, y: number },
     onVisibilityToggle?: (item: GameMonitorItem, value: boolean) => void
 } 
 
@@ -23,6 +24,7 @@ const Content = (props: ContentProps) => {
                                     editable={props.editable}
                                     index={index}
                                     item={item}
+                                    offset={props.dragOffset}
                                 />
                             )}
                             {provided.placeholder}

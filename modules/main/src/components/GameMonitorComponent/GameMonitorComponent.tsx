@@ -256,6 +256,7 @@ const GameMonitorComponent = () => {
                 window.addEventListener('message', onMessageCapture);
             }
             else {
+                setEnabled(false);
                 window.removeEventListener('message', onMessageCapture);
             }
         });
@@ -270,7 +271,6 @@ const GameMonitorComponent = () => {
         }, 500);
     })
 
-    console.log({enabled, loading, sidebarOpen});
     if (enabled || loading || sidebarOpen) {
         return ReactDOM.createPortal(
             <Wrapper
@@ -298,6 +298,7 @@ const GameMonitorComponent = () => {
                     { enabled && <Content
                         editable={ sidebarOpen }
                         items={ items }
+                        dragOffset={{ x: -position.x, y: -position.y }}
                         onVisibilityToggle={ toggleItemVisibility }
                         onDragEnd={ onDragEnd }
                     /> }
