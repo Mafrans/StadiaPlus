@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Util from '../../Util';
 import MonitorRunnable from '../../MonitorRunnable.txtjs';
 import ReactDOM from 'react-dom';
@@ -23,6 +23,11 @@ export interface GameMonitorItem {
     id: string
 }
 
+let itemData: { [id: string]: { index: number, visible: boolean } } | null = null;
+let grabPosition: { x: number, y: number };
+let grabElement: HTMLElement;
+let lastBytesReceived: number = 0;
+
 const GameMonitorComponent = () => {
     const [items, setItems] = useState<GameMonitorItem[]>([]);
     const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
@@ -30,11 +35,6 @@ const GameMonitorComponent = () => {
     const [enabled, setEnabled] = useState<boolean>(false);
     const [position, setPosition] = useState<{ x: number, y: number }>({ x: 0, y: 0 });
     const [transform, setTransform] = useState<{ x: number, y: number }>({ x: 0, y: 0 });
-
-    let itemData: { [id: string]: { index: number, visible: boolean } } | null = null;
-    let grabPosition: { x: number, y: number };
-    let grabElement: HTMLElement;
-    let lastBytesReceived: number = 0;
 
     const parseItemData = (newItems: GameMonitorItem[]) => {
         if (itemData !== null && itemData !== undefined) {
@@ -240,23 +240,25 @@ const GameMonitorComponent = () => {
         }
     }
 
-    onPageChanged(async event => {
-        if (event.page === 'player') {
-            Util.desandbox(MonitorRunnable);
+    useEffect(() => {
+        onPageChanged(async event => {
+            if (event.page === 'player') {
+                Util.desandbox(MonitorRunnable);
 
-            itemData = await Config.MONITOR_ITEMS.get() || {};
-            window.addEventListener('message', onMessageCapture);
-        }
-    });
+                itemData = await Config.MONITOR_ITEMS.get() || {};
+                window.addEventListener('message', onMessageCapture);
+            }
+        });
 
-    setInterval(() => {
-        const sidebar = document.querySelector(StadiaSelectors.PLAYER_SIDEBAR) as HTMLElement | null;
-        const newSidebarOpen = sidebar !== null && sidebar.style.opacity === '1';
+        setInterval(() => {
+            const sidebar = document.querySelector(StadiaSelectors.PLAYER_SIDEBAR) as HTMLElement | null;
+            const newSidebarOpen = sidebar !== null && sidebar.style.opacity === '1';
 
-        if (newSidebarOpen !== sidebarOpen) {
-            setSidebarOpen(newSidebarOpen);
-        }
-    }, 500);
+            if (newSidebarOpen !== sidebarOpen) {
+                setSidebarOpen(newSidebarOpen);
+            }
+        }, 500);
+    })
 
     if (!enabled && !loading && !sidebarOpen) return null;
     ReactDOM.createPortal(
