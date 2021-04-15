@@ -25,28 +25,28 @@ export function formatBits(value: number, decimals?: number): string {
 }
 
 
-export const getPrimaryAudioStream = (statsData: [string, any]): RTCStatistics.RTCAudioRTPStream => ( 
+export const getPrimaryAudioStream = (statsData: [string, any]): RTCStatistics.RTCAudioRTPStream | null => (
     RTCStatistic.from<RTCStatistics.RTCAudioRTPStream>(
         statsData,
         id => id.startsWith('RTCInboundRTPAudioStream')
     )
 );
 
-export const getPrimaryVideoStream = (statsData: [string, any]): RTCStatistics.RTCVideoRTPStream => (
+export const getPrimaryVideoStream = (statsData: [string, any]): RTCStatistics.RTCVideoRTPStream | null => (
     RTCStatistic.from<RTCStatistics.RTCVideoRTPStream>(
         statsData,
         id => id.startsWith('RTCInboundRTPVideoStream')
     )
 );
 
-export const getPrimaryAudioCodec = (statsData: [string, any], codecId: string): RTCStatistics.RTCCodec => (
+export const getPrimaryAudioCodec = (statsData: [string, any], codecId: string): RTCStatistics.RTCCodec | null => (
     RTCStatistic.from<RTCStatistics.RTCCodec>(
         statsData,
         id => id === codecId
     )
 );
 
-export const getPrimaryVideoCodec = (statsData: [string, any], codecId: string): RTCStatistics.RTCCodec => (
+export const getPrimaryVideoCodec = (statsData: [string, any], codecId: string): RTCStatistics.RTCCodec | null => (
     RTCStatistic.from<RTCStatistics.RTCCodec>(
         statsData,
         id => id === codecId
@@ -54,10 +54,10 @@ export const getPrimaryVideoCodec = (statsData: [string, any], codecId: string):
 );
 
 export type getStreamResponse = {
-    audioStream: RTCStatistics.RTCAudioRTPStream;
-    videoStream: RTCStatistics.RTCVideoRTPStream;
-    audioCodec: RTCStatistics.RTCCodec;
-    videoCodec: RTCStatistics.RTCCodec;
+    audioStream: RTCStatistics.RTCAudioRTPStream | null;
+    videoStream: RTCStatistics.RTCVideoRTPStream | null;
+    audioCodec: RTCStatistics.RTCCodec | null;
+    videoCodec: RTCStatistics.RTCCodec | null;
 
 }
 export function getStream (statArray: [string, any]): getStreamResponse {
@@ -66,7 +66,7 @@ export function getStream (statArray: [string, any]): getStreamResponse {
     return {
         audioStream: _audioStream,
         videoStream: _videoStream,
-        audioCodec: getPrimaryAudioCodec(statArray, _audioStream.codecId!),
-        videoCodec: getPrimaryVideoCodec(statArray, _videoStream.codecId!)
+        audioCodec: getPrimaryAudioCodec(statArray, _audioStream?.codecId!),
+        videoCodec: getPrimaryVideoCodec(statArray, _videoStream?.codecId!)
     }
 }

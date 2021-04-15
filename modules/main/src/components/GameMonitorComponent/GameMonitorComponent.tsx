@@ -26,12 +26,12 @@ export interface GameMonitorItem {
 let itemData: { [id: string]: { index: number, visible: boolean } } | null = null;
 let grabPosition: { x: number, y: number };
 let grabElement: HTMLElement;
-let lastBytesReceived: number = 0;
+let lastBytesReceived: number;
+let loading: boolean;
 
 const GameMonitorComponent = () => {
     const [items, setItems] = useState<GameMonitorItem[]>([]);
     const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
-    const [loading, setLoading] = useState<boolean>(false);
     const [enabled, setEnabled] = useState<boolean>(false);
     const [position, setPosition] = useState<{ x: number, y: number }>({ x: 0, y: 0 });
     const [transform, setTransform] = useState<{ x: number, y: number }>({ x: 0, y: 0 });
@@ -59,9 +59,12 @@ const GameMonitorComponent = () => {
 
     const onMessageCapture = (event: MessageEvent) => {
         if (event.data.source === 'StadiaPlusNetworkMonitor' && !sidebarOpen) {
-            if (event.data.stats === undefined || event.data.stats === null || event.data.stats.length < 2) {
-                setLoading(true);
-                return;
+            if (!loading) {
+                if (event.data.stats === undefined || event.data.stats === null || event.data.stats.length < 2) {
+                    loading = true;
+                    setItems([]); // Reset items to force a rerender.
+                    return;
+                }
             }
             const statArray: [string, any] = event.data.stats[1];
             const ICECandidatePair = RTCStatistic.from<RTCStatistics.RTCIceCandidatePair>(
@@ -69,8 +72,12 @@ const GameMonitorComponent = () => {
                 id => id.startsWith('RTCIceCandidatePair')
             );
 
-            if(loading && ICECandidatePair.bytesReceived! !== 0) {
-                setLoading(false);
+            if (!ICECandidatePair) {
+                return;
+            }
+
+            if (loading && ICECandidatePair.bytesReceived! > 0) {
+                loading = false;
             }
 
             if (items.length !== 0 && !enabled && !sidebarOpen) {
@@ -89,7 +96,7 @@ const GameMonitorComponent = () => {
                     visible: true,
                     id: 'latency',
                 },
-                {
+                videoStream && {
                     name: 'Resolution',
                     value: `${videoStream.frameWidth}x${videoStream.frameHeight}`,
                     visible: true,
@@ -101,13 +108,13 @@ const GameMonitorComponent = () => {
                     visible: true,
                     id: 'bytes-received',
                 },
-                {
+                videoCodec && videoStream && {
                     name: 'Video Codec',
                     value: `${videoCodec.mimeType!.split('/')[1]} (${videoStream.decoderImplementation === 'ExternalDecoder' ? 'hardware' : 'software'})`,
                     visible: true,
                     id: 'video-codec',
                 },
-                {
+                audioCodec && {
                     name: 'Audio Codec',
                     value: `${audioCodec.mimeType!.split('/')[1]}`,
                     visible: true,
@@ -125,7 +132,7 @@ const GameMonitorComponent = () => {
                     visible: true,
                     id: 'bytes-per-second',
                 },
-            ]
+            ] as GameMonitorItem[];
 
             lastBytesReceived = bytesReceived!;
             setItems(parseItemData(newItems));
@@ -248,6 +255,9 @@ const GameMonitorComponent = () => {
                 itemData = await Config.MONITOR_ITEMS.get() || {};
                 window.addEventListener('message', onMessageCapture);
             }
+            else {
+                window.removeEventListener('message', onMessageCapture);
+            }
         });
 
         setInterval(() => {
@@ -260,40 +270,43 @@ const GameMonitorComponent = () => {
         }, 500);
     })
 
-    if (!enabled && !loading && !sidebarOpen) return null;
-    ReactDOM.createPortal(
-        <Wrapper
-            style={{
-                backgroundColor: Theme.hexToRGBA(Theme.Colors.gray[900], sidebarOpen ? 1 : 0.25),
-                left: position.x,
-                top: position.y,
-                transform: `translate(${transform.x}%, ${transform.y}%)`,
-            }}
-        >
-            <Loader isLoading={loading} />
-
-            <MonitorWrapper
+    console.log({enabled, loading, sidebarOpen});
+    if (enabled || loading || sidebarOpen) {
+        return ReactDOM.createPortal(
+            <Wrapper
                 style={{
-                    display: loading ? 'none' : '',
-                    width: !sidebarOpen ? 'auto' : ''
+                    backgroundColor: Theme.hexToRGBA(Theme.Colors.gray[900], sidebarOpen ? 1 : 0.25),
+                    left: position.x,
+                    top: position.y,
+                    transform: `translate(${transform.x}%, ${transform.y}%)`,
                 }}
             >
-                <Header
-                    visible={ sidebarOpen }
-                    collapsed={ !enabled }
-                    onToggle={ (val) => setEnabled(val) }
-                    onGrab={ onGrab }
-                />
-                { enabled && <Content
-                    editable={ sidebarOpen }
-                    items={ items }
-                    onVisibilityToggle={ toggleItemVisibility }
-                    onDragEnd={ onDragEnd }
-                /> }
-            </MonitorWrapper>
-        </Wrapper>,
-        document.getElementById('stadiaplus-root')!
-    );
+                <Loader isLoading={loading} />
+
+                <MonitorWrapper
+                    style={{
+                        display: loading ? 'none' : '',
+                        width: !sidebarOpen ? 'auto' : ''
+                    }}
+                >
+                    <Header
+                        visible={ sidebarOpen }
+                        collapsed={ !enabled }
+                        onToggle={ (val) => setEnabled(val) }
+                        onGrab={ onGrab }
+                    />
+                    { enabled && <Content
+                        editable={ sidebarOpen }
+                        items={ items }
+                        onVisibilityToggle={ toggleItemVisibility }
+                        onDragEnd={ onDragEnd }
+                    /> }
+                </MonitorWrapper>
+            </Wrapper>,
+            document.getElementById('stadiaplus-root')!
+        );
+    }
+
     return null;
 }
 

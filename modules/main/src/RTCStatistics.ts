@@ -7,8 +7,9 @@ export namespace RTCStatistics {
         id?: string
         timestamp?: number
 
-        static from<T extends RTCStatistic>(stats: [string, any], matcher: (id: string) => boolean): T {
-            return stats.find(stat => matcher(stat[0]))[1] as T;
+        static from<T extends RTCStatistic>(stats: [string, any], matcher: (id: string) => boolean): T | null {
+            const match = stats.find(stat => matcher(stat[0])) || [null, null];
+            return match[1] as T;
         }
     }
 
