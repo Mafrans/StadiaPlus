@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import AbstractComponent, { DefaultProps, DefaultState } from '../AbstractComponent';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import tw from 'twin.macro';
@@ -75,19 +74,21 @@ const GameSettingsComponent = () => {
         setResolution(value);
     }
 
-    onPageChanged(event => {
-        Util.observe(document.body, 'childList', Node.ELEMENT_NODE, (mutation, node) => {
-            const element = node as HTMLElement;
-            if (element.classList.contains('llhEMd')) {
-                // Once the ring animation starts playing, the container is done!
-                const fn = () => {
-                    void updateContainer();
-                    element.removeEventListener('animationstart', fn);
+    useEffect(() => {
+        onPageChanged(event => {
+            Util.observe(document.body, 'childList', Node.ELEMENT_NODE, (mutation, node) => {
+                const element = node as HTMLElement;
+                if (element.classList.contains('llhEMd')) {
+                    // Once the ring animation starts playing, the container is done!
+                    const fn = () => {
+                        void updateContainer();
+                        element.removeEventListener('animationstart', fn);
+                    }
+                    element.addEventListener('animationstart', fn);
                 }
-                element.addEventListener('animationstart', fn);
-            }
-        });
-    })
+            });
+        })
+    });
 
     if (container) {
         return ReactDOM.createPortal(<Wrapper>

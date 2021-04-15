@@ -1,12 +1,7 @@
 import React from 'react';
-import AbstractComponent, { DefaultProps, DefaultState } from './AbstractComponent';
 import { StadiaPlusDB } from '../../../shared/StadiaPlusDB';
 import { Config } from '../../../shared/Config';
-import { PageQueryType } from '../../../shared/models/PageQueryType';
-import { StadiaPage } from '../StadiaPage';
 import Logger from '../Logger';
-import { onAuthenticated } from '../events/AuthenticatedEvent';
-import getOwnProfile = StadiaPlusDB.getOwnProfile;
 import { onPageChanged } from '../events/PageChangeEvent';
 
 interface AFLibraryData {
