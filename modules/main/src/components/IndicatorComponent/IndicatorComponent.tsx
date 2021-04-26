@@ -14,12 +14,11 @@ type TileQuery = {
 }
 
 let inHome = false;
-let gameIds: { uuid: string, subId: string }[] = [];
 
 const IndicatorComponent = () => {
     const [tileQueries, setTileQueries] = useState<TileQuery[]>([]);
 
-    const updateTileQueries = () => {
+    const updateTileQueries = (gameIds: { uuid: string, subId: string }[]) => {
         if (!Util.renderer) {
             return;
         }
@@ -30,7 +29,7 @@ const IndicatorComponent = () => {
         console.log({allTiles, gameIds});
 
         if (allTiles.length === 0) {
-            setTimeout(() => updateTileQueries(), 1000);
+            setTimeout(() => updateTileQueries(gameIds), 1000);
             return;
         }
 
@@ -58,17 +57,16 @@ const IndicatorComponent = () => {
             if (event.page !== 'home') {
                 return;
             }
-            console.log('Quick! Indicate')
-            gameIds = await Config.GAME_IDS.get() || [];
-            inHome = true;
 
-            console.log(gameIds, Util.renderer)
-            if (Util.renderer) {
-                console.log('yes, please update tile queries');
-                updateTileQueries();
-            }
+            Config.GAME_IDS.addChangeListener(gameIds => {
+                inHome = true;
+
+                if (Util.renderer) {
+                    updateTileQueries(gameIds);
+                }
+            })
         });
-    })
+    }, [])
 
     if (tileQueries && Util.renderer) {
         const icons: ReactNode[] = [];

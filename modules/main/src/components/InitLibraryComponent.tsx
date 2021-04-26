@@ -43,11 +43,9 @@ function getGameIds(): { uuid: string, subId: string }[] {
 }
 
 const InitLibraryComponent = () => {
-    const gameIds = getGameIds();
-
     onPageChanged(event => {
         if (event.page === 'home') {
-            void Config.GAME_IDS.set(gameIds);
+            void Config.GAME_IDS.set(getGameIds());
         }
     });
 }
