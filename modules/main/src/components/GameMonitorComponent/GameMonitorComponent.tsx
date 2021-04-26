@@ -88,7 +88,7 @@ export default class GameMonitorComponent extends React.Component<any, GameMonit
             newItems = newItems.sort((a, b) => this.itemData![a.id]?.index - this.itemData![b.id]?.index);
             for (let i = 0; i < newItems.length; i++) {
                 let item = newItems[i] || { visible: true };
-                item.visible = this.itemData![item.id]?.visible;
+                item.visible = this.itemData[item.id] ? this.itemData[item.id].visible : true;
             }
 
             if (Object.keys(this.itemData).length != newItems.length) {
@@ -248,14 +248,15 @@ export default class GameMonitorComponent extends React.Component<any, GameMonit
             this.grabPosition.y += this.grabElement.offsetHeight;
         }
 
+        const onMove = this.onMove.bind(this);
         const onRelease = () => {
             (event.target as HTMLElement).style.cursor = '';
 
-            window.removeEventListener('mousemove', this.onMove);
+            window.removeEventListener('mousemove', onMove);
             window.removeEventListener('mouseup', onRelease);
         }
 
-        window.addEventListener('mousemove', this.onMove);
+        window.addEventListener('mousemove', onMove);
         window.addEventListener('mouseup', onRelease);
 
         event.preventDefault();
