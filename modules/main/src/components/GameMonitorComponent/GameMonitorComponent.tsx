@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Util from '../../Util';
 import MonitorRunnable from '../../MonitorRunnable.txtjs';
 import ReactDOM from 'react-dom';
@@ -23,46 +23,93 @@ export interface GameMonitorItem {
     id: string
 }
 
-let itemData: { [id: string]: { index: number, visible: boolean } } | null = null;
-let grabPosition: { x: number, y: number };
-let grabElement: HTMLElement;
-let lastBytesReceived: number;
-let loading: boolean;
+interface GameMonitorState {
+    items: GameMonitorItem[]
+    sidebarOpen: boolean
+    enabled: boolean
+    loading: boolean
+    position: { x: number, y: number }
+    transform: { x: number, y: number }
+}
 
-const GameMonitorComponent = () => {
-    const [items, setItems] = useState<GameMonitorItem[]>([]);
-    const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
-    const [enabled, setEnabled] = useState<boolean>(false);
-    const [position, setPosition] = useState<{ x: number, y: number }>({ x: 0, y: 0 });
-    const [transform, setTransform] = useState<{ x: number, y: number }>({ x: 0, y: 0 });
+/*
+ *  IT HURTS, BUT THIS HAS TO BE A REACT CLASS TO WORK PROPERLY.
+ */
 
-    const parseItemData = (newItems: GameMonitorItem[]) => {
-        if (itemData !== null && itemData !== undefined) {
-            newItems = newItems.sort((a, b) => itemData![a.id]?.index - itemData![b.id]?.index);
+export default class GameMonitorComponent extends React.Component<any, GameMonitorState> {
+    itemData: { [id: string]: { index: number, visible: boolean } } | null = null;
+    grabPosition: { x: number, y: number } = {x: 0, y: 0};
+    grabElement?: HTMLElement;
+    lastBytesReceived: number = 0;
+    isCapturing: boolean = false;
+    messageCaptureListener: (e: MessageEvent) => void;
+
+    constructor(props: any) {
+        super(props);
+
+        this.state = {
+            enabled: false,
+            items: [],
+            loading: false,
+            position: { x: 0, y: 0 },
+            sidebarOpen: false,
+            transform: { x: 0, y: 0 }
+        };
+
+        onPageChanged(async event => {
+            if (event.page === 'player') {
+                console.log(await Config.MONITOR_ITEMS.get());
+                this.itemData = await Config.MONITOR_ITEMS.get() || {};
+
+                this.setState({ loading: true });
+                Util.desandbox(MonitorRunnable);
+            }
+            else {
+                this.setState({ enabled: false });
+            }
+        });
+
+        // TODO: Make this an observer
+        setInterval(() => {
+            const sidebar = document.querySelector(StadiaSelectors.PLAYER_SIDEBAR) as HTMLElement | null;
+            const newSidebarOpen = sidebar !== null && sidebar.style.opacity === '1';
+
+            if (newSidebarOpen !== this.state.sidebarOpen) {
+                this.setState({ sidebarOpen: newSidebarOpen })
+            }
+        }, 500);
+
+        this.messageCaptureListener = this.onMessageCapture.bind(this);
+    }
+
+
+    parseItemData(newItems: GameMonitorItem[]): GameMonitorItem[] {
+        if (this.itemData !== null && this.itemData !== undefined) {
+            newItems = newItems.sort((a, b) => this.itemData![a.id]?.index - this.itemData![b.id]?.index);
             for (let i = 0; i < newItems.length; i++) {
                 let item = newItems[i] || { visible: true };
-                item.visible = itemData![item.id]?.visible;
+                item.visible = this.itemData![item.id]?.visible;
             }
 
-            if (Object.keys(itemData).length != newItems.length) {
-                itemData = {};
-                newItems.forEach((item, index) => itemData![item.id] = { index, visible: item.visible });
+            if (Object.keys(this.itemData).length != newItems.length) {
+                this.itemData = {};
+                newItems.forEach((item, index) => this.itemData![item.id] = { index, visible: item.visible });
             }
         }
         else {
-            itemData = {};
-            newItems.forEach((item, index) => itemData![item.id] = { index, visible: item.visible });
+            this.itemData = {};
+            newItems.forEach((item, index) => this.itemData![item.id] = { index, visible: item.visible });
         }
 
         return newItems;
     }
 
-    const onMessageCapture = (event: MessageEvent) => {
+    onMessageCapture(event: MessageEvent) {
+        const {sidebarOpen, loading} = this.state;
         if (event.data.source === 'StadiaPlusNetworkMonitor' && !sidebarOpen) {
             if (!loading) {
                 if (event.data.stats === undefined || event.data.stats === null || event.data.stats.length < 2) {
-                    loading = true;
-                    setItems([]); // Reset items to force a rerender.
+                    this.setState({ loading: true });
                     return;
                 }
             }
@@ -77,16 +124,12 @@ const GameMonitorComponent = () => {
             }
 
             if (loading && ICECandidatePair.bytesReceived! > 0) {
-                loading = false;
-            }
-
-            if (items.length !== 0 && !enabled && !sidebarOpen) {
-                return;
+                this.setState({ loading: false });
             }
 
             const { videoStream, videoCodec, audioCodec } = getStream(statArray);
             const { bytesReceived, availableOutgoingBitrate, currentRoundTripTime } = ICECandidatePair;
-            const bytesPerSecond = bytesReceived! - lastBytesReceived;
+            const bytesPerSecond = bytesReceived! - this.lastBytesReceived;
 
             // TODO: Is it possible to move into a fined format. perhaps a class?
             let newItems = [
@@ -134,21 +177,22 @@ const GameMonitorComponent = () => {
                 },
             ] as GameMonitorItem[];
 
-            lastBytesReceived = bytesReceived!;
-            setItems(parseItemData(newItems));
+            console.log('update items')
+            this.lastBytesReceived = bytesReceived!;
+            this.setState({ items: this.parseItemData(newItems) })
         }
     }
 
-    const moveItemTo = (id: string, source: number, destination: number) => {
-        if (!itemData) {
+    moveItemTo(id: string, source: number, destination: number) {
+        if (!this.itemData) {
             return;
         }
 
         // Reorder other items to match
-        for (const id in itemData) {
-            let index = itemData[id].index;
+        for (const i in this.itemData) {
+            let index = this.itemData[i].index;
 
-            if (source > destination) {
+            if (source < destination) {
                 if (index > source && index <= destination) {
                     index--;
                 }
@@ -158,68 +202,76 @@ const GameMonitorComponent = () => {
                     index++;
                 }
             }
-            itemData[id].index = index;
+            console.log(i, index)
+            this.itemData[i].index = index;
         }
-        itemData[id].index = destination;
-        void Config.MONITOR_ITEMS.set(itemData);
+        this.itemData[id].index = destination;
+        console.log(this.itemData);
+        void Config.MONITOR_ITEMS.set(this.itemData);
     }
 
-    const onDragEnd = (result: DropResult) => {
+    onDragEnd(result: DropResult) {
         // dropped outside the list
         if (!result.destination) {
             return;
         }
 
-        moveItemTo(result.draggableId, result.source.index, result.destination.index);
+        this.moveItemTo(result.draggableId, result.source.index, result.destination.index);
 
-        setItems(reorder<GameMonitorItem>(
-            items,
-            result.source.index,
-            result.destination.index
-        ));
+        this.setState({
+            items: reorder<GameMonitorItem>(
+                this.state.items,
+                result.source.index,
+                result.destination.index
+            )
+        })
     }
 
-    const onGrab = (event: React.MouseEvent) => {
+    onGrab(event: React.MouseEvent) {
+        const {position, transform} = this.state;
+
         (event.target as HTMLElement).style.cursor = 'grabbing';
 
-        grabElement = (event.target as HTMLElement).parentElement!;
+        this.grabElement = (event.target as HTMLElement).parentElement!;
         const offsetX = position.x;
         const offsetY = position.y;
 
-        grabPosition = {
+        this.grabPosition = {
             x: event.pageX - offsetX,
             y: event.pageY - offsetY
         };
 
         if (transform.x !== 0) {
-            grabPosition.x += grabElement.offsetWidth;
+            this.grabPosition.x += this.grabElement.offsetWidth;
         }
         if (transform.y !== 0) {
-            grabPosition.y += grabElement.offsetHeight;
+            this.grabPosition.y += this.grabElement.offsetHeight;
         }
 
         const onRelease = () => {
             (event.target as HTMLElement).style.cursor = '';
 
-            window.removeEventListener('mousemove', onMove);
+            window.removeEventListener('mousemove', this.onMove);
             window.removeEventListener('mouseup', onRelease);
         }
 
-        window.addEventListener('mousemove', onMove);
+        window.addEventListener('mousemove', this.onMove);
         window.addEventListener('mouseup', onRelease);
 
         event.preventDefault();
     }
 
-    const onMove = (event: MouseEvent) => {
-        let x = event.x - grabPosition.x;
-        let y = event.y - grabPosition.y;
+    onMove(event: MouseEvent) {
+        if (!this.grabElement) return;
+
+        let x = event.x - this.grabPosition.x;
+        let y = event.y - this.grabPosition.y;
         let transform = { x: 0, y: 0 };
 
         if (x <= 0) {
             x = 0;
         }
-        else if (x + grabElement.offsetWidth >= window.innerWidth) {
+        else if (x + this.grabElement.offsetWidth >= window.innerWidth) {
             x = window.innerWidth;
             transform.x = -100;
         }
@@ -227,52 +279,46 @@ const GameMonitorComponent = () => {
         if (y <= 0) {
             y = 0;
         }
-        else if (y + grabElement.offsetHeight >= window.innerHeight) {
+        else if (y + this.grabElement.offsetHeight >= window.innerHeight) {
             y = window.innerHeight;
             transform.y = -100;
         }
 
-        setPosition({ x, y });
-        setTransform(transform);
+        this.setState({
+            position: { x, y },
+            transform
+        });
     }
 
-    const toggleItemVisibility = (item: GameMonitorItem, value: boolean) => {
-        const newItems = items;
-        newItems[newItems.indexOf(item)].visible = value;
-        setItems(newItems);
+    toggleItemVisibility(item: GameMonitorItem, value: boolean) {
+        const { items } = this.state;
+        items[items.indexOf(item)].visible = value;
 
-        if (itemData !== null) {
-            itemData[item.id].visible = value;
-            void Config.MONITOR_ITEMS.set(itemData);
+        this.setState({ items })
+
+        if (this.itemData !== null) {
+            this.itemData[item.id].visible = value;
+            void Config.MONITOR_ITEMS.set(this.itemData);
         }
     }
 
-    useEffect(() => {
-        onPageChanged(async event => {
-            if (event.page === 'player') {
-                Util.desandbox(MonitorRunnable);
+    render() {
+        const { items, sidebarOpen, enabled, loading, position, transform } = this.state;
 
-                itemData = await Config.MONITOR_ITEMS.get() || {};
-                window.addEventListener('message', onMessageCapture);
+        if (loading || (enabled && !sidebarOpen)) {
+            if (!this.isCapturing) {
+                addEventListener('message', this.messageCaptureListener);
+                this.isCapturing = true;
             }
-            else {
-                setEnabled(false);
-                window.removeEventListener('message', onMessageCapture);
+        }
+        else {
+            if (this.isCapturing) {
+                removeEventListener('message', this.messageCaptureListener);
+                this.isCapturing = false;
             }
-        });
+        }
 
-        setInterval(() => {
-            const sidebar = document.querySelector(StadiaSelectors.PLAYER_SIDEBAR) as HTMLElement | null;
-            const newSidebarOpen = sidebar !== null && sidebar.style.opacity === '1';
-
-            if (newSidebarOpen !== sidebarOpen) {
-                setSidebarOpen(newSidebarOpen);
-            }
-        }, 500);
-    })
-
-    if (enabled || loading || sidebarOpen) {
-        return ReactDOM.createPortal(
+        return (enabled || loading || sidebarOpen) && ReactDOM.createPortal(
             <Wrapper
                 style={{
                     backgroundColor: Theme.hexToRGBA(Theme.Colors.gray[900], sidebarOpen ? 1 : 0.25),
@@ -292,23 +338,21 @@ const GameMonitorComponent = () => {
                     <Header
                         visible={ sidebarOpen }
                         collapsed={ !enabled }
-                        onToggle={ (val) => setEnabled(val) }
-                        onGrab={ onGrab }
+                        onToggle={ (val) => this.setState({ enabled: val }) }
+                        onGrab={ this.onGrab.bind(this) }
                     />
                     { enabled && <Content
                         editable={ sidebarOpen }
                         items={ items }
                         dragOffset={{ x: -position.x, y: -position.y }}
-                        onVisibilityToggle={ toggleItemVisibility }
-                        onDragEnd={ onDragEnd }
+                        onVisibilityToggle={ this.toggleItemVisibility.bind(this) }
+                        onDragEnd={ this.onDragEnd.bind(this) }
                     /> }
                 </MonitorWrapper>
             </Wrapper>,
             document.getElementById('stadiaplus-root')!
         );
     }
-
-    return null;
 }
 
 const Wrapper = styled.div`
@@ -329,5 +373,3 @@ const MonitorWrapper = styled.div`
     `}
     width: 22rem;
 `
-
-export default GameMonitorComponent;
