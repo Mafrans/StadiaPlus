@@ -1,4 +1,6 @@
 export enum StadiaSelectors {
+    PLAY_BUTTON = '.Rt8Z2e',
+    PLAY_BUTTON_RENDERER = '.n4qZSd',
     GAME_TILE = '.GqLi4d',
     GAME_TILE_HERO = '.mGdxHb',
     GAME_INFO_HERO = '.IXrmg',

@@ -97,6 +97,20 @@ export default class Util {
             characterData: mutationType === 'characterData'
         });
     }
+
+    static parent(element: Element, amount: number) {
+        let it = element;
+        for (let i = 0; i < amount; i++) {
+            if (it.parentElement) {
+                it = it.parentElement;
+            }
+            else {
+                return null;
+            }
+        }
+
+        return it;
+    }
 }
 
 export enum Alphabet {

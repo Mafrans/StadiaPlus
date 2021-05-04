@@ -7,47 +7,46 @@ import { stadiaCodecs, StadiaCodec } from '../../../../shared/models/StadiaCodec
 import {  stadiaResolutions, StadiaResolution } from '../../../../shared/models/StadiaResolution';
 import { Config } from '../../../../shared/Config';
 import { StadiaPage } from '../../StadiaPage';
-import SelectionSection from './components/SelectionArea.component';
 import { StadiaSelectors } from '../../StadiaSelectors';
 import Util from '../../Util';
 import { onPageChanged } from '../../events/PageChangeEvent';
-
+import { CgClose, CgOptions } from 'react-icons/cg';
+import SettingsArea from './components/SettingsArea';
+import { SelectionSection } from './components/SelectionSection';
 
 let uuid: string | null = null;
-
 const GameSettingsComponent = () => {
-    const [container, setContainer] = useState<Element | null>(null)
+    let [container, setContainer] = useState<Element | null>(null)
     const [codec, setCodec] = useState<StadiaCodec>('Automatic');
     const [resolution, setResolution] = useState<StadiaResolution>('Automatic');
+    const [visible, setVisible] = useState<boolean>(false);
 
-    const updateContainer = async () => {
-        const banner = document.querySelector(StadiaSelectors.GAME_INFO_HERO);
-        const renderer = document.querySelector(StadiaSelectors.GAME_INFO_RENDERER);
+    const updateContainer = async (newContainer: Element) => {
+        const id = "stadiaplus_gamecontainer-" + Math.floor(Math.random() * 10000);
+        newContainer.id = id;
 
-        if (banner && renderer) {
-            const container = document.createElement('div');
-            container.id = 'stadiaplus-game-settings';
-            banner.after(container);
-
+        const renderer = document.querySelector( `#${id} ${StadiaSelectors.PLAY_BUTTON_RENDERER}`);
+        if (renderer) {
             uuid = renderer.getAttribute('data-app-id');
-
-            const codecs = await Config.CODECS.get() || {};
-            const resolutions = await Config.RESOLUTIONS.get() || {};
-
-            let codec: StadiaCodec = 'Automatic';
-            let resolution: StadiaResolution = 'Automatic';
-
-            if(uuid) {
-                codec = codecs[uuid];
-                resolution = resolutions[uuid];
-            }
-
-            setCodec(codec);
-            setResolution(resolution);
-
-            // Always set the container after setting codec/resolution
-            setContainer(container);
         }
+
+        const codecs = await Config.CODECS.get() || {};
+        const resolutions = await Config.RESOLUTIONS.get() || {};
+
+        let codec: StadiaCodec = 'Automatic';
+        let resolution: StadiaResolution = 'Automatic';
+
+        if(uuid) {
+            codec = codecs[uuid];
+            resolution = resolutions[uuid];
+        }
+
+        setCodec(codec);
+        setResolution(resolution);
+
+        // Always set the container after setting codec/resolution
+        setContainer(newContainer);
+        setVisible(false);
     }
 
     const changeCodec = async (value: StadiaCodec) => {
@@ -75,59 +74,99 @@ const GameSettingsComponent = () => {
     }
 
     useEffect(() => {
-        onPageChanged(event => {
-            Util.observe(document.body, 'childList', Node.ELEMENT_NODE, (mutation, node) => {
-                const element = node as HTMLElement;
-                if (element.classList.contains('llhEMd')) {
-                    // Once the ring animation starts playing, the container is done!
-                    const fn = () => {
-                        void updateContainer();
-                        element.removeEventListener('animationstart', fn);
-                    }
-                    element.addEventListener('animationstart', fn);
+        setInterval(() => {
+            let playButton = document.querySelector(StadiaSelectors.GAME_INFO_RENDERER + ' ' + StadiaSelectors.PLAY_BUTTON);
+            if (!playButton) {
+                playButton = document.querySelector(StadiaSelectors.PLAY_BUTTON);
+            }
+
+            if(playButton) {
+                const parent = Util.parent(playButton, 3)!
+                if (!container?.isEqualNode(parent)) {
+                    console.log({container, parent})
+                    void updateContainer(parent);
+                    container = parent;
                 }
-            });
-        })
-    });
+            }
+        }, 1000);
+    }, []);
 
     if (container) {
-        return ReactDOM.createPortal(<Wrapper>
-            <Section>
-                <StadiaPlusIcon />
-            </Section>
-            <Section>
-                <SelectionSection
-                    heading={'Codec'}
-                    default={codec}
-                    options={stadiaCodecs}
-                    onChange={value => void changeCodec(value as StadiaCodec)}
-                />
-            </Section>
-            <Section>
-                <SelectionSection
-                    heading={'Resolution'}
-                    default={resolution}
-                    options={stadiaResolutions}
-                    onChange={value => void changeResolution(value as StadiaResolution)}
-                />
-            </Section>
-        </Wrapper>, container);
+        return ReactDOM.createPortal(<Container>
+            <OpenButton onClick={() => setVisible(true)}>
+                <CgOptions size={24} />
+            </OpenButton>
+
+            <SettingsArea
+                container={container}
+                visible={visible}
+            >
+                <CloseButton onClick={() => setVisible(false) }>
+                    <CgClose />
+                </CloseButton>
+                <Section>
+                    <SelectionSection
+                        heading={'Codec'}
+                        default={codec}
+                        options={stadiaCodecs}
+                        onChange={value => void changeCodec(value as StadiaCodec)}
+                    />
+                </Section>
+                <Section>
+                    <SelectionSection
+                        heading={'Resolution'}
+                        default={resolution}
+                        options={stadiaResolutions}
+                        onChange={value => void changeResolution(value as StadiaResolution)}
+                    />
+                </Section>
+            </SettingsArea>
+        </Container>, container.firstElementChild!);
     }
     return null;
 }
-
-const Wrapper = styled.div`
-  ${tw`
-    flex
-    items-center
-    p-8
-  `}
-`;
 
 const Section = styled.section`
   ${tw`
     pr-8
   `}
 `;
+
+const Container = styled.div`
+    ${tw`
+        absolute
+        flex
+        justify-center
+        items-center
+    `}
+    top: 0%;
+    left: 100%;
+    height: 7rem;
+    width: 5rem;
+`
+
+const OpenButton = styled.div`
+    ${tw`
+        p-2
+        rounded-full
+    `}
+    border: 2px solid white;
+`
+
+const CloseButton = styled.div`
+    ${tw`
+        absolute
+        flex
+        top-0 right-0
+        p-3 m-4
+        rounded-full
+        cursor-pointer
+    `}
+    
+    background: rgba(255, 255, 255, 0.03);
+    &:hover {
+        background: rgba(255, 255, 255, 0.06);
+    }
+`
 
 export default GameSettingsComponent;

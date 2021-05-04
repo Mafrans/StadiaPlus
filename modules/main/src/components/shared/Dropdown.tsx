@@ -98,7 +98,6 @@ const GradientBorder = styled.div`
 
 const Select = styled.div`
   ${tw`
-    z-10
     relative
   `}
   font-family: Overpass, sans-serif;
@@ -137,9 +136,9 @@ const OptionContainer = styled.div`
     
     transition
     
-    px-3
-    py-1
+    px-3 py-1
     w-full
+    z-10
   `}
   border: 1px solid ${Theme.Colors.gray['700']};
   background-color: ${Theme.Colors.gray['800']};
