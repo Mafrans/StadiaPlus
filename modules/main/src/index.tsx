@@ -5,15 +5,13 @@ import { StadiaPlusDB } from '../../shared/StadiaPlusDB';
 import { StadiaGameDB } from './StadiaGameDB';
 import Fonts from './Fonts';
 import PageUpdateComponent from './components/PageUpdateComponent/PageUpdateComponent';
-import IndicatorComponent from './components/IndicatorComponent/IndicatorComponent';
 import GameSettingsComponent from './components/GameSettingsComponent/GameSettingsComponent';
 import InitLibraryComponent from './components/InitLibraryComponent';
 import GameMonitorComponent from './components/GameMonitorComponent/GameMonitorComponent';
 import CodecComponent from './components/CodecComponent';
-import AbstractComponent from './components/AbstractComponent';
 import InGameSyncComponent from './components/InGameSyncComponent';
 import ResolutionComponent from './components/ResolutionComponent';
-import { updatePage } from './StadiaPage';
+import { createNavigationHook, updatePage } from './StadiaPage';
 import { StadiaSelectors } from './StadiaSelectors';
 
 
@@ -37,7 +35,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     ReactDOM.render(<>
         <PageUpdateComponent/>
-        <IndicatorComponent/>
         <GameSettingsComponent/>
         <GameMonitorComponent/>
     </>,root)
@@ -54,6 +51,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     Util.updateRenderer();
+})
 
-    setInterval(() => updatePage(), 1000);
+window.addEventListener('load', () => {
+    console.log(Util.desandbox(createNavigationHook, { immediate: true }));
 })
