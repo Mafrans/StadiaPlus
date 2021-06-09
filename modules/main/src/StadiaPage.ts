@@ -9,12 +9,13 @@ let page: StadiaPage = null;
 
 export const pages: { [key: string]: RegExp } = {
     'home': /\/home/,
+    'store': /\/store/,
     'player': /\/player\/[a-z0-9]{36}/,
     'library': /\/library/
 }
 
 export function navigate(target: string) {
-    postMessage({source: 'StadiaPlusNavigator', target}, '*');
+    postMessage({source: 'StadiaPlusNavigator', type: 'navigate', value: target}, '*');
 }
 
 // Scuffed but working hook that acts as an event handler for navigation, as well as
@@ -39,7 +40,6 @@ export function createNavigationHook(timeout?: number) {
     }
 
     ((oldNavigate) => {
-        let first = true;
         let i = 0;
         stadia[navigatorKey].prototype.navigate = function(...args: any[]) {
             // For some reason, this function fires twice every time it navigates anywhere.
@@ -49,16 +49,19 @@ export function createNavigationHook(timeout?: number) {
 
             const navigate = oldNavigate.bind(this);
             // This hack is pretty wild, but essentially allows for navigation programmatically through a message event listener.
-            if (first) {
+            if (i <= 2) {
+                console.log('create event');
                 addEventListener('message', function(event: MessageEvent) {
-                    if (event.data.source === "StadiaPlusNavigator") {
-                        navigate(event.data.target);
+                    const {source, type, value} = event.data;
+                    if (source === "StadiaPlusNavigator" && type === 'navigate') {
+                        navigate(value);
+                        postMessage({ source: 'StadiaPlusNavigator', type: 'event', value: args[0] }, '*');
                     }
                 });
-                first = false;
             }
             else {
                 navigate(...args);
+                postMessage({ source: 'StadiaPlusNavigator', type: 'event', value: args[0] }, '*');
             }
         }
     })(stadia[navigatorKey].prototype.navigate);
@@ -70,19 +73,28 @@ export function createNavigationHook(timeout?: number) {
     }
 }
 
-export function updatePage() {
-    let newPathname = location.pathname;
-    if(pathName === newPathname) return page;
-    pathName = newPathname;
+export function startPageUpdateHandler() {
+    addEventListener('message', event => {
+        const {source, type, value} = event.data;
+        console.log({source, type, value});
+        if (source === 'StadiaPlusNavigator' && type === 'event') {
+            setPage(findPage(value));
+        }
+    })
+}
 
-    const keys = Object.keys(pages);
-    const newPage = keys.find(key => {
+export function findPage(pathName: string): StadiaPage {
+    return Object.keys(pages).find(key => {
         const matcher = pages[key];
         return matcher.test(pathName);
     }) as StadiaPage;
+}
 
-    console.log('updatePage', newPathname, newPage);
+export function setPage(newPage: StadiaPage) {
+    console.log({page, newPage});
+    if(newPage === page) return;
 
+    console.log('updatePage', page, newPage);
     triggerPageChangeEvent({ page: newPage, lastPage: page })
     page = newPage || null;
     return page;
