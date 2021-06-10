@@ -15,6 +15,8 @@ import Header from './components/Header.component';
 import Content from './components/Content.component';
 import { formatBytes, getStream, reorder } from './GameMonitorHelpers';
 import { onPageChanged } from '../../events/PageChangeEvent';
+import { StadiaPage } from '../../StadiaPage';
+import { CgAdd, CgTrending } from 'react-icons/cg';
 
 export interface GameMonitorItem {
     name: string
@@ -25,10 +27,12 @@ export interface GameMonitorItem {
 
 interface GameMonitorState {
     items: GameMonitorItem[]
+    currentPage: StadiaPage
     sidebarOpen: boolean
     enabled: boolean
     loading: boolean
     position: { x: number, y: number }
+    offset: { x: number, y: number }
     transform: { x: number, y: number }
 }
 
@@ -48,10 +52,12 @@ export default class GameMonitorComponent extends React.Component<any, GameMonit
         super(props);
 
         this.state = {
+            currentPage: 'home',
             enabled: false,
             items: [],
             loading: false,
-            position: { x: 0, y: 0 },
+            position: { x: 8, y: 8 },
+            offset: { x: 0, y: 0 },
             sidebarOpen: false,
             transform: { x: 0, y: 0 }
         };
@@ -64,9 +70,7 @@ export default class GameMonitorComponent extends React.Component<any, GameMonit
                 this.setState({ loading: true });
                 Util.desandbox(MonitorRunnable);
             }
-            else {
-                this.setState({ enabled: false });
-            }
+            this.setState({ currentPage: event.page });
         });
 
         // TODO: Make this an observer
@@ -228,13 +232,13 @@ export default class GameMonitorComponent extends React.Component<any, GameMonit
     }
 
     onGrab(event: React.MouseEvent) {
-        const {position, transform} = this.state;
+        const {position, offset, transform} = this.state;
 
         (event.target as HTMLElement).style.cursor = 'grabbing';
 
-        this.grabElement = (event.target as HTMLElement).parentElement!;
-        const offsetX = position.x;
-        const offsetY = position.y;
+        this.grabElement = Util.parent(event.target as HTMLElement, 2) as HTMLElement;
+        const offsetX = position.x + offset.x;
+        const offsetY = position.y + offset.y;
 
         this.grabPosition = {
             x: event.pageX - offsetX,
@@ -248,32 +252,52 @@ export default class GameMonitorComponent extends React.Component<any, GameMonit
             this.grabPosition.y += this.grabElement.offsetHeight;
         }
 
-        const onMove = this.onMove.bind(this);
-        const onRelease = () => {
-            (event.target as HTMLElement).style.cursor = '';
-
-            window.removeEventListener('mousemove', onMove);
-            window.removeEventListener('mouseup', onRelease);
+        let mousePos = { x: event.clientX, y: event.clientY };
+        let onMouseMove = (event: MouseEvent) => {
+            mousePos = { x: event.clientX, y: event.clientY };
         }
 
-        window.addEventListener('mousemove', onMove);
+        const moveLoop = () => {
+            this.onMoveTick(mousePos);
+            if(this.grabElement) {
+                requestAnimationFrame(moveLoop)
+            }
+        }
+        moveLoop();
+
+        const onRelease = () => {
+            (event.target as HTMLElement).style.cursor = '';
+            this.grabElement = undefined;
+            this.grabPosition = {x: 0, y: 0}
+            window.removeEventListener('mousemove', onMouseMove);
+        }
+
+        window.addEventListener('mousemove', onMouseMove);
         window.addEventListener('mouseup', onRelease);
 
         event.preventDefault();
     }
 
-    onMove(event: MouseEvent) {
+    timer?: number;
+    onMoveTick(position: {x: number, y: number}) {
         if (!this.grabElement) return;
+        const deltaTime = (Date.now() - (this.timer || Date.now())) / 1000;
+        this.timer = Date.now();
 
-        let x = event.x - this.grabPosition.x;
-        let y = event.y - this.grabPosition.y;
+        const speed = 15;
+        let x = Util.lerp(this.state.position.x, position.x - this.grabPosition.x, deltaTime * speed);
+        let y = Util.lerp(this.state.position.y, position.y - this.grabPosition.y, deltaTime * speed);
+
         let transform = { x: 0, y: 0 };
+        let offsetX = 0;
+        let offsetY = 0;
 
         if (x <= 0) {
             x = 0;
         }
         else if (x + this.grabElement.offsetWidth >= window.innerWidth) {
-            x = window.innerWidth;
+            x = window.innerWidth - this.grabElement.offsetWidth;
+            offsetX = this.grabElement.offsetWidth;
             transform.x = -100;
         }
 
@@ -281,12 +305,14 @@ export default class GameMonitorComponent extends React.Component<any, GameMonit
             y = 0;
         }
         else if (y + this.grabElement.offsetHeight >= window.innerHeight) {
-            y = window.innerHeight;
+            y = window.innerHeight - this.grabElement.offsetHeight;
+            offsetY = this.grabElement.offsetHeight;
             transform.y = -100;
         }
 
         this.setState({
             position: { x, y },
+            offset: { x: offsetX, y: offsetY },
             transform
         });
     }
@@ -304,7 +330,14 @@ export default class GameMonitorComponent extends React.Component<any, GameMonit
     }
 
     render() {
-        const { items, sidebarOpen, enabled, loading, position, transform } = this.state;
+        const {
+            items, sidebarOpen,
+            currentPage, enabled,
+            loading, position,
+            offset, transform
+        } = this.state;
+
+        console.log(enabled);
 
         if (loading || (enabled && !sidebarOpen)) {
             if (!this.isCapturing) {
@@ -319,12 +352,21 @@ export default class GameMonitorComponent extends React.Component<any, GameMonit
             }
         }
 
-        return (enabled || loading || sidebarOpen) && ReactDOM.createPortal(
+        return (currentPage === 'player' && (enabled || loading || sidebarOpen)) && ReactDOM.createPortal(<>
+            <OpenIcon
+                style={{
+                    opacity: enabled ? 0 : 1,
+                    pointerEvents: enabled ? 'none' : 'all'
+                }}
+                onClick={ () => this.setState({ enabled: true }) }
+            >
+                <CgTrending size={24}/>
+            </OpenIcon>
+
             <Wrapper
                 style={{
-                    backgroundColor: Theme.hexToRGBA(Theme.Colors.gray[900], sidebarOpen ? 1 : 0.25),
-                    left: position.x,
-                    top: position.y,
+                    left: position.x + offset.x,
+                    top: position.y + offset.y,
                     transform: `translate(${transform.x}%, ${transform.y}%)`,
                 }}
             >
@@ -332,37 +374,53 @@ export default class GameMonitorComponent extends React.Component<any, GameMonit
 
                 <MonitorWrapper
                     style={{
+                        backgroundColor: Theme.hexToRGBA(Theme.Colors.gray[900], sidebarOpen ? 1 : 0.25),
                         display: loading ? 'none' : '',
-                        width: !sidebarOpen ? 'auto' : ''
+                        width: !sidebarOpen ? 'auto' : '',
+                        opacity: enabled ? 1 : 0,
+                        transform: `translateY(${enabled ? 0 : 16}px)`,
+                        pointerEvents: enabled ? 'all' : 'none'
                     }}
                 >
                     <Header
                         visible={ sidebarOpen }
-                        collapsed={ !enabled }
-                        onToggle={ (val) => this.setState({ enabled: val }) }
+                        onClose={ () => this.setState({ enabled: false }) }
                         onGrab={ this.onGrab.bind(this) }
                     />
-                    { enabled && <Content
+                    <Content
                         editable={ sidebarOpen }
                         items={ items }
                         dragOffset={{ x: -position.x, y: -position.y }}
                         onVisibilityToggle={ this.toggleItemVisibility.bind(this) }
                         onDragEnd={ this.onDragEnd.bind(this) }
-                    /> }
+                    />
                 </MonitorWrapper>
-            </Wrapper>,
+            </Wrapper></>,
             document.getElementById('stadiaplus-root')!
         );
     }
 }
 
+const OpenIcon = styled.div`
+    ${tw`
+        left-2
+        top-2
+        absolute
+        flex
+        p-3
+        rounded-full
+        cursor-pointer
+        transition
+    `}
+    z-index: 1000;
+    background-color: ${Theme.Colors.gray[900]};
+`
+
 const Wrapper = styled.div`
     ${tw`
-        fixed
-        rounded-lg
+        absolute
         box-border
         text-white
-        p-2
     `}
     z-index: 200;
     font-family: Overpass, sans-serif;
@@ -370,7 +428,9 @@ const Wrapper = styled.div`
 
 const MonitorWrapper = styled.div`
     ${tw`
-        transition
+        p-2
+        rounded-lg
     `}
     width: 22rem;
+    transition: transform 0.2s ease-out, opacity 0.2s ease-out;
 `

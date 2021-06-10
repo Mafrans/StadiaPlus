@@ -11,7 +11,7 @@ import GameMonitorComponent from './components/GameMonitorComponent/GameMonitorC
 import CodecComponent from './components/CodecComponent';
 import InGameSyncComponent from './components/InGameSyncComponent';
 import ResolutionComponent from './components/ResolutionComponent';
-import { createNavigationHook, startPageUpdateHandler } from './StadiaPage';
+import { createNavigationHook, findPage, getCurrentPage, setPage, startPageUpdateHandler } from './StadiaPage';
 import { StadiaSelectors } from './StadiaSelectors';
 
 
@@ -53,4 +53,5 @@ document.addEventListener('DOMContentLoaded', async () => {
     Util.updateRenderer();
     Util.desandbox(createNavigationHook, { immediate: true });
     startPageUpdateHandler();
+    setPage(findPage(location.pathname));
 })

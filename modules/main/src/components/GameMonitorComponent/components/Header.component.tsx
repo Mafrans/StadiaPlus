@@ -1,13 +1,12 @@
 import { Theme } from "../../../../../shared/Theme"
 import React from "react"
-import { CgChevronDown, CgChevronUp } from "react-icons/cg"
+import { CgChevronDown, CgChevronUp, CgClose } from 'react-icons/cg';
 import styled from "styled-components"
 import tw from "twin.macro"
 
 export type HeaderProps = {
     visible?: boolean;
-    collapsed?: boolean;
-    onToggle?: (value: boolean) => void;
+    onClose?: () => void;
     onGrab?: (event: React.MouseEvent) => void
 }
 
@@ -18,17 +17,11 @@ const Header = (props: HeaderProps) => (
             <HeaderWrapper onMouseDown={props.onGrab!}>
                 {/*  TODO: Add translations  */}
                 <Heading>Game Monitor</Heading>
-                <ToggleIcon aria-roledescription='button' onClick={() => props.onToggle!(props.collapsed!)}>
-                    { props.collapsed ?
-                        <CgChevronUp />
-                        : <CgChevronDown />
-                    }
+                <ToggleIcon aria-roledescription='button' onClick={() => props.onClose!()}>
+                    <CgClose />
                 </ToggleIcon>
             </HeaderWrapper>
-
-            { !props.collapsed &&
-                <Divider />
-            }
+            <Divider />
         </>
     )}
     </>

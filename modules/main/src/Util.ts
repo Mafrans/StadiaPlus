@@ -111,6 +111,10 @@ export default class Util {
 
         return it;
     }
+
+    static lerp(a: number, b: number, time: number) {
+        return a + (b - a) * time;
+    }
 }
 
 export enum Alphabet {
