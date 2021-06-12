@@ -6,30 +6,18 @@ import {  stadiaResolutions, StadiaResolution } from '../../../../shared/models/
 import { Config } from '../../../../shared/Config';
 import SettingsButton from './components/SettingsButton';
 import SettingsArea from './components/SettingsArea';
+import { onPageChanged } from '../../events/PageChangeEvent';
 
-let uuid: string | null = null;
 const GameSettingsComponent = () => {
-    const [codec, setCodec] = useState<StadiaCodec>('Automatic');
-    const [resolution, setResolution] = useState<StadiaResolution>('Automatic');
     const [visible, setVisible] = useState<boolean>(false);
-
-    const changeCodec = async (value: StadiaCodec) => {
-        void Config.CODEC.set(value);
-        setCodec(value);
-    }
-
-    const changeResolution = async (value: StadiaResolution) => {
-        void Config.RESOLUTION.set(value);
-        setResolution(value);
-    }
 
     return <>
         <SettingsButton onClick={() => setVisible(!visible)} active={visible} />
         <SettingsArea
             visible={visible}
             onClose={() => setVisible(false)}
-            onCodecChange={changeCodec}
-            onResolutionChange={changeResolution}
+            onCodecChange={value => void Config.CODEC.set(value)}
+            onResolutionChange={value => void Config.RESOLUTION.set(value)}
         />
     </>;
 }

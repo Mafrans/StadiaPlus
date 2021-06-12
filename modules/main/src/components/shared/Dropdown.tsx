@@ -25,6 +25,8 @@ export default class Dropdown extends React.Component<IDropdownProps, IDropdownS
             value: this.props.default || this.props.options[0],
         }
 
+        console.log('create dropdown', this.state)
+
         window.addEventListener('click', this.onClickAnywhere.bind(this));
     }
 
