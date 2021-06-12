@@ -1,6 +1,7 @@
 class StadiaPlusNetworkMonitor {
     originalRTC = [];
     peerConnections = [];
+    timer = 0;
 
     constructor() {
         const self = this;
@@ -16,7 +17,11 @@ class StadiaPlusNetworkMonitor {
             RTCPeerConnection.prototype = OriginalRTCConnection.prototype;
         }(RTCPeerConnection));
 
-        setInterval(this.poll.bind(this), 1000);
+        this.timer = setInterval(this.poll.bind(this), 1000);
+    }
+
+    stop() {
+        clearInterval(this.timer);
     }
 
     async poll() {

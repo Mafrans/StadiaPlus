@@ -63,12 +63,16 @@ export default class GameMonitorComponent extends React.Component<any, GameMonit
         };
 
         onPageChanged(async event => {
+            console.log({ event })
             if (event.page === 'player') {
                 console.log(await Config.MONITOR_ITEMS.get());
                 this.itemData = await Config.MONITOR_ITEMS.get() || {};
 
                 this.setState({ loading: true });
                 Util.desandbox(MonitorRunnable);
+            }
+            else {
+                Util.desandbox('StadiaPlusNetworkMonitor.stop()');
             }
             this.setState({ currentPage: event.page });
         });
@@ -351,6 +355,8 @@ export default class GameMonitorComponent extends React.Component<any, GameMonit
                 this.isCapturing = false;
             }
         }
+
+        console.log({ currentPage });
 
         return (currentPage === 'player' && (enabled || loading || sidebarOpen)) && ReactDOM.createPortal(<>
             <OpenIcon

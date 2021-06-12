@@ -40,28 +40,22 @@ export function createNavigationHook(timeout?: number) {
     }
 
     ((oldNavigate) => {
-        let i = 0;
+        let first = true;
         stadia[navigatorKey].prototype.navigate = function(...args: any[]) {
-            // For some reason, this function fires twice every time it navigates anywhere.
-            // Therefore, we must cancel every other fire.
-            i++;
-            if (i % 2) return;
-
             const navigate = oldNavigate.bind(this);
             // This hack is pretty wild, but essentially allows for navigation programmatically through a message event listener.
-            if (i <= 2) {
+            if (first) {
                 console.log('create event');
                 addEventListener('message', function(event: MessageEvent) {
                     const {source, type, value} = event.data;
                     if (source === "StadiaPlusNavigator" && type === 'navigate') {
                         navigate(value);
-                        postMessage({ source: 'StadiaPlusNavigator', type: 'event', value: args[0] }, '*');
                     }
                 });
+                first = false;
             }
             else {
                 navigate(...args);
-                postMessage({ source: 'StadiaPlusNavigator', type: 'event', value: args[0] }, '*');
             }
         }
     })(stadia[navigatorKey].prototype.navigate);
@@ -71,16 +65,6 @@ export function createNavigationHook(timeout?: number) {
     if (button && button instanceof HTMLElement) {
         button.click();
     }
-}
-
-export function startPageUpdateHandler() {
-    addEventListener('message', event => {
-        const {source, type, value} = event.data;
-        console.log({source, type, value});
-        if (source === 'StadiaPlusNavigator' && type === 'event') {
-            setPage(findPage(value));
-        }
-    })
 }
 
 export function findPage(pathName: string): StadiaPage {
