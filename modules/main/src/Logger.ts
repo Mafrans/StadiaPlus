@@ -20,6 +20,10 @@ export default class Logger {
         console.log(`${prefix} %c🧩 ${data.join(' ')}`, 'color: darkgreen');
     }
 
+    static debug(...data: any[]) {
+        console.log(`${prefix} %c🪲 ${data.join(' ')}`, 'color: grey');
+    }
+
     private static trace(...data: any[]) {
         console.groupCollapsed(...data)
         console.trace();

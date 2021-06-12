@@ -6,8 +6,9 @@ import { StadiaCodec } from '../../../shared/models/StadiaCodec';
 
 type StadiaCodecData = {
     h264?: 'ExternalDecoder'
-    vp9?: 'ExternalDecoder' | 'libvpx',
-    'vp9-profile0'?: 'libvpx'
+    vp9?: 'ExternalDecoder' | 'libvpx'
+    'vp9-profile0'?: 'ExternalDecoder' | 'libvpx'
+    'vp9-profile2'?: 'SoftwareDecoder' | 'libvpx'
 }
 
 const CodecComponent = () => {
@@ -16,8 +17,7 @@ const CodecComponent = () => {
             return;
         }
 
-        const codecs = await Config.CODECS.get() || {};
-        const codec: StadiaCodec = codecs[Util.getPlayerGameId()] || 'Automatic';
+        const codec = await Config.CODEC.get() || 'Automatic';
 
         let codecData: StadiaCodecData | undefined;
         switch (codec) {
@@ -34,13 +34,18 @@ const CodecComponent = () => {
                 break
         }
 
-        if (codecData !== undefined) {
-            localStorage.setItem('video_codec_implementation_by_codec_key', JSON.stringify(codecData));
-        }
-        else {
-            localStorage.removeItem('video_codec_implementation_by_codec_key');
-        }
-
+        setTimeout(async () => {
+            if (codecData !== undefined) {
+                localStorage.setItem('video_codec_implementation_by_codec_key', JSON.stringify(codecData));
+                localStorage.setItem('video_codec_implementation_by_codec_key_using_local_check', JSON.stringify(codecData));
+                localStorage.setItem('video_codec_implementation_by_codec_key_using_media_capabilities', JSON.stringify(codecData));
+            }
+            else {
+                localStorage.removeItem('video_codec_implementation_by_codec_key');
+                localStorage.removeItem('video_codec_implementation_by_codec_key_local_check');
+                localStorage.removeItem('video_codec_implementation_by_codec_key_media_capabilities');
+            }
+        }, 1000)
         Logger.info(`Using codec '${codec}'`);
     });
 }

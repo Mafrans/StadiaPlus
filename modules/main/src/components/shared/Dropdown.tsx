@@ -6,7 +6,7 @@ import { Theme } from '../../../../shared/Theme';
 
 interface IDropdownProps {
     options: string[];
-    style: CSSProperties;
+    style?: CSSProperties;
     default?: string;
     onChange?: (value: string) => void;
 }

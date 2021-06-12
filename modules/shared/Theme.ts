@@ -20,6 +20,14 @@ export namespace Theme {
         static yellow = {
             500: '#FAC94C',
         }
+        static stadia = {
+            elevation: {
+               100: 'rgba(255, 255, 255, 0.06)',
+               200: 'rgba(255, 255, 255, 0.12)',
+               300: 'rgba(255, 255, 255, 0.18)'
+            },
+            iconWhite: '#E8EAED'
+        }
     }
 
     export function hexToRGBA(hex: string, alpha?: number) {

@@ -13,8 +13,7 @@ const ResolutionComponent = () => {
         }
 
         const gameId = Util.getPlayerGameId();
-        const resolutions = await Config.RESOLUTIONS.get() || {};
-        const resolution: StadiaResolution = resolutions[gameId] || 'Automatic';
+        const resolution = await Config.RESOLUTION.get() || 'Automatic';
 
         let width: number = 0;
         let height: number = 0;
