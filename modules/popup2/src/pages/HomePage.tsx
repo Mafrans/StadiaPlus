@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Container from '../components/Container';
 import {
     CgArrowRight,
@@ -14,15 +14,28 @@ import ProfilePanel from '../components/ProfilePanel';
 import { StadiaPlusDB } from '../../../shared/StadiaPlusDB';
 import Button from '../components/Button';
 import { FaPatreon } from 'react-icons/fa';
+import tw from 'twin.macro';
+import styled from 'styled-components';
+import { Theme } from '../../../shared/Theme';
+
+const Hr = styled.hr`
+  border: none;
+  border-bottom: 1px solid ${Theme.Colors.gray['700']};
+`
+
 
 export default function HomePage() {
     const [profile, setProfile] = useState<StadiaPlusDB.Profile | null>(null);
 
-    StadiaPlusDB.checkAuthenticated().then(async (authenticated) => {
-        if (authenticated) {
-            setProfile(await StadiaPlusDB.getOwnProfile());
-        }
-    })
+    useEffect(() => {
+        StadiaPlusDB.checkAuthenticated().then(async (authenticated) => {
+            if (authenticated) {
+                setProfile(await StadiaPlusDB.getOwnProfile());
+            }
+        })
+    }, [])
+
+
 
     return <Container>
         <OnboardPanel
@@ -38,7 +51,7 @@ export default function HomePage() {
                 label: 'Enable sync',
             }}
         />
-        <hr />
+        <Hr />
         { profile && <ProfilePanel profile={profile} /> }
         <Button icon={ <FaPatreon /> } type={'outline'} onClick={ async () => await StadiaPlusDB.patreonSignIn() }>
             Connect with Patreon

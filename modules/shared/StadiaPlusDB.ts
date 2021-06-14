@@ -74,7 +74,7 @@ export namespace StadiaPlusDB {
             const json = await response.json();
             return json.authorized as boolean;
         } catch (e) {
-            Logger.error(e);
+            throw new Error('Timed out');
         }
         return false;
     }
