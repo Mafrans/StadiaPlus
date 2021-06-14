@@ -53,5 +53,4 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     Util.updateRenderer();
     Util.desandbox(createNavigationHook, { immediate: true });
-    setPage(findPage(location.pathname));
 })
