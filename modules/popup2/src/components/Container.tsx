@@ -7,6 +7,7 @@ const Container = styled.main`
     ${tw`
         p-4
     `}
+    min-width: 20rem;
     background-color: ${Theme.Colors.gray['900']};
 `
 

@@ -26,6 +26,7 @@ import { useHistory } from 'react-router-dom';
 export default function HomePage() {
     const [profile, setProfile] = useState<StadiaPlusDB.Profile | null>(null);
     const [syncEnabled, setSyncEnabled] = useState<boolean>(false);
+    const history = useHistory();
 
     const signIn = async () => {
         await StadiaPlusDB.googleSignIn();
@@ -107,7 +108,7 @@ export default function HomePage() {
                 <CgGift size={24} />
                 Donate
             </TileButton>
-            <TileButton>
+            <TileButton onClick={() => history.push('/settings')}>
                 <CgOptions size={24} />
                 Settings
             </TileButton>
