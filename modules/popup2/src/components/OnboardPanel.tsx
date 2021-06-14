@@ -44,7 +44,7 @@ export default function OnboardPanel(props: OnboardPanelProps) {
         </Link> }
 
         { props.button && <ButtonWrapper>
-            <Button icon={ props.button.icon } onClick={ props.button.onClick }>
+            <Button {...props.button} >
                 { props.button.label }
             </Button>
         </ButtonWrapper> }
@@ -62,12 +62,13 @@ export default function OnboardPanel(props: OnboardPanelProps) {
 
 const Wrapper = styled.div<{elevated?: boolean}>`
     ${tw`
-        py-4
+        my-4
         text-white
         rounded-lg
     `}
     ${props => props.elevated && tw` 
-        px-4
+        my-0
+        p-4
     `}
     ${props => props.elevated && `
         background-color: ${Theme.Colors.gray['800']};

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Container from '../components/Container';
 import {
     CgArrowRight,
-    CgArrowTopRight,
+    CgArrowTopRight, CgGames,
     CgGift,
     CgOptions,
     CgProfile,
@@ -80,13 +80,15 @@ export default function HomePage() {
     />
 
     const finalPanel = <OnboardPanel
-        elevated={true}
         title={'You\'re all set!'}
         body={`
-            Thanks for using Stadia+!
-            If you enjoy my work, I would greatly appreciate 
-            if you dropped me a tip 😉
+            Stadia+ is set up and ready to go. Fire up Stadia and start playing!
         `}
+        button={{
+            label: 'Launch Stadia',
+            icon: <CgGames />,
+            onClick: () => window.open('https://stadia.google.com')
+        }}
     />
 
     return <Container>
