@@ -85,4 +85,5 @@ export class Config {
     static AUTH_TOKEN = new ConfigEntry<string>('auth-token', ConfigType.LOCAL);
     static MONITOR_ITEMS = new ConfigEntry<{[id: string]: { index: number, visible: boolean }}>('monitor-items', ConfigType.LOCAL);
     static LOGIN_SKIPPED = new ConfigEntry<boolean>('login-skipped', ConfigType.LOCAL);
+    static ENABLE_SYNC = new ConfigEntry<boolean>('enable-sync', ConfigType.SYNC);
 }

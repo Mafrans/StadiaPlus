@@ -4,6 +4,7 @@ import Container from './Container';
 import styled from 'styled-components';
 import tw from 'twin.macro';
 import Button, { ButtonProps } from './Button';
+import { Theme } from '../../../shared/Theme';
 
 interface ButtonData extends ButtonProps {
     label: string
@@ -12,6 +13,7 @@ interface ButtonData extends ButtonProps {
 type OnboardPanelProps = {
     title: string
     body: string
+    elevated?: boolean
     link?: {
         icon?: ReactElement
         label: string
@@ -27,7 +29,7 @@ type OnboardPanelProps = {
 }
 
 export default function OnboardPanel(props: OnboardPanelProps) {
-    return <Wrapper>
+    return <Wrapper elevated={props.elevated}>
         <Heading>{ props.title }</Heading>
         <Paragraph>{ props.body }</Paragraph>
 
@@ -58,13 +60,20 @@ export default function OnboardPanel(props: OnboardPanelProps) {
     </Wrapper>;
 }
 
-const Wrapper = styled.div`
-    font-family: Overpass, sans-serif;
-    min-width: 20rem;
+const Wrapper = styled.div<{elevated?: boolean}>`
     ${tw`
         py-4
         text-white
+        rounded-lg
     `}
+    ${props => props.elevated && tw` 
+        px-4
+    `}
+    ${props => props.elevated && `
+        background-color: ${Theme.Colors.gray['800']};
+    `}
+    font-family: Overpass, sans-serif;
+    min-width: 20rem;
 `
 
 const Heading = styled.h1(tw`

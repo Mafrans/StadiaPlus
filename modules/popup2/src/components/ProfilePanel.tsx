@@ -32,7 +32,7 @@ export default function ProfilePanel(props: ProfilePanelProps) {
 
 const Panel = styled.section(tw`
     flex
-    py-4
+    my-6
     items-center
 `)
 
