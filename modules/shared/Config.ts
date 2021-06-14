@@ -84,4 +84,5 @@ export class Config {
     static RESOLUTION = new ConfigEntry<StadiaResolution>('resolution', ConfigType.LOCAL);
     static AUTH_TOKEN = new ConfigEntry<string>('auth-token', ConfigType.LOCAL);
     static MONITOR_ITEMS = new ConfigEntry<{[id: string]: { index: number, visible: boolean }}>('monitor-items', ConfigType.LOCAL);
+    static LOGIN_SKIPPED = new ConfigEntry<boolean>('login-skipped', ConfigType.LOCAL);
 }

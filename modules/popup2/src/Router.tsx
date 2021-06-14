@@ -6,10 +6,10 @@ import HomePage from './pages/HomePage';
 export default function Router() {
     return <HashRouter>
         <Switch>
-            <Route path={'/home'}>
+            <Route exact path={'/home'}>
                 <HomePage />
             </Route>
-            <Route path={'/'}>
+            <Route exact path={'/'}>
                 <OnboardPage />
             </Route>
         </Switch>

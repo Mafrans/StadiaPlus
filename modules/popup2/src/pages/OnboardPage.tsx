@@ -13,6 +13,7 @@ import set = chrome.cookies.set;
 import MDSpinner from 'react-md-spinner';
 import StadiaPlusLogo from '../../../shared/resources/components/StadiaPlusLogo';
 import { IoLogoGoogle } from 'react-icons/io';
+import { Config } from '../../../shared/Config';
 
 
 export default function OnboardPage() {
@@ -23,6 +24,7 @@ export default function OnboardPage() {
     const signIn = async () => {
         try {
             await StadiaPlusDB.googleSignIn();
+            history.push('/home');
         }
         catch (e) {
             Logger.error(e);
@@ -35,8 +37,18 @@ export default function OnboardPage() {
         }
     };
 
+    const skipSignIn = async () => {
+        await Config.LOGIN_SKIPPED.set(true);
+        history.push('/home');
+    }
+
     const checkAuthenticated = async () => {
         setLoaded(false);
+
+        if (await Config.LOGIN_SKIPPED.get()) {
+            history.push('/home');
+        }
+
         try {
             const authenticated = await StadiaPlusDB.checkAuthenticated();
             if (authenticated) {
@@ -61,7 +73,7 @@ export default function OnboardPage() {
         link={{
             icon: <CgSync />,
             label: 'Try again',
-            onClick: () => { void checkAuthenticated() }
+            onClick: checkAuthenticated
         }}
     />
 
@@ -77,6 +89,10 @@ export default function OnboardPage() {
             icon: <IoLogoGoogle />,
             label: 'Sign in with Google',
             onClick: signIn
+        }}
+        altLink={{
+            label: `No thanks, I'll sign in later`,
+            onClick: skipSignIn
         }}
     />
 

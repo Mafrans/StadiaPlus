@@ -19,6 +19,11 @@ type OnboardPanelProps = {
         onClick?: (event: React.MouseEvent) => void
     }
     button?: ButtonData
+    altLink?: {
+        label: string
+        url?: string
+        onClick?: (event: React.MouseEvent) => void
+    }
 }
 
 export default function OnboardPanel(props: OnboardPanelProps) {
@@ -26,8 +31,13 @@ export default function OnboardPanel(props: OnboardPanelProps) {
         <Heading>{ props.title }</Heading>
         <Paragraph>{ props.body }</Paragraph>
 
-        { props.link && <Link onClick={props.link?.onClick}>
-            <a href={props.link.url || '#'}>{props.link.label}</a>
+        { props.link && <Link>
+            <Anchor
+                href={props.link.url || '#'}
+                onClick={props.link?.onClick}
+            >
+                {props.link.label}
+            </Anchor>
             { props.link.icon }
         </Link> }
 
@@ -36,6 +46,15 @@ export default function OnboardPanel(props: OnboardPanelProps) {
                 { props.button.label }
             </Button>
         </ButtonWrapper> }
+
+        { props.altLink && <AltLink>
+            <Anchor
+                href={props.altLink.url || '#'}
+                onClick={props.altLink?.onClick}
+            >
+                {props.altLink.label}
+            </Anchor>
+        </AltLink> }
     </Wrapper>;
 }
 
@@ -64,19 +83,27 @@ const Link = styled.p`
         flex
         items-center
         mt-4
-        text-xl
+        text-base
         text-white
     `}
-    
-    >a {
-        ${tw`
-            mt-1
-            mr-1
-            text-white
-            text-base
-            font-light
-        `}
-    }
+`
+
+const AltLink = styled.p`
+    ${tw`
+        m-1
+        text-sm
+        text-white
+        opacity-50
+    `}
+`
+
+const Anchor = styled.a`
+    ${tw`
+        mt-1
+        mr-1
+        text-white
+        font-light
+    `}
 `
 
 const ButtonWrapper = styled.div`
