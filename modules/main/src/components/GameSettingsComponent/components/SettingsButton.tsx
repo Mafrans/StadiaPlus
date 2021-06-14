@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import { Theme } from '../../../../../shared/Theme';
 import { PropsWithChildren, useEffect, useState } from 'react';
 import { StadiaSelectors } from '../../../StadiaSelectors';
-import StadiaPlusIcon from '../../../../../shared/resources/StadiaPlusIcon';
+import StadiaPlusIcon from '../../../../../shared/resources/components/StadiaPlusIcon';
 
 type SettingsButtonProps = {
     active?: boolean,
