@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import { Theme } from '../../../../../shared/Theme';
 import { PropsWithChildren, useEffect, useRef, useState } from 'react';
 import { StadiaSelectors } from '../../../StadiaSelectors';
-import Dropdown from '../../shared/Dropdown';
+import Dropdown from '../../../../../shared/components/Dropdown';
 import { StadiaCodec, stadiaCodecs } from '../../../../../shared/models/StadiaCodec';
 import { StadiaResolution, stadiaResolutions } from '../../../../../shared/models/StadiaResolution';
 import { onPageChanged } from '../../../events/PageChangeEvent';
