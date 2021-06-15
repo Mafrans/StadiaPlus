@@ -16,7 +16,7 @@ const SettingsCategory = (props: PropsWithChildren<SettingsCategoryProps>) => {
 
 const Wrapper = styled.section`
     ${tw`
-        mt-6
+        mt-8
     `}
 `
 
