@@ -19,27 +19,16 @@ export type SettingsAreaProps = {
 }
 
 export default function SettingsArea(props: SettingsAreaProps) {
-    const [codec, setCodec] = useState<StadiaCodec>();
-    const [resolution, setResolution] = useState<StadiaResolution>();
 
     useEffect(() => {
-        onPageChanged(async event => {
-            if (event.page === 'home') {
-                console.log(await Config.CODEC.get(), await Config.RESOLUTION.get())
-                setCodec(await Config.CODEC.get() || 'Automatic' as StadiaCodec);
-                setResolution(await Config.RESOLUTION.get() || 'Automatic' as StadiaResolution);
-            }
-        })
-
         window.addEventListener('click', event => {
             if (event.target instanceof HTMLElement && !event.target.matches('.MmEIfc, .MmEIfc *')) {
                 props.onClose();
             }
         });
-    }, [])
+    }, []);
 
-    if (!codec && !resolution) return null;
-    else return <Wrapper
+    return <Wrapper
         className={'MmEIfc'} // The 'MmEIfc' classname is used by Stadia to position nav popups
         visible={props.visible}
     >
@@ -48,11 +37,8 @@ export default function SettingsArea(props: SettingsAreaProps) {
             <Name>Selected Codec</Name>
             <Dropdown
                 style={{ minWidth: '10rem' }}
-                default={codec}
-                onChange={val => {
-                    setCodec(val as StadiaCodec);
-                    props.onCodecChange(val as StadiaCodec);
-                }}
+                value={() => Config.CODEC.get()}
+                onChange={val => props.onCodecChange(val as StadiaCodec)}
                 options={stadiaCodecs}
             />
         </Row>
@@ -60,11 +46,8 @@ export default function SettingsArea(props: SettingsAreaProps) {
             <Name>Selected Resolution</Name>
             <Dropdown
                 style={{ minWidth: '10rem' }}
-                default={resolution}
-                onChange={val => {
-                    setResolution(val as StadiaResolution);
-                    props.onResolutionChange(val as StadiaResolution);
-                }}
+                value={() => Config.RESOLUTION.get()}
+                onChange={val => props.onResolutionChange(val as StadiaResolution)}
                 options={stadiaResolutions}
             />
         </Row>

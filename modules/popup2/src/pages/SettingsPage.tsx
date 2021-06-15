@@ -36,7 +36,7 @@ export default function SettingsPage() {
             <DropdownEntry
                 title={'Language'}
                 dropdown={{
-                    default: 'English',
+                    value: 'English',
                     options: ['English', 'Svenska', 'Español'],
                     onChange: () => {}
                 }}
@@ -47,7 +47,7 @@ export default function SettingsPage() {
             <DropdownEntry
                 title={'Codec'}
                 dropdown={{
-                    default: () => Config.CODEC.get(),
+                    value: () => Config.CODEC.get(),
                     options: stadiaCodecs,
                     onChange: value => Config.CODEC.set(value as StadiaCodec)
                 }}
@@ -55,7 +55,7 @@ export default function SettingsPage() {
             <DropdownEntry
                 title={'Resolution'}
                 dropdown={{
-                    default: () => Config.RESOLUTION.get(),
+                    value: () => Config.RESOLUTION.get(),
                     options: stadiaResolutions,
                     onChange: value => Config.RESOLUTION.set(value as StadiaResolution)
                 }}

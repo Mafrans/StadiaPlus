@@ -7,7 +7,7 @@ import { Theme } from '../Theme';
 export type DropdownProps = {
     options: string[];
     style?: CSSProperties;
-    default?: string | (() => Promise<string | null>);
+    value?: string | (() => Promise<string | null>);
     onChange?: (value: string) => void;
 }
 
@@ -19,13 +19,6 @@ const Dropdown = (props: DropdownProps) => {
         window.addEventListener('click', event => {
             setActive(false);
         });
-
-        if (props.default instanceof Function) {
-            props.default().then(value => setValue(value || props.options[0]));
-        }
-        else {
-            setValue(props.default || props.options[0]);
-        }
     }, []);
 
     const onClick = (event: React.MouseEvent) => {
@@ -36,6 +29,24 @@ const Dropdown = (props: DropdownProps) => {
     const onClickOption = (event: React.MouseEvent, option: string) => {
         setValue(option);
         props.onChange?.call(this, option);
+    }
+
+    const trySetValue = (newValue: string) => {
+        if (newValue !== value) {
+            setValue(newValue);
+        }
+    }
+
+    if (props.value instanceof Function) {
+        // This could be an issue with configs, since they'll be looped
+        props.value().then(value => {
+            if (value) {
+                trySetValue(value)
+            }
+        });
+    }
+    else if(props.value) {
+        trySetValue(props.value);
     }
 
     return <Select style={props.style}>
