@@ -40,28 +40,26 @@ export function createNavigationHook(timeout?: number) {
     }
 
     ((oldNavigate) => {
-        let first = true;
+        let i = 0;
         stadia[navigatorKey].prototype.navigate = function(...args: any[]) {
             const navigate = oldNavigate.bind(this);
             // This hack is pretty wild, but essentially allows for navigation programmatically through a message event listener.
-            if (first) {
-                console.log('create event');
+            if (i === 0) {
                 addEventListener('message', function(event: MessageEvent) {
                     const {source, type, value} = event.data;
                     if (source === "StadiaPlusNavigator" && type === 'navigate') {
                         navigate(value);
                     }
                 });
-                first = false;
             }
-            else {
+            else if(i >= 2) {
                 navigate(...args);
             }
+            i++;
         }
     })(stadia[navigatorKey].prototype.navigate);
 
     const button = document.querySelector('a[href="/home"]');
-    console.log({ button })
     if (button && button instanceof HTMLElement) {
         button.click();
     }
