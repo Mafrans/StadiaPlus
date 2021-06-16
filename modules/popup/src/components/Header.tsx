@@ -1,59 +1,48 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
+import { CgArrowLeft } from 'react-icons/cg';
 import styled from 'styled-components';
 import tw from 'twin.macro';
+import { useHistory } from 'react-router-dom';
 
-interface HeaderProps {
-    icon: {
-        src: string,
-        alt: string,
-    },
-    title?: string,
+type HeaderProps = {
 }
 
-const HeaderWrapper = styled('div')`
+function Header(props: PropsWithChildren<HeaderProps>) {
+    const history = useHistory();
+
+    return (
+        <Wrapper>
+            <BackButton onClick={() => history.goBack()}>
+                <CgArrowLeft size={24} />
+            </BackButton>
+            <Title>{ props.children }</Title>
+        </Wrapper>
+    );
+}
+
+const Wrapper = styled.div`
     ${tw`
-        box-border
         flex
         items-center
-        mb-4
     `}
 `
 
-const LogoImage = styled('img')`
+const BackButton = styled.div.attrs({role: 'button'})`
     ${tw`
-        h-6
-        mr-2
+        p-1 mr-2
+        cursor-pointer
+        text-white
     `}
 `
 
-const LogoHeading = styled('h1')`
+const Title = styled.h2`
     ${tw`
-        uppercase
-        font-bold
-        tracking-wider
-        m-0
+        text-xl
+        font-semibold
+        text-white
     `}
-    
-    background: -webkit-linear-gradient(45deg, #F54F29 0%, #EB4534 30%, #D02C53 70%, #B9166D 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    font-family: Overpass;
 `
 
-export default class Header extends React.Component<HeaderProps, any> {
-    constructor(props: HeaderProps) {
-        super(props);
-    }
 
-    render() {
-        return (
-            <HeaderWrapper>
-                <LogoImage src={this.props.icon.src} alt={this.props.icon.alt}/>
-                {
-                    this.props.title !== undefined
-                        ? <LogoHeading>{this.props.title}</LogoHeading>
-                        : null
-                }
-            </HeaderWrapper>
-        );
-    }
-}
+export default Header;

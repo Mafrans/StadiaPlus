@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:dev@main": "parcel build --out-dir ./dist/main --cache-dir .build_cache/main modules/main/src/index.tsx",
-    "build:dev@popup": "parcel build --out-dir ./dist/popup --cache-dir .build_cache/popup2 --public-url ./ modules/popup2/src/index.html",
+    "build:dev@popup": "parcel build --out-dir ./dist/popup --cache-dir .build_cache/popup --public-url ./ modules/popup/src/index.html",
     "build:dev": "npm run build:dev@main && npm run build:dev@popup"
   },
   "repository": {

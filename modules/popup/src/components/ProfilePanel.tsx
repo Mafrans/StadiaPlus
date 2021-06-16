@@ -1,86 +1,86 @@
 import React from 'react';
-import DBProfile from '../../../shared/models/DBProfile';
-import GenericButton from './GenericButton';
-import StadiaPlusDB from '../../../shared/StadiaPlusDB';
+import { CgArrowTopRight, CgProfile } from 'react-icons/cg';
+import Container from './Container';
 import styled from 'styled-components';
+import { Theme } from '../../../shared/Theme';
+import { StadiaPlusDB } from '../../../shared/StadiaPlusDB';
 import tw from 'twin.macro';
-import Theme from '../Theme';
 
 interface ProfilePanelProps {
-    profile: DBProfile
+    profile: StadiaPlusDB.Profile
 }
 
-const ProfileWrapper = styled('div')`
-    ${tw`
-        mb-4
-        p-4
-        box-border
-        rounded-lg
-    `}
-    border: ${Theme.LIGHT_GRAY} 2px solid;
-`
+export default function ProfilePanel(props: ProfilePanelProps) {
+    const [name, tag] = (props.profile.names[0]||'#').split('#');
 
-const ProfileInfoWrapper = styled('div')`
+    return <Panel>
+        <Avatar>
+            { props.profile.avatar && <AvatarImage src={props.profile.avatar} alt={'Profile picture'} /> }
+            <Placeholder>
+                <CgProfile size={24} />
+            </Placeholder>
+        </Avatar>
+        <ProfileInfo>
+            <Name>{name}</Name>
+            <Tag>#{tag}</Tag>
+        </ProfileInfo>
+        <ProfileLink>
+            <CgArrowTopRight size={24} />
+        </ProfileLink>
+    </Panel>;
+}
+
+const Panel = styled.section(tw`
+    flex
+    my-6
+    items-center
+`)
+
+const Avatar = styled.div(tw`
+    relative
+    w-12 h-12
+    text-white`
+)
+
+const AvatarImage = styled.img(tw`
+    absolute
+    w-full h-full
+    rounded-full
+    z-10
+`)
+
+const Placeholder = styled.div`
     ${tw`
         flex
-    `}
-`;
-
-const ProfileImage = styled('img')`
-    ${tw`
-        w-12
-        h-12
-        mr-4
+        justify-center
+        items-center
+        w-full h-full
         rounded-full
+        box-border
     `}
-`;
+    border: 1px solid ${Theme.Colors.gray['700']};
+`
 
-const ProfileName = styled('h3')`
+const ProfileInfo = styled.div`
     ${tw`
-        text-lg
-        font-medium
+        text-white
+        ml-4
     `}
-    color: ${Theme.CHARCOAL};
-`;
+    font-family: Overpass, sans-serif;
+`
 
-const ProfileTag = styled('p')`
+const Name = styled.h3(tw`
+    mb-1
+`)
+
+const Tag = styled.p`
     ${tw`
         text-sm
     `}
-    color: ${Theme.GRAY};
-`;
+    color: ${Theme.Colors.gray['500']};
+`
 
-export default class ProfilePanel extends React.Component<ProfilePanelProps, any> {
-    constructor(props: any) {
-        super(props);
-    }
-
-    render() {
-        return (
-            <ProfileWrapper>
-                <ProfileInfoWrapper>
-                    <ProfileImage
-                        src={this.props.profile.avatar}
-                        alt={`${this.props.profile.username}'s Avatar`}
-                    />
-
-                    <div>
-                        <ProfileName>{this.props.profile.username}</ProfileName>
-                        <ProfileTag>#{this.props.profile.tag}</ProfileTag>
-                    </div>
-                </ProfileInfoWrapper>
-
-                <GenericButton
-                    icon='person'
-                    onClick={
-                        () => {
-                            window.open(`${StadiaPlusDB.url}/profile/${this.props.profile.username}/${this.props.profile.tag}`);
-                        }
-                    }
-                >
-                    View Profile
-                </GenericButton>
-            </ProfileWrapper>
-        );
-    }
-}
+const ProfileLink = styled.a(tw`
+    text-white
+    ml-auto
+`)
