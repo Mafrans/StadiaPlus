@@ -37,7 +37,7 @@ export default function SettingsPage() {
                 title={'Language'}
                 dropdown={{
                     value: 'English',
-                    options: ['English', 'Svenska', 'Español'],
+                    options: ['English'],
                     onChange: () => {}
                 }}
             />
