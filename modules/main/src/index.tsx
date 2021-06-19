@@ -4,7 +4,6 @@ import Util from './Util';
 import { StadiaPlusDB } from '../../shared/StadiaPlusDB';
 import { StadiaGameDB } from './StadiaGameDB';
 import Fonts from './Fonts';
-import PageUpdateComponent from './components/PageUpdateComponent/PageUpdateComponent';
 import GameSettingsComponent from './components/GameSettingsComponent/GameSettingsComponent';
 import InitLibraryComponent from './components/InitLibraryComponent';
 import GameMonitorComponent from './components/GameMonitorComponent/GameMonitorComponent';
@@ -34,7 +33,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     InGameSyncComponent();
 
     ReactDOM.render(<>
-        <PageUpdateComponent/>
         <GameSettingsComponent/>
         <GameMonitorComponent/>
     </>,root)
