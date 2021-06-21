@@ -359,15 +359,15 @@ export default class GameMonitorComponent extends React.Component<any, GameMonit
         console.log({ currentPage });
 
         return (currentPage === 'player' && (enabled || loading || sidebarOpen)) && ReactDOM.createPortal(<>
-            <OpenIcon
+            { sidebarOpen && <OpenIcon
                 style={{
                     opacity: enabled ? 0 : 1,
-                    pointerEvents: enabled ? 'none' : 'all'
+                    pointerEvents: enabled ? 'none' : 'all',
                 }}
-                onClick={ () => this.setState({ enabled: true }) }
+                onClick={() => this.setState({ enabled: true })}
             >
-                <CgTrending size={24}/>
-            </OpenIcon>
+                <CgTrending size={24} />
+            </OpenIcon> }
 
             <Wrapper
                 style={{
