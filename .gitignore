@@ -2,6 +2,7 @@
 node_modules
 dist/**/*
 !modules/popup/src/index.html
+bin
 
 *.log
 

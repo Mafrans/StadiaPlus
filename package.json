@@ -5,6 +5,11 @@
   "main": "modules/main/src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "zip": "copyfiles dist/**/*.* background.js images/**/*.* manifest.json temp && cross-zip temp && copyfiles temp.zip bin && del-cli temp && del-cli temp.zip",
+    "clean": "del-cli dist/**/*.*",
+    "build@main": "parcel build --out-dir ./dist/main --no-cache modules/main/src/index.tsx",
+    "build@popup": "parcel build --out-dir ./dist/popup --no-cache --public-url ./ modules/popup/src/index.html",
+    "build": "npm run clean && npm run build@main && npm run build@popup && npm run zip",
     "build:dev@main": "parcel build --out-dir ./dist/main --cache-dir .build_cache/main modules/main/src/index.tsx",
     "build:dev@popup": "parcel build --out-dir ./dist/popup --cache-dir .build_cache/popup --public-url ./ modules/popup/src/index.html",
     "build:dev": "npm run build:dev@main && npm run build:dev@popup"
@@ -32,7 +37,11 @@
     "@types/react-transition-group": "^4.4.0",
     "@types/styled-components": "^5.1.7",
     "babel-plugin-macros": "^3.0.1",
+    "copyfiles": "^2.4.1",
+    "cross-zip-cli": "^1.0.0",
     "cssnano": "^4.1.10",
+    "del-cli": "^4.0.0",
+    "gzip-cli": "^1.2.0",
     "sass": "^1.32.5",
     "tailwind.macro": "^0.5.10",
     "typescript": "^4.1.3"
