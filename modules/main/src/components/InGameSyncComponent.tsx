@@ -10,8 +10,6 @@ const InGameSyncComponent = () => {
     let gameId: string;
 
     const reportGameProgress = () => {
-        console.log('reportGameProgress');
-
         if (!connected || !gameId) {
             return;
         }
@@ -21,7 +19,6 @@ const InGameSyncComponent = () => {
             const userId = avatarElement.getAttribute('data-player-id');
 
             void StadiaPlusDB.updateGameProgress(userId!, gameId!);
-            console.log(`Reporting progress for ${userId} in game ${gameId}`);
         }
     }
 

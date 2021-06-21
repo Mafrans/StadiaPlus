@@ -226,13 +226,6 @@ export namespace StadiaPlusDB {
         const playTime = DBModel.getPlayTime(data, gameId);
         const achievements = DBModel.getAchievements(data);
 
-        console.log({
-            profile,
-            game,
-            playTime,
-            achievements
-        })
-
         const response = await fetch(`${url}/api/profile/update`, {
             method: 'POST',
             headers: {
@@ -248,8 +241,6 @@ export namespace StadiaPlusDB {
                 }
             }),
         });
-
-        console.log(`${response.status} - ${response.statusText}`);
 
         if (response.status !== 200) {
             throw Error(response.status.toString());

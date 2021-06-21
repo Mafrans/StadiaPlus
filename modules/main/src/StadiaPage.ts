@@ -73,10 +73,8 @@ export function findPage(pathName: string): StadiaPage {
 }
 
 export function setPage(newPage: StadiaPage) {
-    console.log({page, newPage});
     if(newPage === page) return;
 
-    console.log('updatePage', page, newPage);
     triggerPageChangeEvent({ page: newPage, lastPage: page })
     page = newPage || null;
     return page;

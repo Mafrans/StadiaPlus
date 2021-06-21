@@ -63,9 +63,7 @@ export default class GameMonitorComponent extends React.Component<any, GameMonit
         };
 
         onPageChanged(async event => {
-            console.log({ event })
             if (event.page === 'player') {
-                console.log(await Config.MONITOR_ITEMS.get());
                 this.itemData = await Config.MONITOR_ITEMS.get() || {};
 
                 this.setState({ loading: true });
@@ -185,7 +183,6 @@ export default class GameMonitorComponent extends React.Component<any, GameMonit
                 },
             ] as GameMonitorItem[];
 
-            console.log('update items')
             this.lastBytesReceived = bytesReceived!;
             this.setState({ items: this.parseItemData(newItems) })
         }
@@ -210,11 +207,9 @@ export default class GameMonitorComponent extends React.Component<any, GameMonit
                     index++;
                 }
             }
-            console.log(i, index)
             this.itemData[i].index = index;
         }
         this.itemData[id].index = destination;
-        console.log(this.itemData);
         void Config.MONITOR_ITEMS.set(this.itemData);
     }
 
@@ -341,8 +336,6 @@ export default class GameMonitorComponent extends React.Component<any, GameMonit
             offset, transform
         } = this.state;
 
-        console.log(enabled);
-
         if (loading || (enabled && !sidebarOpen)) {
             if (!this.isCapturing) {
                 addEventListener('message', this.messageCaptureListener);
@@ -355,8 +348,6 @@ export default class GameMonitorComponent extends React.Component<any, GameMonit
                 this.isCapturing = false;
             }
         }
-
-        console.log({ currentPage });
 
         return (currentPage === 'player' && (enabled || loading || sidebarOpen)) && ReactDOM.createPortal(<>
             { sidebarOpen && <OpenIcon

@@ -71,7 +71,6 @@ export namespace DBModel {
     }
 
     export async function fetchData(userId: string, gameId: string): Promise<string> {
-        console.log({userId, gameId});
         let response = await fetch(`https://stadia.google.com/profile/${userId}/detail/${gameId}`);
         const text = await response.text();
 

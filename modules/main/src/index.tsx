@@ -41,7 +41,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     Util.observe(document.querySelector(StadiaSelectors.RENDERER_CONTAINER)!, 'childList', Node.ELEMENT_NODE, (mutation, node) => {
         if (mutation.addedNodes.length > 0) {
             const renderer = mutation.addedNodes.item(0) as HTMLElement;
-            console.log({renderer})
             if (renderer != null) {
                 Util.setRenderer(renderer)
                 setPage(findPage(location.pathname));
