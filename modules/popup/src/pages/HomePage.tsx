@@ -52,32 +52,32 @@ export default function HomePage() {
         elevated={true}
         title={'Get in sync'}
         body={'Sync your games with Stadia+ to automagically keep track of all your achievements and stats.'}
-        link={{
+        links={[{
             icon: <CgArrowRight />,
             label: 'More about syncing',
-            url: ''
-        }}
-        button={{
+            url: '#',
+        }]}
+        buttons={[{
             icon: <CgSync />,
             label: 'Enable sync',
             onClick: enableSync
-        }}
+        }]}
     />
 
     const loginPanel = <OnboardPanel
         elevated={true}
         title={'Sign in for more'}
         body={'Sign in for more features, like play tracking and custom profile pictures.'}
-        link={{
+        links={[{
             icon: <CgArrowTopRight />,
             label: 'Read more',
-            url: ''
-        }}
-        button={{
+            url: '#',
+        }]}
+        buttons={[{
             icon: <IoLogoGoogle />,
             label: 'Sign in with Google',
             onClick: signIn
-        }}
+        }]}
     />
 
     const finalPanel = <OnboardPanel
@@ -85,11 +85,11 @@ export default function HomePage() {
         body={`
             Stadia+ is set up and ready to go. Fire up Stadia and start playing!
         `}
-        button={{
+        buttons={[{
             label: 'Launch Stadia',
             icon: <CgGames />,
             onClick: () => window.open('https://stadia.google.com')
-        }}
+        }]}
     />
 
     return <Container>

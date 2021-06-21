@@ -14,13 +14,14 @@ type OnboardPanelProps = {
     title: string
     body: string
     elevated?: boolean
-    link?: {
+    links?: {
         icon?: ReactElement
         label: string
         url?: string
         onClick?: (event: React.MouseEvent) => void
-    }
-    button?: ButtonData
+        color?: string
+    }[]
+    buttons?: ButtonData[]
     altLink?: {
         label: string
         url?: string
@@ -33,21 +34,31 @@ export default function OnboardPanel(props: OnboardPanelProps) {
         <Heading>{ props.title }</Heading>
         <Paragraph>{ props.body }</Paragraph>
 
-        { props.link && <Link>
-            <Anchor
-                href={props.link.url || '#'}
-                onClick={props.link?.onClick}
-            >
-                {props.link.label}
-            </Anchor>
-            { props.link.icon }
-        </Link> }
+        <List>
+            { props.links && props.links.map((link, i) =>
+                <Link style={{ color: link.color }}>
+                    <Anchor
+                        key={i}
+                        style={{ color: link.color }}
+                        href={link.url}
+                        onClick={link?.onClick}
+                    >
+                        {link.label}
+                    </Anchor>
+                    { link.icon }
+                </Link>
+            ) }
+        </List>
 
-        { props.button && <ButtonWrapper>
-            <Button {...props.button} >
-                { props.button.label }
-            </Button>
-        </ButtonWrapper> }
+        <List>
+            { props.buttons && props.buttons.map((button, i) =>
+                <ButtonWrapper>
+                    <Button key={i} {...button} >
+                        { button.label }
+                    </Button>
+                </ButtonWrapper>
+            ) }
+        </List>
 
         { props.altLink && <AltLink>
             <Anchor
@@ -88,13 +99,20 @@ const Paragraph = styled.p(tw`
     font-light
 `)
 
+const List = styled.div`
+    ${tw`
+        mt-4
+    `}
+`
+
 const Link = styled.p`
     ${tw`
         flex
         items-center
-        mt-4
+        mt-1
         text-base
         text-white
+        cursor-pointer
     `}
 `
 
@@ -118,6 +136,6 @@ const Anchor = styled.a`
 
 const ButtonWrapper = styled.div`
     ${tw`
-        mt-4
+        mt-1
     `}
 `

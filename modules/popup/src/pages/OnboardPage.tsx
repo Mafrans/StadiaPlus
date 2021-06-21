@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import tw from 'twin.macro';
 import { Theme } from '../../../shared/Theme';
-import { CgArrowRight, CgArrowTopRight, CgGoogle, CgSync } from 'react-icons/cg';
+import { CgArrowRight, CgArrowTopRight, CgClose, CgGoogle, CgSync } from 'react-icons/cg';
 import { FaGoogle } from 'react-icons/fa';
 import Container from '../components/Container';
 import OnboardPanel from '../components/OnboardPanel';
@@ -70,26 +70,32 @@ export default function OnboardPage() {
     const errorPanel = <OnboardPanel
         title={'Uh oh'}
         body={error!}
-        link={{
+        links={[{
             icon: <CgSync />,
             label: 'Try again',
+            url: '#',
             onClick: checkAuthenticated
-        }}
+        }, {
+            icon: <CgArrowRight />,
+            label: 'Use Stadia+ offline',
+            color: 'rgba(255, 255, 255, 0.5)',
+            onClick: skipSignIn
+        }]}
     />
 
     const onboardPanel = <OnboardPanel
         title={'Stadia, elevated'}
         body={'Sign in to Stadia+ to automagically sync all your achievements and stats to your profile.'}
-        link={{
+        links={[{
             icon: <CgArrowTopRight />,
             label: 'More about syncing',
-            url: ''
-        }}
-        button={{
+            url: '#',
+        }]}
+        buttons={[{
             icon: <IoLogoGoogle />,
             label: 'Sign in with Google',
             onClick: signIn
-        }}
+        }]}
         altLink={{
             label: `No thanks, I'll sign in later`,
             onClick: skipSignIn
