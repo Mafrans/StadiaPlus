@@ -19,7 +19,7 @@ import styled from 'styled-components';
 import { Theme } from '../../../shared/Theme';
 import { IoLogoGoogle } from 'react-icons/io';
 import { Config } from '../../../shared/Config';
-import Logger from '../../../main/src/Logger';
+import Logger from '../../../shared/Logger';
 import { useHistory } from 'react-router-dom';
 
 

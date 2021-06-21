@@ -1,5 +1,5 @@
 import { triggerPageChangeEvent } from './events/PageChangeEvent';
-import Logger from './Logger';
+import Logger from '../../shared/Logger';
 import Util from './Util';
 
 export type StadiaPage = null | 'home' | 'player' | 'library';

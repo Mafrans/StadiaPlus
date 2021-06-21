@@ -1,3 +1,5 @@
+import { Config } from './Config';
+
 const prefix = '[Stadia+]';
 
 /**
@@ -21,7 +23,9 @@ export default class Logger {
     }
 
     static debug(...data: any[]) {
-        console.log(`${prefix} %c🪲 ${data.join(' ')}`, 'color: grey');
+        Config.DEBUG_LOGGING.get().then(value =>
+            value && console.log(`${prefix} %c🪲 ${data.join(' ')}`, 'color: grey')
+        )
     }
 
     private static trace(...data: any[]) {

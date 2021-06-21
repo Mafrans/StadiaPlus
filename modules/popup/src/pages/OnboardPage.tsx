@@ -8,7 +8,7 @@ import Container from '../components/Container';
 import OnboardPanel from '../components/OnboardPanel';
 import { StadiaPlusDB } from '../../../shared/StadiaPlusDB';
 import { useHistory } from 'react-router-dom';
-import Logger from '../../../main/src/Logger';
+import Logger from '../../../shared/Logger';
 import set = chrome.cookies.set;
 import MDSpinner from 'react-md-spinner';
 import StadiaPlusLogo from '../../../shared/resources/components/StadiaPlusLogo';

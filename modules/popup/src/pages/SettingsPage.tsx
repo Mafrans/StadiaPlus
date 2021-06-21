@@ -19,13 +19,14 @@ import styled from 'styled-components';
 import { Theme } from '../../../shared/Theme';
 import { IoLogoGoogle } from 'react-icons/io';
 import { Config } from '../../../shared/Config';
-import Logger from '../../../main/src/Logger';
+import Logger from '../../../shared/Logger';
 import { useHistory } from 'react-router-dom';
 import Header from '../components/Header';
 import SettingsCategory from '../components/SettingsCategory';
 import DropdownEntry from '../components/settings/DropdownEntry';
 import { StadiaCodec, stadiaCodecs } from '../../../shared/models/StadiaCodec';
 import { StadiaResolution, stadiaResolutions } from '../../../shared/models/StadiaResolution';
+import SwitchEntry from '../components/settings/SwitchEntry';
 
 
 export default function SettingsPage() {
@@ -59,6 +60,16 @@ export default function SettingsPage() {
                     options: stadiaResolutions,
                     onChange: value => Config.RESOLUTION.set(value as StadiaResolution)
                 }}
+            />
+        </SettingsCategory>
+
+        <SettingsCategory title={'Developer'}>
+            <SwitchEntry
+                switch={{
+                    value: () => Config.DEBUG_LOGGING.get(),
+                    onChange: value => Config.DEBUG_LOGGING.set(value)
+                }}
+                title={'Debug Logging'}
             />
         </SettingsCategory>
     </Container>;

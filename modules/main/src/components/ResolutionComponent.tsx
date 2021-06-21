@@ -1,7 +1,7 @@
 import React from 'react';
 import { Config } from '../../../shared/Config';
 import { StadiaResolution } from '../../../shared/models/StadiaResolution';
-import Logger from '../Logger';
+import Logger from '../../../shared/Logger';
 import Util from '../Util';
 import { onPageChanged } from '../events/PageChangeEvent';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StadiaPlusDB } from '../../../shared/StadiaPlusDB';
 import { Config } from '../../../shared/Config';
-import Logger from '../Logger';
+import Logger from '../../../shared/Logger';
 import { onPageChanged } from '../events/PageChangeEvent';
 
 interface AFLibraryData {

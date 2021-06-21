@@ -1,4 +1,4 @@
-import Logger from '../main/src/Logger';
+import Logger from './Logger';
 import { Config } from './Config';
 import { DBModel } from './models/DBModel';
 import { triggerAuthenticatedEvent } from '../main/src/events/AuthenticatedEvent';

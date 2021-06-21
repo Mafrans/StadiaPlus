@@ -1,5 +1,5 @@
 import { Config } from '../../../shared/Config';
-import Logger from '../Logger';
+import Logger from '../../../shared/Logger';
 import { onPageChanged } from '../events/PageChangeEvent';
 import Util from '../Util';
 import { StadiaCodec } from '../../../shared/models/StadiaCodec';
