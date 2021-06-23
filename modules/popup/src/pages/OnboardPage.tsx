@@ -78,7 +78,7 @@ export default function OnboardPage() {
         }, {
             icon: <CgArrowRight />,
             label: 'Use Stadia+ offline',
-            color: 'rgba(255, 255, 255, 0.5)',
+            url: '#',
             onClick: skipSignIn
         }]}
     />

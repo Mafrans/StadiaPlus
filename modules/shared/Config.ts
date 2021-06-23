@@ -55,7 +55,7 @@ export class ConfigEntry<T> {
                 return await new Promise<T | null>(resolve => {
                     chrome.storage.local.get(values => {
                         const value = values[this.tag] as (T | null);
-                        resolve(value !== null ? value : this.defaultValue);
+                        resolve(value != null ? value : this.defaultValue);
                     });
                 });
 
@@ -63,7 +63,7 @@ export class ConfigEntry<T> {
                 return await new Promise<T | null>(resolve => {
                     chrome.storage.sync.get(values => {
                         const value = values[this.tag] as (T | null);
-                        resolve(value !== null ? value : this.defaultValue);
+                        resolve(value != null ? value : this.defaultValue);
                     });
                 });
         }
