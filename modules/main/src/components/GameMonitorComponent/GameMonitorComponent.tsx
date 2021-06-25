@@ -170,12 +170,6 @@ export default class GameMonitorComponent extends React.Component<any, GameMonit
                     id: 'audio-codec',
                 },
                 {
-                    name: 'Bitrate',
-                    value: `${formatBytes(availableOutgoingBitrate!)}/s`,
-                    visible: true,
-                    id: 'bitrate',
-                },
-                {
                     name: 'Bytes/s',
                     value: `${formatBytes(bytesPerSecond)}/s`,
                     visible: true,
