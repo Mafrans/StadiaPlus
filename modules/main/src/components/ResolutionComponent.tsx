@@ -36,13 +36,30 @@ const ResolutionComponent = () => {
         }
 
         if (resolution !== 'Automatic') {
-            Util.desandbox({
-                availWidth: width,
-                width: width,
-                availHeight: height,
-                height: height,
-                colorDepth: 48
-            }, { name: 'screen' });
+            Util.desandbox(() => {
+                Object.defineProperties(window.screen, {
+                    availWidth: {
+                        value: width,
+                        configurable: true
+                    },
+                    width: {
+                        value: width,
+                        configurable: true
+                    },
+                    availHeight: {
+                        value: height,
+                        configurable: true
+                    },
+                    height: {
+                        value: height,
+                        configurable: true
+                    },
+                    colorDepth: {
+                        value: 48,
+                        configurable: true
+                    },
+                })
+            }, { immediate: true });
         }
 
         Logger.info(`Using resolution '${resolution}' (${width}x${height})`);
