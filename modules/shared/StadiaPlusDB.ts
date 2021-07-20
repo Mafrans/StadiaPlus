@@ -225,6 +225,7 @@ export namespace StadiaPlusDB {
         const game = DBModel.getGame(data, gameId);
         const playTime = DBModel.getPlayTime(data, gameId);
         const achievements = DBModel.getAchievements(data);
+        const achievementCount = DBModel.getAchievementCount(data);
 
         const response = await fetch(`${url}/api/profile/update`, {
             method: 'POST',
@@ -237,7 +238,8 @@ export namespace StadiaPlusDB {
                     profile,
                     game,
                     playTime,
-                    achievements
+                    achievements,
+                    achievementCount
                 }
             }),
         });
