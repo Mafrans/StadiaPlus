@@ -1,6 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
-import tw from 'twin.macro';
+import style from './resources.css';
 
 type StadiaPlusIconProps = {
     outlined?: boolean,
@@ -41,18 +40,13 @@ const StadiaPlusIcon = (props: StadiaPlusIconProps) => {
     </svg>
 
     return (
-        <Wrapper size={props.size}>
+        <div
+            className={style.stadiaPlusIcon}
+            style={{width: props.size, height: props.size}}
+        >
             {props.outlined ? outlined : filled}
-        </Wrapper>
+        </div>
     );
 }
-
-const Wrapper = styled.span<{size?: number}>`
-    ${tw`
-        flex
-    `}
-    width: ${props => props.size || 16}px;
-    height: ${props => props.size || 16}px;
-`
 
 export default StadiaPlusIcon;

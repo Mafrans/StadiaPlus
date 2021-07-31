@@ -1,4 +1,4 @@
-class StadiaPlusNetworkMonitor {
+class NetworkMonitor {
     originalRTC = [];
     peerConnections = [];
     timer = 0;
@@ -16,15 +16,26 @@ class StadiaPlusNetworkMonitor {
             };
             RTCPeerConnection.prototype = OriginalRTCConnection.prototype;
         }(RTCPeerConnection));
+    }
 
-        this.timer = setInterval(this.poll.bind(this), 1000);
+    start() {
+        if (this.timer === 0) {
+            this.timer = setInterval(this.poll.bind(this), 1000);
+            console.log(this);
+        }
     }
 
     stop() {
-        clearInterval(this.timer);
+        if (this.timer !== 0) {
+            clearInterval(this.timer);
+            this.timer = 0;
+        }
     }
 
     async poll() {
+        console.log('poll');
+        if (!this.peerConnections) return;
+
         const data = [];
         for (const connection of this.peerConnections.filter(it => it.connectionState === 'connected')) {
             data.push(Array.from(await connection.getStats()));
@@ -37,4 +48,4 @@ class StadiaPlusNetworkMonitor {
     }
 }
 
-window.StadiaPlusNetworkMonitor = new StadiaPlusNetworkMonitor();
+window.StadiaPlusNetworkMonitor = new NetworkMonitor();

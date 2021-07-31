@@ -14,7 +14,7 @@ declare module '*.jpg' {
 }
 
 declare module '*.css' {
-    const content: never;
+    const content: any;
     export default content;
 }
 
@@ -23,14 +23,14 @@ declare module '*.scss' {
     export default content;
 }
 
-declare module '*.txtjs' {
-    const content: string;
-    export default content;
-}
-
 declare module '*.json' {
     const value: never;
     export default value;
+}
+
+declare module 'bundle-text:*' {
+    const content: string;
+    export default content;
 }
 
 declare module 'tailwind.macro' {

@@ -1,0 +1,81 @@
+.gameSettings {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    position: absolute !important;
+    top: 0;
+    right: 0;
+    z-index: 10;
+    box-sizing: border-box;
+    padding: 1.5rem;
+    margin: 0.5rem;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(-8px);
+
+    background-color: var(--color-gray-800);
+    transition: opacity var(--transition-default), transform var(--transition-default);
+    border-radius: var(--border-radius-lg);
+}
+
+.gameSettings.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+}
+
+.gameSettings .heading {
+    margin-bottom: 1rem;
+    grid-column: span 2;
+    font-family: Overpass, sans-serif;
+
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+}
+
+.gameSettings .name {
+    margin: 0;
+    font-family: Overpass, sans-serif;
+
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-light);
+}
+
+.gameSettingsButton {
+    cursor: pointer;
+    width: 2.5rem;
+    height: 2.5rem;
+    margin: 0 0 0 0.625rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: none;
+    border: none;
+
+    border-radius: var(--border-radius-full);
+}
+
+.gameSettingsButton:hover,
+.gameSettingsButton.active:only-child {
+    background-color: var(--color-elevate-100);
+}
+
+.gameSettingsButton.clicked {
+    animation: gameSettingsButton_activate 0.1s linear;
+    animation-iteration-count: 1;
+}
+
+@keyframes gameSettingsButton_activate {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(2px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}

@@ -2,6 +2,7 @@ import Logger from './Logger';
 import { Config } from './Config';
 import { DBModel } from './models/DBModel';
 import { triggerAuthenticatedEvent } from '../main/src/events/AuthenticatedEvent';
+import { stateStore } from '../main/src/state/StateStore';
 
 export namespace StadiaPlusDB {
     export let url: string;
@@ -128,7 +129,7 @@ export namespace StadiaPlusDB {
         if (authToken !== null) {
             if (await checkAuthenticated()) {
                 authenticated = true;
-                triggerAuthenticatedEvent({ token: authToken });
+                stateStore.setAuthToken(authToken);
             }
             else {
                 Logger.warning('Your authentication token is outdated');

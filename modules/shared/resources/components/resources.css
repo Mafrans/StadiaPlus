@@ -1,0 +1,9 @@
+.stadiaPlusIcon {
+    display: flex;
+}
+
+.stadiaPlusLogo {
+    display: flex;
+    width: 115px;
+    object-fit: contain;
+}

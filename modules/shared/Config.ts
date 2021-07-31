@@ -1,6 +1,7 @@
 import { StadiaCodec } from './models/StadiaCodec';
 import { StadiaResolution } from './models/StadiaResolution';
 import Logger from './Logger';
+import { GameMonitorItemMeta } from '../main/src/components/GameMonitorComponent/GameMonitorComponent';
 
 export enum ConfigType {
     LOCAL,
@@ -87,7 +88,7 @@ export class Config {
     static CODEC = new ConfigEntry<StadiaCodec>('codec', ConfigType.LOCAL, 'Automatic');
     static RESOLUTION = new ConfigEntry<StadiaResolution>('resolution', ConfigType.LOCAL, 'Automatic');
     static AUTH_TOKEN = new ConfigEntry<string | null>('auth-token', ConfigType.LOCAL, null);
-    static MONITOR_ITEMS = new ConfigEntry<{[id: string]: { index: number, visible: boolean }}>('monitor-items', ConfigType.LOCAL, {});
+    static MONITOR_ITEMS = new ConfigEntry<GameMonitorItemMeta>('monitor-items', ConfigType.LOCAL, {});
     static LOGIN_SKIPPED = new ConfigEntry<boolean>('login-skipped', ConfigType.LOCAL, false);
     static ENABLE_SYNC = new ConfigEntry<boolean>('enable-sync', ConfigType.SYNC, false);
     static DEBUG_LOGGING = new ConfigEntry<boolean>('debug-logging', ConfigType.LOCAL, false);

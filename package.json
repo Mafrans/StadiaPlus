@@ -3,15 +3,26 @@
   "version": "1.0.0",
   "description": "",
   "main": "modules/main/src/index.ts",
+  "targets": {
+    "extension": {
+      "context": "browser",
+      "distDir": "./dist/main"
+    },
+    "popup": {
+      "context": "browser",
+      "distDir": "./dist/popup",
+      "publicUrl": "./"
+    }
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "zip": "copyfiles dist/**/*.* background.js images/**/*.* manifest.json temp && cross-zip temp && copyfiles temp.zip bin && del-cli temp && del-cli temp.zip",
     "clean": "del-cli dist/**/*.*",
-    "build@main": "parcel build --out-dir ./dist/main --no-cache modules/main/src/index.tsx",
-    "build@popup": "parcel build --out-dir ./dist/popup --no-cache --public-url ./ modules/popup/src/index.html",
+    "build@main": "parcel build --target extension --no-cache modules/main/src/index.tsx",
+    "build@popup": "parcel build --target popup --no-cache modules/popup/src/index.html",
     "build": "npm run clean && npm run build@main && npm run build@popup && npm run zip",
-    "build:dev@main": "parcel build --out-dir ./dist/main --cache-dir .build_cache/main modules/main/src/index.tsx",
-    "build:dev@popup": "parcel build --out-dir ./dist/popup --cache-dir .build_cache/popup --public-url ./ modules/popup/src/index.html",
+    "build:dev@main": "parcel build --target extension --cache-dir .build_cache/main modules/main/src/index.tsx",
+    "build:dev@popup": "parcel build --target popup --cache-dir .build_cache/popup modules/popup/src/index.html",
     "build:dev": "npm run build:dev@main && npm run build:dev@popup"
   },
   "repository": {
@@ -30,6 +41,7 @@
     "@babel/plugin-transform-runtime": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
     "@babel/preset-react": "^7.12.10",
+    "@parcel/transformer-inline-string": "^2.0.0-beta.3.1",
     "@types/react": "^17.0.0",
     "@types/react-beautiful-dnd": "^13.0.0",
     "@types/react-dom": "^17.0.0",
@@ -52,25 +64,35 @@
   "dependencies": {
     "@fontsource/material-icons": "^4.1.0",
     "@fontsource/overpass": "^4.2.2",
+    "@reduxjs/toolkit": "^1.6.1",
     "@tailwindcss/postcss7-compat": "^2.0.2",
     "@types/chrome": "0.0.128",
+    "@types/react-redux": "^7.1.18",
+    "@types/victor": "^1.1.0",
     "autoprefixer": "^9.8.6",
     "babel-plugin-tailwind-components": "^0.5.10",
-    "parcel": "^1.12.4",
+    "classnames": "^2.3.1",
+    "mobx": "^6.3.2",
+    "mobx-react": "^7.2.0",
+    "parcel": "^2.0.0-beta.3.1",
     "parcel-bundler": "^1.12.4",
+    "parcel-plugin-inliner": "^1.0.16",
     "parcel-plugin-text": "^0.9.7",
-    "postcss": "^7.0.35",
+    "postcss": "^8.1.14",
+    "postcss-modules": "^4.2.2",
     "react": "^17.0.1",
     "react-beautiful-dnd": "^13.0.0",
     "react-dom": "^17.0.1",
     "react-icons": "^4.2.0",
     "react-md-spinner": "^1.0.0",
+    "react-redux": "^7.2.4",
     "react-reorder": "^3.0.0-alpha.7",
     "react-router-dom": "^5.2.0",
     "react-transition-group": "^4.4.1",
     "reset-css": "^5.0.1",
     "styled-components": "^5.2.1",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2",
-    "twin.macro": "^2.2.3"
+    "twin.macro": "^2.2.3",
+    "victor": "^1.1.0"
   }
 }

@@ -1,18 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Config } from '../../../shared/Config';
-import { StadiaResolution } from '../../../shared/models/StadiaResolution';
 import Logger from '../../../shared/Logger';
-import Util from '../Util';
-import { onPageChanged } from '../events/PageChangeEvent';
+import { asyncEffect, desandbox, getPlayerGameId } from '../Util';
+import { WithStore } from '../state/StateStore';
 
+const ResolutionComponent = (props: WithStore<{}>) => {
+    const { page } = props.store;
 
-const ResolutionComponent = () => {
-    onPageChanged(async event => {
-        if (event.page !== 'player') {
+    asyncEffect(async () => {
+        console.log('new effect!')
+        if (page !== 'player') {
             return;
         }
 
-        const gameId = Util.getPlayerGameId();
+        const gameId = getPlayerGameId();
         const resolution = await Config.RESOLUTION.get() || 'Automatic';
 
         let width: number = 0;
@@ -36,7 +37,7 @@ const ResolutionComponent = () => {
         }
 
         if (resolution !== 'Automatic') {
-            Util.desandbox(() => {
+            desandbox(() => {
                 Object.defineProperties(window.screen, {
                     availWidth: {
                         value: width,
@@ -63,7 +64,9 @@ const ResolutionComponent = () => {
         }
 
         Logger.info(`Using resolution '${resolution}' (${width}x${height})`);
-    });
+    }, [page])
+
+    return null;
 }
 
 export default ResolutionComponent;

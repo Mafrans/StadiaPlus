@@ -1,0 +1,151 @@
+.openIcon {
+    position: fixed;
+    display: flex;
+    left: 0.5rem;
+    top: 0.5rem;
+    padding: 0.75rem;
+    cursor: pointer;
+    z-index: 1000;
+    opacity: 1;
+
+    background-color: var(--color-gray-900);
+    transition: all var(--transition-default);
+    border-radius: var(--border-radius-full);
+}
+
+.enabled .openIcon {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.gameMonitor {
+    box-sizing: border-box;
+    z-index: 200;
+
+    font-family: var(--font-family-primary);
+    color: var(--color-white);
+}
+
+.monitor {
+    position: relative;
+    padding: 0.5rem;
+    width: 19rem;
+    transform: translateY(16px);
+
+    transition: transform var(--transition-default),
+                opacity var(--transition-default);
+}
+
+.enabled:not(.sidebarOpen) .monitor {
+    transform: translateY(0);
+    pointer-events: none;
+    opacity: 0.75;
+}
+
+:not(.enabled) > div > .monitor {
+    opacity: 0;
+}
+
+:where(.sidebarOpen) .monitor {
+    transform: translateY(0);
+    opacity: 1;
+    width: 22rem;
+}
+
+.monitor::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.5;
+
+    background-color: var(--color-gray-900);
+    border-radius: var(--border-radius-lg);
+}
+
+.sidebarOpen .monitor::after {
+    opacity: 1;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    padding-top: 0.75rem;
+    cursor: grab;
+}
+
+.header p {
+    margin: 0;
+    margin-right: auto;
+    color: transparent;
+
+    font-size: var(--font-size-sm);
+    background: var(--color-neon-gradient);
+    font-weight: var(--font-weight-bold);
+    -webkit-background-clip: text;
+}
+
+.header button {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    padding-bottom: .25rem;
+}
+
+.divider {
+    border: none;
+    height: 1px;
+    margin: 0.5rem;
+
+    background-color: var(--color-gray-700);
+}
+
+.monitorItem {
+    display: flex;
+    padding: 0.5rem;
+    opacity: 0.5;
+}
+
+.visible {
+    opacity: 1;
+}
+
+.monitorItem strong {
+    display: inline-flex;
+    width: 8rem;
+    margin: 0;
+    margin-right: 1rem;
+
+    font-weight: var(--font-weight-bold);
+}
+
+.monitorItem p {
+    display: inline-flex;
+    margin: 0;
+    margin-right: 1rem;
+
+    font-weight: var(--font-weight-light);
+}
+
+.monitorItem .icons {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+.monitorItem .icons > span {
+    display: flex;
+    align-items: center;
+}
+
+.monitorItem .visibilityIcon {
+    cursor: pointer;
+}
+
+.monitorItem .icons > span:not(:first-child) {
+    margin-left: 0.25rem;
+}

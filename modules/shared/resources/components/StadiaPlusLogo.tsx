@@ -1,25 +1,13 @@
 import React from 'react';
-import styled from 'styled-components';
-import tw from 'twin.macro';
 import LogoImage from '../images/Stadia+Logo.png'
+import style from 'resources.css';
 
-type StadiaPlusIconProps = {
-}
-
-const StadiaPlusLogo = (props: StadiaPlusIconProps) => {
+const StadiaPlusLogo = () => {
     return (
-        <Wrapper>
+        <div className={style.stadiaPlusLogo}>
             <img src={LogoImage} alt={'STADIA+'} />
-        </Wrapper>
+        </div>
     );
 }
-
-const Wrapper = styled.span<{size?: number}>`
-    ${tw`
-        flex
-    `}
-    width: 115px;
-    object-fit: contain;
-`
 
 export default StadiaPlusLogo;

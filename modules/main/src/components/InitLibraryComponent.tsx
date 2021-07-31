@@ -1,8 +1,8 @@
-import React from 'react';
-import { StadiaPlusDB } from '../../../shared/StadiaPlusDB';
+import React, { useEffect } from 'react';
 import { Config } from '../../../shared/Config';
 import Logger from '../../../shared/Logger';
-import { onPageChanged } from '../events/PageChangeEvent';
+import { StadiaPage } from '../StadiaPage';
+import { WithStore } from '../state/StateStore';
 
 interface AFLibraryData {
     data: [boolean, [string, [string, string, boolean, number]], unknown[]];
@@ -42,12 +42,17 @@ function getGameIds(): { uuid: string, subId: string }[] {
     }
 }
 
-const InitLibraryComponent = () => {
-    onPageChanged(event => {
-        if (event.page === 'home') {
+
+const InitLibraryComponent = (props: WithStore<{}>) => {
+    const { page } = props.store;
+
+    useEffect(() => {
+        if (page === 'home') {
             void Config.GAME_IDS.set(getGameIds());
         }
-    });
+    }, [page]);
+
+    return null;
 }
 
 export default InitLibraryComponent;

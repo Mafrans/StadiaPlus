@@ -49,6 +49,9 @@
             ],
             "js": [
                 "dist/main/index.js"
+            ],
+            "css": [
+                "dist/main/index.css"
             ]
         }
     ],

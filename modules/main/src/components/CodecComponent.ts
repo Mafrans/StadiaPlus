@@ -1,8 +1,9 @@
 import { Config } from '../../../shared/Config';
 import Logger from '../../../shared/Logger';
-import { onPageChanged } from '../events/PageChangeEvent';
-import Util from '../Util';
-import { StadiaCodec } from '../../../shared/models/StadiaCodec';
+import { useEffect } from 'react';
+import { StadiaPage } from '../StadiaPage';
+import { asyncEffect } from '../Util';
+import { WithStore } from '../state/StateStore';
 
 type StadiaCodecData = {
     h264?: 'ExternalDecoder'
@@ -11,9 +12,11 @@ type StadiaCodecData = {
     'vp9-profile2'?: 'SoftwareDecoder' | 'libvpx'
 }
 
-const CodecComponent = () => {
-    onPageChanged(async event => {
-        if (event.page !== 'player') {
+const CodecComponent = (props: WithStore<{}>) => {
+    const { page } = props.store;
+
+    asyncEffect(async () => {
+        if (page !== 'player') {
             return;
         }
 
@@ -47,7 +50,9 @@ const CodecComponent = () => {
             }
         }, 1000)
         Logger.info(`Using codec '${codec}'`);
-    });
+    }, [page]);
+
+    return null;
 }
 
 export default CodecComponent;

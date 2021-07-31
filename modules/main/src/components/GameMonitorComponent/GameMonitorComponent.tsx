@@ -1,126 +1,85 @@
-import React from 'react';
-import Util from '../../Util';
-import MonitorRunnable from '../../MonitorRunnable.txtjs';
+import React, { CSSProperties, PropsWithChildren, useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
-import { RTCStatistics } from '../../RTCStatistics';
-import RTCStatistic = RTCStatistics.RTCStatistic;
 import tw from 'twin.macro';
 import { Theme } from '../../../../shared/Theme';
-import { StadiaSelectors } from '../../StadiaSelectors';
-import { DropResult } from 'react-beautiful-dnd';
-import { Config } from '../../../../shared/Config';
-import Loader from './components/Loader.component';
 import styled from 'styled-components';
-import Header from './components/Header.component';
-import Content from './components/Content.component';
+import { asyncEffect, clamp, desandbox } from '../../Util';
+import PositionController from './components/PositionController';
+import { WithStore } from '../../state/StateStore';
+import { Config } from '../../../../shared/Config';
+import MonitorRunnable from 'bundle-text:../../MonitorRunnable.txt';
+import { StadiaSelectors } from '../../StadiaSelectors';
 import { formatBytes, getStream, reorder } from './GameMonitorHelpers';
-import { onPageChanged } from '../../events/PageChangeEvent';
-import { StadiaPage } from '../../StadiaPage';
-import { CgAdd, CgTrending } from 'react-icons/cg';
+import { DropResult } from 'react-beautiful-dnd';
+import { RTCStatistics } from '../../RTCStatistics';
+import { CgTrending } from 'react-icons/cg';
+import Loader from './components/Loader';
+import Header from './components/Header';
+import Content from './components/Content';
+import style from './game-monitor-component.css';
+import classNames from 'classnames';
 
-export interface GameMonitorItem {
+export type GameMonitorItem = {
     name: string
     value: string
-    visible: boolean
     id: string
 }
 
-interface GameMonitorState {
-    items: GameMonitorItem[]
-    currentPage: StadiaPage
-    sidebarOpen: boolean
-    enabled: boolean
-    loading: boolean
-    position: { x: number, y: number }
-    offset: { x: number, y: number }
-    transform: { x: number, y: number }
+export type GameMonitorItemMeta = {
+    [id: string]: {
+        index: number, visible: boolean
+    }
 }
 
-/*
- *  IT HURTS, BUT THIS HAS TO BE A REACT CLASS TO WORK PROPERLY.
- */
+type GameMonitorProps = {
+    onGrab: (event: React.MouseEvent) => void
+    position: {x: number, y: number}
+}
 
-export default class GameMonitorComponent extends React.Component<any, GameMonitorState> {
-    itemData: { [id: string]: { index: number, visible: boolean } } | null = null;
-    grabPosition: { x: number, y: number } = {x: 0, y: 0};
-    grabElement?: HTMLElement;
-    lastBytesReceived: number = 0;
-    isCapturing: boolean = false;
-    messageCaptureListener: (e: MessageEvent) => void;
+const GameMonitor = (props: WithStore<GameMonitorProps>) => {
+    const lastBytesReceived = useRef<number>(0);
+    const isCapturing = useRef<boolean>();
 
-    constructor(props: any) {
-        super(props);
+    const [items, setItems]             = useState<GameMonitorItem[]>([]);
+    const [enabled, setEnabled]         = useState<boolean>();
+    let   [itemMeta, setItemMeta]       = useState<GameMonitorItemMeta>({});
+    let   [sidebarOpen, setSidebarOpen] = useState<boolean>();
 
-        this.state = {
-            currentPage: 'home',
-            enabled: false,
-            items: [],
-            loading: false,
-            position: { x: 8, y: 8 },
-            offset: { x: 0, y: 0 },
-            sidebarOpen: false,
-            transform: { x: 0, y: 0 }
-        };
+    const { page } = props.store;
 
-        onPageChanged(async event => {
-            if (event.page === 'player') {
-                this.itemData = await Config.MONITOR_ITEMS.get() || {};
-
-                this.setState({ loading: true });
-                Util.desandbox(MonitorRunnable);
-            }
-            else {
-                Util.desandbox('StadiaPlusNetworkMonitor.stop()');
-            }
-            this.setState({ currentPage: event.page });
-        });
-
+    asyncEffect(async () => {
         // TODO: Make this an observer
         setInterval(() => {
             const sidebar = document.querySelector(StadiaSelectors.PLAYER_SIDEBAR) as HTMLElement | null;
             const newSidebarOpen = sidebar !== null && sidebar.style.opacity === '1';
 
-            if (newSidebarOpen !== this.state.sidebarOpen) {
-                this.setState({ sidebarOpen: newSidebarOpen })
+            if (newSidebarOpen !== sidebarOpen) {
+                sidebarOpen = newSidebarOpen;
+                setSidebarOpen(newSidebarOpen);
             }
         }, 500);
 
-        this.messageCaptureListener = this.onMessageCapture.bind(this);
-    }
+        addEventListener('message', onMessageCapture);
+        desandbox(MonitorRunnable);
+    }, []);
 
-
-    parseItemData(newItems: GameMonitorItem[]): GameMonitorItem[] {
-        if (this.itemData !== null && this.itemData !== undefined) {
-            newItems = newItems.sort((a, b) => this.itemData![a.id]?.index - this.itemData![b.id]?.index);
-            for (let i = 0; i < newItems.length; i++) {
-                let item = newItems[i] || { visible: true };
-                item.visible = this.itemData[item.id] ? this.itemData[item.id].visible : true;
-            }
-
-            if (Object.keys(this.itemData).length != newItems.length) {
-                this.itemData = {};
-                newItems.forEach((item, index) => this.itemData![item.id] = { index, visible: item.visible });
-            }
+    asyncEffect(async () => {
+        if (page === 'player') {
+            setEnabled(true);
+            setItemMeta(await Config.MONITOR_ITEMS.get() || {});
+            desandbox('StadiaPlusNetworkMonitor.start()');
         }
         else {
-            this.itemData = {};
-            newItems.forEach((item, index) => this.itemData![item.id] = { index, visible: item.visible });
+            setEnabled(false);
+            desandbox('StadiaPlusNetworkMonitor.stop()');
         }
+    }, [page]);
 
-        return newItems;
-    }
-
-    onMessageCapture(event: MessageEvent) {
-        const {sidebarOpen, loading} = this.state;
-        if (event.data.source === 'StadiaPlusNetworkMonitor' && !sidebarOpen) {
-            if (!loading) {
-                if (event.data.stats === undefined || event.data.stats === null || event.data.stats.length < 2) {
-                    this.setState({ loading: true });
-                    return;
-                }
-            }
+    const onMessageCapture = (event: MessageEvent) => {
+        if (event.data.source === 'StadiaPlusNetworkMonitor' && (!sidebarOpen || items.length === 0)) {
             const statArray: [string, any] = event.data.stats[1];
-            const ICECandidatePair = RTCStatistic.from<RTCStatistics.RTCIceCandidatePair>(
+            console.log(RTCStatistics.RTCStatistic);
+            const ICECandidatePair = RTCStatistics.RTCStatistic.from<RTCStatistics.RTCIceCandidatePair>(
                 statArray,
                 id => id.startsWith('RTCIceCandidatePair')
             );
@@ -129,68 +88,72 @@ export default class GameMonitorComponent extends React.Component<any, GameMonit
                 return;
             }
 
-            if (loading && ICECandidatePair.bytesReceived! > 0) {
-                this.setState({ loading: false });
-            }
-
             const { videoStream, videoCodec, audioCodec } = getStream(statArray);
-            const { bytesReceived, availableOutgoingBitrate, currentRoundTripTime } = ICECandidatePair;
-            const bytesPerSecond = bytesReceived! - this.lastBytesReceived;
+            const { bytesReceived, currentRoundTripTime } = ICECandidatePair;
+            const bytesPerSecond = (bytesReceived ?? 0) - lastBytesReceived.current;
 
             // TODO: Is it possible to move into a fined format. perhaps a class?
             let newItems = [
                 {
                     name: 'Latency',
                     value: `${Math.round(currentRoundTripTime! * 1000)} ms`,
-                    visible: true,
                     id: 'latency',
                 },
-                videoStream && {
+                {
                     name: 'Resolution',
-                    value: `${videoStream.frameWidth}x${videoStream.frameHeight}`,
-                    visible: true,
+                    value: `${videoStream?.frameWidth ?? '?'}x${videoStream?.frameHeight ?? '?'}`,
                     id: 'resolution',
                 },
                 {
                     name: 'Bytes Received',
                     value: `${formatBytes(ICECandidatePair.bytesReceived!)}`,
-                    visible: true,
                     id: 'bytes-received',
                 },
-                videoCodec && videoStream && {
+                {
                     name: 'Video Codec',
-                    value: `${videoCodec.mimeType!.split('/')[1]} (${videoStream.decoderImplementation === 'ExternalDecoder' ? 'hardware' : 'software'})`,
-                    visible: true,
+                    value: `${videoCodec?.mimeType?.split('/')?.[1] ?? 'unknown'} (${videoStream?.decoderImplementation === 'ExternalDecoder' ? 'hardware' : 'software'})`,
                     id: 'video-codec',
                 },
-                audioCodec && {
+                {
                     name: 'Audio Codec',
-                    value: `${audioCodec.mimeType!.split('/')[1]}`,
-                    visible: true,
+                    value: `${audioCodec?.mimeType?.split('/')?.[1] ?? 'unknown'}`,
                     id: 'audio-codec',
                 },
                 {
                     name: 'Bytes/s',
                     value: `${formatBytes(bytesPerSecond)}/s`,
-                    visible: true,
                     id: 'bytes-per-second',
                 },
             ] as GameMonitorItem[];
 
-            this.lastBytesReceived = bytesReceived!;
-            this.setState({ items: this.parseItemData(newItems) })
+            lastBytesReceived.current = bytesReceived ?? 0;
+            setItems(newItems);
         }
     }
 
-    moveItemTo(id: string, source: number, destination: number) {
-        if (!this.itemData) {
+    const moveItemTo = (id: string, source: number, destination: number) => {
+        if (!itemMeta) {
             return;
         }
 
-        // Reorder other items to match
-        for (const i in this.itemData) {
-            let index = this.itemData[i].index;
+        const newItemMeta = itemMeta ?? {};
+        if (!itemMeta.hasOwnProperty(id)) {
+            newItemMeta[id] = {
+                visible: true,
+                index: 0,
+            };
+        }
 
+        // Reorder other items to match
+        Object.keys(itemMeta).forEach(key => {
+            if (!itemMeta?.[key]) {
+                itemMeta![key] = {
+                    visible: true,
+                    index: 0,
+                }
+            }
+
+            let index = itemMeta![key].index;
             if (source < destination) {
                 if (index > source && index <= destination) {
                     index--;
@@ -201,227 +164,100 @@ export default class GameMonitorComponent extends React.Component<any, GameMonit
                     index++;
                 }
             }
-            this.itemData[i].index = index;
-        }
-        this.itemData[id].index = destination;
-        void Config.MONITOR_ITEMS.set(this.itemData);
+            itemMeta![key].index = index;
+        });
+
+        itemMeta[id].index = destination;
+        setItemMeta(itemMeta);
+
+        void Config.MONITOR_ITEMS.set(itemMeta);
     }
 
-    onDragEnd(result: DropResult) {
+    const onDragEnd = (result: DropResult) => {
         // dropped outside the list
         if (!result.destination) {
             return;
         }
 
-        this.moveItemTo(result.draggableId, result.source.index, result.destination.index);
+        moveItemTo(result.draggableId, result.source.index, result.destination.index);
 
-        this.setState({
-            items: reorder<GameMonitorItem>(
-                this.state.items,
-                result.source.index,
-                result.destination.index
-            )
-        })
+        setItems(reorder<GameMonitorItem>(
+            items,
+            result.source.index,
+            result.destination.index
+        ));
     }
 
-    onGrab(event: React.MouseEvent) {
-        const {position, offset, transform} = this.state;
+    const toggleItemVisibility = (item: GameMonitorItem, value: boolean) => {
+        const newItemMeta = { ...itemMeta };
+        newItemMeta[item.id].visible = value;
+        setItemMeta(newItemMeta);
+        void Config.MONITOR_ITEMS.set(newItemMeta);
+    }
 
-        (event.target as HTMLElement).style.cursor = 'grabbing';
-
-        this.grabElement = Util.parent(event.target as HTMLElement, 2) as HTMLElement;
-        const offsetX = position.x + offset.x;
-        const offsetY = position.y + offset.y;
-
-        this.grabPosition = {
-            x: event.pageX - offsetX,
-            y: event.pageY - offsetY
-        };
-
-        if (transform.x !== 0) {
-            this.grabPosition.x += this.grabElement.offsetWidth;
-        }
-        if (transform.y !== 0) {
-            this.grabPosition.y += this.grabElement.offsetHeight;
-        }
-
-        let mousePos = { x: event.clientX, y: event.clientY };
-        let onMouseMove = (event: MouseEvent) => {
-            mousePos = { x: event.clientX, y: event.clientY };
-        }
-
-        const moveLoop = () => {
-            this.onMoveTick(mousePos);
-            if(this.grabElement) {
-                requestAnimationFrame(moveLoop)
+    if (page === 'player') {
+        if (items.length === 0 || (enabled && !sidebarOpen)) {
+            if (!isCapturing.current) {
+                desandbox('StadiaPlusNetworkMonitor.start()');
+                isCapturing.current = true;
             }
         }
-        moveLoop();
-
-        const onRelease = () => {
-            (event.target as HTMLElement).style.cursor = '';
-            this.grabElement = undefined;
-            this.grabPosition = {x: 0, y: 0}
-            window.removeEventListener('mousemove', onMouseMove);
-        }
-
-        window.addEventListener('mousemove', onMouseMove);
-        window.addEventListener('mouseup', onRelease);
-
-        event.preventDefault();
-    }
-
-    timer?: number;
-    onMoveTick(position: {x: number, y: number}) {
-        if (!this.grabElement) return;
-        const deltaTime = (Date.now() - (this.timer || Date.now())) / 1000;
-        this.timer = Date.now();
-
-        const speed = 15;
-        let x = Util.lerp(this.state.position.x, position.x - this.grabPosition.x, deltaTime * speed);
-        let y = Util.lerp(this.state.position.y, position.y - this.grabPosition.y, deltaTime * speed);
-
-        let transform = { x: 0, y: 0 };
-        let offsetX = 0;
-        let offsetY = 0;
-
-        if (x <= 0) {
-            x = 0;
-        }
-        else if (x + this.grabElement.offsetWidth >= window.innerWidth) {
-            x = window.innerWidth - this.grabElement.offsetWidth;
-            offsetX = this.grabElement.offsetWidth;
-            transform.x = -100;
-        }
-
-        if (y <= 0) {
-            y = 0;
-        }
-        else if (y + this.grabElement.offsetHeight >= window.innerHeight) {
-            y = window.innerHeight - this.grabElement.offsetHeight;
-            offsetY = this.grabElement.offsetHeight;
-            transform.y = -100;
-        }
-
-        this.setState({
-            position: { x, y },
-            offset: { x: offsetX, y: offsetY },
-            transform
-        });
-    }
-
-    toggleItemVisibility(item: GameMonitorItem, value: boolean) {
-        const { items } = this.state;
-        items[items.indexOf(item)].visible = value;
-
-        this.setState({ items })
-
-        if (this.itemData !== null) {
-            this.itemData[item.id].visible = value;
-            void Config.MONITOR_ITEMS.set(this.itemData);
+        else if (isCapturing.current) {
+            desandbox('StadiaPlusNetworkMonitor.stop()');
+            isCapturing.current = false;
         }
     }
 
-    render() {
-        const {
-            items, sidebarOpen,
-            currentPage, enabled,
-            loading, position,
-            offset, transform
-        } = this.state;
-
-        if (loading || (enabled && !sidebarOpen)) {
-            if (!this.isCapturing) {
-                addEventListener('message', this.messageCaptureListener);
-                this.isCapturing = true;
-            }
-        }
-        else {
-            if (this.isCapturing) {
-                removeEventListener('message', this.messageCaptureListener);
-                this.isCapturing = false;
-            }
-        }
-
-        return (currentPage === 'player' && (enabled || loading || sidebarOpen)) && ReactDOM.createPortal(<>
-            { sidebarOpen && <OpenIcon
-                style={{
-                    opacity: enabled ? 0 : 1,
-                    pointerEvents: enabled ? 'none' : 'all',
-                }}
-                onClick={() => this.setState({ enabled: true })}
-            >
+    return (enabled || sidebarOpen) ? <div className={classNames(sidebarOpen && style.sidebarOpen, enabled && style.enabled)}>
+        { sidebarOpen &&
+            <div className={style.openIcon} onClick={() => setEnabled(true)}>
                 <CgTrending size={24} />
-            </OpenIcon> }
+            </div>
+        }
 
-            <Wrapper
-                style={{
-                    left: position.x + offset.x,
-                    top: position.y + offset.y,
-                    transform: `translate(${transform.x}%, ${transform.y}%)`,
-                }}
-            >
-                <Loader isLoading={loading} />
+        <div className={style.gameMonitor}>
+            <Loader isLoading={items.length === 0} />
 
-                <MonitorWrapper
-                    style={{
-                        backgroundColor: Theme.hexToRGBA(Theme.Colors.gray[900], sidebarOpen ? 1 : 0.25),
-                        display: loading ? 'none' : '',
-                        width: !sidebarOpen ? 'auto' : '',
-                        opacity: enabled ? 1 : 0,
-                        transform: `translateY(${enabled ? 0 : 16}px)`,
-                        pointerEvents: enabled ? 'all' : 'none'
-                    }}
-                >
+            { items.length ?
+                <div className={style.monitor}>
                     <Header
-                        visible={ sidebarOpen }
-                        onClose={ () => this.setState({ enabled: false }) }
-                        onGrab={ this.onGrab.bind(this) }
+                        visible={sidebarOpen}
+                        onClose={() => setEnabled(false)}
+                        onGrab={props.onGrab}
                     />
                     <Content
-                        editable={ sidebarOpen }
-                        items={ items }
-                        dragOffset={{ x: -position.x, y: -position.y }}
-                        onVisibilityToggle={ this.toggleItemVisibility.bind(this) }
-                        onDragEnd={ this.onDragEnd.bind(this) }
+                        editable={sidebarOpen}
+                        items={items}
+                        itemMeta={itemMeta}
+                        dragOffset={{ x: -props.position.x, y: -props.position.y }}
+                        onVisibilityToggle={toggleItemVisibility}
+                        onDragEnd={onDragEnd}
                     />
-                </MonitorWrapper>
-            </Wrapper></>,
-            document.getElementById('stadiaplus-root')!
-        );
-    }
+                </div> : null
+            }
+        </div>
+    </div> : null;
 }
 
-const OpenIcon = styled.div`
-    ${tw`
-        left-2
-        top-2
-        absolute
-        flex
-        p-3
-        rounded-full
-        cursor-pointer
-        transition
-    `}
-    z-index: 1000;
-    background-color: ${Theme.Colors.gray[900]};
-`
+const GameMonitorComponent = (props: WithStore<{}>) => {
+    const [grabbed, setGrabbed] = useState<boolean>(false);
 
-const Wrapper = styled.div`
-    ${tw`
-        absolute
-        box-border
-        text-white
-    `}
-    z-index: 200;
-    font-family: Overpass, sans-serif;
-`
+    return ReactDOM.createPortal(
+        <PositionController grabbed={grabbed} onRelease={() => setGrabbed(false)}>
+            { position =>
+                <GameMonitor
+                    onGrab={() => {
+                        console.log('grab')
+                        setGrabbed(true);
+                    }}
+                    position={position}
+                    store={props.store}
+                />
+            }
+        </PositionController>,
 
-const MonitorWrapper = styled.div`
-    ${tw`
-        p-2
-        rounded-lg
-    `}
-    width: 22rem;
-    transition: transform 0.2s ease-out, opacity 0.2s ease-out;
-`
+        document.getElementById('stadiaplus-root')!
+    );
+};
+
+export default GameMonitorComponent;

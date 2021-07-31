@@ -1,6 +1,4 @@
-import { triggerPageChangeEvent } from './events/PageChangeEvent';
-import Logger from '../../shared/Logger';
-import Util from './Util';
+import { stateStore } from './state/StateStore';
 
 export type StadiaPage = null | 'home' | 'player' | 'library';
 
@@ -73,9 +71,11 @@ export function findPage(pathName: string): StadiaPage {
 }
 
 export function setPage(newPage: StadiaPage) {
+    console.log(newPage);
     if(newPage === page) return;
 
-    triggerPageChangeEvent({ page: newPage, lastPage: page })
+    stateStore.setPage(newPage);
+
     page = newPage || null;
     return page;
 }
