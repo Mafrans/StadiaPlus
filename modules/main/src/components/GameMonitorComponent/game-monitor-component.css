@@ -31,6 +31,7 @@
     padding: 0.5rem;
     width: 19rem;
     transform: translateY(16px);
+    pointer-events: none;
 
     transition: transform var(--transition-default),
                 opacity var(--transition-default);
@@ -38,7 +39,6 @@
 
 .enabled:not(.sidebarOpen) .monitor {
     transform: translateY(0);
-    pointer-events: none;
     opacity: 0.75;
 }
 
@@ -48,6 +48,7 @@
 
 :where(.sidebarOpen) .monitor {
     transform: translateY(0);
+    pointer-events: unset;
     opacity: 1;
     width: 22rem;
 }
