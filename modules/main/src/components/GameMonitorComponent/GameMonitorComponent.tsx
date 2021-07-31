@@ -78,7 +78,6 @@ const GameMonitor = (props: WithStore<GameMonitorProps>) => {
     const onMessageCapture = (event: MessageEvent) => {
         if (event.data.source === 'StadiaPlusNetworkMonitor' && (!sidebarOpen || items.length === 0)) {
             const statArray: [string, any] = event.data.stats[1];
-            console.log(RTCStatistics.RTCStatistic);
             const ICECandidatePair = RTCStatistics.RTCStatistic.from<RTCStatistics.RTCIceCandidatePair>(
                 statArray,
                 id => id.startsWith('RTCIceCandidatePair')
@@ -247,7 +246,6 @@ const GameMonitorComponent = (props: WithStore<{}>) => {
             { position =>
                 <GameMonitor
                     onGrab={() => {
-                        console.log('grab')
                         setGrabbed(true);
                     }}
                     position={position}
