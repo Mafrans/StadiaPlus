@@ -13,7 +13,7 @@ export type ContentProps = {
 } 
 
 const Content = (props: ContentProps) => {
-    const sortedItems = props.items.sort((a, b) => (props.itemMeta?.[a.id].index ?? 0) - (props.itemMeta?.[b.id].index ?? 0));
+    const sortedItems = props.items.sort((a, b) => (props.itemMeta?.[a.id]?.index ?? 0) - (props.itemMeta?.[b.id]?.index ?? 0));
 
     return (
         <DragDropContext onDragEnd={props.onDragEnd!}>
