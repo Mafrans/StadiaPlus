@@ -21,7 +21,6 @@ class NetworkMonitor {
     start() {
         if (this.timer === 0) {
             this.timer = setInterval(this.poll.bind(this), 1000);
-            console.log(this);
         }
     }
 
@@ -33,7 +32,6 @@ class NetworkMonitor {
     }
 
     async poll() {
-        console.log('poll');
         if (!this.peerConnections) return;
 
         const data = [];
