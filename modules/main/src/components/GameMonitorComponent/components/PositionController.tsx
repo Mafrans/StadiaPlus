@@ -42,8 +42,8 @@ const PositionController = (props: PositionControllerType) => {
             }
 
             position = {
-                x: clamp(event.screenX - (grabPos?.x ?? 0), 0, bounds.x),
-                y: clamp(event.screenY - (grabPos?.y ?? 0), 0, bounds.y)
+                x: clamp(event.pageX - (grabPos?.x ?? 0), 0, bounds.x),
+                y: clamp(event.pageY - (grabPos?.y ?? 0), 0, bounds.y)
             };
 
             setPosition(position);
