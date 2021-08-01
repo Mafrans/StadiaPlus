@@ -1,15 +1,16 @@
 import React, { useEffect, useRef } from 'react';
-import { StadiaPlusDB } from '../../../shared/StadiaPlusDB';
+import StadiaPlusDB from '../../../shared/StadiaPlusDB';
 import { StadiaSelectors } from '../StadiaSelectors';
 import { Config } from '../../../shared/Config';
 import { asyncEffect, getPlayerGameId } from '../Util';
-import { WithStore } from '../state/StateStore';
+import { stateStore } from '../state/StateStore';
+import { observer } from 'mobx-react';
 
-const InGameSyncComponent = (props: WithStore<{}>) => {
+const InGameSyncComponent = () => {
     const syncEnabled = useRef<boolean>(false);
     const gameId = useRef<string>("");
 
-    const { page, lastPage, authToken } = props.store;
+    const { page, lastPage, authToken } = stateStore;
 
     const reportGameProgress = () => {
         if (!authToken || !gameId.current) {
@@ -34,7 +35,6 @@ const InGameSyncComponent = (props: WithStore<{}>) => {
         }
 
         if (page !== 'player' && lastPage === 'player') {
-            console.log('report game progress', gameId);
             reportGameProgress();
         }
     }, [page])
@@ -47,6 +47,6 @@ const InGameSyncComponent = (props: WithStore<{}>) => {
     return null;
 }
 
-export default InGameSyncComponent;
+export default observer(InGameSyncComponent);
 
 

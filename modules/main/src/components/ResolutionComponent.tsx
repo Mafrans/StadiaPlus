@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react';
+import React  from 'react';
 import { Config } from '../../../shared/Config';
 import Logger from '../../../shared/Logger';
 import { asyncEffect, desandbox, getPlayerGameId } from '../Util';
-import { WithStore } from '../state/StateStore';
+import { stateStore } from '../state/StateStore';
+import { observer } from 'mobx-react';
 
-const ResolutionComponent = (props: WithStore<{}>) => {
-    const { page } = props.store;
+const ResolutionComponent = () => {
+    const { page } = stateStore;
 
     asyncEffect(async () => {
-        console.log('new effect!')
         if (page !== 'player') {
             return;
         }
@@ -69,4 +69,4 @@ const ResolutionComponent = (props: WithStore<{}>) => {
     return null;
 }
 
-export default ResolutionComponent;
+export default observer(ResolutionComponent);

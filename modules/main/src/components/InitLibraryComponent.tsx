@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { Config } from '../../../shared/Config';
 import Logger from '../../../shared/Logger';
-import { StadiaPage } from '../StadiaPage';
-import { WithStore } from '../state/StateStore';
+import { stateStore } from '../state/StateStore';
+import { observer } from 'mobx-react';
 
 interface AFLibraryData {
     data: [boolean, [string, [string, string, boolean, number]], unknown[]];
@@ -43,8 +43,8 @@ function getGameIds(): { uuid: string, subId: string }[] {
 }
 
 
-const InitLibraryComponent = (props: WithStore<{}>) => {
-    const { page } = props.store;
+const InitLibraryComponent = () => {
+    const { page } = stateStore;
 
     useEffect(() => {
         if (page === 'home') {
@@ -55,4 +55,4 @@ const InitLibraryComponent = (props: WithStore<{}>) => {
     return null;
 }
 
-export default InitLibraryComponent;
+export default observer(InitLibraryComponent);

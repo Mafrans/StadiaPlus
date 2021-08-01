@@ -6,6 +6,7 @@ import { StadiaCodec, stadiaCodecs } from '../../../../shared/models/StadiaCodec
 import { StadiaResolution, stadiaResolutions } from '../../../../shared/models/StadiaResolution';
 import style from './game-settings-component.css';
 import classNames from 'classnames';
+import { observer } from 'mobx-react';
 
 const GameSettingsComponent = () => {
     const [visible, setVisible] = useState<boolean>(false);
@@ -43,4 +44,4 @@ const GameSettingsComponent = () => {
     </>;
 }
 
-export default GameSettingsComponent;
+export default observer(GameSettingsComponent);

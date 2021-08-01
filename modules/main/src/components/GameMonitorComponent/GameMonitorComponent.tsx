@@ -1,11 +1,7 @@
-import React, { CSSProperties, PropsWithChildren, useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
-import tw from 'twin.macro';
-import { Theme } from '../../../../shared/Theme';
-import styled from 'styled-components';
-import { asyncEffect, clamp, desandbox } from '../../Util';
+import { asyncEffect, desandbox } from '../../Util';
 import PositionController from './components/PositionController';
-import { WithStore } from '../../state/StateStore';
 import { Config } from '../../../../shared/Config';
 import MonitorRunnable from 'bundle-text:../../MonitorRunnable.txt';
 import { StadiaSelectors } from '../../StadiaSelectors';
@@ -18,6 +14,8 @@ import Header from './components/Header';
 import Content from './components/Content';
 import style from './game-monitor-component.css';
 import classNames from 'classnames';
+import { stateStore } from '../../state/StateStore';
+import { observer } from 'mobx-react';
 
 export type GameMonitorItem = {
     name: string
@@ -36,7 +34,7 @@ type GameMonitorProps = {
     position: {x: number, y: number}
 }
 
-const GameMonitor = (props: WithStore<GameMonitorProps>) => {
+const GameMonitor = (props: GameMonitorProps) => {
     const lastBytesReceived = useRef<number>(0);
     const isCapturing = useRef<boolean>();
 
@@ -45,7 +43,7 @@ const GameMonitor = (props: WithStore<GameMonitorProps>) => {
     let   [itemMeta, setItemMeta]       = useState<GameMonitorItemMeta>({});
     let   [sidebarOpen, setSidebarOpen] = useState<boolean>();
 
-    const { page } = props.store;
+    const { page } = stateStore;
 
     asyncEffect(async () => {
         // TODO: Make this an observer
@@ -238,7 +236,7 @@ const GameMonitor = (props: WithStore<GameMonitorProps>) => {
     </div> : null;
 }
 
-const GameMonitorComponent = (props: WithStore<{}>) => {
+const GameMonitorComponent = () => {
     const [grabbed, setGrabbed] = useState<boolean>(false);
 
     return ReactDOM.createPortal(
@@ -249,7 +247,6 @@ const GameMonitorComponent = (props: WithStore<{}>) => {
                         setGrabbed(true);
                     }}
                     position={position}
-                    store={props.store}
                 />
             }
         </PositionController>,
@@ -258,4 +255,4 @@ const GameMonitorComponent = (props: WithStore<{}>) => {
     );
 };
 
-export default GameMonitorComponent;
+export default observer(GameMonitorComponent);

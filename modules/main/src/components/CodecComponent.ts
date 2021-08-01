@@ -1,9 +1,8 @@
 import { Config } from '../../../shared/Config';
 import Logger from '../../../shared/Logger';
-import { useEffect } from 'react';
-import { StadiaPage } from '../StadiaPage';
 import { asyncEffect } from '../Util';
-import { WithStore } from '../state/StateStore';
+import { stateStore } from '../state/StateStore';
+import { observer } from 'mobx-react';
 
 type StadiaCodecData = {
     h264?: 'ExternalDecoder'
@@ -12,8 +11,8 @@ type StadiaCodecData = {
     'vp9-profile2'?: 'SoftwareDecoder' | 'libvpx'
 }
 
-const CodecComponent = (props: WithStore<{}>) => {
-    const { page } = props.store;
+const CodecComponent = () => {
+    const { page } = stateStore;
 
     asyncEffect(async () => {
         if (page !== 'player') {
@@ -55,4 +54,4 @@ const CodecComponent = (props: WithStore<{}>) => {
     return null;
 }
 
-export default CodecComponent;
+export default observer(CodecComponent);
