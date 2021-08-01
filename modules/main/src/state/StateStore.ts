@@ -1,4 +1,4 @@
-import { action, makeAutoObservable, observable } from 'mobx';
+import { action, makeAutoObservable, makeObservable, observable } from 'mobx';
 import { StadiaPage } from '../StadiaPage';
 
 export default class StateStore {
@@ -23,10 +23,6 @@ export default class StateStore {
     setRenderer(value: HTMLElement) {
         this.renderer = value;
     }
-}
-
-export type WithStore<T> = T & {
-    store: StateStore
 }
 
 export const stateStore = new StateStore();

@@ -1,7 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 import styled from 'styled-components';
 import tw from 'twin.macro';
-import { Theme } from '../../../shared/Theme';
 
 type SettingsCategoryProps = {
     title: string

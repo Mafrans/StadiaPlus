@@ -2,6 +2,7 @@
     "compilerOptions": {
         "baseUrl": "./",
         "experimentalDecorators": true,
+        "useDefineForClassFields": true,
         "outDir": "./dist/",
         "sourceMap": true,
         "noImplicitAny": true,

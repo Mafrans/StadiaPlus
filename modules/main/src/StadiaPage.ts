@@ -1,4 +1,5 @@
 import { stateStore } from './state/StateStore';
+import Logger from '../../shared/Logger';
 
 export type StadiaPage = null | 'home' | 'player' | 'library';
 
@@ -29,7 +30,7 @@ export function createNavigationHook(timeout?: number) {
     if(!navigatorKey) {
         if (timeout && timeout <= 0) {
             // The timeout was reached, cancel and send an error
-            console.error("FATAL ERROR: No Stadia navigator found, therefore cannot start navigation service.");
+            Logger.error("FATAL ERROR: No Stadia navigator found, therefore cannot start navigation service.");
             return;
         }
 
@@ -71,7 +72,6 @@ export function findPage(pathName: string): StadiaPage {
 }
 
 export function setPage(newPage: StadiaPage) {
-    console.log(newPage);
     if(newPage === page) return;
 
     stateStore.setPage(newPage);

@@ -3,39 +3,39 @@ import { Config } from './Config';
 import { DBModel } from './models/DBModel';
 import { stateStore } from '../main/src/state/StateStore';
 
-export namespace StadiaPlusDB {
-    export let url: string;
-    export let connected: boolean;
-    export let authToken: string | null = null;
-    export let authenticated = false;
-    const listeners: Set<() => void> = new Set<() => void>();
+export interface Profile {
+    avatar: string
+    names: string[]
+    location?: string
+    score: number
+}
 
-    export interface Profile {
-        avatar: string
-        names: string[]
-        location?: string
-        score: number
-    }
+class StadiaPlusDB {
+    url: string = '';
+    connected: boolean = false;
+    authToken: string | null = null;
+    authenticated = false;
+    listeners: Set<() => void> = new Set<() => void>();
 
-    export async function connect(url: string) {
-        Logger.info(`Connecting to ${url}`);
-        StadiaPlusDB.url = url;
-        connected = await checkConnected();
+    async connect(url: string) {
+        this.url = url;
+        Logger.info(`Connecting to ${this.url}`);
+        this.connected = await this.checkConnected();
 
-        if (connected) {
-            listeners.forEach(it => it());
+        if (this.connected) {
+            this.listeners.forEach(it => it());
         }
 
-        return connected;
+        return this.connected;
     }
 
-    export function onConnect(callback: () => void) {
-        listeners.add(callback);
+    onConnect(callback: () => void) {
+        this.listeners.add(callback);
     }
 
-    export async function checkConnected(): Promise<boolean> {
+    async checkConnected(): Promise<boolean> {
         try {
-            const response = await fetch(`${url}/api/ping`);
+            const response = await fetch(`${this.url}/api/ping`);
 
             if (response === null) {
                 return false;
@@ -49,23 +49,23 @@ export namespace StadiaPlusDB {
         return false;
     }
 
-    async function authFetch(path: string, options?: { type?: 'GET' | 'POST', body?: object }) {
-        return fetch(`${url}/${path}`, {
+    async authFetch(path: string, options?: { type?: 'GET' | 'POST', body?: object }) {
+        return fetch(`${this.url}/${path}`, {
             method: options?.type || 'GET',
             body: options?.body && JSON.stringify(options.body),
-            headers: authToken ? {
-                authorization: `Bearer ${authToken}`
+            headers: this.authToken ? {
+                authorization: `Bearer ${this.authToken}`
             } : undefined
         })
     }
 
-    export async function checkAuthenticated(): Promise<boolean> {
-        if (authToken == null) {
-            authToken = await Config.AUTH_TOKEN.get();
+    async checkAuthenticated(): Promise<boolean> {
+        if (this.authToken == null) {
+            this.authToken = await Config.AUTH_TOKEN.get();
         }
 
         try {
-            const response = await authFetch('api/ping');
+            const response = await this.authFetch('api/ping');
 
             if (response === null) {
                 return false;
@@ -76,33 +76,32 @@ export namespace StadiaPlusDB {
         } catch (e) {
             throw new Error('Timed out');
         }
-        return false;
     }
 
-    export async function googleSignIn(): Promise<void> {
-        authToken = await oauthSignIn('google');
-        await Config.AUTH_TOKEN.set(authToken);
+    async googleSignIn(): Promise<void> {
+        this.authToken = await this.oauthSignIn('google');
+        await Config.AUTH_TOKEN.set(this.authToken);
     }
 
-    export async function patreonSignIn(): Promise<void> {
-        await oauthSignIn('patreon');
+    async patreonSignIn(): Promise<void> {
+        await this.oauthSignIn('patreon');
     }
 
-    const oauthData = {
+    oauthData = {
         google: {
             external: false,
             redirect: chrome.identity ? chrome.identity.getRedirectURL('database') : ''
         },
         patreon: {
             external: true,
-            redirect: `https://${StadiaPlusDB.url}/auth/patreon/finished`
+            redirect: `https://${this.url}/auth/patreon/finished`
         }
     }
 
-    export async function oauthSignIn(type: 'google' | 'patreon') {
-        let url = `${StadiaPlusDB.url}/auth/${type}?login=${authToken}&redirect=${oauthData[type].redirect}`;
+    async oauthSignIn(type: 'google' | 'patreon') {
+        let url = `${this.url}/auth/${type}?login=${this.authToken}&redirect=${this.oauthData[type].redirect}`;
 
-        if (oauthData[type].external) {
+        if (this.oauthData[type].external) {
             window.open(url, '_open');
             return '';
         }
@@ -115,48 +114,48 @@ export namespace StadiaPlusDB {
         return urlData.hash.substring(1);
     }
 
-    export async function authenticate(): Promise<boolean> {
-        if (!isConnected()) {
+    async authenticate(): Promise<boolean> {
+        if (!this.isConnected()) {
             Logger.error('Attempting to authenticate without being connected.');
         }
-        if (authenticated) {
+        if (this.authenticated) {
             Logger.warning('Duplicate authentication attempt.');
         }
 
-        authToken = await Config.AUTH_TOKEN.get();
+        this.authToken = await Config.AUTH_TOKEN.get();
 
-        if (authToken !== null) {
-            if (await checkAuthenticated()) {
-                authenticated = true;
-                stateStore.setAuthToken(authToken);
+        if (this.authToken !== null) {
+            if (await this.checkAuthenticated()) {
+                this.authenticated = true;
+                stateStore.setAuthToken(this.authToken);
             }
             else {
                 Logger.warning('Your authentication token is outdated');
             }
         }
-        return authenticated;
+        return this.authenticated;
     }
 
-    export function signout(): Promise<unknown> {
-        return fetch(`${url}/api/signout`, {
+    signout(): Promise<unknown> {
+        return fetch(`${this.url}/api/signout`, {
             method: 'POST',
-            body: JSON.stringify({ token: authToken }),
+            body: JSON.stringify({ token: this.authToken }),
         });
     }
 
-    export function wipedata(): Promise<unknown> {
-        return authFetch('api/signout', { type: 'POST' });
+    wipedata(): Promise<unknown> {
+        return this.authFetch('api/signout', { type: 'POST' });
     }
 
-    export async function getOwnProfile(): Promise<Profile | null> {
-        if (!connected) {
+    async getOwnProfile(): Promise<Profile | null> {
+        if (!this.connected) {
             Logger.warning('Trying to run getProfile() without being connected!');
             return null;
         }
 
         let response;
         try {
-            response = await authFetch('api/profile/self');
+            response = await this.authFetch('api/profile/self');
         } catch (e) {
             Logger.error(e);
             return null;
@@ -175,15 +174,15 @@ export namespace StadiaPlusDB {
         return json;
     }
 
-    export async function getOtherProfile(name: string, tag: string): Promise<Profile | null> {
-        if (!connected) {
+    async getOtherProfile(name: string, tag: string): Promise<Profile | null> {
+        if (!this.connected) {
             Logger.warning('Trying to run getProfile() without being connected!');
             return null;
         }
 
         let response;
         try {
-            response = await fetch(`${url}/api/profile/${name}/${tag}`);
+            response = await fetch(`${this.url}/api/profile/${name}/${tag}`);
         } catch (e) {
             Logger.error(e);
             return null;
@@ -202,20 +201,20 @@ export namespace StadiaPlusDB {
         return json;
     }
 
-    export function isConnected(): boolean {
-        return StadiaPlusDB.connected && StadiaPlusDB.url != null;
+    isConnected(): boolean {
+        return this.connected && this.url != null;
     }
 
-    export function isAuthenticated(): boolean {
-        return StadiaPlusDB.isConnected() && StadiaPlusDB.authToken != null;
+    isAuthenticated(): boolean {
+        return this.isConnected() && this.authToken != null;
     }
 
-    export async function updateGameProgress(userId: string, gameId: string) {
-        if (!StadiaPlusDB.isConnected()) {
+    async updateGameProgress(userId: string, gameId: string) {
+        if (!this.isConnected()) {
             Logger.error('Not connected to the StadiaPlusDB database');
             return;
         }
-        if (!StadiaPlusDB.isAuthenticated()) {
+        if (!this.isAuthenticated()) {
             Logger.error('Not authenticated with StadiaPlusDB' );
             return;
         }
@@ -227,11 +226,11 @@ export namespace StadiaPlusDB {
         const achievements = DBModel.getAchievements(data);
         const achievementCount = DBModel.getAchievementCount(data);
 
-        const response = await fetch(`${url}/api/profile/update`, {
+        const response = await fetch(`${this.url}/api/profile/update`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + authToken
+                'Authorization': 'Bearer ' + this.authToken
             },
             body: JSON.stringify({
                 data: {
@@ -249,3 +248,5 @@ export namespace StadiaPlusDB {
         }
     }
 }
+
+export default new StadiaPlusDB();

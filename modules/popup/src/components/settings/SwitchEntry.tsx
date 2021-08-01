@@ -1,5 +1,4 @@
 import React from 'react';
-import Dropdown, { DropdownProps } from '../../../../shared/components/Dropdown';
 import styled from 'styled-components';
 import tw from 'twin.macro';
 import Switch, { SwitchProps } from '../../../../shared/components/Switch';

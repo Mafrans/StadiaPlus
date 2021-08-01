@@ -1,9 +1,8 @@
 import React from 'react';
 import { CgArrowTopRight, CgProfile } from 'react-icons/cg';
-import Container from './Container';
 import styled from 'styled-components';
 import { Theme } from '../../../shared/Theme';
-import { StadiaPlusDB } from '../../../shared/StadiaPlusDB';
+import StadiaPlusDB from '../../../shared/StadiaPlusDB';
 import tw from 'twin.macro';
 
 interface ProfilePanelProps {

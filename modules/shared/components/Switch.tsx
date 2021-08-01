@@ -12,7 +12,6 @@ function Switch(props: SwitchProps) {
     const [ value, setValue ] = useState<boolean>(false);
 
     const trySetValue = (newValue: boolean) => {
-        console.log({value, newValue});
         if (newValue !== value) {
             setValue(newValue);
             props.onChange(newValue);
@@ -22,7 +21,6 @@ function Switch(props: SwitchProps) {
     if (props.value instanceof Function) {
         // This could be an issue with configs, since they'll be looped
         props.value().then(value => {
-            console.log({ value });
             if (value) {
                 trySetValue(value)
             }

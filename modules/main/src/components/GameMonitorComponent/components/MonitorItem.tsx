@@ -1,9 +1,7 @@
 import React from "react";
-import { Draggable, DraggableProvided } from 'react-beautiful-dnd';
+import { Draggable} from 'react-beautiful-dnd';
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { VscGripper } from "react-icons/vsc";
-import styled from "styled-components";
-import tw from "twin.macro";
 import { GameMonitorItem } from "../GameMonitorComponent";
 import style from '../game-monitor-component.css';
 import classNames from 'classnames';

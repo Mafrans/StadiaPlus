@@ -1,11 +1,11 @@
 import React from 'react';
-import LogoImage from '../images/Stadia+Logo.png'
-import style from 'resources.css';
+import LogoImage from 'url:../images/Stadia+Logo.png'
+import style from './resources.css';
 
-const StadiaPlusLogo = () => {
+const StadiaPlusLogo = (props: {context: 'main' | 'popup'}) => {
     return (
         <div className={style.stadiaPlusLogo}>
-            <img src={LogoImage} alt={'STADIA+'} />
+            <img src={encodeURI(chrome.runtime.getURL(`dist/${props.context}/${LogoImage}`))} alt={'STADIA+'} />
         </div>
     );
 }

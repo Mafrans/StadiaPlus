@@ -1,6 +1,4 @@
-import React, { ReactElement, MouseEvent } from 'react';
-import { CgArrowTopRight, CgGoogle } from 'react-icons/cg';
-import Container from './Container';
+import React, { ReactElement } from 'react';
 import styled from 'styled-components';
 import tw from 'twin.macro';
 import Button, { ButtonProps } from './Button';

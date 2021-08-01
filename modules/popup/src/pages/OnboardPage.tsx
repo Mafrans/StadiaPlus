@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import tw from 'twin.macro';
-import { Theme } from '../../../shared/Theme';
-import { CgArrowRight, CgArrowTopRight, CgClose, CgGoogle, CgSync } from 'react-icons/cg';
-import { FaGoogle } from 'react-icons/fa';
+import { CgArrowRight, CgArrowTopRight, CgSync } from 'react-icons/cg';
 import Container from '../components/Container';
 import OnboardPanel from '../components/OnboardPanel';
-import { StadiaPlusDB } from '../../../shared/StadiaPlusDB';
+import StadiaPlusDB from '../../../shared/StadiaPlusDB';
 import { useHistory } from 'react-router-dom';
 import Logger from '../../../shared/Logger';
-import set = chrome.cookies.set;
+
 import MDSpinner from 'react-md-spinner';
 import StadiaPlusLogo from '../../../shared/resources/components/StadiaPlusLogo';
 import { IoLogoGoogle } from 'react-icons/io';
@@ -104,7 +102,7 @@ export default function OnboardPage() {
 
     return <Container>
         <LogoWrapper>
-            <StadiaPlusLogo/>
+            <StadiaPlusLogo context={'popup'}/>
         </LogoWrapper>
         <PanelWrapper>
             { loaded

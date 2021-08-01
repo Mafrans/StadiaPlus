@@ -1,8 +1,5 @@
 import * as React from 'react';
-import styled from 'styled-components';
-import tw from 'twin.macro';
 import ReactDOM from 'react-dom';
-import { Theme } from '../../../../../shared/Theme';
 import { useEffect, useState } from 'react';
 import { StadiaSelectors } from '../../../StadiaSelectors';
 import StadiaPlusIcon from '../../../../../shared/resources/components/StadiaPlusIcon';

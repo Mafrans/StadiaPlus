@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, ReactChildren, ReactElement, useEffect, useRef, useState } from 'react';
+import React, { ReactElement, useEffect, useRef, useState } from 'react';
 import { clamp } from '../../../Util';
 
 type PositionControllerType = {
@@ -32,7 +32,6 @@ const PositionController = (props: PositionControllerType) => {
     }
 
     useEffect(() => {
-        console.log({grabbed: props.grabbed})
         if (!props.grabbed) return;
         let grabPos: {x: number, y: number} | null = null;
 
@@ -56,7 +55,6 @@ const PositionController = (props: PositionControllerType) => {
             removeEventListener('mouseup', onRelease);
         }
 
-        console.log('should be able to move');
         addEventListener('mousemove', onMove);
         addEventListener('mouseup', onRelease);
     }, [props.grabbed]);
