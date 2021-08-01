@@ -11,13 +11,14 @@
         "identity",
         "https://stadiagamedb.com/data/gamedb.json",
         "https://stadiagamedb.com/data/uuidmap.json",
-        "https://stadiaplus.dev/*"
+        "https://*.stadiaplus.dev/*",
+        "https://*.chromiumapp.org/*"
     ],
     "oauth2": {
-        "client_id": "401608975485-29rkti0stvi4odvnn6hlomkjs0lrtqbj.apps.googleusercontent.com",
+        "client_id": "401608975485-hcg4ipsil0inrtvbmgjl2e910nceqlh0.apps.googleusercontent.com",
         "scopes": [
-            "https://stadiaplus.dev/auth/google",
-            "https://stadiaplus.dev/auth/google/callback"
+            "https://beta.stadiaplus.dev/auth/google",
+            "https://beta.stadiaplus.dev/auth/google/callback"
         ]
     },
     "background": {
@@ -56,6 +57,8 @@
         }
     ],
     "web_accessible_resources": [
+        "dist/main/*.png",
+        "dist/popup/*.png"
     ],
     "manifest_version": 2
 }
