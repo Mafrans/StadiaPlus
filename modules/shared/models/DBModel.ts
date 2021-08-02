@@ -52,12 +52,13 @@ export namespace DBModel {
     }
 
     export function getPlayTime(data: string, gameId: string): number {
-        const playData = data.match(new RegExp(`\\[\\[\\["${gameId}",.+\\n.+\\n,\\[([0-9]+)`));
-        return Number(playData?.[1]);
+        const gameData = getGameData(data);
+        return Number(gameData[2]);
     }
 
     export function getGame(data: string, gameId: string): DBModel.Game {
         const gameData = getGameData(data);
+        console.log(gameData);
         return {
             name: gameData[0][1],
             image: gameData[9][2][15][1][0][1],
