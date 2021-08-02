@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import styled from 'styled-components';
 import tw from 'twin.macro';
-import Button, { ButtonProps } from './Button';
+import Button, { ButtonProps } from './Button/Button';
 import { Theme } from '../../../shared/Theme';
 
 interface ButtonData extends ButtonProps {

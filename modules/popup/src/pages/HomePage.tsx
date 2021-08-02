@@ -94,7 +94,7 @@ export default function HomePage() {
             : finalPanel
          }
         <Hr />
-        { profile && <ProfilePanel profile={profile} /> }
+        { profile && <ProfilePanel syncEnabled={syncEnabled} initialized={profile.names.length > 0} profile={profile} /> }
         <ButtonGrid>
             <TileButton>
                 <CgSupport size={24} />

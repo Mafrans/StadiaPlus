@@ -7,6 +7,7 @@ import '@fontsource/overpass/600.css';
 import Router from './Router';
 import { Theme } from '../../shared/Theme';
 import StadiaPlusDB from '../../shared/StadiaPlusDB';
+import '../../shared/root.css';
 
 void StadiaPlusDB.connect('https://beta.stadiaplus.dev');
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import Container from '../components/Container';
 import { Config } from '../../../shared/Config';
 import Header from '../components/Header';
@@ -7,11 +7,45 @@ import DropdownEntry from '../components/settings/DropdownEntry';
 import { StadiaCodec, stadiaCodecs } from '../../../shared/models/StadiaCodec';
 import { StadiaResolution, stadiaResolutions } from '../../../shared/models/StadiaResolution';
 import SwitchEntry from '../components/settings/SwitchEntry';
-
+import Button from '../components/Button/Button';
+import { FaGoogle } from 'react-icons/fa';
+import { asyncEffect } from '../../../main/src/Util';
+import StadiaPlusDB from '../../../shared/StadiaPlusDB';
+import { useHistory } from 'react-router-dom';
+import { CgLogOut } from 'react-icons/cg';
 
 export default function SettingsPage() {
+    const [loggedIn, setLoggedIn] = useState<boolean>(false);
+    const history = useHistory();
+
+    asyncEffect(async () => {
+        setLoggedIn(!(await Config.LOGIN_SKIPPED.get()));
+    }, [])
+
+    const signIn = async () => {
+        await StadiaPlusDB.googleSignIn();
+        await Config.LOGIN_SKIPPED.set(false);
+        history.push('/home');
+    };
+
+    const signOut = () => {
+        void StadiaPlusDB.googleSignOut();
+        history.push('/');
+    }
+
     return <Container>
         <Header>Settings</Header>
+            <SettingsCategory title={'Account'}>
+                { loggedIn ? <>
+                    <Button onClick={signOut} type={'link'} icon={<CgLogOut />}>
+                        Sign out
+                    </Button>
+                </> : <>
+                    <Button onClick={signIn} type={'link'} icon={<FaGoogle />}>
+                        Sign in with Google
+                    </Button>
+                </> }
+            </SettingsCategory>
 
         <SettingsCategory title={'Extension'}>
             <DropdownEntry

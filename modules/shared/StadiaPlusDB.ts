@@ -136,11 +136,10 @@ class StadiaPlusDB {
         return this.authenticated;
     }
 
-    signout(): Promise<unknown> {
-        return fetch(`${this.url}/api/signout`, {
-            method: 'POST',
-            body: JSON.stringify({ token: this.authToken }),
-        });
+    async googleSignOut(): Promise<unknown> {
+        this.authToken = null;
+        await Config.AUTH_TOKEN.set(null);
+        return fetch(`${this.url}/auth/google/signout`, { method: 'post' });
     }
 
     wipedata(): Promise<unknown> {
