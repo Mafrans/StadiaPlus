@@ -49,16 +49,23 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     ReactDOM.render(<RootComponent />, root);
 
-    observeAddedNodes(document.querySelector(StadiaSelectors.RENDERER_CONTAINER)!, 'childList', Node.ELEMENT_NODE, (mutation: MutationRecord, node: Node) => {
-        if (mutation.addedNodes.length > 0) {
-            const renderer = mutation.addedNodes.item(0) as HTMLElement;
-            if (renderer != null) {
-                setRenderer(renderer)
-                setPage(findPage(location.pathname));
+    const mutationObserver = new MutationObserver(mutations => {
+        mutations.forEach(mutation => {
+            console.log(location.pathname);
+            if(mutation.addedNodes.length) {
+                setRenderer(mutation.addedNodes.item(0) as HTMLElement);
             }
-        }
+            setPage(findPage(location.pathname));
+        });
     });
+
+    mutationObserver.observe(
+        document.querySelector(StadiaSelectors.RENDERER_CONTAINER)!,
+        { childList: true, attributes: true, characterData: true }
+    );
+
     setPage(findPage(location.pathname));
+
 
     updateRenderer();
     desandbox(createNavigationHook, { immediate: true });
