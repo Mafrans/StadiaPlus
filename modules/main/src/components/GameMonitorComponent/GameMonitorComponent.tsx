@@ -34,7 +34,7 @@ type GameMonitorProps = {
     position: {x: number, y: number}
 }
 
-const GameMonitor = (props: GameMonitorProps) => {
+const GameMonitor = observer((props: GameMonitorProps) => {
     const lastBytesReceived = useRef<number>(0);
     const isCapturing = useRef<boolean>();
 
@@ -234,7 +234,7 @@ const GameMonitor = (props: GameMonitorProps) => {
             }
         </div>
     </div> : null;
-}
+});
 
 const GameMonitorComponent = () => {
     const [grabbed, setGrabbed] = useState<boolean>(false);
