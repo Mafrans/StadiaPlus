@@ -16,6 +16,7 @@ import style from './game-monitor-component.css';
 import classNames from 'classnames';
 import { stateStore } from '../../state/StateStore';
 import { observer } from 'mobx-react';
+import Logger from '../../../../shared/Logger';
 
 export type GameMonitorItem = {
     name: string
@@ -39,7 +40,7 @@ const GameMonitor = observer((props: GameMonitorProps) => {
     const isCapturing = useRef<boolean>();
 
     const [items, setItems]             = useState<GameMonitorItem[]>([]);
-    const [enabled, setEnabled]         = useState<boolean>();
+    const [enabled, setEnabled]         = useState<boolean>(false);
     let   [itemMeta, setItemMeta]       = useState<GameMonitorItemMeta>({});
     let   [sidebarOpen, setSidebarOpen] = useState<boolean>();
 
@@ -74,71 +75,81 @@ const GameMonitor = observer((props: GameMonitorProps) => {
     }, [page]);
 
     const onMessageCapture = (event: MessageEvent) => {
-        if (event.data.source === 'StadiaPlusNetworkMonitor' && (!sidebarOpen || items.length === 0)) {
-            const statArray: [string, any] = event.data.stats[1];
-            const ICECandidatePair = RTCStatistics.RTCStatistic.from<RTCStatistics.RTCIceCandidatePair>(
-                statArray,
-                id => id.startsWith('RTCIceCandidatePair')
-            );
+        try {
+            if (event.data.source === 'StadiaPlusNetworkMonitor' && (!sidebarOpen || items.length === 0)) {
+                const statArray: [string, any] = event.data.stats[1];
+                const ICECandidatePair = RTCStatistics.RTCStatistic.from<RTCStatistics.RTCIceCandidatePair>(
+                    statArray,
+                    id => id.startsWith('RTCIceCandidatePair')
+                );
 
-            if (!ICECandidatePair) {
-                return;
+                if (!ICECandidatePair) {
+                    return;
+                }
+
+                const { videoStream, videoCodec, audioCodec } = getStream(statArray);
+                const { bytesReceived, currentRoundTripTime } = ICECandidatePair;
+                const bytesPerSecond = (bytesReceived ?? 0) - lastBytesReceived.current;
+
+                // TODO: Is it possible to move into a fined format. perhaps a class?
+                let newItems = [
+                    {
+                        name: 'Latency',
+                        value: `${Math.round(currentRoundTripTime! * 1000)} ms`,
+                        id: 'latency',
+                    },
+                    {
+                        name: 'Resolution',
+                        value: `${videoStream?.frameWidth ?? '?'}x${videoStream?.frameHeight ?? '?'}`,
+                        id: 'resolution',
+                    },
+                    {
+                        name: 'Bytes Received',
+                        value: `${formatBytes(ICECandidatePair.bytesReceived!)}`,
+                        id: 'bytes-received',
+                    },
+                    {
+                        name: 'Video Codec',
+                        value: `${videoCodec?.mimeType?.split('/')?.[1] ?? 'unknown'} (${videoStream?.decoderImplementation === 'ExternalDecoder' ? 'hardware' : 'software'})`,
+                        id: 'video-codec',
+                    },
+                    {
+                        name: 'Audio Codec',
+                        value: `${audioCodec?.mimeType?.split('/')?.[1] ?? 'unknown'}`,
+                        id: 'audio-codec',
+                    },
+                    {
+                        name: 'Bytes/s',
+                        value: `${formatBytes(bytesPerSecond)}/s`,
+                        id: 'bytes-per-second',
+                    },
+                ] as GameMonitorItem[];
+
+                if (newItems.length > Object.keys(itemMeta).length) {
+                    const newItemMeta = itemMeta;
+                    newItems.forEach(item => {
+                        newItemMeta[item.id] = {
+                            visible: true,
+                            index: Object.keys(newItemMeta).length
+                        }
+                    })
+                    setItemMeta(newItemMeta);
+                }
+
+                lastBytesReceived.current = bytesReceived ?? 0;
+                setItems(newItems);
             }
-
-            const { videoStream, videoCodec, audioCodec } = getStream(statArray);
-            const { bytesReceived, currentRoundTripTime } = ICECandidatePair;
-            const bytesPerSecond = (bytesReceived ?? 0) - lastBytesReceived.current;
-
-            // TODO: Is it possible to move into a fined format. perhaps a class?
-            let newItems = [
-                {
-                    name: 'Latency',
-                    value: `${Math.round(currentRoundTripTime! * 1000)} ms`,
-                    id: 'latency',
-                },
-                {
-                    name: 'Resolution',
-                    value: `${videoStream?.frameWidth ?? '?'}x${videoStream?.frameHeight ?? '?'}`,
-                    id: 'resolution',
-                },
-                {
-                    name: 'Bytes Received',
-                    value: `${formatBytes(ICECandidatePair.bytesReceived!)}`,
-                    id: 'bytes-received',
-                },
-                {
-                    name: 'Video Codec',
-                    value: `${videoCodec?.mimeType?.split('/')?.[1] ?? 'unknown'} (${videoStream?.decoderImplementation === 'ExternalDecoder' ? 'hardware' : 'software'})`,
-                    id: 'video-codec',
-                },
-                {
-                    name: 'Audio Codec',
-                    value: `${audioCodec?.mimeType?.split('/')?.[1] ?? 'unknown'}`,
-                    id: 'audio-codec',
-                },
-                {
-                    name: 'Bytes/s',
-                    value: `${formatBytes(bytesPerSecond)}/s`,
-                    id: 'bytes-per-second',
-                },
-            ] as GameMonitorItem[];
-
-            lastBytesReceived.current = bytesReceived ?? 0;
-            setItems(newItems);
+        }
+        catch (e) {
+            if (lastBytesReceived.current > 0) {
+                Logger.error(e);
+            }
         }
     }
 
     const moveItemTo = (id: string, source: number, destination: number) => {
         if (!itemMeta) {
             return;
-        }
-
-        const newItemMeta = itemMeta ?? {};
-        if (!itemMeta.hasOwnProperty(id)) {
-            newItemMeta[id] = {
-                visible: true,
-                index: 0,
-            };
         }
 
         // Reorder other items to match

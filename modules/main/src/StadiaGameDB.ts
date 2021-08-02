@@ -19,7 +19,7 @@ export namespace StadiaGameDB {
             let imgName = /images\/posters\/([a-z0-9_.-]+).png/g.exec(entry[0])?.[1];
             if (imgName === undefined) imgName = '';
 
-            games[uuid] = {
+            StadiaGameDB.games[uuid] = {
                 uuid,
                 storeId: /https:\/\/stadia.google.com\/store\/details\/([0-9a-z/]+)/g.exec(entry[0])?.[1],
                 img: `https://stadiagamedb.com/images/posters/webp/square/${imgName}.webp`,
@@ -35,8 +35,8 @@ export namespace StadiaGameDB {
     }
 
     export function random(): Game {
-        return games[
-            Object.keys(games)[Math.floor(Math.random() * Object.keys(games).length)]
+        return StadiaGameDB.games[
+            Object.keys(StadiaGameDB.games)[Math.floor(Math.random() * Object.keys(StadiaGameDB.games).length)]
         ];
     }
 

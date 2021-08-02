@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const RootComponent = observer(() =>
         <>
             <ResolutionComponent />
-            <InitLibraryComponent />
+            { /* <InitLibraryComponent /> */ }
             <CodecComponent />
             <ResolutionComponent />
             <InGameSyncComponent />
@@ -51,11 +51,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const mutationObserver = new MutationObserver(mutations => {
         mutations.forEach(mutation => {
-            console.log(location.pathname);
             if(mutation.addedNodes.length) {
                 setRenderer(mutation.addedNodes.item(0) as HTMLElement);
+                Logger.debug('Render update', mutation.addedNodes.item(0));
             }
             setPage(findPage(location.pathname));
+            Logger.debug('Navigated to', location.pathname);
         });
     });
 
