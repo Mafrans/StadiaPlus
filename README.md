@@ -1,5 +1,11 @@
+
+## Stadia+ has been archived
+As I no longer have the time or motivation to continue work on this project, it has been archived. Please consider [Stadia Enhanced](https://github.com/ChristopherKlay/StadiaEnhanced) as an alternative.
+
 ![Banner Image](https://i.imgur.com/Vgge8yv.png)
+
 # Stadia+
+
 Stadia+ is an addon for Google's [Stadia](https://stadia.google.com) gaming platform. It includes a lot of useful features and additions that help with everything from solving network issues to managing your game library. Stadia+ is developed independently, licensed under GNU GPL v3 and has no connection to Google, Alphabet or any other Google product or subsidiary.
 
 If you're new to Stadia+, make sure to read through our [Getting Started](https://github.com/Mafrans/StadiaPlus/wiki/Getting-Started) guide.
